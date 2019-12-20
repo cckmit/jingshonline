@@ -7,10 +7,13 @@
       456
     </el-col>
     <el-col>
-      {{ regionData }}
+      {{ regionDatasss }}
     </el-col>
     <el-col>
-      {{ regionDatasss }}
+      {{ users }}
+    </el-col>
+    <el-col>
+      {{ msg }}
     </el-col>
   </el-row>
 </template>
@@ -18,6 +21,8 @@
 <script>
 import AppLogo from '~/components/AppLogo.vue'
 import { mapState, mapActions } from 'vuex'
+import setting from '@/plugins/setting'
+import axios from 'axios'
 export default {
   components: {
     AppLogo
@@ -27,10 +32,23 @@ export default {
       regionData: []
     }
   },
+  async asyncData({ params }) {
+    const [pageRes, countRes] = await Promise.all([
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
+    ])
+    return {
+      users: pageRes.data,
+      msg: countRes.data
+    }
+  },
   computed: {
     ...mapState({
       regionDatasss: state => state.region.regionTreeData
     })
+  },
+  created() {
+
   },
   mounted() {
     this.get()
