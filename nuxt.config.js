@@ -44,8 +44,8 @@ module.exports = {
    */
   plugins: [
     { src: '~/plugins/element-ui', ssr: true },
-    { src: '~/plugins/cookie', ssr: true }
-    // { src: '~/plugins/request', ssr: true }
+    { src: '~/plugins/cookie', ssr: true },
+    { src: '~/plugins/route', ssr: true }
   ],
   env: {
     baseUrl: 'http://gateway.dev.jingshonline.net'

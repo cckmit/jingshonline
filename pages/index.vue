@@ -5,6 +5,7 @@
     </el-col>
     <el-col :span="5" :offset="5">
       456
+      <nuxt-link to="/UserCenter">跳转</nuxt-link>
     </el-col>
     <el-col>
       {{ regionDatasss }}
