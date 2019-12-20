@@ -21,3 +21,5 @@ $ npm run generate
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
+![image](https://code.jingshonline.net/jingshonline/frontend/jingshonline-web/raw/master/code.jpg)
+
