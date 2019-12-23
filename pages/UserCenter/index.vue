@@ -6,8 +6,8 @@
 
 <script>
 export default {
+  layout: 'userCenter',
   name: 'UserCenterIndex',
-
   components: {
   },
 

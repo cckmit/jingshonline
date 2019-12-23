@@ -5,7 +5,9 @@
     </el-col>
     <el-col :span="5" :offset="5">
       456
-      <nuxt-link to="/UserCenter">跳转</nuxt-link>
+      <nuxt-link to="/UserCenter">userCenter</nuxt-link>
+      <nuxt-link to="/About">about</nuxt-link>
+
     </el-col>
     <el-col>
       {{ regionDatasss }}
@@ -24,7 +26,9 @@ import AppLogo from '~/components/AppLogo.vue'
 import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
+
 export default {
+  layout: 'index',
   components: {
     AppLogo
   },

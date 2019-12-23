@@ -1,9 +1,22 @@
 <template>
   <div>
+    <NavBar/>
     <nuxt/>
+    <Footer/>
   </div>
 </template>
+<script>
+import NavBar from '@/components/NavBar'
+import Footer from '@/components/Footer'
+export default {
+  name: 'IndexLayout',
 
+  components: {
+    NavBar,
+    Footer
+  }
+}
+</script>
 <style>
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
