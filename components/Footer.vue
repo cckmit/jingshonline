@@ -2,7 +2,7 @@
   <div class="footer">
     <ul>
       <li><nuxt-link tag="a" to="/">版权所有</nuxt-link></li>
-      <li><nuxt-link tag="a" to="/">联系我没</nuxt-link></li>
+      <li><nuxt-link tag="a" to="/">联系我们</nuxt-link></li>
       <li><nuxt-link tag="a" to="/">在线办公</nuxt-link></li>
       <li><nuxt-link tag="a" to="/">企业邮箱</nuxt-link></li>
       <li><nuxt-link tag="a" to="/">站长统计</nuxt-link></li>

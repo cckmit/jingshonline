@@ -1,5 +1,6 @@
 <template>
   <el-row>
+    <count-to :start-val="0" :end-val="2017" :duration="1000"/>
     <el-col :span="5">
       123
     </el-col>
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+import CountTo from 'vue-count-to'
 import AppLogo from '~/components/AppLogo.vue'
 import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
@@ -29,8 +31,17 @@ import axios from 'axios'
 
 export default {
   layout: 'index',
+  head() {
+    return {
+      title: '首页',
+      meta: [
+        { hid: 'description', name: 'description', content: '京师在线首页；jingshonline' }
+      ]
+    }
+  },
   components: {
-    AppLogo
+    AppLogo,
+    CountTo
   },
   data() {
     return {

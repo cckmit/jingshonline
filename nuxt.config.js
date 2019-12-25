@@ -4,10 +4,13 @@ module.exports = {
   */
   head: {
     title: 'jingshonline-web',
+    htmlAttrs: {
+      lang: 'zh'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: 'jingshonline-web;京师在线官网' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -51,7 +54,7 @@ module.exports = {
     baseUrl: 'http://gateway.dev.jingshonline.net'
   },
   server: {
-    port: 9527,
+    // port: 9527,
     open: true
   }
 

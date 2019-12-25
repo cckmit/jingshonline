@@ -101,11 +101,15 @@ export default {
   background: none;
   border: none;
   .el-menu-item{
-    padding: 0 30px;
+    padding: 0;
     height: 30px;
     line-height: 30px;
     border: none;
     font-size: 16px;
+    a{
+      // display: inline-block;
+      padding: 0 30px;
+    }
   }
 }
 </style>

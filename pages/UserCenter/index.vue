@@ -8,6 +8,14 @@
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
+  head() {
+    return {
+      title: '用户中心',
+      meta: [
+        { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
+      ]
+    }
+  },
   components: {
   },
 
