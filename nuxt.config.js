@@ -50,7 +50,7 @@ module.exports = {
     { src: '~/plugins/cookie', ssr: true },
     { src: '~/plugins/route', ssr: true },
     { src: '~/plugins/custom', ssr: true },
-    { src: '~/plugins/el-tree-select', ssr: true }
+    { src: '~/plugins/el-tree-select', ssr: false }
   ],
   env: {
     baseUrl: 'http://gateway.dev.jingshonline.net'

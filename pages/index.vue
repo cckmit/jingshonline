@@ -2,7 +2,8 @@
   <el-row>
     <count-to :start-val="0" :end-val="2017" :duration="1000"/>
     <el-col :span="5">
-      123
+      123<i class="fa fa-home"/>
+      <el-tree-select ref="industrySelect" v-model="industryId" :select-params="selectParams" :tree-params="treeParams" :styles="treeSelectStyle" class="case-form-item"/>
     </el-col>
     <el-col :span="5" :offset="5">
       456
@@ -45,7 +46,31 @@ export default {
   },
   data() {
     return {
-      regionData: []
+      regionData: [],
+      industryId: null,
+      selectParams: {
+        multiple: true,
+        clearable: true,
+        placeholder: '行业'
+      },
+      treeParams: {
+        multiple: true,
+        clickParent: true,
+        filterable: true,
+        'check-strictly': true,
+        'default-expand-all': true,
+        'expand-on-click-node': false,
+        'auto-expand-parent': false,
+        data: [],
+        props: {
+          children: 'children',
+          label: 'name',
+          value: 'id'
+        }
+      },
+      treeSelectStyle: {
+        width: '100%'
+      }
     }
   },
   // async asyncData({ params }) {
@@ -74,6 +99,7 @@ export default {
     get() {
       this.getRegionTreeData().then(res => {
         this.regionData = res
+        this.$refs.industrySelect.treeDataUpdateFun(res)
       })
     }
   }
