@@ -15,3 +15,13 @@ export const getTree = (query) => {
     }
   })
 }
+/**
+ * 根据ID获取某个地区详情
+ * @param {number} id
+ */
+export const getInfo = id => {
+  return request({
+    url: `${setting.apiPrefix}/region/get/${id}`,
+    method: 'get'
+  })
+}

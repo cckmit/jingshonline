@@ -1,14 +1,8 @@
 import request from '@/plugins/request'
 import setting from '@/plugins/setting'
 
-export const login = ({
-  account,
-  password
-}) => {
-  const data = {
-    account,
-    password
-  }
+export const login = ({ account, password }) => {
+  const data = { account, password }
   return request({
     url: 'api/oauth2/token',
     data: { 'input': data },
@@ -19,7 +13,7 @@ export const login = ({
 
 export const getLoginUserInfo = () => {
   return request({
-    url: `${setting.apiPrefix}/region/tree`,
+    url: `${setting.apiPrefix}/account/get/userinfo`,
     method: 'get'
   })
 }

@@ -1,4 +1,4 @@
-import * as Region from '@/api/region'
+import * as Region from '@/api/dictionaries/region'
 
 export const state = () => ({
   // token: cookie.get('token'),
@@ -26,6 +26,22 @@ export const actions = {
       }).catch(error => {
         reject(error)
       })
+    })
+  },
+  /**
+   * 获取地区详情
+   * @param {commit} param0
+   * @param {number} id
+   */
+  getRegionInfo({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      Region.getInfo(id).then(response => {
+        const { data } = response
+        resolve(data)
+      })
+        .catch(error => {
+          reject(error)
+        })
     })
   }
 }
