@@ -36,12 +36,20 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+    },
+    /**
+     * Scss 变量
+     */
+    styleResources: {
+      scss: './assets/_variables.scss'
+
     }
   },
   /*
    ** Global CSS
    */
-  css: ['element-ui/lib/theme-chalk/index.css'],
+  css: ['element-ui/lib/theme-chalk/index.css', '~/assets/_variables.scss'],
+
   /**
    * plugins config 插件配置
    */
