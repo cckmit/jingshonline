@@ -1,0 +1,43 @@
+html {
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+body{
+  min-width: 944px;
+}
+*, *:before, *:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+a{
+  text-decoration: none;
+}
+ul li,ol li{
+  list-style: none;
+}
+/** 面包屑导航 **/
+.breadcrumb {
+  margin: 30px 0 20px 0;
+  font-size: 14px;
+  .el-breadcrumb__inner.is-link{
+    font-weight: 400;
+    color: #999;
+  }
+  .el-breadcrumb__inner{
+    color: #666;
+  }
+}
+/** 主体内容 **/
+.content{
+  display:flex;
+  justify-content: center;
+  >div{
+  width: 1380px;
+  }
+}

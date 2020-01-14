@@ -1,40 +1,30 @@
 <template>
-  <div :style="{'background-color':background}" class="navbar">
+  <div :style="{'background':background}" class="navbar">
+    <img v-if="url.name!=='index'" :src="logo" class="logo" style="height:34px;float:left;margin:16px 55px 16px 30px;position:absolute;top:0;left:0;" alt="京师在线">
     <div :style="{'width':mainwidth+'px'}">
-      <img :src="logo" class="logo">
       <el-menu
         :default-active="activeNav"
+        active-text-color="#000"
         mode="horizontal"
         text-color="#fff">
-        <el-menu-item index="index"><nuxt-link to="/">首页</nuxt-link></el-menu-item>
-        <el-menu-item index="Lawyer"><nuxt-link to="/lawyer">找律师</nuxt-link></el-menu-item>
-        <el-menu-item index="Auth"><nuxt-link to="/auth">律师认证</nuxt-link></el-menu-item>
-        <el-menu-item index="Help"><nuxt-link to="/help">帮助中心</nuxt-link></el-menu-item>
-        <el-menu-item index="About"><nuxt-link to="/about">关于我们</nuxt-link></el-menu-item>
-        <!-- <el-submenu v-if="userInfo.nickName" index="" style="float:right;">
-          <template slot="title">
-            <img :src="userInfo.avatar" style="width:40px;height:40px;border-radius:50%;">
-            {{ userInfo.nickName }}
-          </template>
-          <el-menu-item index="userCenter" style="color:#999;text-align:right;padding-right:25px;">
-            <a href="/userCenter">
-              个人中心
-            </a>
-          </el-menu-item>
-          <el-menu-item index="signOut" style="color:#999;text-align:right;padding-right:25px;" @click="signOut">退出</el-menu-item>
-        </el-submenu> -->
-        <el-menu-item index="login" class="login">
-          <nuxt-link to="/Account/login">注册</nuxt-link>
-          <i/>
-          <nuxt-link to="/Account/login">登录</nuxt-link>
+        <el-menu-item index="logo" style="min-width:110px;margin-right:50px;">
+          <nuxt-link to="/"><img v-if="url.name==='index'" :src="logo" class="logo" alt="”京师在线" style="border:none;"></nuxt-link>
         </el-menu-item>
+        <el-menu-item index="index"><nuxt-link to="/">首页</nuxt-link></el-menu-item>
+        <el-menu-item index="lawyer"><nuxt-link to="/Lawyer">找律师</nuxt-link></el-menu-item>
+        <el-menu-item index="auth"><nuxt-link to="/Auth">律师认证</nuxt-link></el-menu-item>
+        <el-menu-item index="help"><nuxt-link to="/Help">帮助中心</nuxt-link></el-menu-item>
+        <el-menu-item index="about"><nuxt-link to="/About">关于我们</nuxt-link></el-menu-item>
+        <el-menu-item index="login"><span>注册</span><span>登录</span></el-menu-item>
       </el-menu>
     </div>
+    <img v-if="url.name!=='index'" :src="telephone" class="telephone" style="height:32px;float:right;margin:17px 30px 17px 0;position:absolute;top:0;right:0;" alt="telephont">
   </div>
 </template>
 
 <script>
 import logo from '@/assets/logo.png'
+import telephone from '@/assets/telephone.png'
 export default {
   name: 'NavBar',
 
@@ -47,13 +37,15 @@ export default {
     },
     background: {
       type: String,
-      default: '#2d2e30'
+      default: 'linear-gradient(#494949, #3d3d3d)'
     }
   },
   data() {
     return {
       logo: logo,
-      activeNav: '1'
+      telephone: telephone,
+      url: this.$route,
+      activeNav: 'index'
     }
   },
 
@@ -66,8 +58,7 @@ export default {
 
   methods: {
     selectActiveNav() {
-      console.log(this.$route)
-      this.activeNav = this.$route.name
+      this.activeNav = this.$route.name.toLocaleLowerCase()
     }
   }
 }
@@ -75,26 +66,18 @@ export default {
 
 <style lang='scss' scoped>
 .navbar{
-  height: 70px;
-  line-height: 70px;
-  text-align: center;
-  div{
-    display: inline-flex;
-    vertical-align: middle;
-    .logo{
-      width: 108px;
-      height: 32px;
-      border: none;
-      margin-right: 50px;
-    }
-    .login{
+  height: 66px;
+  line-height: 66px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .login{
       float: right;
       i{
         margin: 0 10px;
         border: 1px solid #fff;
       }
     }
-  }
 }
 .el-menu{
   width: 100%;
@@ -102,17 +85,35 @@ export default {
   border: none;
   .el-menu-item{
     padding: 0;
-    height: 30px;
-    line-height: 30px;
+    height: 66px;
+    line-height: 66px;
     border: none;
     font-size: 16px;
     a{
-      // display: inline-block;
       padding: 0 30px;
+      background: none;
+    }
+    &:hover{
+      a{
+        color: #000;
+      }
+    }
+    &:first-child:hover,&:last-child:hover{
+      background: none;
+    }
+    &:last-child.is-active{
+      color: #fff !important;
+      background: none;
+    }
+    &:last-child{
+      float: right;
+      span{
+        padding: 0 20px;
+        &:first-child{
+          border-right: 1px solid rgba(255,255,255,.3);
+        }
+      }
     }
   }
 }
-</style>
-<style lang="scss">
-
 </style>
