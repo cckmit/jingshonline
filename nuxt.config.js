@@ -48,7 +48,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ['element-ui/lib/theme-chalk/index.css', '~/assets/_variables.scss'],
+  css: ['element-ui/lib/theme-chalk/index.css', '~/assets/_variables.scss', '~/assets/public.scss'],
 
   /**
    * plugins config 插件配置
