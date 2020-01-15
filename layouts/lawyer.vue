@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar/>
-    <img v-if="url.name==='Lawyer'" :src="banner" alt="" style="border:none;width:100%;max-width:fit-content">
+    <div v-if="url.name.toLocaleLowerCase()==='lawyer'" :style="{background:`url(${banner}) center no-repeat`}" style="height:200px;"/>
     <div class="content">
       <nuxt/>
     </div>

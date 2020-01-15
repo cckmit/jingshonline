@@ -18,6 +18,9 @@ body{
 a{
   text-decoration: none;
 }
+ul,ol{
+  padding: 0;
+}
 ul li,ol li{
   list-style: none;
 }
@@ -37,6 +40,7 @@ ul li,ol li{
 .content{
   display:flex;
   justify-content: center;
+  background: #f2f2f2;
   >div{
   width: 1380px;
   }

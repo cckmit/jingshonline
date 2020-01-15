@@ -12,7 +12,7 @@
         </el-menu-item>
         <el-menu-item index="index"><nuxt-link to="/">首页</nuxt-link></el-menu-item>
         <el-menu-item index="lawyer"><nuxt-link to="/Lawyer">找律师</nuxt-link></el-menu-item>
-        <el-menu-item index="auth"><nuxt-link to="/Auth">律师认证</nuxt-link></el-menu-item>
+        <el-menu-item index="case"><nuxt-link to="/Case">查案例</nuxt-link></el-menu-item>
         <el-menu-item index="help"><nuxt-link to="/Help">帮助中心</nuxt-link></el-menu-item>
         <el-menu-item index="about"><nuxt-link to="/About">关于我们</nuxt-link></el-menu-item>
         <el-menu-item index="login"><span>注册</span><span>登录</span></el-menu-item>
