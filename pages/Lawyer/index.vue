@@ -107,7 +107,9 @@
             <li>
               <span>年限</span>
               <el-input size="small" clearable />&nbsp;&nbsp;--&nbsp;
+              <!-- <text>&nbsp;--&nbsp;</text> -->
               <el-input size="small" clearable />&nbsp;&nbsp;年
+              <!-- <text>&nbsp;&nbsp;年</text> -->
             </li>
           </ul>
           <p>
@@ -176,7 +178,69 @@
                 </div>
               </div>
             </div>
-          </nuxt-link>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <img src="../../assets/lawyer/lawyer_auth.png" alt="">
+            <div class="lawyerlist_lf">
+              <img src="../../assets/lawyer/avatar.png" alt="">
+              <span>部门主任</span>
+            </div>
+            <div class="lawyerlist_rt">
+              <b><span>刘志明</span>律师</b>
+              <div>
+                <div>
+                  <p>
+                    <img src="../../assets/lawyer/arrow.png" alt="">
+                    <b>基础信息&nbsp;●&nbsp;</b>
+                    <span>INFORMATION</span>
+                  </p>
+                  <ul>
+                    <li>
+                      <span>执业年限</span>
+                      <b>8年</b>
+                    </li>
+                    <li>
+                      <span>案例总数</span>
+                      <b>325例</b>
+                    </li>
+                    <li>
+                      <span>所在律所</span>
+                      <b>北京市京师律师事务所</b>
+                    </li>
+                    <li>
+                      <span>所在地址</span>
+                      <b>北京市-朝阳区</b>
+                    </li>
+                  </ul>
+                </div>
+                <div class="lawyerlist_mid">
+                  <p>
+                    <img src="../../assets/lawyer/arrow.png" alt="">
+                    <b>专业领域&nbsp;●&nbsp;</b>
+                    <span>EXPERTISE</span>
+                  </p>
+                  <ul>
+                    <li>诉讼仲裁</li>
+                    <li>公司法律服务</li>
+                    <li>诉讼仲裁</li>
+                    <li>公司法律服务</li>
+                  </ul>
+                </div>
+                <div class="lawyerlist_action">
+                  <span>更新时间：</span>
+                  <b>2019-07-15</b>
+                  <p>浏览：<span>222</span></p>
+                  <p>关注：<span>333</span></p>
+                  <div>
+                    <div><img src="../../assets/lawyer/collection.png" alt="">收藏</div>
+                    <div><img src="../../assets/lawyer/share.png" alt="">分享</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
         </li>
       </ul>
       <Pagination v-show="totalCount>0" :total="totalCount" :page="lawyerSearch.pageIndex" :limit="lawyerSearch.pageCount" @pagination="handlePageChange" />
