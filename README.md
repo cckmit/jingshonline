@@ -19,6 +19,8 @@ $ npm start
 $ npm run generate
 ```
 
+Nginx 部署 https://nuxtjs.org/faq/nginx-proxy（路由启用了history模式）
+
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
 ![image](https://code.jingshonline.net/jingshonline/frontend/jingshonline-web/raw/master/code.jpg)
