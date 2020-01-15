@@ -17,7 +17,7 @@ export const Get = () => {
  */
 export const GetData = query => {
   return request({
-    url: `${setting.apiPrefix}/lawyer/query`,
+    url: `${setting.apiPrefix}/customer/lawyer/query`,
     method: 'post',
     data: {
       query: query

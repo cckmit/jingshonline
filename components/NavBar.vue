@@ -15,7 +15,8 @@
         <el-menu-item index="case"><nuxt-link to="/Case">查案例</nuxt-link></el-menu-item>
         <el-menu-item index="help"><nuxt-link to="/Help">帮助中心</nuxt-link></el-menu-item>
         <el-menu-item index="about"><nuxt-link to="/About">关于我们</nuxt-link></el-menu-item>
-        <el-menu-item index="login"><span>注册</span><span>登录</span></el-menu-item>
+        <el-menu-item v-if="hasLogin" index="user"><nuxt-link to="/UserCenter"><el-image :src="user.avatar"/><span>{{ user.userName || "test" }}</span></nuxt-link></el-menu-item>
+        <el-menu-item v-else index="login"><span>注册</span><span>登录</span></el-menu-item>
       </el-menu>
     </div>
     <img v-if="url.name!=='index'" :src="telephone" class="telephone" style="height:32px;float:right;margin:17px 30px 17px 0;position:absolute;top:0;right:0;" alt="telephont">
@@ -45,7 +46,9 @@ export default {
       logo: logo,
       telephone: telephone,
       url: this.$route,
-      activeNav: 'index'
+      activeNav: 'index',
+      hasLogin: true,
+      user: { }
     }
   },
 
@@ -113,7 +116,22 @@ export default {
           border-right: 1px solid rgba(255,255,255,.3);
         }
       }
+      .el-image{
+        width:50px;
+        height: 50px;
+      }
+    }
+    &:last-child:hover{
+      a{
+        color: #fff;
+      }
     }
   }
 }
+@media (max-width: 1760px) {
+  .telephone{
+    display: none;
+  }
+}
+
 </style>
