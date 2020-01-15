@@ -2,7 +2,6 @@
   <div>
     <el-upload
       ref="aliyunoss"
-      class="upload-demo"
       :class="optionData.type==='custom'?'custom':''"
       :action="optionData.uploadUrl"
       :headers="optionData.uploadHeader"
@@ -18,6 +17,7 @@
       :on-exceed="allowLimit"
       :before-upload="beforeUpload"
       :on-remove="removeFile"
+      class="upload-demo"
     >
       <i v-if="optionData.drag" class="el-icon-upload" />
       <div v-if="optionData.drag" class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
