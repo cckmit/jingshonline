@@ -23,7 +23,7 @@ import Footer from '@/components/Footer'
 import banner from '@/assets/banner_case.png'
 import icon from '@/assets/case_search.png'
 export default {
-  name: 'IndexLayout',
+  name: 'CaseLayout',
 
   components: {
     NavBar,
@@ -33,7 +33,19 @@ export default {
     return {
       banner: banner,
       icon: icon,
+      searchText: '',
       url: this.$route
+    }
+  },
+  watch: {
+    '$route'(to) {
+      console.log(to)
+      this.url = to
+    }
+  },
+  methods: {
+    search() {
+      console.log(this.searchText)
     }
   }
 }
