@@ -15,7 +15,24 @@ export const getTree = (query) => {
     }
   })
 }
-
+export const getsuitsTree = query => {
+  return request({
+    url: `${setting.apiPrefix}/practicearea/tree/1`,
+    method: 'get',
+    params: {
+      input: query
+    }
+  })
+}
+export const getNosuitsTree = query => {
+  return request({
+    url: `${setting.apiPrefix}/practicearea/tree/2`,
+    method: 'get',
+    params: {
+      input: query
+    }
+  })
+}
 /**
  * 根据传入type 值获取对应领域 tree 结构数据
  * @param {number} type
