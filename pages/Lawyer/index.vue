@@ -178,7 +178,7 @@
                 </div>
               </div>
             </div>
-          </a>
+          </nuxt-link>
         </li>
         <li>
           <a href="">
