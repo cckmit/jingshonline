@@ -176,7 +176,7 @@ export default {
     }
   },
   mounted() {
-    // this.getLawyerCaseList(this.getLawyerCaseList)
+    this.getLawyerCaseList(this.getLawyerCaseList)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList']),

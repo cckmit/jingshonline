@@ -147,6 +147,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import axios from 'axios'
+import setting from '@/plugins/setting'
 export default {
   name: 'OftenCourt',
   components: {
@@ -157,13 +159,25 @@ export default {
   },
   data() {
     return {
+      OftenCourtData: [],
       lawyerId: 0
     }
   },
   watch: {},
+  async asyncData({ params }) {
+    const [OftenCourtData] = await Promise.all([
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`, { 'Content-Type': 'application/json' })
+    ])
+    return {
+      OftenCourtData
+    }
+  },
+  mounted() {
+    console.log(this.OftenCourtData)
+  },
   methods: {
     ...mapActions('lawyerinfo', ['LawyerOftenCourt']),
-    LawyerOftenCourt(id) {
+    getyerOftenCourt(id) {
       this.LawyerOftenCourt(id).then(res => {
         if (res.isSucceed) {
           console.log('律师常去法院')
