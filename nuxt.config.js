@@ -56,7 +56,6 @@ module.exports = {
   plugins: [
     { src: '~/plugins/element-ui', ssr: true },
     { src: '~/plugins/cookie', ssr: true },
-    { src: '~/plugins/route', ssr: true },
     { src: '~/plugins/custom', ssr: true },
     { src: '~/plugins/el-tree-select', ssr: false },
     { src: '~plugins/echarts', ssr: false }
