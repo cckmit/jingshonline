@@ -132,6 +132,9 @@ export default {
       font-size: 14px;
       color: #999;
     }
+    &:last-child{
+      border-right: none;
+    }
   }
 }
 .center{
