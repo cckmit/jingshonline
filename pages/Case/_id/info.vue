@@ -1,6 +1,11 @@
 <template>
   <div style="width:1380px;margin:auto;min-height:1000px;margin-top:30px">
     <el-row class="case-id">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+        <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path:'/case'}" >查找案例</el-breadcrumb-item>
+        <el-breadcrumb-item >案例详情</el-breadcrumb-item>
+      </el-breadcrumb>
       <!-- 左边 -->
       <el-col :span="17" class="case-content case-border">
         <!-- 概要信息 -->
@@ -11,7 +16,7 @@
         <!-- 案件信息 -->
         <div class="case-content-desc">
           <el-row>
-            <el-form ref="form" :model="form" label-width="100px">
+            <el-form ref="form" label-width="100px">
               <el-col :span="11">
                 <el-form-item label="主办律师:"><p>朱晓彬</p></el-form-item>
                 <el-form-item label="审判机关:"><p>重庆市江北区人民法院</p></el-form-item>
@@ -29,7 +34,7 @@
         </div>
         <!-- 其他信息 -->
         <div class="case-content-main">
-          <el-form ref="form" :model="form" label-width="0">
+          <el-form ref="form" label-width="0">
             <el-form-item>
               <p class="case-title"><i class="titleIcon"/> 当事人信息</p>
               <p>
@@ -265,7 +270,7 @@
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
           <div >
-            <el-form ref="form" :model="form" label-width="0">
+            <el-form ref="form" label-width="0">
 
               <el-form-item>
                 <div class="case-aside-li">
@@ -305,7 +310,7 @@
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
           <div class="case-aside-desc">
-            <el-form ref="form" :model="form" label-width="0">
+            <el-form ref="form" label-width="0">
               <el-form-item class="case-font-hover">1 、 叶#胜等人不服“某甲县政府"行政强制拆除（房屋）财产纠纷关于行政诉讼案 </el-form-item>
               <el-form-item> 2 、 遵义市红花岗区某甲局与遵义市某丙工程有限责任公司关于土地行政管理行政登记案 </el-form-item>
               <el-form-item> 3 、 遵义市红花岗区某甲局与遵义市某乙局及遵义市某丙工程有限公司，遵义某丁实业有限公司关于行政诉讼案</el-form-item>
@@ -369,7 +374,7 @@ export default {
    }
    //边框
    .case-border{
-     border: solid 1px #d9d9d9;
+     border: solid 1px rgba(229, 229, 229, 0.3);
    }
   //  已选择
 .case-font-hover{
@@ -407,7 +412,7 @@ margin-bottom:0;
     display: block;
     height: 50px;
     line-height: 50px;
-    border-bottom:  solid 1px #d9d9d9;
+    border-bottom:  solid 1px rgba(217, 217, 217, 0.3);
     padding: 0 20px;
   }
   .case-content-desc{
@@ -416,7 +421,7 @@ margin-bottom:0;
 	color: #999999;
   .el-row{
     padding-bottom: 20px;
- border-bottom:1px dotted #d9d9d9;
+ border-bottom:1px dotted rgba(217, 217, 217, 0.3);
   }
 
   }
@@ -441,7 +446,7 @@ margin-bottom:0;
 	height: 49px;
   line-height: 49px;
   padding-left: 20px;
-  border-bottom: 1px dotted #d9d9d9;
+  border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
 }
 .case-aside-desc{
   padding: 15px;
@@ -569,7 +574,7 @@ height: 120px;
 .el-form-item{
   margin-bottom: 0;
   padding: 10px;
-   border-bottom:  solid 1px #d9d9d9;
+   border-bottom:  solid 1px rgba(217, 217, 217, 0.3);
 }
 }
 }

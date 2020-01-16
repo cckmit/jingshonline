@@ -1,13 +1,17 @@
 <template>
   <div style="width:1380px;margin:auto;min-height:1000px">
     <el-row class="case">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+        <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
+        <el-breadcrumb-item >查找案例</el-breadcrumb-item>
+      </el-breadcrumb>
       <el-col :span="6" class="case-aside">
         <!-- 具体案由 -->
         <div class="case-cause case-border">
           <div class="case-cause-title case-title"> <i class="el-icon-remove"/> 具体案由</div>
           <div class="case-cause-main case-main">
             <el-tree
-              :data="data"
+              :data="caseData"
               :default-expanded-keys="[2]"
               :props="defaultProps"
               node-key="id"/>
@@ -18,7 +22,7 @@
           <div class="case-court-title case-title"><i class="el-icon-circle-plus"/>法院等级</div>
           <div class="case-court-main case-main">
             <el-tree
-              :data="data"
+              :data="caseData"
               :default-expanded-keys="[1]"
               :props="defaultProps"
               node-key="id"/>
@@ -59,7 +63,7 @@
                 <span>（2015）渝二中法行终字第00085号</span>
               </div>
 
-              <img :src="classic" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+              <img src="@/assets/case/case-classic.png" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
             <li class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="{path:'/Case/:id/info',query:{id:123}}">
@@ -81,7 +85,7 @@
                 <span>（2015）渝二中法行终字第00085号</span>
               </div>
 
-              <img :src="classic" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+              <img src="@/assets/case/case-classic.png" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
             <li class="case-border case-content-hover">
               <nuxt-link :to="{path:'/Case/:id/info',query:{id:123}}">
@@ -106,23 +110,19 @@
             </li>
           </ul>
           <div style="margin 0 auto; margin-top:30px">
-            <!-- <el-pagination
-              :total="1000"
-              background
-              layout="prev, pager, next"/>
-          </div> -->
+            <Pagination v-show="totalCount>0" :total="totalCount" :page="caseSearch.pageIndex" :limit="caseSearch.pageCount" @pagination="handlePageChange" />
           </div>
-      </div></el-col>
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-
+import Pagination from '../../components/Pagination/index'
 import { mapActions } from 'vuex'
-// import setting from '$/plugins/setting'
-import axios from 'axios'
-import classic from '@/assets/case/case-classic.png'
+// import setting from '@/plugins/setting'
+// import axios from 'axios'
 export default {
   layout: 'case',
   head() {
@@ -134,93 +134,104 @@ export default {
     }
   },
   components: {
-
+    Pagination
   },
   data() {
     return {
-      classic: classic,
-      data: [{
-        id: 1,
-        label: '民事案由',
-        children: [{
-          id: 4,
+      totalCount: 0,
+      caseData: [
+        {
+          id: 1,
           label: '民事案由',
           children: [{
-            id: 13,
-            label: '民事案由'
-          }, {
-            id: 14,
-            label: '民事案由'
+            id: 4,
+            label: '民事案由',
+            children: [{
+              id: 13,
+              label: '民事案由'
+            }, {
+              id: 14,
+              label: '民事案由'
+            }]
           }]
-        }]
-      }, {
-        id: 2,
-        label: '刑事案由',
-        children: [{
-          id: 5,
-          label: '公安行政管理',
+        },
+        {
+          id: 2,
+          label: '刑事案由',
           children: [{
-            id: 13,
-            label: '民事案由'
-          }, {
-            id: 14,
-            label: '民事案由'
+            id: 5,
+            label: '公安行政管理',
+            children: [{
+              id: 13,
+              label: '民事案由'
+            }, {
+              id: 14,
+              label: '民事案由'
+            }]
+          },
+          {
+            id: 6,
+            label: '计划生育行政管理（计划生育）'
+          },
+          {
+            id: 7,
+            label: '质量监督检验检疫行政管理'
+          },
+          {
+            id: 8,
+            label: '农业行政管理（农业）'
+          },
+          {
+            id: 9,
+            label: '交通运输行政管理（交通）'
+          },
+          {
+            id: 10,
+            label: '专利行政管理（专利）'
+          },
+          {
+            id: 11,
+            label: '财政行政管理（财政）'
+          },
+          {
+            id: 12,
+            label: '城市综合执法'
           }]
-        }, {
-          id: 6,
-          label: '计划生育行政管理（计划生育）'
-        }, {
-          id: 7,
-          label: '质量监督检验检疫行政管理'
-        }, {
-          id: 8,
-          label: '农业行政管理（农业）'
-        }, {
-          id: 9,
-          label: '交通运输行政管理（交通）'
-        }, {
-          id: 10,
-          label: '专利行政管理（专利）'
-        }, {
-          id: 11,
-          label: '财政行政管理（财政）'
-        }, {
-          id: 12,
-          label: '城市综合执法'
-        }]
-      }],
+        }
+      ],
       defaultProps: {
         children: 'children',
         label: 'label'
+      },
+      caseSearch: {
+        pageCount: 10,
+        pageIndex: 1
       }
-
     }
   },
-  asyncData() {
-    return axios.get('https://api.myjson.com/bins/1ctwlm')
-      .then((res) => {
-        console.log(res)
-        return { info: res.data }
-      })
-  },
-  computed: {
-  },
-  created() {
-
-  },
+  // async asyncData({ params }) {
+  //   const [caseData] = await Promise.all([
+  //     axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`, { 'Content-Type': 'application/json' })
+  //   ])
+  //   return {
+  //     lawyerData: caseData.data.items
+  //   }
+  // },
   mounted() {
-    // this.get()
+    // this.getCase()
   },
   methods: {
-    ...mapActions('region', ['getRegionTreeData']),
-    get() {
-      this.getRegionTreeData().then(res => {
-        this.regionData = res
+    ...mapActions('case', ['getCaseTreeData']),
+    getCase() {
+      this.getCaseTreeData().then(res => {
+        this.caseData = res
         this.$refs.industrySelect.treeDataUpdateFun(res)
       })
     },
-    handleNodeClick(data) {
-      console.log(data)
+    // 分页切换
+    handlePageChange(val) {
+      this.caseSearch.pageIndex = val.page
+      this.caseSearch.pageCount = val.limit
     }
   }
 }
@@ -238,7 +249,7 @@ i{
 .case-title{
    height: 65px;
    line-height: 65px;
-   border-bottom:1px dotted #d9d9d9;
+   border-bottom:1px dotted rgba(217, 217, 217, 0.3);
    font-size: 20px;
    color: #333333;
   }
@@ -247,15 +258,11 @@ i{
   .el-tree-node{
     margin-bottom: 10px;
   }
-  .el-tree-node__label{
-    font-size: 18px ;
-    color: #666666;
-  }
 }
 
    //边框
 .case-border{
-    border: solid 1px #d9d9d9;
+    border: solid 1px rgba(229, 229, 229, 0.3);
 }
   //  已选择
 .case-font-hover{
@@ -274,24 +281,45 @@ border-bottom: 4px solid #f68020
 .el-icon-star-off,.el-icon-time,.el-icon-caret-right{
   margin-right: 5px;
 }
+// 树
 .case-aside{
+.el-tree-node__label{
+  font-size: 18px;
+}
+.el-tree-node__content{
+margin-top: 10px;
+}
+.el-tree-node__children{
+  .el-tree-node__label{
+  font-size: 16px;
 
+}
+.el-tree-node__children{
+  .el-tree-node__content{
+
+  .el-tree-node__label{
+  font-size: 14px ;
+}
+}
+}
+
+}
   // 具体案由
   .case-cause{
     background-color: #fff;
   padding:0 20px;
 	min-height: 200px;
   .case-cause-main{
-    padding: 24px 0;
+    padding: 20px 0;
   }
   }
   // 法院等级
   .case-court{
     background-color: #fff;
-  padding:20px;
+  padding:0 20px;
   margin-top:20px;
   .case-court-main{
-    padding: 24px 0;
+    padding: 20px 0;
   }
   }
 }
@@ -331,7 +359,7 @@ border-bottom: 4px solid #f68020
       width:auto;
       margin:0 auto;
       margin-top: 16px;
-	border-bottom: 4px solid #d9d9d9;
+	border-bottom: 4px solid rgba(217, 217, 217, 0.3);
   background-color: #fff;
     .case-content-top{
       padding: 30px;
