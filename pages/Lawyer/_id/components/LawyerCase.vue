@@ -23,9 +23,9 @@
       </div>
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="practiceData.activePractice" placeholder="请选择">
           <el-option
-            v-for="item in options"
+            v-for="item in practiceData.practiceOption"
             :key="item.value"
             :label="item.label"
             :value="item.value"/>
@@ -40,13 +40,13 @@
     </div>
     <div class="lawyer-case-list">
       <div class="lawyer-case-list-item">
-        <nuxt-link to="/case/5/info">
+        <nuxt-link to="/case/10/info">
           <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
           <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
           <div class="case-item-bottom">
             <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-            <span class="collect"><i/>收藏</span>
-            <span class="share"><i/>分享</span>
+            <span class="collect" @click="userCollect"><i/>收藏</span>
+            <span class="share" @click="userShare"><i/>分享</span>
           </div>
           <i class="classic"/>
         </nuxt-link>
@@ -119,12 +119,24 @@ export default {
   },
   data() {
     return {
+      practiceData: {
+        practiceOption: [
+          {
+            label: '诉讼领域',
+            value: 0
+          }, {
+            label: '非诉讼领域',
+            value: 1
+          }
+        ],
+        activePractice: ''
+      },
       options: [{
-        value: '选项1',
-        label: '黄金糕'
+        label: '诉讼领域',
+        value: 0
       }, {
-        value: '选项2',
-        label: '双皮奶'
+        label: '非诉讼领域',
+        value: 1
       }, {
         value: '选项3',
         label: '蚵仔煎'
@@ -145,21 +157,22 @@ export default {
         pageCount: 10,
         pageIndex: 1
       },
+      // 应为案例length
       totalCount: 10,
       // 获取认证案例所需参数 必传
       caseListParam: {
-        practiceAreaId: 0,
-        nonePracticeAreaId: 0,
-        searchKey: 'string',
-        courtLevel: 0,
-        courtReginId: 0,
-        courtId: 0,
-        caseReasonId: 0,
-        lawyerId: 0,
-        sorting: 'string',
-        sortType: 0,
-        pageCount: 0,
-        pageIndex: 0
+        practiceAreaId: 0, // 诉讼领域Id number 【诉讼领域,非诉讼领域】
+        nonePracticeAreaId: 0, // 非诉讼领域Id number 【诉讼领域,非诉讼领域】
+        searchKey: '', // 搜索关键字: 支持(当事人、律师、专业领域、案由、法院、律所、裁判文书关键字) string
+        courtLevel: 0, // 法院等级 number
+        courtReginId: 0, // 法院所属区域 nmuber || arr
+        courtId: 0, // 法院Id number
+        caseReasonId: 0, // 案由Id number
+        lawyerId: this.$route.params.id, // 律师Id number
+        sorting: 'string', // 排序
+        sortType: 0, // 排序类型
+        pageCount: 1, // 页目 number
+        pageIndex: 1// 页码 number
       }
     }
   },
@@ -175,8 +188,8 @@ export default {
       }
     }
   },
-  mounted() {
-    this.getLawyerCaseList(this.getLawyerCaseList)
+  created() {
+    // this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList']),
@@ -202,10 +215,15 @@ export default {
     },
     // 翻页操作
     handlePageChange(val) {
-      this.lawyerSearch.pageIndex = val.page
-      this.lawyerSearch.pageCount = val.limit
       this.caseListParam.pageIndex = val.page
       this.caseListParam.pageCount = val.limit
+    },
+    // 用户收藏
+    userCollect() {
+    },
+    // 用户分享
+    userShare() {
+
     }
   }
 }
@@ -243,13 +261,22 @@ export default {
       }
       .el-icon-arrow-up:before {
         position: relative;
-        top: -4px;
+        top: -6px;
       }
       .el-input__icon {
         color: #fff;
         background: #cccccc;
         position: absolute;
-        right: -4px;
+        right: -5px;
+        top: 0.5px;
+        transition: none;
+        width:30px;
+        height:30px;
+        background:rgba(204,204,204,1);
+        border:1px solid rgba(230, 236, 240, 0.8);
+      }
+      .is-reverse {
+        background: #f68020;
       }
     }
   }
