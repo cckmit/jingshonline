@@ -143,4 +143,56 @@ export const adminCaseJudgmentnumber = judgmentnumber => {
   })
 }
 
+/**
+ * 获取案例tree结构数据
+ * @param {object} query
+ */
+export const getCaseTree = (query) => {
+  return request({
+    url: `${setting.apiPrefix}/casereason/tree`,
+    method: 'get',
+    params: {
+      input: query
+    }
+  })
+}
+/**
+ * 获取地区tree结构数据
+ * @param {object} query
+ */
+export const getRegionTree = (query) => {
+  return request({
+    url: `${setting.apiPrefix}/region/tree`,
+    method: 'get',
+    params: {
+      input: query
+    }
+  })
+}
+/**
+ * 获取法院等级tree结构数据
+ * @param {object} query
+ */
+export const getCourtLevelTree = (query) => {
+  return request({
+    url: `${setting.apiPrefix}/practicearea/tree`,
+    method: 'get',
+    params: {
+      input: query
+    }
+  })
+}
+/**
+ * 获取案件列表
+ * @param {object} query
+ */
+export const getCaseData = query => {
+  return request({
+    url: `${setting.apiPrefix}/admin/case/query`,
+    method: 'post',
+    data: {
+      query: query
+    }
+  })
+}
 export default { adminCreate, adminUpdate, adminDelete, adminGetInfo, adminGetInfoForLook, adminGetData, adminRecycleData, adminRecover, adminReviewQuery, adminReview, adminCaseJudgmentnumber }

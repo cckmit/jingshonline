@@ -359,81 +359,86 @@ export default {
 <style lang='scss'>
 //本页面公共样式
 .case-id{
-  padding:60px 0;
   font-family: MicrosoftYaHei;
   font-size: 14px;
 
 // 左边标题
-   .case-title{
-	font-size: 16px;
-	color: #333333;
+.case-title {
+    font-size: 16px;
+    color: #333333;
+}
 
-   }
-   img{
-     width: 100%;
-   }
+img {
+    width: 100%;
+}
    //边框
-   .case-border{
-     border: solid 1px rgba(229, 229, 229, 0.3);
-   }
+.case-border {
+    border: solid 1px rgba(229, 229, 229, 0.3);
+}
   //  已选择
-.case-font-hover{
-  color: #f68020 !important;
+.case-font-hover {
+    color: #f68020 !important;
 }
-.case-content-hover{
-border-bottom: 4px solid #f68020
+
+.case-content-hover {
+    border-bottom: 4px solid #f68020
 }
-ul li{
-   display: block;
-    list-style-type:none;
-    width:auto;
-    margin:0 auto;
+ul li {
+    display: block;
+    list-style-type: none;
+    width: auto;
+    margin: 0 auto;
 }
 // 标题图标
 .titleIcon {
-display: inline-block;
-	width: 4px;
-	height: 12px;
-	background-color: #f68020;
-	border-radius: 2px;
-  margin-right: 5px;
+    display: inline-block;
+    width: 4px;
+    height: 12px;
+    background-color: #f68020;
+    border-radius: 2px;
+    margin-right: 5px;
 }
-.case-content{
-  // 概要信息
+.case-content {
+    // 概要信息
   .el-form-item{
-margin-bottom:0;
-	line-height: 30px;
-  }
-  .el-form-item__label{
+margin-bottom: 0;
+    line-height: 30px;
+}
+
+.el-form-item__label {
     font-size: 14px;
-	color: #999999;
-  }
-  .case-content-title{
+    color: #999999;
+}
+
+.case-content-title {
     display: block;
     height: 50px;
     line-height: 50px;
-    border-bottom:  solid 1px rgba(217, 217, 217, 0.3);
+    border-bottom: solid 1px rgba(217, 217, 217, 0.3);
     padding: 0 20px;
-  }
-  .case-content-desc{
+}
+
+.case-content-desc {
     padding: 20px;
-	line-height: 30px;
-	color: #999999;
-  .el-row{
+    line-height: 30px;
+    color: #999999;
+    .el-row{
     padding-bottom: 20px;
- border-bottom:1px dotted rgba(217, 217, 217, 0.3);
-  }
+    border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
+}
 
   }
-  .case-content-main{
-     padding: 0 20px 20px 20px;
+
+.case-content-main {
+    padding: 0 20px 20px 20px;
     .el-form-item__content{
       margin: 10px 0;
-    }
-    p{
-      line-height: 36px;
-      color: #333333;
-    }
+}
+
+p {
+    line-height: 36px;
+    color: #333333;
+}
   }
 }
 // 右边
@@ -456,73 +461,80 @@ margin-bottom:0;
 }
 
 // 相关案例
-.case-aside-xgal{
-  .el-form-item{
+.case-aside-xgal {
+    .el-form-item{
     margin-bottom: 5px;
-  }
-.el-form-item__content{
-  line-height: 26px;
+}
+
+.el-form-item__content {
+    line-height: 26px;
 }
 }
 // 办理律师
-.case-aside-blls{
+.case-aside-blls {
     .el-collapse-item__header{
 height: 120px;
-  }
-  .case-aside-li{
-  width: 100%;
-  height: 102px;
-  padding: 5px 0px 5px 10px ;
-  .case-aside-p p{
-    color: #333333;
-  }
-  .case-aside-p p:nth-child(1){
-    font-size: 16px;
-  }
-  .case-aside-imgBox{
-.case-aside-name{
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 76px;
-	height: 22px;
-  line-height: 22px;
-  text-align: center;
-	background-color: #000000;
-	opacity: 0.6;
-	font-size: 12px;
-	color: #ffffff;
 }
-  .case-aside-img{
+
+.case-aside-li {
+    width: 100%;
+    height: 102px;
+    padding: 5px 0px 5px 10px;
+    .case-aside-p p{
+    color: #333333;
+}
+
+.case-aside-p p:nth-child(1) {
+    font-size: 16px;
+}
+
+.case-aside-imgBox {
+    .case-aside-name{
+  position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 76px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background-color: #000000;
+    opacity: 0.6;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.case-aside-img {
     position: relative;
-  width: 76px;
-	height: 76px;
-  background-color: #dbdbdb;
-  margin: 8px 15px;
-  }
+    width: 76px;
+    height: 76px;
+    background-color: #dbdbdb;
+    margin: 8px 15px;
+}
 }
  }
-   .case-aside-info{
-     margin-bottom: 20px;
-  p {
+
+.case-aside-info {
+    margin-bottom: 20px;
+    p {
     margin-left: 15px;
     color: #999999;
     line-height: 30px;
     span{
       color: #333333;
-  }
+}
   }
 }
-.case-aside-photo{
-   margin: auto;
-   text-align: center;
- margin-bottom: 20px;
- margin: 30px 70px;
-.case-aside-img{
+
+.case-aside-photo {
+    margin: auto;
+    text-align: center;
+    margin-bottom: 20px;
+    margin: 30px 70px;
+    .case-aside-img{
   margin-bottom: 20px;
-  width: 202px;
-	height: 202px;
-  background-color: #e9e9e9;
+    width: 202px;
+    height: 202px;
+    background-color: #e9e9e9;
 }
 }
 }
@@ -533,48 +545,56 @@ height: 120px;
      display: none;
    }
  }
-
  }
- // 案件认领
-.case-aside-ajrl{
+// 案件认领
+.case-aside-ajrl
+{
     .case-aside-imgBox{
 .case-aside-claim{
   position: absolute;
-  left: 0;
-  bottom: 25px;
-  width: 76px;
-	height: 22px;
-  line-height: 22px;
-  text-align: center;
-	font-size: 12px;
-	color: #333333;
-}
-  .case-aside-img{
-  position: relative;
-  width: 76px;
-	height: 76px;
-  background-color: #dbdbdb;
-  margin: 8px 15px;
-  }
-}
-.case-aside-li{
-  opacity: 0.9;
-  background-color: #e5e5e5;
-  height: 102px;
-  padding: 5px 0px 5px 10px ;
-  .case-aside-p p{
+    left: 0;
+    bottom: 25px;
+    width: 76px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    font-size: 12px;
     color: #333333;
-  }
-  .case-aside-p p:nth-child(1){
+}
+
+.case-aside-img
+{
+    position: relative;
+    width: 76px;
+    height: 76px;
+    background-color: #dbdbdb;
+    margin: 8px 15px;
+}
+}
+
+.case-aside-li
+{
+    opacity: 0.9;
+    background-color: #e5e5e5;
+    height: 102px;
+    padding: 5px 0px 5px 10px;
+    .case-aside-p p{
+    color: #333333;
+}
+
+.case-aside-p p:nth-child(1)
+{
     font-size: 16px;
-    margin-top:10px;
-  }
+    margin-top: 10px;
+}
 
 }
-.el-form-item{
-  margin-bottom: 0;
-  padding: 10px;
-   border-bottom:  solid 1px rgba(217, 217, 217, 0.3);
+
+.el-form-item
+{
+    margin-bottom: 0;
+    padding: 10px;
+    border-bottom: solid 1px rgba(217, 217, 217, 0.3);
 }
 }
 }

@@ -224,6 +224,63 @@ const actions = {
         reject(error)
       })
     })
+  },
+
+  /**
+   * 获取案例树列表
+   * @param {commit} commit
+   * @param {object} query
+   */
+  getCaseTreeData({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getCaseTree(query).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 获取地区树列表
+   * @param {commit} commit
+   * @param {object} query
+   */
+  getRegionTreeData({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getRegionTree(query).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 获取法院等级树列表
+   * @param {commit} commit
+   * @param {object} query
+   */
+  getCourtLevelTreeData({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getCourtLevelTree(query).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 获取案件列表
+   * @param {commit} commit
+   * @param {object} query
+   */
+  getCaseList({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getCaseData(query).then(response => {
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }
 export default {
