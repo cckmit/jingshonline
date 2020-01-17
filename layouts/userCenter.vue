@@ -11,7 +11,7 @@
 <script>
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
-import banner from '@/assets/banner_lawyer.png'
+import banner from '@/assets/lawyer/lawyer_banner.png'
 export default {
   name: 'UserCenterLayout',
 

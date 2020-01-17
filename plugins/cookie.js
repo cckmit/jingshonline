@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Cookies from 'js-cookie'
 import setting from './setting'
 
@@ -37,3 +38,5 @@ const cookies = {
 }
 
 export default cookies
+
+Vue.prototype.$cookie = cookies // 引入组件（将echarts注册为全局）
