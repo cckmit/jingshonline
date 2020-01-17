@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick" >
       <el-tab-pane name="first">
         <span slot="label">律师简历<i>|</i></span>
-        <lawyer-resume/>
+        <lawyer-resume :resume-data="resumeData"/>
       </el-tab-pane>
       <el-tab-pane name="second">
         <span slot="label">认证案例<i>|</i></span>
@@ -39,7 +39,18 @@ export default {
     OftenCourt
   },
   props: {
-
+    resumeData: {
+      type: Object,
+      default: function() {
+        return {
+          workExperiences: [],
+          socialPositions: [],
+          educations: [],
+          certificates: [],
+          academics: []
+        }
+      }
+    }
   },
   data() {
     return {
@@ -50,6 +61,9 @@ export default {
 
   },
   watch: {
+
+  },
+  mounted() {
 
   },
   methods: {

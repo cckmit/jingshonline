@@ -146,7 +146,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
+// import axios from 'axios'
+// import setting from '@/plugins/setting'
 export default {
   name: 'OftenCourt',
   components: {
@@ -157,19 +159,14 @@ export default {
   },
   data() {
     return {
+      OftenCourtData: [],
       lawyerId: 0
     }
   },
   watch: {},
+  mounted() {
+  },
   methods: {
-    ...mapActions('lawyerinfo', ['LawyerOftenCourt']),
-    LawyerOftenCourt(id) {
-      this.LawyerOftenCourt(id).then(res => {
-        if (res.isSucceed) {
-          console.log('律师常去法院')
-        }
-      })
-    }
   }
 }
 </script>
