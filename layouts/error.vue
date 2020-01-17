@@ -57,12 +57,14 @@ export default {
 
 <style>
 .__nuxt-error-page {
+  height: 100vh;
   padding: 1rem;
+  padding-top: 200px;
   background: #F7F8FB;
   color: #47494E;
   text-align: center;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   flex-direction: column;
   font-family: sans-serif;
@@ -71,10 +73,10 @@ export default {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   position: absolute;
-  top: 0;
+  /* top: 0; */
   left: 0;
   right: 0;
-  bottom: 0;
+  /* bottom: 0; */
 }
 .__nuxt-error-page .error {
   max-width: 450px;
