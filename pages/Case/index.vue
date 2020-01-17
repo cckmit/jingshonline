@@ -1,46 +1,64 @@
 <template>
-  <div style="width:1380px;margin:auto;min-height:1000px">
+  <div style="width:1380px;margin:auto;min-height:1000px;margin-bottom:30px">
     <el-row class="case">
-      <el-col :span="6" class="case-aside">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+        <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
+        <el-breadcrumb-item >查找案例</el-breadcrumb-item>
+      </el-breadcrumb>
+      <el-col class="case-aside">
         <!-- 具体案由 -->
-        <div class="case-cause case-border">
-          <div class="case-cause-title case-title"> <i class="el-icon-remove"/> 具体案由</div>
-          <div class="case-cause-main case-main">
+        <div class="case-aside case-border">
+          <div class="case-aside-title case-title">具体案由</div>
+          <div class="case-aside-main case-main">
             <el-tree
-              :data="data"
-              :default-expanded-keys="[2]"
+              :data="CasereasonTreeData"
               :props="defaultProps"
-              node-key="id"/>
+              node-key="id"
+              @node-click="handleClick"/>
           </div>
         </div>
         <!-- 法院等级 -->
-        <div class="case-court case-border">
-          <div class="case-court-title case-title"><i class="el-icon-circle-plus"/>法院等级</div>
-          <div class="case-court-main case-main">
+        <div class="case-aside case-border">
+          <div class="case-aside-title case-title">法院等级</div>
+          <div class="case-aside-main case-main">
             <el-tree
-              :data="data"
-              :default-expanded-keys="[1]"
+              :data="courtLevelTreeData"
               :props="defaultProps"
-              node-key="id"/>
+              node-key="id"
+              @node-click="handleCourtLevelClick"/>
+          </div>
+        </div>
+        <!-- 管辖法院 -->
+        <div class="case-aside case-border">
+          <div class="case-aside-title case-title">管辖法院</div>
+          <div class="case-aside-main case-main">
+            <el-tree
+              :data="regionTreeData"
+              :props="defaultProps"
+              node-key="id"
+              @node-click="handleClick"/>
           </div>
         </div>
       </el-col>
-      <el-col :span="17" :offset="1" class="case-content">
+      <el-col class="case-content">
         <div class="case-content-title case-border">
           <div class="case-title case-content-titleTop">
-            筛选条件: <span>婚姻继承<i class="el-icon-error"/></span><span>交通/物流<i class="el-icon-error"/></span><span>北京市最高人民法院<i class="el-icon-error"/></span>
-            <p style="float:right;text-decoration:underline"> <i class="el-icon-delete"/>清空筛选条件</p>
+            <ul v-bind="selectForm">
+              <p style="float:left"> 筛选条件:</p>
+              <li v-for="item in selectForm" :key="item.id"> <span>{{ item.name }}</span><i class="el-icon-error" @click="delectSelectForm(item.id)"/></li>
+            </ul>
+            <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
           </div>
-
           <div class="case-content-titleBot">
-            <span class="case-font-hover"> 默认排序<i class="el-icon-sort"/></span><span style="display: inline-block;width: 1px;height: 12px;background-color: #cccccc;"/><span>裁判日期<i class="el-icon-sort"/></span>
-            <p style="float:right">当前条件共找到 <i class="case-font-hover">78437343</i>个结果</p>
+            <span :class="{hover : isSortHover }" class="cursorPointer" @click="getSortCaseData(1)"> 默认排序<i class="el-icon-sort"/></span><span style="display: inline-block;width: 1px;height: 12px;background-color: #cccccc;"/><span :class="{hover : !isSortHover }" class="cursorPointer" @click="getSortCaseData(2)">裁判日期<i class="el-icon-sort"/></span>
+            <p style="float:right">当前条件共找到 <i class="case-font-hover">{{ totalCount }}</i>个结果</p>
           </div>
         </div>
         <div class="case-content-main">
-          <ul>
+          <ul v-bind="caseData">
+            <!-- <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative"> -->
             <li class="case-border case-content-hover" style="position:relative">
-              <nuxt-link :to="{path:'/Case/5/info'}">
+              <nuxt-link :to="`/case/1/info`">
                 <div class="case-content-top">
                   <p>邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
                   <p>
@@ -54,75 +72,27 @@
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
-                <span><i class="el-icon-star-off case-font-hover"/>收藏</span>
+                <span class="cursorPointer" @click="collectionCase()"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>2016-8-9</span>
                 <span>（2015）渝二中法行终字第00085号</span>
               </div>
-
-              <img :src="classic" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
-            </li>
-            <li class="case-border case-content-hover" style="position:relative">
-              <nuxt-link :to="{path:'/Case/:id/info',query:{id:123}}">
-                <div class="case-content-top">
-                  <p>邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
-                  <p>
-                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：重庆市第二中级人民法院</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：行政征收</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：无所属行业</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：政府</el-col>
-                  </p>
-                  <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                  <p><span>【结果命中】</span>本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                </div>
-              </nuxt-link>
-              <div class="case-content-bottom">
-                <span><i class="el-icon-star-off case-font-hover"/>收藏</span>
-                <span><i class="el-icon-time"/>2016-8-9</span>
-                <span>（2015）渝二中法行终字第00085号</span>
-              </div>
-
-              <img :src="classic" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
-            </li>
-            <li class="case-border case-content-hover">
-              <nuxt-link :to="{path:'/Case/:id/info',query:{id:123}}">
-                <div class="case-content-top">
-                  <p>邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
-                  <p>
-                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：重庆市第二中级人民法院</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：行政征收</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：无所属行业</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：政府</el-col>
-                  </p>
-                  <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                  <p><span>【结果命中】</span>本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                </div>
-              </nuxt-link>
-              <div class="case-content-bottom">
-                <span><i class="el-icon-star-off case-font-hover"/>收藏</span>
-                <span><i class="el-icon-time"/>2016-8-9</span>
-                <span>（2015）渝二中法行终字第00085号</span>
-              </div>
-
+              <img src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
           </ul>
-          <div style="margin 0 auto; margin-top:30px">
-            <!-- <el-pagination
-              :total="1000"
-              background
-              layout="prev, pager, next"/>
-          </div> -->
-          </div>
-      </div></el-col>
+        </div>
+        <div style="text-align:center;margin-top:20px">
+          <Pagination v-show="totalCount>0" :total="totalCount" :page="caseSearch.pageIndex" :limit="caseSearch.pageCount" @pagination="handlePageChange" />
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-
-import { mapActions } from 'vuex'
-// import setting from '$/plugins/setting'
+import Pagination from '@/components/Pagination/index'
+import { mapActions, mapGetters } from 'vuex'
+import setting from '@/plugins/setting'
 import axios from 'axios'
-import classic from '@/assets/case/case-classic.png'
 export default {
   layout: 'case',
   head() {
@@ -134,246 +104,372 @@ export default {
     }
   },
   components: {
-
+    Pagination
   },
   data() {
     return {
-      classic: classic,
-      data: [{
-        id: 1,
-        label: '民事案由',
-        children: [{
+      loading: '',
+      totalCount: 100,
+      isStarHover: false, // 是否点击收藏变色
+      isSortHover: true, // 拍讯点击变色
+      selectForm: [], // 筛选数组
+      CasereasonTreeData: [], // 案由树
+      regionTreeData: [], // 管辖法院树木
+      courtLevelTreeData: [ // 法院等级树木
+        {
+          id: 0,
+          name: '最高人民法院',
+          displayName: '最高人民法院'
+        },
+        {
+          id: 1,
+          name: '高级人民法院',
+          displayName: '高级人民法院'
+        },
+        {
+          id: 2,
+          name: '中级人民法院',
+          displayName: '中级人民法院'
+        },
+        {
+          id: 3,
+          name: '基层人民法院',
+          displayName: '基层人民法院'
+        },
+        {
           id: 4,
-          label: '民事案由',
-          children: [{
-            id: 13,
-            label: '民事案由'
-          }, {
-            id: 14,
-            label: '民事案由'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '刑事案由',
-        children: [{
+          name: '专门法院',
+          displayName: '专门法院'
+        },
+        {
           id: 5,
-          label: '公安行政管理',
-          children: [{
-            id: 13,
-            label: '民事案由'
-          }, {
-            id: 14,
-            label: '民事案由'
-          }]
-        }, {
+          name: '仲裁文员会',
+          displayName: '仲裁文员会'
+        },
+        {
           id: 6,
-          label: '计划生育行政管理（计划生育）'
-        }, {
-          id: 7,
-          label: '质量监督检验检疫行政管理'
-        }, {
-          id: 8,
-          label: '农业行政管理（农业）'
-        }, {
-          id: 9,
-          label: '交通运输行政管理（交通）'
-        }, {
-          id: 10,
-          label: '专利行政管理（专利）'
-        }, {
-          id: 11,
-          label: '财政行政管理（财政）'
-        }, {
-          id: 12,
-          label: '城市综合执法'
-        }]
-      }],
+          name: '其他',
+          displayName: '其他'
+        }
+      ],
+      caseData: [], // 案例
       defaultProps: {
         children: 'children',
-        label: 'label'
+        label: 'name'
+      },
+      caseSearch: {//
+        practiceAreaId: 0, // 诉讼领域
+        nonePracticeAreaId: 0, // 非诉讼领域
+        searchKey: 'string', // 搜索关键字: 支持(当事人、律师、专业领域、案由、法院、律所、裁判文书关键字)
+        courtLevel: 0, // 法院等级
+        courtReginId: 0, // 法院所属区域
+        courtId: 0, // 法院Id
+        caseReasonId: 0, // 案由Id
+        lawyerId: 0, // 律师Id
+        sorting: 'string', // 排序
+        sortType: 0, // 排序[ 0, 1 ]
+        pageCount: 10, // 诉讼领域
+        pageIndex: 1// 诉讼领域
       }
-
     }
   },
-  asyncData() {
-    return axios.get('https://api.myjson.com/bins/1ctwlm')
-      .then((res) => {
-        console.log(res)
-        return { info: res.data }
-      })
+  async asyncData({ params }) {
+    const [CasereasonTreeData, regionTreeData, courtLevelTreeData] = await Promise.all([
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' })
+    ])
+    return {
+      CasereasonTreeData: CasereasonTreeData.data.entity,
+      regionTreeData: regionTreeData.data.entity,
+      courtLevelTreeData: courtLevelTreeData.data.entity
+    }
   },
   computed: {
-  },
-  created() {
-
+    ...mapGetters([
+      // 'courtLevel'
+    ])
   },
   mounted() {
-    // this.get()
+    this.getCasereasonTree()
+    this.getRegionTree()
+    this.getCourtLevelTree()
+    // this.getCaseList()
   },
   methods: {
-    ...mapActions('region', ['getRegionTreeData']),
-    get() {
-      this.getRegionTreeData().then(res => {
-        this.regionData = res
-        this.$refs.industrySelect.treeDataUpdateFun(res)
+    ...mapActions('case', ['getCasereasonTreeData', 'getRegionTreeData', 'getCourtLevelTreeData', 'getCaseListData']),
+    // 获取案件
+    getCaseList(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.request, delayTime)
+    },
+    request() {
+      this.getCaseListData({ ...this.caseSearch, searchKey: this.selectForm }).then(res => {
+        this.caseData = res.data.items
+        this.totalCount = res.data.totalCount
+        this.loading = false
       })
     },
-    handleNodeClick(data) {
-      console.log(data)
+    // 获取具体案由
+    getCasereasonTree() {
+      this.getCasereasonTreeData().then(res => {
+        this.CasereasonTreeData = res.data
+      })
+    },
+    // 获取管辖法院
+    getRegionTree(courtLevel = 0) {
+      this.getRegionTreeData(courtLevel).then(res => {
+        this.regionTreeData = res.data
+      })
+    },
+    // 获取法院等级
+    getCourtLevelTree() {
+      this.getCourtLevelTreeData().then(res => {
+        // this.courtLevelTreeData = res.data
+      })
+    },
+
+    // 具体案由,管辖法院树点击筛选
+    handleClick(data) {
+      if (!this.selectForm.includes(data)) {
+        this.selectForm.push(data)
+      }
+      // this.getCaseList()
+    },
+    // 法院等级树点击筛选下侧管辖法院
+    handleCourtLevelClick(data) {
+      if (!this.selectForm.includes(data)) {
+        this.selectForm.push(data)
+      }
+      this.courtLevel = data.id
+      this.getRegionTree(this.courtLevel)
+      // this.getCaseList()
+    },
+    // 筛选逐个删除点击事件
+    delectSelectForm(id) {
+      const index = this.selectForm.findIndex((ele) => {
+        return ele.id === id
+      })
+      this.selectForm.splice(index, 1)
+      // this.getCaseList()
+    },
+    // 清空筛选条件点击事件
+    emptyScreen() {
+      this.selectForm = []
+      // this.getCaseList()
+    },
+    // 排序点击事件
+    getSortCaseData(sortType) {
+      this.sortType = sortType
+      if (sortType === 1) {
+        this.isSortHover = true
+      } else {
+        this.isSortHover = false
+      }
+      // this.getCaseList()
+    },
+    // 收藏点击事件
+    collectionCase() {
+      this.isStarHover = true
+      // 收藏接口
+    },
+    // 分页切换点击事件
+    handlePageChange(val) {
+      this.caseSearch.pageIndex = val.page
+      this.caseSearch.pageCount = val.limit
     }
   }
 }
 </script>
 
 <style lang='scss'>
-//本页面公共样式
-.case{
-  padding:60px 0;
-  font-family: MicrosoftYaHei;
-i{
-  font-style:normal
+//*******************************本页面公共样式*******************************
+.case {
+	font-family: MicrosoftYaHei;
+	i{
+  font-style: normal
 }
 // 左边标题
-.case-title{
-   height: 65px;
-   line-height: 65px;
-   border-bottom:1px dotted #d9d9d9;
-   font-size: 20px;
-   color: #333333;
-  }
- //左边树形文字
-.case-main{
-  .el-tree-node{
-    margin-bottom: 10px;
-  }
-  .el-tree-node__label{
-    font-size: 18px ;
-    color: #666666;
-  }
+.case-title {
+	line-height: 65px;
+	border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
+	font-size: 20px;
+	color: #333333;
 }
-
+  //变小手
+.cursorPointer {
+	cursor: pointer;
+}
+// 标题图标
+.titleIcon {
+	display: inline-block;
+	width: 4px;
+	height: 12px;
+	background-color: #f68020;
+	border-radius: 2px;
+	margin-right: 5px;
+}
    //边框
-.case-border{
-    border: solid 1px #d9d9d9;
+.case-border {
+	border: solid 1px rgba(229, 229, 229, 0.3);
 }
-  //  已选择
-.case-font-hover{
-  color: #f68020;
+  //  已选择文字颜色
+.case-font-hover,.hover {
+	color: #f68020;
 }
-.case-content-hover{
-border-bottom: 4px solid #f68020
+//  已选择下方边框变色
+.case-content-hover {
+	border-bottom: 4px solid #f68020
 }
-.el-icon-circle-plus,.el-icon-remove,.el-icon-delete{
-  color: #f68020;
-  margin-right: 5px;
+//橘色字体图标
+.el-icon-circle-plus,.el-icon-remove,.el-icon-delete {
+	color: #f68020;
+	margin-right: 5px;
 }
-.el-icon-error,.el-icon-sort{
-  margin-left: 5px;
+//左边距字体图标
+.el-icon-error,.el-icon-sort {
+	margin-left: 5px;
 }
-.el-icon-star-off,.el-icon-time,.el-icon-caret-right{
-  margin-right: 5px;
+//右边距字体图标
+.el-icon-star-off,.el-icon-time,.el-icon-menu {
+	margin-right: 5px;
 }
-.case-aside{
 
-  // 具体案由
-  .case-cause{
-    background-color: #fff;
-  padding:0 20px;
-	min-height: 200px;
-  .case-cause-main{
-    padding: 24px 0;
-  }
-  }
-  // 法院等级
-  .case-court{
-    background-color: #fff;
-  padding:20px;
-  margin-top:20px;
-  .case-court-main{
-    padding: 24px 0;
-  }
+//******************************* ***************************************************************/
+// 左侧树
+.case-aside {
+	width: 320px;
+	.el-tree-node__label{
+  font-size: 18px;
+  color:#666666;
+}
+.el-tree-node__content {
+	height: 30px;
+}
+.el-tree-node__children {
+	.el-tree-node__label{
+  font-size: 16px;
+}
+.el-tree-node__children {
+	.el-tree-node__content{
+  .el-tree-node__label{
+  font-size: 14px;
+}
+}
+}
+}
+.case-aside {
+	background-color: #fff;
+	padding: 0 20px 20px 20px;
+  margin-bottom: 20px;
+	.case-aside-title{
+    padding-left: 10px;
+}
+.case-aside-main {
+	padding: 5px 0;
+}
   }
 }
-.case-content{
-  .case-content-title{
-    background-color: #fff;
-    height: 104px;
-    padding:0 20px;
-    .case-content-titleTop{
-      color: #999999;
-      letter-spacing: 1px;
-      height: 50px;
-      line-height: 50px;
-      font-size: 14px;
-  span{
-    color: #666666;
-    letter-spacing: 1px;
-    margin-left: 30px;
-    font-size: 14px;
-  }
-    }
-  .case-content-titleBot{
-      color: #666666;
-      line-height: 50px;
-      font-size: 14px;
-  span{
-    margin-right: 45px;
-  }
-    }
-  }
-.case-content-main{
-  margin-top: 16px;
-  ul {
-    li{
-      display: block;
-      list-style-type:none;
-      width:auto;
-      margin:0 auto;
-      margin-top: 16px;
-	border-bottom: 4px solid #d9d9d9;
+//右侧
+.case-content {
+	margin-left: 16px;
+	width: 1043px;
+	.case-content-title{
   background-color: #fff;
-    .case-content-top{
-      padding: 30px;
+	height: 104px;
+	padding: 0 20px;
+	.case-content-titleTop{
+  color: #999999;
+	letter-spacing: 1px;
+	height: 50px;
+	line-height: 50px;
+	font-size: 14px;
+	ul li{
+        float: left;
+}
+
+span {
+	color: #666666;
+	letter-spacing: 1px;
+	margin-left: 30px;
+	font-size: 14px;
+}
     }
-    p{
-     color: #333333;
-     font-size: 14px;
-     line-height: 28px;
-     margin-bottom: 20px;
-     span{
-       display: block
-     }
+
+.case-content-titleBot {
+	color: #666666;
+	line-height: 50px;
+	font-size: 14px;
+	span{
+    margin-right: 45px;
+}
     }
-    p:nth-child(1){
-      letter-spacing: 1px;
-      font-size: 18px;
+  }
+
+.case-content-main {
+	margin-top: 16px;
+	ul {
+    li{
+  display: block;
+	list-style-type: none;
+	width: auto;
+	margin: 0 auto;
+	margin-top: 16px;
+	border-bottom: 4px solid rgba(217, 217, 217, 0.3);
+	background-color: #fff;
+	.case-content-top{
+   padding: 30px;
+}
+
+p {
+	color: #333333;
+	font-size: 14px;
+	line-height: 28px;
+	margin-bottom: 20px;
+	span{
+  display: block
+}
     }
-      p:nth-child(2){
-        color: #999999;
-        font-size: 14px;
-        padding: 0 20px;
-    }
+
+p:nth-child(1) {
+	letter-spacing: 1px;
+	font-size: 18px;
+}
+
+p:nth-child(2) {
+	color: #999999;
+	font-size: 14px;
+	padding: 0 20px;
+}
       }
     }
-    /*鼠标移入样式改变*/
-			li:hover {
-				border-bottom: 4px solid #f68020
-			}
+/*鼠标移入样式改变*/
+li:hover {
+	border-bottom: 4px solid #f68020
+}
   }
-.case-content-bottom{
+
+.case-content-bottom {
 	height: 29px;
-  line-height: 29px;
+	line-height: 29px;
 	background-color: #fbfbfb;
 	box-shadow: 0px -1px 0px 0px
 		rgba(0, 0, 0, 0.05);
 	font-size: 12px;
 	color: #666666;
- span{
-   float:right;
-   margin-right: 20px;
- }
+	span{
+   float: right;
+	margin-right: 20px;
 }
 }
+}
+//分页
+.pagination-container[data-v-7df3ee10] {
+	background: #f2f2f2;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background: #f68020;
+}
  }
+
 </style>
