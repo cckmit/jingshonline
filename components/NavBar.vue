@@ -16,7 +16,18 @@
           <el-menu-item index="case"><nuxt-link to="/Case">查案例</nuxt-link></el-menu-item>
           <el-menu-item index="help"><nuxt-link to="/Help">帮助中心</nuxt-link></el-menu-item>
           <el-menu-item index="about"><nuxt-link to="/About">关于我们</nuxt-link></el-menu-item>
-          <el-menu-item v-if="hasLogin" index="user"><nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link></el-menu-item>
+          <el-menu-item v-if="hasLogin" index="user">
+            <!-- <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link> -->
+            <el-dropdown class="user_info">
+              <span class="el-dropdown-link">
+                <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name || '似懂非懂' }}</span></nuxt-link>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter" style="color:#606266;">个人中心</nuxt-link></el-dropdown-item>
+                <el-dropdown-item divided icon="el-icon-delete" @click.native="handleLogout">登出</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-menu-item>
           <el-menu-item v-else index="login" @click="loginVisible=true"><span>注册</span><span>登录</span></el-menu-item>
         </el-menu>
       </div>
@@ -30,6 +41,7 @@
 import logo from '@/assets/layout/logo.png'
 import telephone from '@/assets/layout/telephone.png'
 import login from './login'
+import { mapActions } from 'vuex'
 export default {
   name: 'NavBar',
 
@@ -52,7 +64,7 @@ export default {
       telephone: telephone,
       url: this.$route,
       activeNav: 'index',
-      hasLogin: this.$cookie.get('token'),
+      hasLogin: true, // this.$cookie.get('token'),
       loginVisible: false
     }
   },
@@ -69,11 +81,17 @@ export default {
   },
 
   methods: {
+    ...mapActions('account', ['Logout']),
     selectActiveNav() {
       this.activeNav = this.$route ? this.$route.name.toLocaleLowerCase() : 'index'
     },
     close() {
       this.loginVisible = false
+    },
+    handleLogout() {
+      this.Logout().then(res => {
+        this.$router.push(`/`)
+      })
     }
   }
 }
@@ -136,6 +154,18 @@ export default {
     &:last-child:hover{
       a{
         color: #fff;
+      }
+    }
+    .user_info{
+      >span{
+        border-right: none !important;
+        a{
+          padding: 0;
+          span{
+            color: #fff;
+            font-size: 16px;
+          }
+        }
       }
     }
   }
