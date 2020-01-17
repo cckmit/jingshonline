@@ -59,9 +59,9 @@ export const actions = {
  * 律师常去法院
  * @param {number} lawyerId
  */
-  LawyerOftenCourt({ commit }, lawyerId) {
+  GetLawyerInfo({ commit }, lawyerId) {
     return new Promise((resolve, reject) => {
-      LawyerInfo.LawyerOftenCourt(lawyerId)
+      LawyerInfo.GetLawyerInfo(lawyerId)
         .then(response => {
           const {
             data

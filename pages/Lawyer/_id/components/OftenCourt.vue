@@ -146,9 +146,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import axios from 'axios'
-import setting from '@/plugins/setting'
+// import { mapActions } from 'vuex'
+// import axios from 'axios'
+// import setting from '@/plugins/setting'
 export default {
   name: 'OftenCourt',
   components: {
@@ -164,26 +164,9 @@ export default {
     }
   },
   watch: {},
-  async asyncData({ params }) {
-    const [OftenCourtData] = await Promise.all([
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`, { 'Content-Type': 'application/json' })
-    ])
-    return {
-      OftenCourtData
-    }
-  },
   mounted() {
-    console.log(this.OftenCourtData)
   },
   methods: {
-    ...mapActions('lawyerinfo', ['LawyerOftenCourt']),
-    getyerOftenCourt(id) {
-      this.LawyerOftenCourt(id).then(res => {
-        if (res.isSucceed) {
-          console.log('律师常去法院')
-        }
-      })
-    }
   }
 }
 </script>
