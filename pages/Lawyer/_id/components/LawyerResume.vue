@@ -4,7 +4,7 @@
       <p>曾在政府部门、政协、工商联、司法局法律电大、律师事务所、公证处注册执业、国企集团董事会民企高管以及中国政法大学成人教育学院法律研究生班内蒙教学部，民主与法制社内蒙古事业发展中心、北京师范大学博士后工作站等单位，跨地域跨领域多行业多层次从事过工作，得到很多历炼积累了丰富的实践经验。</p>
     </div>
     <div class="lawyer-main">
-      <div class="lawyer-work lawyer-wrapper">
+      <div v-if="resumeData.workExperiences.length > 0" class="lawyer-work lawyer-wrapper">
         <p class="lawyer-header"><i/>工作经历</p>
         <div class="card-container">
           <ul class="work-card type-cards">
@@ -36,7 +36,7 @@
           </ul>
         </div>
       </div>
-      <div class="lawyer-study lawyer-wrapper">
+      <div v-if="resumeData.educations" class="lawyer-study lawyer-wrapper">
         <p class="lawyer-header"><i/>教育经历</p>
         <div class="card-container">
           <ul class="work-card type-cards">
@@ -68,7 +68,7 @@
           </ul>
         </div>
       </div>
-      <div class="lawyer-learn lawyer-wrapper">
+      <div v-if="resumeData.academics.length > 0" class="lawyer-learn lawyer-wrapper">
         <p class="lawyer-header"><i/>学术成果</p>
         <div class="card-container">
           <ul class="work-card type-text">
@@ -87,7 +87,7 @@
           </ul>
         </div>
       </div>
-      <div class="lawyer-industry lawyer-wrapper">
+      <div v-if="resumeData.certificates.length > 0" class="lawyer-industry lawyer-wrapper">
         <p class="lawyer-header"><i/>行业资质</p>
         <div class="card-container">
           <ul class="work-card type-text">
@@ -106,7 +106,7 @@
           </ul>
         </div>
       </div>
-      <div class="lawyer-society lawyer-wrapper">
+      <div v-if="resumeData.socialPositions.length > 0" class="lawyer-society lawyer-wrapper">
         <p class="lawyer-header"><i/>社会职务</p>
         <div class="card-container">
           <ul class="work-card type-text">
@@ -131,27 +131,52 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 export default {
   name: 'LawyerResume',
   components: {
 
   },
   props: {
-
+    resumeData: {
+      type: Object,
+      default: function() {
+        return {
+          // 工作经历
+          workExperiences: [],
+          // 社会职务
+          socialPositions: [],
+          // 教育经历
+          educations: [],
+          // 行业资质
+          certificates: [],
+          // 学术成果
+          academics: []
+        }
+      }
+    }
   },
   data() {
     return {
-
+      id: this.$route.params.id
     }
   },
+
   watch: {},
+  mounted() {
+    console.log(this.resumeData)
+  },
   methods: {
     // 获取律师简历信息
     ...mapActions('lawyerinfo', ['GetLawyerResume']),
     getLawyerResume(id) {
-      this.GetLawyerResume(id).then((res) => {
-        if (res.isSucceed) {
-          console.log('律师简历信息')
+      this.GetLawyerResume(id).then((response) => {
+        if (response.isSucceed) {
+          this.educations = response.educations
+          this.academics = response.academics
+          this.certificates = response.certificates
+          this.workExperiences = response.workExperiences
+          this.socialPositions = response.socialPositions
         }
       })
     }
