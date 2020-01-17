@@ -63,7 +63,6 @@ export const actions = {
       commit('SET_REAL_NAME', '')
       cookie.remove() // 移除token
       // resetRouter() // 重置路由
-      dispatch('tagsView/delAllViews', null, { root: true }) // 移除所有选项卡
       resolve()
     })
   },
