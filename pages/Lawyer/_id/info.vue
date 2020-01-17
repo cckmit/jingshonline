@@ -6,7 +6,7 @@
         <el-breadcrumb-item :to="{path:'/LawyerInfo'}">查找律师</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="lawyer-info-card">
-        <div class="lawyer-isAuthentication"/>
+        <div v-if="lawyerInformation.status === 2" class="lawyer-isAuthentication"/>
         <div class="lawyer-info-top">
           <a class="lawyer-info-picture" href=":javascript">
             <img :src="lawyerInformation.avatar" alt="律师头像">
@@ -52,7 +52,6 @@
 import LawyerDetail from './LawyerDetail'
 import axios from 'axios'
 import setting from '@/plugins/setting'
-import { mapActions } from 'vuex'
 export default {
   layout: 'lawyer',
   components: {
@@ -75,7 +74,6 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     const resume = lawyerResumeData.data.entity
-    console.log(LawyerInformation.data.entity)
     return {
       // 律师基本信息
       lawyerInformation: LawyerInformation.data.entity,
@@ -91,6 +89,7 @@ export default {
   },
   data() {
     return {
+      // 律师履历信息
       resumeData: {
         workExperiences: [],
         socialPositions: [],
@@ -98,6 +97,7 @@ export default {
         certificates: [],
         academics: []
       },
+      // 律师基本信息 缺少手机号 以及律师备注信息（律师简介）
       lawyerInformation: {
         id: 0, // 律师Id
         realName: '', // 真实姓名
@@ -132,12 +132,9 @@ export default {
 
   },
   mounted() {
-    // this.GetLawyerInfo(10).then(res => {
-    //   console.log(res)
-    // })
+
   },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerInfo'])
 
   }
 }

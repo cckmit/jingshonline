@@ -71,11 +71,12 @@ export default {
     ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),
     // tab 切换律师信息
     handleClick(tab, event) {
-      console.log(this.activeName)
     },
     // 关注按钮操作
     followHandle() {
-
+      this.UserFollow(this.$route.params.id).then(res => {
+        console.log(res)
+      })
     }
   }
 }

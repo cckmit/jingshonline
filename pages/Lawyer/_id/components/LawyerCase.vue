@@ -13,13 +13,14 @@
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
-        <el-select v-model="value" placeholder="请选择">
+        <!-- <el-select v-model="value" placeholder="请选择">
           <el-option
             v-for="item in options"
             :key="item.value"
             :label="item.label"
             :value="item.value"/>
-        </el-select>
+        </el-select> -->
+        <treeselect v-model="value" :multiple="true" :options="options" />
       </div>
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
@@ -131,23 +132,60 @@ export default {
         ],
         activePractice: ''
       },
-      options: [{
-        label: '诉讼领域',
-        value: 0
+      data: [{
+        id: 1,
+        label: '民事案由',
+        children: [{
+          id: 4,
+          label: '民事案由',
+          children: [{
+            id: 13,
+            label: '民事案由'
+          }, {
+            id: 14,
+            label: '民事案由'
+          }]
+        }]
       }, {
-        label: '非诉讼领域',
-        value: 1
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+        id: 2,
+        label: '刑事案由',
+        children: [{
+          id: 5,
+          label: '公安行政管理',
+          children: [{
+            id: 13,
+            label: '民事案由'
+          }, {
+            id: 14,
+            label: '民事案由'
+          }]
+        }, {
+          id: 6,
+          label: '计划生育行政管理（计划生育）'
+        }, {
+          id: 7,
+          label: '质量监督检验检疫行政管理'
+        }, {
+          id: 8,
+          label: '农业行政管理（农业）'
+        }, {
+          id: 9,
+          label: '交通运输行政管理（交通）'
+        }, {
+          id: 10,
+          label: '专利行政管理（专利）'
+        }, {
+          id: 11,
+          label: '财政行政管理（财政）'
+        }, {
+          id: 12,
+          label: '城市综合执法'
+        }]
       }],
-      value: '',
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      },
       // 认证案例列表
       lawyerCaseList: [],
       // 筛选条件高亮
@@ -161,17 +199,17 @@ export default {
       totalCount: 10,
       // 获取认证案例所需参数 必传
       caseListParam: {
-        practiceAreaId: 0, // 诉讼领域Id number 【诉讼领域,非诉讼领域】
-        nonePracticeAreaId: 0, // 非诉讼领域Id number 【诉讼领域,非诉讼领域】
+        practiceAreaId: undefined, // 诉讼领域Id number 【诉讼领域,非诉讼领域】
+        nonePracticeAreaId: undefined, // 非诉讼领域Id number 【诉讼领域,非诉讼领域】
         searchKey: '', // 搜索关键字: 支持(当事人、律师、专业领域、案由、法院、律所、裁判文书关键字) string
-        courtLevel: 0, // 法院等级 number
-        courtReginId: 0, // 法院所属区域 nmuber || arr
-        courtId: 0, // 法院Id number
-        caseReasonId: 0, // 案由Id number
+        courtLevel: undefined, // 法院等级 number
+        courtReginId: undefined, // 法院所属区域 nmuber || arr
+        courtId: undefined, // 法院Id number
+        caseReasonId: undefined, // 案由Id number
         lawyerId: this.$route.params.id, // 律师Id number
-        sorting: 'string', // 排序
+        sorting: '', // 排序
         sortType: 0, // 排序类型
-        pageCount: 1, // 页目 number
+        pageCount: 10, // 页目条数 number
         pageIndex: 1// 页码 number
       }
     }
@@ -190,9 +228,14 @@ export default {
   },
   created() {
     // this.getLawyerCaseList(this.caseListParam)
+    // 行业树
+    this.getIndustryTreeData().then(res => {
+      console.log(res)
+    })
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList']),
+    ...mapActions('industry', ['getIndustryTreeData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
@@ -223,7 +266,6 @@ export default {
     },
     // 用户分享
     userShare() {
-
     }
   }
 }

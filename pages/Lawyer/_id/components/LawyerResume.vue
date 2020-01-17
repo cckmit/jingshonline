@@ -8,62 +8,22 @@
         <p class="lawyer-header"><i/>工作经历</p>
         <div class="card-container">
           <ul class="work-card type-cards">
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
+            <li v-for="(item,index) in resumeData.workExperiences" :key="index">
+              <p>{{ item.organization }}</p>
+              <p>{{ item.position }}</p>
+              <p><span>{{ item.startDate | dateFormat("YYYY.mm") }}</span> - <span>{{ item.endDate | dateFormat("YYYY.mm") }}</span></p>
             </li>
           </ul>
         </div>
       </div>
-      <div v-if="resumeData.educations" class="lawyer-study lawyer-wrapper">
+      <div v-if="resumeData.educations.length" class="lawyer-study lawyer-wrapper">
         <p class="lawyer-header"><i/>教育经历</p>
         <div class="card-container">
           <ul class="work-card type-cards">
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
-            </li>
-            <li>
-              <p>北京京师律师事务所</p>
-              <p>合伙人律师</p>
-              <p>2014.04 - 至今</p>
+            <li v-for="(item,index) in resumeData.educations" :key="index">
+              <p>{{ item.school }}</p>
+              <p>{{ item.degree }}</p>
+              <p><span>{{ item.startDate | dateFormat("YYYY.mm") }}</span> - <span>{{ item.endDate | dateFormat("YYYY.mm") }}</span></p>
             </li>
           </ul>
         </div>
@@ -72,17 +32,8 @@
         <p class="lawyer-header"><i/>学术成果</p>
         <div class="card-container">
           <ul class="work-card type-text">
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
+            <li v-for="(item,index) in resumeData.academics" :key="index">
+              {{ item.name }}
             </li>
           </ul>
         </div>
@@ -91,17 +42,8 @@
         <p class="lawyer-header"><i/>行业资质</p>
         <div class="card-container">
           <ul class="work-card type-text">
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
+            <li v-for="(item,index) in resumeData.certificates" :key="index">
+              {{ item.name }}
             </li>
           </ul>
         </div>
@@ -110,17 +52,8 @@
         <p class="lawyer-header"><i/>社会职务</p>
         <div class="card-container">
           <ul class="work-card type-text">
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
-            </li>
-            <li>
-              中央电视台《热线12》节目特约嘉宾“刘谈判”
+            <li v-for="(item,index) in resumeData.socialPositions" :key="index">
+              {{ item.name }}
             </li>
           </ul>
         </div>
@@ -130,12 +63,30 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   name: 'LawyerResume',
   components: {
-
+  },
+  filters: {
+    dateFormat(time, fmt) {
+      const date = new Date(time)
+      let ret
+      const opt = {
+        'Y+': date.getFullYear().toString(), // 年
+        'm+': (date.getMonth() + 1).toString(), // 月
+        'd+': date.getDate().toString(), // 日
+        'H+': date.getHours().toString(), // 时
+        'M+': date.getMinutes().toString(), // 分
+        'S+': date.getSeconds().toString() // 秒
+      }
+      for (const k in opt) {
+        ret = new RegExp('(' + k + ')').exec(fmt)
+        if (ret) {
+          fmt = fmt.replace(ret[1], (ret[1].length === 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, '0')))
+        }
+      }
+      return fmt
+    }
   },
   props: {
     resumeData: {
@@ -158,29 +109,12 @@ export default {
   },
   data() {
     return {
-      id: this.$route.params.id
     }
   },
-
   watch: {},
   mounted() {
-    console.log(this.resumeData)
   },
   methods: {
-    // 获取律师简历信息
-    ...mapActions('lawyerinfo', ['GetLawyerResume']),
-    getLawyerResume(id) {
-      this.GetLawyerResume(id).then((response) => {
-        if (response.isSucceed) {
-          this.educations = response.educations
-          this.academics = response.academics
-          this.certificates = response.certificates
-          this.workExperiences = response.workExperiences
-          this.socialPositions = response.socialPositions
-        }
-      })
-    }
-
   }
 }
 </script>
