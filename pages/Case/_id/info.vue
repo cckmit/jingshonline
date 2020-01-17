@@ -7,27 +7,27 @@
         <el-breadcrumb-item >案例详情</el-breadcrumb-item>
       </el-breadcrumb>
       <!-- 左边 -->
-      <el-col :span="17" class="case-content case-border">
+      <el-col :span="17" v-bind="caseInfoData" class="case-content case-border">
         <!-- 概要信息 -->
         <div class="case-content-title">
           <span class="case-title"><i class="titleIcon"/> 概要信息</span>
-          <p style="float:right">更新时间：<span class="case-font-hover"> 2016/7/25 13:29:27</span></p>
+          <p style="float:right">更新时间：<span class="case-font-hover"> {{ caseInfoData.updateTime }}</span></p>
         </div>
         <!-- 案件信息 -->
         <div class="case-content-desc">
           <el-row>
             <el-form ref="form" label-width="100px">
               <el-col :span="11">
-                <el-form-item label="主办律师:"><p>朱晓彬</p></el-form-item>
-                <el-form-item label="审判机关:"><p>重庆市江北区人民法院</p></el-form-item>
-                <el-form-item label="文书号码:"><p>（2015）江法行初字第00199号</p></el-form-item>
-                <el-form-item label="主办律师:"><p class="case-font-hover">10</p></el-form-item>
+                <el-form-item label="主办律师:"><p> {{ caseInfoData.client }}</p></el-form-item>
+                <el-form-item label="审判机关:"><p> {{ caseInfoData.administrativeOrgan }}</p></el-form-item>
+                <el-form-item label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
+                <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
               </el-col>
               <el-col :span="13">
-                <el-form-item label="判决时间:"><p>1900/1/1 0:00:00</p></el-form-item>
-                <el-form-item label="涉案案由:"><p>行政案由 - 城乡建设行政管理 - 城市规划管理(规划) - 行政受理</p></el-form-item>
-                <el-form-item label="所属领域:"><p>诉讼领域-行政案件-城乡建设</p></el-form-item>
-                <el-form-item label="所属行业:"><p>无所属行业</p></el-form-item>
+                <el-form-item label="判决时间:"><p>{{ caseInfoData.endTime }}</p></el-form-item>
+                <el-form-item label="涉案案由:"><p>{{ caseInfoData.caseReasonName }}</p></el-form-item>
+                <el-form-item label="所属领域:"><p>{{ caseInfoData.practiceAreaName }}</p></el-form-item>
+                <el-form-item label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
               </el-col>
             </el-form>
           </el-row>
@@ -128,138 +128,41 @@
       <!-- /*右边 -->
       <el-col :span="6" :offset="1" class="case-aside">
         <!-- 办理律师 -->
-        <div class="case-aside-main case-aside-blls case-border">
+        <div v-bind="caseInfoData.lawyers" class="case-aside-main case-aside-blls case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>办理律师</span>
           </div>
           <el-collapse v-model="activeNames" accordion class="lawyer" @change="handleChange">
-            <el-collapse-item name="1">
+            <el-collapse-item v-for="item in caseInfoData.lawyers" :key="item.lawyerId" name="1">
               <template v-if="isShow" slot="title">
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
                     <div class="case-aside-img">
                       <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
+                      <div class="case-aside-name">{{ item.realName }}</div>
                     </div>
                   </el-col>
                   <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
+                    <p>{{ item.realName }}</p>
+                    <p>{{ item.lawfirmName }}</p>
                   </el-col>
                 </div>
               </template>
               <div class="case-aside-photo">
                 <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬 律师</div>
+                <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
                 <p>毕业院校：<span>北京大学</span></p>
-                <p> 最高学历：<span>本科</span></p>
+                <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无' }}</span></p>
                 <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item name="2">
-              <template slot="title">
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </template>
-              <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬5 律师</div>
-              </div>
-              <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p> 最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item name="3">
-              <template slot="title">
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
-                    </div>
-
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </template>
-              <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬 律师</div>
-              </div>
-              <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p> 最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item name="4">
-              <template slot="title">
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </template>
-              <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬 律师</div>
-              </div>
-              <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p>最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
+                <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
+                <p>擅长领域：<span v-for="item in caseInfoData.lawyers.practiceareas" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
+                <p>业务专长：<span v-for="item in caseInfoData.lawyers.industries" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
+                <p>案例总数：<span>{{ item.caseCount }}</span></p>
+                <p>更新时间：<span>{{ item.lastModificationTime }}</span></p>
+                <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
+                <p>关注人数：<span class="case-font-hover">{{ item.followerCount }}</span></p>
               </div>
             </el-collapse-item>
           </el-collapse>
@@ -329,27 +232,62 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import setting from '@/plugins/setting'
+import axios from 'axios'
 export default {
-  name: '',
-
+  name: 'CaseIdInfo',
+  head() {
+    return {
+      title: '案例详情',
+      meta: [
+        { hid: 'description', name: 'description', content: '京师在线案例详情；jingshonline' }
+      ]
+    }
+  },
   components: {
   },
 
   data() {
     return {
-      id: this.$route.query.id,
+      loading: false,
+      caseId: 0,
       isShow: true,
-      activeNames: ['1']
+      activeNames: ['1'],
+      caseInfoData: []
     }
   },
-
+  async asyncData({ params }) {
+    const [caseInfoData] = await Promise.all([
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
+    ])
+    return {
+      caseInfoData: caseInfoData.data.entity
+    }
+  },
   watch: {
   },
-
+  created() {
+    this.caseId = this.$route.params.id
+  },
   mounted() {
+    this.getcaseInfoData()
   },
 
   methods: {
+    ...mapActions('case', ['getCaseInfoData']),
+    // 获取案件
+    getcaseInfoData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.request, delayTime)
+    },
+    request() {
+      this.getCaseInfoData(this.caseId).then(res => {
+        this.caseInfoData = res.data.entity
+        console.log(this.caseInfoData)
+        this.loading = false
+      })
+    },
     handleChange(val) {
     }
   }

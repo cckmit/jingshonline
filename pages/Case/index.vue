@@ -58,7 +58,7 @@
           <ul v-bind="caseData">
             <!-- <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative"> -->
             <li class="case-border case-content-hover" style="position:relative">
-              <nuxt-link :to="{path:'/Case/5/info'}">
+              <nuxt-link :to="`/case/1/info`">
                 <div class="case-content-top">
                   <p>邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
                   <p>
@@ -76,7 +76,7 @@
                 <span><i class="el-icon-time"/>2016-8-9</span>
                 <span>（2015）渝二中法行终字第00085号</span>
               </div>
-              <img src="@/assets/case/case-classic.png" alt="" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+              <img src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
           </ul>
         </div>

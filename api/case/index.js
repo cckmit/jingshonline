@@ -195,4 +195,14 @@ export const getCaseList = query => {
     }
   })
 }
-export default { adminCreate, adminUpdate, adminDelete, adminGetInfo, adminGetInfoForLook, adminGetData, adminRecycleData, adminRecover, adminReviewQuery, adminReview, adminCaseJudgmentnumber }
+/**
+ * 获取案件详情
+ * @param {number} caseId
+ */
+export const getCaseInfo = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/get/${caseId}`,
+    method: 'get'
+  })
+}
+export default { getCasereasonTree, getRegionTree, getCourtLevelTree, getCaseList, getCaseInfo }

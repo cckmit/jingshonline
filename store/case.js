@@ -318,6 +318,22 @@ const actions = {
         reject(error)
       })
     })
+  },
+
+  /**
+   * 根据ID获取案件详情
+   * @param {commit} commit
+   * @param {number} id
+   */
+  getCaseInfoData({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      Case.getCaseInfo(id).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }
 export default {
