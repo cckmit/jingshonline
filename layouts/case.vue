@@ -20,8 +20,8 @@
 <script>
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
-import banner from '@/assets/banner_case.png'
-import icon from '@/assets/case_search.png'
+import banner from '@/assets/case/case_banner.png'
+import icon from '@/assets/case/case_search.png'
 export default {
   name: 'CaseLayout',
 
