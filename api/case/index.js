@@ -144,10 +144,10 @@ export const adminCaseJudgmentnumber = judgmentnumber => {
 }
 
 /**
- * 获取案例tree结构数据
+ * 获取案由tree结构数据
  * @param {object} query
  */
-export const getCaseTree = (query) => {
+export const getCasereasonTree = (query) => {
   return request({
     url: `${setting.apiPrefix}/casereason/tree`,
     method: 'get',
@@ -186,9 +186,9 @@ export const getCourtLevelTree = (query) => {
  * 获取案件列表
  * @param {object} query
  */
-export const getCaseData = query => {
+export const getCaseList = query => {
   return request({
-    url: `${setting.apiPrefix}/admin/case/query`,
+    url: `${setting.apiPrefix}/customer/case/query`,
     method: 'post',
     data: {
       query: query

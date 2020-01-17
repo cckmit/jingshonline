@@ -48,6 +48,43 @@ const state = {
       name: 'other',
       displayName: '其他'
     }
+  ],
+  courtLevel: [ // 法院等级
+    {
+      id: 0,
+      name: '最高人民法院',
+      displayName: '最高人民法院'
+    },
+    {
+      id: 1,
+      name: '高级人民法院',
+      displayName: '高级人民法院'
+    },
+    {
+      id: 2,
+      name: '中级人民法院',
+      displayName: '中级人民法院'
+    },
+    {
+      id: 3,
+      name: '基层人民法院',
+      displayName: '基层人民法院'
+    },
+    {
+      id: 4,
+      name: '专门法院',
+      displayName: '专门法院'
+    },
+    {
+      id: 5,
+      name: '仲裁文员会',
+      displayName: '仲裁文员会'
+    },
+    {
+      id: 6,
+      name: '其他',
+      displayName: '其他'
+    }
   ]
 }
 
@@ -227,13 +264,13 @@ const actions = {
   },
 
   /**
-   * 获取案例树列表
+   * *******************************************获取案由树列表*******************************************
    * @param {commit} commit
    * @param {object} query
    */
-  getCaseTreeData({ commit }, query) {
+  getCasereasonTreeData({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getCaseTree(query).then(response => {
+      Case.getCasereasonTree(query).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
@@ -273,9 +310,9 @@ const actions = {
    * @param {commit} commit
    * @param {object} query
    */
-  getCaseList({ commit }, query) {
+  getCaseListData({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getCaseData(query).then(response => {
+      Case.getCaseList(query).then(response => {
         resolve(response)
       }).catch(error => {
         reject(error)
