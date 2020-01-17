@@ -97,19 +97,19 @@
           <ul class="alreadyselect">
             <li v-for="(items,index) in selectData" :key="index"><span>{{ items.name }}</span><small @click="selectdelete(items)"><i class="fa fa-times"/></small></li>
           </ul>
-          <p @click="selectData=[]">
+          <p @click="selectempty">
             <img src="../../assets/lawyer/empty.png" alt="">
             <span>清空筛选条件</span>
           </p>
         </div>
         <div class="selectsort">
           <ul class="alreadyselect">
-            <li class="active"><span>默认排序</span><img src="../../assets/lawyer/sort.png" alt=""></li>
-            <li><span>案例总数</span><img src="../../assets/lawyer/sort.png" alt=""></li>
+            <li :class="sortactive" @click="sortselect"><span>默认排序</span></li>
+            <li :class="caseactive" @click="caseselect"><span>案例总数</span></li>
             <li>
-              <span>年限</span>
-              <el-input size="small" clearable />&nbsp;&nbsp;--&nbsp;
-              <el-input size="small" clearable />&nbsp;&nbsp;年
+              <b>年限</b>
+              <el-input v-model="yearstart" size="small" clearable/>&nbsp;&nbsp;--&nbsp;
+              <el-input v-model="yearend" size="small" clearable/>&nbsp;&nbsp;年
             </li>
           </ul>
           <p>
@@ -239,6 +239,12 @@ export default {
         regionId: '', // 律师所属地区
         regionName: ''
       },
+      yearstart: '', // 年限开始时间
+      yearend: '', // 年限结束时间
+      sortactive: 'active', // 默认排序class
+      caseactive: '', // 案例总数排序class
+      sortnum: 0, // 默认排序点击次数
+      casesortnum: 1, // 案例排序点击次数
       selectindustryData: [], // 筛选行业数据
       selectsuitsData: [], // 筛选诉讼领域数据
       selectnosuitsData: [], // 筛选非诉领域数据
@@ -266,7 +272,7 @@ export default {
   watch: {
   },
   mounted() {
-    // this.getLawyer()
+    this.getLawyer()
     // this.getPractice()
     // this.getIndustry()
     // this.getLawfirm()
@@ -343,13 +349,6 @@ export default {
         name: name
       }
       this.comparesigle()
-      // this.compareData({ id: id, name: name })
-      // const returnData = this.compareData({ id: id, name: name })
-      // if (returnData === false) {
-      //   this.selectData.push(
-      //     { id: id, name: name }
-      //   )
-      // }
     },
     suits(id, name) {
       this.lawyerSearch.practiceAreaId = id
@@ -358,12 +357,6 @@ export default {
         name: name
       }
       this.comparesigle()
-      // const returnData = this.compareData({ id: id, name: name })
-      // if (returnData === false) {
-      //   this.selectData.push(
-      //     { id: id, name: name }
-      //   )
-      // }
     },
     nosuits(id, name) {
       this.lawyerSearch.practiceAreaId = id
@@ -372,13 +365,6 @@ export default {
         name: name
       }
       this.comparesigle()
-      // this.compareData({ id: id, name: name })
-      // const returnData = this.compareData({ id: id, name: name })
-      // if (returnData === false) {
-      //   this.selectData.push(
-      //     { id: id, name: name }
-      //   )
-      // }
     },
     region(id, name) {
       this.lawyerSearch.regionId = id
@@ -387,13 +373,6 @@ export default {
         name: name
       }
       this.comparesigle()
-      // this.compareData({ id: id, name: name })
-      // const returnData = this.compareData({ id: id, name: name })
-      // if (returnData === false) {
-      //   this.selectData.push(
-      //     { id: id, name: name }
-      //   )
-      // }
     },
     lawfirm(id, name) {
       this.lawyerSearch.lawfirmId = id
@@ -451,6 +430,33 @@ export default {
       //     item = {}
       //   }
       // })
+    },
+    selectempty() { // 清空筛选条件
+      this.selectData = []
+      this.lawyerSearch.practiceAreaId = ''
+      this.lawyerSearch.lawfirmId = ''
+      this.lawyerSearch.regionId = ''
+      this.lawyerSearch.industryId = ''
+    },
+    sortselect() { // 默认排序
+      this.sortnum += 1
+      if (this.sortnum % 2 === 0) {
+        this.sortactive = 'active'
+        this.lawyerSearch.sorting = 1
+      } else {
+        this.sortactive = ''
+        this.lawyerSearch.sorting = ''// 待完善
+      }
+    },
+    caseselect() { // 按照案例数排序
+      this.casesortnum += 1
+      if (this.casesortnum % 2 === 0) {
+        this.caseactive = 'active'
+        this.lawyerSearch.sorting = 2
+      } else {
+        this.caseactive = ''
+        this.lawyerSearch.sorting = ''// 待完善
+      }
     }
   }
 }
@@ -617,9 +623,18 @@ ul{
         display: inline-block;
         margin: 0px 10px;
         >span{
+          display: inline-block;
+          width: 90px;
+          height: 40px;
           color:#333;
           margin-right: 8px;
           cursor: pointer;
+          background: url('../../assets/lawyer/sortdefault.png') no-repeat 70px 6px;
+        }
+        b{
+          display: inline-block;
+          margin-right: 8px;
+          font-weight: 400;
         }
         .el-input{
           display: inline-block;
@@ -635,6 +650,7 @@ ul{
       .active{
         >span{
           color:#f68020;
+          background: url('../../assets/lawyer/sort.png') no-repeat 70px 6px;
         }
       }
   }
