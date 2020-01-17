@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import logo from '@/assets/logo.png'
-import telephone from '@/assets/telephone.png'
+import logo from '@/assets/layout/logo.png'
+import telephone from '@/assets/layout/telephone.png'
 import login from './login'
 export default {
   name: 'NavBar',
@@ -70,7 +70,7 @@ export default {
 
   methods: {
     selectActiveNav() {
-      this.activeNav = this.$route.name.toLocaleLowerCase()
+      this.activeNav = this.$route ? this.$route.name.toLocaleLowerCase() : 'index'
     },
     close() {
       this.loginVisible = false

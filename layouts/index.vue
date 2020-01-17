@@ -30,9 +30,9 @@
 <script>
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/IndexFooter'
-import banner from '@/assets/banner_index.png'
-import logo from '@/assets/index_banner_logo.png'
-import icon from '@/assets/index_search.png'
+import banner from '@/assets/index/index_banner.png'
+import logo from '@/assets/index/index_banner_logo.png'
+import icon from '@/assets/index/index_search.png'
 export default {
   name: 'IndexLayout',
 
