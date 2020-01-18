@@ -20,7 +20,12 @@
             :label="item.label"
             :value="item.value"/>
         </el-select> -->
-        <treeselect v-model="value" :multiple="true" :options="options" />
+        <treeselect
+          :options="data"
+          :disable-branch-nodes="true"
+          :show-count="true"
+          placeholder="请选择所属行业"
+        />
       </div>
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
@@ -110,10 +115,15 @@
 <script>
 import Pagination from '@/components/Pagination/index'
 import { mapActions } from 'vuex'
+// import the component
+import Treeselect from '@riophae/vue-treeselect'
+// import the styles
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'LawyerCase',
   components: {
-    Pagination
+    Pagination,
+    Treeselect
   },
   props: {
 
