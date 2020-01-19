@@ -59,7 +59,9 @@ module.exports = {
     { src: '~/plugins/custom', ssr: true },
     { src: '~/plugins/el-tree-select', ssr: false },
     { src: '~plugins/echarts', ssr: false },
-    { src: '~plugins/filters', ssr: false }
+    { src: '~plugins/filters', ssr: false },
+    { src: '~utils/validate', ssr: false },
+    { src: '~utils/index', ssr: false }
   ],
   env: {
     baseUrl: 'http://gateway.dev.jingshonline.net'
