@@ -42,62 +42,12 @@
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link to="/case/10/info">
           <div class="case-item-title">{{ item.title }}<span>{{ item.endTime | dateFormat("YYYY-mm-dd") }}</span></div>
-          <p class="case-item-article">{{ item.judgmentResult }}</p>
-          <div class="case-item-bottom">
-            <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-            <span class="collect" @click="userCollect"><i/>收藏</span>
-            <span class="share" @click="userShare"><i/>分享</span>
-          </div>
-          <i class="classic"/>
         </nuxt-link>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
+        <p class="case-item-article">{{ item.judgmentResult }}</p>
         <div class="case-item-bottom">
           <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="0? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
+          <span class="collect" @click="userCollect(index)"><i :class="item.isCollect ? 'el-icon-star-on' : 'el-icon-star-off'">收藏</i></span>
+          <span class="share" @click="userShare"><i/>分享</span>
         </div>
         <i class="classic"/>
       </div>
@@ -162,6 +112,7 @@ export default {
           courtName: '朝阳区人民法院', // 法院name
           startTime: '2020-01-19T01:46:32.297Z', // 案例开始时间
           endTime: '2020-01-19T01:46:32.297Z', //  案例结束时间
+          isCollect: true, // 用户是否收藏
           judgmentResult: '宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......' // 案例内容
         },
         {
@@ -178,6 +129,7 @@ export default {
           courtName: '海淀区人民法院', // 法院name
           startTime: '2020-01-19T01:46:32.297Z', // 案例开始时间
           endTime: '2020-01-19T01:46:32.297Z', //  案例结束时间
+          isCollect: true, // 用户是否收藏
           judgmentResult: '宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......' // 案例内容
         }
       ],
@@ -260,7 +212,8 @@ export default {
       this.caseListParam.pageCount = val.limit
     },
     // 用户收藏
-    userCollect() {
+    userCollect(index) {
+      this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
     },
     // 用户分享
     userShare() {
@@ -468,13 +421,15 @@ export default {
           border-radius: 5px;
         }
         .collect {
+          .el-icon-star-off:before {
+            margin-right: 6px;
+          }
+          .el-icon-star-on:before {
+            margin-right: 6px;
+            color: #f68020
+          }
           i {
             display: inline-block;
-            width: 12px;
-            height: 12px;
-            background-image: url("../../../../assets/lawyerinfo/star.png");
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
             margin-right: 6px;
             vertical-align: -1px;
           }
