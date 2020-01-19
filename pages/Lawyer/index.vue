@@ -11,14 +11,14 @@
             <el-tab-pane label="诉讼领域" name="first">
               <ul >
                 <li v-for="(items,index) in suitsData" :key="index">
-                  <span v-if="items.children.length===0" @click="nosuits(items)">
+                  <span v-if="items.children.length===0" @click="suits(items.id,items.name)">
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="nosuits(item)">{{ item.name }}</li>
+                      <li v-for="(item,index) in items.children" :key="index" @click="suits(item.id,item.name)">{{ item.name }}</li>
                     </ul>
-                    <el-button slot="reference" @click="nosuits(items)">{{ items.name }}</el-button>
+                    <el-button slot="reference" @click="suits(items.id,items.name)">{{ items.name }}</el-button>
                   </el-popover>
                 </li>
               </ul>
@@ -26,14 +26,14 @@
             <el-tab-pane label="非诉领域" name="second">
               <ul>
                 <li v-for="(items,index) in NosuitsData" :key="index">
-                  <span v-if="items.children.length===0" @click="suits(items)">
+                  <span v-if="items.children.length===0" @click="nosuits(items.id,items.name)">
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="suits(item)">{{ item.name }}</li>
+                      <li v-for="(item,index) in items.children" :key="index" @click="nosuits(item.id,item.name)">{{ item.name }}</li>
                     </ul>
-                    <el-button slot="reference" @click="suits(items)">{{ items.name }}</el-button>
+                    <el-button slot="reference" @click="nosuits(items.id,items.name)">{{ items.name }}</el-button>
                   </el-popover>
                 </li>
               </ul>
@@ -41,14 +41,14 @@
             <el-tab-pane label="擅长行业" name="third">
               <ul>
                 <li v-for="(items,index) in industryData" :key="index">
-                  <span v-if="items.children.length===0" @click="industry(items)">
+                  <span v-if="items.children.length===0" @click="industry(items.id,items.name)">
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="industry(item)">{{ item.name }}</li>
+                      <li v-for="(item,index) in items.children" :key="index" @click="industry(item.id,item.name)">{{ item.name }}</li>
                     </ul>
-                    <el-button slot="reference" @click="industry(items)">{{ items.name }}</el-button>
+                    <el-button slot="reference" @click="industry(items.id,items.name)">{{ items.name }}</el-button>
                   </el-popover>
                 </li>
               </ul>
@@ -68,7 +68,6 @@
       <div class="bgf tree_left">
         <p>城市</p>
         <el-tree
-          v-loading="loading"
           ref="tree2"
           :data="regionData"
           :props="defaultProps"
@@ -78,7 +77,11 @@
           node-key="id"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
-        />
+        >
+          <div slot-scope="{ node,data }" class="tree_tools" @click="region(data.id,data.name)">
+            <span>{{ node.data.name }}</span>
+          </div>
+        </el-tree>
       </div>
       <div class="bgf tree_left">
         <p>律所</p>
@@ -92,24 +95,21 @@
         <div class="selecttab">
           <span>筛选条件：</span>
           <ul class="alreadyselect">
-            <li><span>婚姻继承</span><small><i class="fa fa-times"/></small></li>
-            <li><span>交通物流</span><small><i class="fa fa-times"/></small></li>
+            <li v-for="(items,index) in selectData" :key="index"><span>{{ items.name }}</span><small @click="selectdelete(items)"><i class="fa fa-times"/></small></li>
           </ul>
-          <p>
+          <p @click="selectempty">
             <img src="../../assets/lawyer/empty.png" alt="">
             <span>清空筛选条件</span>
           </p>
         </div>
         <div class="selectsort">
           <ul class="alreadyselect">
-            <li class="active"><span>默认排序</span><img src="../../assets/lawyer/sort.png" alt=""></li>
-            <li><span>案例总数</span><img src="../../assets/lawyer/sort.png" alt=""></li>
+            <li :class="sortactive" @click="sortselect"><span>默认排序</span></li>
+            <li :class="caseactive" @click="caseselect"><span>案例总数</span></li>
             <li>
-              <span>年限</span>
-              <el-input size="small" clearable />&nbsp;&nbsp;--&nbsp;
-              <!-- <text>&nbsp;--&nbsp;</text> -->
-              <el-input size="small" clearable />&nbsp;&nbsp;年
-              <!-- <text>&nbsp;&nbsp;年</text> -->
+              <b>年限</b>
+              <el-input v-model="yearstart" size="small" clearable/>&nbsp;&nbsp;--&nbsp;
+              <el-input v-model="yearend" size="small" clearable/>&nbsp;&nbsp;年
             </li>
           </ul>
           <p>
@@ -180,68 +180,6 @@
             </div>
           </nuxt-link>
         </li>
-        <li>
-          <a href="">
-            <img src="../../assets/lawyer/lawyer_auth.png" alt="">
-            <div class="lawyerlist_lf">
-              <img src="../../assets/lawyer/avatar.png" alt="">
-              <span>部门主任</span>
-            </div>
-            <div class="lawyerlist_rt">
-              <b><span>刘志明</span>律师</b>
-              <div>
-                <div>
-                  <p>
-                    <img src="../../assets/lawyer/arrow.png" alt="">
-                    <b>基础信息&nbsp;●&nbsp;</b>
-                    <span>INFORMATION</span>
-                  </p>
-                  <ul>
-                    <li>
-                      <span>执业年限</span>
-                      <b>8年</b>
-                    </li>
-                    <li>
-                      <span>案例总数</span>
-                      <b>325例</b>
-                    </li>
-                    <li>
-                      <span>所在律所</span>
-                      <b>北京市京师律师事务所</b>
-                    </li>
-                    <li>
-                      <span>所在地址</span>
-                      <b>北京市-朝阳区</b>
-                    </li>
-                  </ul>
-                </div>
-                <div class="lawyerlist_mid">
-                  <p>
-                    <img src="../../assets/lawyer/arrow.png" alt="">
-                    <b>专业领域&nbsp;●&nbsp;</b>
-                    <span>EXPERTISE</span>
-                  </p>
-                  <ul>
-                    <li>诉讼仲裁</li>
-                    <li>公司法律服务</li>
-                    <li>诉讼仲裁</li>
-                    <li>公司法律服务</li>
-                  </ul>
-                </div>
-                <div class="lawyerlist_action">
-                  <span>更新时间：</span>
-                  <b>2019-07-15</b>
-                  <p>浏览：<span>222</span></p>
-                  <p>关注：<span>333</span></p>
-                  <div>
-                    <div><img src="../../assets/lawyer/collection.png" alt="">收藏</div>
-                    <div><img src="../../assets/lawyer/share.png" alt="">分享</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </li>
       </ul>
       <Pagination v-show="totalCount>0" :total="totalCount" :page="lawyerSearch.pageIndex" :limit="lawyerSearch.pageCount" @pagination="handlePageChange" />
     </el-col>
@@ -260,17 +198,19 @@ export default {
     Pagination
   },
   async asyncData({ params }) {
-    const [lawyerData, suitsData, NosuitsData, industryData] = await Promise.all([
+    const [lawyerData, suitsData, NosuitsData, industryData, regionData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/1`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/2`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
     ])
     return {
       lawyerData: lawyerData.data.items,
       suitsData: suitsData.data.entity[0].children, // .data[0].children,
       NosuitsData: NosuitsData.data.entity[0].children, // .data[0].children,
-      industryData: industryData.data.entity
+      industryData: industryData.data.entity,
+      regionData: regionData.data.entity
     }
   },
 
@@ -299,7 +239,19 @@ export default {
         regionId: '', // 律师所属地区
         regionName: ''
       },
+      yearstart: '', // 年限开始时间
+      yearend: '', // 年限结束时间
+      sortactive: 'active', // 默认排序class
+      caseactive: '', // 案例总数排序class
+      sortnum: 0, // 默认排序点击次数
+      casesortnum: 1, // 案例排序点击次数
+      selectindustryData: [], // 筛选行业数据
+      selectsuitsData: [], // 筛选诉讼领域数据
+      selectnosuitsData: [], // 筛选非诉领域数据
+      selectregionData: [], // 筛选地区数据
+      selectlawfirmData: [], // 筛选律所数据
       selectData: [], // 筛选条件数据
+      addData: false, // 是否已筛选
       suitsData: [], // 诉讼领域数据
       NosuitsData: [], // 非诉领域数据
       industryData: [], // 行业数据
@@ -320,7 +272,7 @@ export default {
   watch: {
   },
   mounted() {
-    // this.getLawyer()
+    this.getLawyer()
     // this.getPractice()
     // this.getIndustry()
     // this.getLawfirm()
@@ -390,25 +342,121 @@ export default {
       if (!value) return true
       return data.name.indexOf(value) !== -1
     },
-    industry(data) {
-      this.lawyerSearch.industryId = data.id
-      this.lawyerSearchName.industryId = data.id
-      this.lawyerSearchName.industryName = data.name
+    industry(id, name) {
+      this.lawyerSearch.industryId = id
+      this.selectindustryData = {
+        id: id,
+        name: name
+      }
+      this.comparesigle()
     },
-    suits(data) {
-      this.lawyerSearch.practiceAreaId = data.id
-      this.lawyerSearchName.practiceAreaId = data.id
-      this.lawyerSearchName.practiceAreaName = data.name
+    suits(id, name) {
+      this.lawyerSearch.practiceAreaId = id
+      this.selectsuitsData = {
+        id: id,
+        name: name
+      }
+      this.comparesigle()
     },
-    nosuits(data) {
-      this.lawyerSearch.practiceAreaId = data.id
-      this.lawyerSearchName.practiceAreaId = data.id
-      this.lawyerSearchName.practiceAreaName = data.name
+    nosuits(id, name) {
+      this.lawyerSearch.practiceAreaId = id
+      this.selectnosuitsData = {
+        id: id,
+        name: name
+      }
+      this.comparesigle()
     },
-    lawfirm(data) {
-      this.lawyerSearch.lawfirmId = data.id
-      this.lawyerSearchName.lawfirmId = data.id
-      this.lawyerSearchName.lawfirmName = data.name
+    region(id, name) {
+      this.lawyerSearch.regionId = id
+      this.selectregionData = {
+        id: id,
+        name: name
+      }
+      this.comparesigle()
+    },
+    lawfirm(id, name) {
+      this.lawyerSearch.lawfirmId = id
+      this.selectlawfirmData = {
+        id: id,
+        name: name
+      }
+      this.comparesigle()
+      // this.compareData({ id: id, name: name })
+      // const returnData = this.compareData({ id: id, name: name })
+      // if (returnData === false) {
+      //   this.selectData.push(
+      //     { id: id, name: name }
+      //   )
+      // }
+    },
+    compareData(data) { // 多选比对方法
+      this.addData = false
+      if (this.selectData.length !== 0) {
+        for (var i = 0; i < this.selectData.length; i++) {
+          if (this.selectData[i].id === data.id && this.selectData[i].name === data.name) {
+            this.addData = true
+          }
+        }
+      }
+      return this.addData
+    },
+    comparesigle() { // 单选
+      this.selectData = []
+      if (this.selectindustryData.length !== 0) {
+        this.selectData.push(this.selectindustryData)
+      }
+      if (this.selectsuitsData.length !== 0) {
+        this.selectData.push(this.selectsuitsData)
+      }
+      if (this.selectnosuitsData.length !== 0) {
+        this.selectData.push(this.selectnosuitsData)
+      }
+      if (this.selectregionData.length !== 0) {
+        this.selectData.push(this.selectregionData)
+      }
+      if (this.selectlawfirmData.length !== 0) {
+        this.selectData.push(this.selectlawfirmData)
+      }
+    },
+    selectdelete(data) {
+      for (var i = 0; i < this.selectData.length; i++) {
+        if (this.selectData[i].id === data.id && this.selectData[i].name === data.name) {
+          this.selectData.splice([i], 1)
+        }
+      }
+      // this.selectData.forEach(item => {
+      //   console.log(item)
+      //   if (item.id === data.id && item.name === data.name) {
+      //     item = {}
+      //   }
+      // })
+    },
+    selectempty() { // 清空筛选条件
+      this.selectData = []
+      this.lawyerSearch.practiceAreaId = ''
+      this.lawyerSearch.lawfirmId = ''
+      this.lawyerSearch.regionId = ''
+      this.lawyerSearch.industryId = ''
+    },
+    sortselect() { // 默认排序
+      this.sortnum += 1
+      if (this.sortnum % 2 === 0) {
+        this.sortactive = 'active'
+        this.lawyerSearch.sorting = 1
+      } else {
+        this.sortactive = ''
+        this.lawyerSearch.sorting = ''// 待完善
+      }
+    },
+    caseselect() { // 按照案例数排序
+      this.casesortnum += 1
+      if (this.casesortnum % 2 === 0) {
+        this.caseactive = 'active'
+        this.lawyerSearch.sorting = 2
+      } else {
+        this.caseactive = ''
+        this.lawyerSearch.sorting = ''// 待完善
+      }
     }
   }
 }
@@ -517,6 +565,10 @@ ul{
       font-size: 16px;
     }
   }
+  .el-tree-node__content{
+    height:40px;
+    border-bottom: 1px dotted #ddd;
+  }
 }
 .selectend{
   margin: 20px 0px;
@@ -571,9 +623,18 @@ ul{
         display: inline-block;
         margin: 0px 10px;
         >span{
+          display: inline-block;
+          width: 90px;
+          height: 40px;
           color:#333;
           margin-right: 8px;
           cursor: pointer;
+          background: url('../../assets/lawyer/sortdefault.png') no-repeat 70px 6px;
+        }
+        b{
+          display: inline-block;
+          margin-right: 8px;
+          font-weight: 400;
         }
         .el-input{
           display: inline-block;
@@ -589,6 +650,7 @@ ul{
       .active{
         >span{
           color:#f68020;
+          background: url('../../assets/lawyer/sort.png') no-repeat 70px 6px;
         }
       }
   }

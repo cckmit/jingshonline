@@ -64,7 +64,7 @@ export default {
       telephone: telephone,
       url: this.$route,
       activeNav: 'index',
-      hasLogin: this.$cookie.get('token'),
+      hasLogin: true, // this.$cookie.get('token'),
       loginVisible: false
     }
   },
