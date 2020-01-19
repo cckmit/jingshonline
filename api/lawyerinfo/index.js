@@ -45,17 +45,14 @@ export const UserCancleFollow = lawyerId => {
 }
 
 /**
- * 律师常去法院
+ * 律师基础信息
  * @param {number} lawyerId
  */
 
-export const LawyerOftenCourt = lawyerId => {
+export const GetLawyerInfo = lawyerId => {
   return request({
     url: `${setting.apiPrefix}/customer/lawyer/get/${lawyerId}`,
-    method: 'get',
-    data: {
-      lawyerId: lawyerId
-    }
+    method: 'get'
   })
 }
 
