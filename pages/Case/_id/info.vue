@@ -1,5 +1,5 @@
 <template>
-  <div style="width:1380px;margin:auto;min-height:1000px;margin-top:30px">
+  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-top:30px">
     <el-row class="case-id">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>

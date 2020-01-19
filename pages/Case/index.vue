@@ -1,5 +1,5 @@
 <template>
-  <div style="width:1380px;margin:auto;min-height:1000px;margin-bottom:30px">
+  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:30px">
     <el-row class="case">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
@@ -14,7 +14,7 @@
               :data="CasereasonTreeData"
               :props="defaultProps"
               node-key="id"
-              @node-click="handleClick"/>
+              @node-click="handleCasereasonClick"/>
           </div>
         </div>
         <!-- 法院等级 -->
@@ -36,19 +36,23 @@
               :data="regionTreeData"
               :props="defaultProps"
               node-key="id"
-              @node-click="handleClick"/>
+              @node-click="handleregionClick"/>
           </div>
         </div>
       </el-col>
       <el-col class="case-content">
         <div class="case-content-title case-border">
-          <div class="case-title case-content-titleTop">
-            <ul v-bind="selectForm">
+          <el-row class="case-title case-content-titleTop">
+            <el-col :span="21">
               <p style="float:left"> 筛选条件:</p>
-              <li v-for="item in selectForm" :key="item.id"> <span>{{ item.name }}</span><i class="el-icon-error" @click="delectSelectForm(item.id)"/></li>
-            </ul>
-            <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
-          </div>
+              <el-tag v-if="selectForm.courtLevelInfo" closable effect="plain" size="small" type="info" @close="handleCourtLevelClose(tag)">{{ selectForm.courtLevelInfo }}</el-tag>
+              <el-tag v-if="selectForm.caseReasonInfo" closable effect="plain" size="small" type="info" @close="handleCaseReasonClose(tag)">{{ selectForm.caseReasonInfo }}</el-tag>
+              <el-tag v-if="selectForm.courtInfo" closable effect="plain" size="small" type="info" @close="handleCourtClose(tag)">{{ selectForm.courtInfo }}</el-tag>
+            </el-col>
+            <el-col :span="3">
+              <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
+            </el-col>
+          </el-row>
           <div class="case-content-titleBot">
             <span :class="{hover : isSortHover }" class="cursorPointer" @click="getSortCaseData(1)"> 默认排序<i class="el-icon-sort"/></span><span style="display: inline-block;width: 1px;height: 12px;background-color: #cccccc;"/><span :class="{hover : !isSortHover }" class="cursorPointer" @click="getSortCaseData(2)">裁判日期<i class="el-icon-sort"/></span>
             <p style="float:right">当前条件共找到 <i class="case-font-hover">{{ totalCount }}</i>个结果</p>
@@ -112,13 +116,17 @@ export default {
       totalCount: 100,
       isStarHover: false, // 是否点击收藏变色
       isSortHover: true, // 拍讯点击变色
-      selectForm: [], // 筛选数组
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
       caseData: [], // 案例
       defaultProps: {
         children: 'children',
         label: 'name'
+      },
+      selectForm: {
+        courtLevelInfo: '', // 法院等级
+        caseReasonInfo: '', // 具体案由
+        courtInfo: '' // 管辖法院
       },
       caseSearch: {//
         practiceAreaId: 0, // 诉讼领域
@@ -167,7 +175,7 @@ export default {
       setTimeout(this.request, delayTime)
     },
     request() {
-      this.getCaseListData({ ...this.caseSearch, searchKey: this.selectForm }).then(res => {
+      this.getCaseListData({ ...this.caseSearch }).then(res => {
         this.caseData = res.data.items
         this.totalCount = res.data.totalCount
         this.loading = false
@@ -186,33 +194,55 @@ export default {
       })
     },
 
-    // 具体案由,管辖法院树点击筛选
-    handleClick(data) {
-      if (!this.selectForm.includes(data)) {
-        this.selectForm.push(data)
-      }
+    // 管辖法院树点击筛选
+    handleregionClick(data) {
+      this.selectForm.courtInfo = data.fullName
+      this.caseSearch.courtId = data.id
+
       // this.getCaseList()
     },
+    // 管辖法院关闭
+    handleCourtClose(tag) {
+      this.selectForm.courtInfo = ''
+      this.caseSearch.courtId = ''
+      // this.getCaseList()
+    },
+    // 具体案由树点击筛选
+    handleCasereasonClick(data) {
+      this.selectForm.caseReasonInfo = data.name
+      this.caseSearch.caseReasonId = data.id
+      // this.getCaseList()
+    },
+    // 具体案由关闭
+    handleCaseReasonClose(tag) {
+      this.selectForm.caseReasonInfo = ''
+      this.caseSearch.caseReasonId = ''
+      // this.getCaseList()
+    },
+
     // 法院等级树点击筛选下侧管辖法院
     handleCourtLevelClick(data) {
-      if (!this.selectForm.includes(data)) {
-        this.selectForm.push(data)
-      }
-      this.courtLevel = data.id
-      this.getRegionTree(this.courtLevel)
+      this.selectForm.courtLevelInfo = data.name
+      this.caseSearch.courtLevel = data.id
+      // this.getRegionTree(this.courtLevel)
       // this.getCaseList()
     },
-    // 筛选逐个删除点击事件
-    delectSelectForm(id) {
-      const index = this.selectForm.findIndex((ele) => {
-        return ele.id === id
-      })
-      this.selectForm.splice(index, 1)
+
+    // 法院等级关闭
+    handleCourtLevelClose(tag) {
+      this.selectForm.courtLevelInfo = ''
+      this.caseSearch.courtLevel = ''
+      // this.getRegionTree(this.courtLevel)
       // this.getCaseList()
     },
     // 清空筛选条件点击事件
     emptyScreen() {
-      this.selectForm = []
+      this.selectForm.courtInfo = ''
+      this.caseSearch.courtId = ''
+      this.selectForm.caseReasonInfo = ''
+      this.caseSearch.caseReasonId = ''
+      this.selectForm.courtLevelInfo = ''
+      this.caseSearch.courtLevel = ''
       // this.getCaseList()
     },
     // 排序点击事件
@@ -250,7 +280,7 @@ export default {
 .case-title {
 	line-height: 65px;
 	border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
-	font-size: 18px;
+	font-size: 16px;
 	color: #333333;
 }
   //变小手
@@ -297,7 +327,7 @@ export default {
 .case-aside {
 	width: 320px;
 	.el-tree-node__label{
-  font-size: 16px;
+  font-size: 14px;
   color:#666666;
 }
 .el-tree-node__content {
@@ -310,7 +340,7 @@ export default {
 .el-tree-node__children {
 	.el-tree-node__content{
   .el-tree-node__label{
-  font-size: 12px;
+  font-size: 14px;
 }
 }
 }
@@ -333,7 +363,6 @@ export default {
 	width: 1043px;
 	.case-content-title{
   background-color: #fff;
-	height: 104px;
 	padding: 0 20px;
 	.case-content-titleTop{
   color: #999999;
@@ -341,14 +370,10 @@ export default {
 	height: 50px;
 	line-height: 50px;
 	font-size: 14px;
-	ul li{
-        float: left;
-}
-
 span {
 	color: #666666;
 	letter-spacing: 1px;
-	margin-left: 30px;
+	margin-left: 10px;
 	font-size: 14px;
 }
     }
