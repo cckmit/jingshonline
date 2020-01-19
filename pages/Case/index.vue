@@ -90,7 +90,7 @@
 
 <script>
 import Pagination from '@/components/Pagination/index'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 export default {
@@ -115,43 +115,6 @@ export default {
       selectForm: [], // 筛选数组
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
-      courtLevelTreeData: [ // 法院等级树木
-        {
-          id: 0,
-          name: '最高人民法院',
-          displayName: '最高人民法院'
-        },
-        {
-          id: 1,
-          name: '高级人民法院',
-          displayName: '高级人民法院'
-        },
-        {
-          id: 2,
-          name: '中级人民法院',
-          displayName: '中级人民法院'
-        },
-        {
-          id: 3,
-          name: '基层人民法院',
-          displayName: '基层人民法院'
-        },
-        {
-          id: 4,
-          name: '专门法院',
-          displayName: '专门法院'
-        },
-        {
-          id: 5,
-          name: '仲裁文员会',
-          displayName: '仲裁文员会'
-        },
-        {
-          id: 6,
-          name: '其他',
-          displayName: '其他'
-        }
-      ],
       caseData: [], // 案例
       defaultProps: {
         children: 'children',
@@ -174,30 +137,30 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [CasereasonTreeData, regionTreeData, courtLevelTreeData] = await Promise.all([
+    const [CasereasonTreeData, regionTreeData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
     ])
     return {
       CasereasonTreeData: CasereasonTreeData.data.entity,
-      regionTreeData: regionTreeData.data.entity,
-      courtLevelTreeData: courtLevelTreeData.data.entity
+      regionTreeData: regionTreeData.data.entity
     }
   },
   computed: {
-    ...mapGetters([
-      // 'courtLevel'
-    ])
+    ...mapState({
+      courtLevelTreeData: state => state.court.courtLevel
+    })
   },
   mounted() {
     this.getCasereasonTree()
     this.getRegionTree()
-    this.getCourtLevelTree()
     // this.getCaseList()
   },
   methods: {
-    ...mapActions('case', ['getCasereasonTreeData', 'getRegionTreeData', 'getCourtLevelTreeData', 'getCaseListData']),
+    ...mapActions('case', ['getCaseListData']),
+    ...mapActions('caseReason', ['getCasereasonTreeData']),
+    ...mapActions('region', ['getRegionTreeData']),
+
     // 获取案件
     getCaseList(delayTime = 150) {
       this.loading = true
@@ -213,19 +176,13 @@ export default {
     // 获取具体案由
     getCasereasonTree() {
       this.getCasereasonTreeData().then(res => {
-        this.CasereasonTreeData = res.data
+        this.CasereasonTreeData = res
       })
     },
     // 获取管辖法院
     getRegionTree(courtLevel = 0) {
       this.getRegionTreeData(courtLevel).then(res => {
-        this.regionTreeData = res.data
-      })
-    },
-    // 获取法院等级
-    getCourtLevelTree() {
-      this.getCourtLevelTreeData().then(res => {
-        // this.courtLevelTreeData = res.data
+        this.regionTreeData = res
       })
     },
 
@@ -293,7 +250,7 @@ export default {
 .case-title {
 	line-height: 65px;
 	border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
-	font-size: 20px;
+	font-size: 18px;
 	color: #333333;
 }
   //变小手
@@ -340,7 +297,7 @@ export default {
 .case-aside {
 	width: 320px;
 	.el-tree-node__label{
-  font-size: 18px;
+  font-size: 16px;
   color:#666666;
 }
 .el-tree-node__content {
@@ -348,12 +305,12 @@ export default {
 }
 .el-tree-node__children {
 	.el-tree-node__label{
-  font-size: 16px;
+  font-size: 14px;
 }
 .el-tree-node__children {
 	.el-tree-node__content{
   .el-tree-node__label{
-  font-size: 14px;
+  font-size: 12px;
 }
 }
 }

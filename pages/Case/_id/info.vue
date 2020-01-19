@@ -7,7 +7,7 @@
         <el-breadcrumb-item >案例详情</el-breadcrumb-item>
       </el-breadcrumb>
       <!-- 左边 -->
-      <el-col :span="17" v-bind="caseInfoData" class="case-content case-border">
+      <el-col v-bind="caseInfoData" class="case-content case-border">
         <!-- 概要信息 -->
         <div class="case-content-title">
           <span class="case-title"><i class="titleIcon"/> 概要信息</span>
@@ -126,7 +126,7 @@
         </div>
       </el-col>
       <!-- /*右边 -->
-      <el-col :span="6" :offset="1" class="case-aside">
+      <el-col class="case-aside">
         <!-- 办理律师 -->
         <div v-bind="caseInfoData.lawyers" class="case-aside-main case-aside-blls case-border">
           <div class="case-aside-title case-title">
@@ -236,7 +236,7 @@ import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 export default {
-  name: 'CaseIdInfo',
+  layout: 'case',
   head() {
     return {
       title: '案例详情',
@@ -337,6 +337,8 @@ ul li {
     margin-right: 5px;
 }
 .case-content {
+  width: 1004px;
+  background:white;
     // 概要信息
   .el-form-item{
 margin-bottom: 0;
@@ -381,8 +383,9 @@ p {
 }
 // 右边
 .case-aside{
+  width:360px;
+  margin-left: 16px;
   .case-aside-main{
-    // height: 200px;
     margin-bottom: 20px;
   }
   .case-aside-title{
@@ -400,16 +403,18 @@ p {
 
 // 相关案例
 .case-aside-xgal {
+   background:white;
     .el-form-item{
     margin-bottom: 5px;
 }
 
 .el-form-item__content {
-    line-height: 26px;
+    line-height: 30px;
 }
 }
 // 办理律师
 .case-aside-blls {
+  background:white;
     .el-collapse-item__header{
 height: 120px;
 }
@@ -454,7 +459,7 @@ height: 120px;
 .case-aside-info {
     margin-bottom: 20px;
     p {
-    margin-left: 15px;
+    margin-left: 30px;
     color: #999999;
     line-height: 30px;
     span{
@@ -487,6 +492,7 @@ height: 120px;
 // 案件认领
 .case-aside-ajrl
 {
+   background:white;
     .case-aside-imgBox{
 .case-aside-claim{
   position: absolute;
