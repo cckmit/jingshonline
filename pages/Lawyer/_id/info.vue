@@ -6,7 +6,7 @@
         <el-breadcrumb-item :to="{path:'/LawyerInfo'}">查找律师</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="lawyer-info-card">
-        <div class="lawyer-isAuthentication"/>
+        <div v-if="lawyerInformation.status === 2" class="lawyer-isAuthentication"/>
         <div class="lawyer-info-top">
           <a class="lawyer-info-picture" href=":javascript">
             <img :src="lawyerInformation.avatar" alt="律师头像">
@@ -52,14 +52,10 @@
 import LawyerDetail from './LawyerDetail'
 import axios from 'axios'
 import setting from '@/plugins/setting'
-import { mapActions } from 'vuex'
 export default {
   layout: 'lawyer',
   components: {
     LawyerDetail
-  },
-  props: {
-
   },
   head() {
     return {
@@ -75,7 +71,6 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     const resume = lawyerResumeData.data.entity
-    console.log(LawyerInformation.data.entity)
     return {
       // 律师基本信息
       lawyerInformation: LawyerInformation.data.entity,
@@ -91,6 +86,7 @@ export default {
   },
   data() {
     return {
+      // 律师履历信息
       resumeData: {
         workExperiences: [],
         socialPositions: [],
@@ -98,10 +94,12 @@ export default {
         certificates: [],
         academics: []
       },
+      // 律师基本信息 缺少手机号 以及律师备注信息（律师简介）
       lawyerInformation: {
         id: 0, // 律师Id
         realName: '', // 真实姓名
         email: '', // 邮箱
+        phone: '15607021980', // 律师电话 缺少返回信息
         lawfirmName: '', // 律所
         avatarPathId: null, // 头像路径Id
         avatar: '', // 头像路径
@@ -114,7 +112,7 @@ export default {
         isDirector: true, // 是否为主任律师
         regionName: '', // 地区 天津-和平区
         highestDegree: '', // 最高学位
-        status: 2, // 律师目前状态 0-未审核  1 审核通过 2 审核未通过   3 已冻结
+        status: 0, // 律师目前状态 0-未审核  1 审核通过 2 审核未通过   3 已冻结
         followerCount: 0, // 关注人数（关注度）
         clickCount: 0, // 律师浏览量
         caseCount: 0, // 案例总数
@@ -122,14 +120,11 @@ export default {
         practiceareas: [], // 律师擅长领域 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
         industries: [] // 律师擅长行业 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
       }
-
     }
   },
   computed: {
-
   },
   watch: {
-
   },
   mounted() {
     // this.GetLawyerInfo(10).then(res => {
@@ -137,8 +132,6 @@ export default {
     // })
   },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerInfo'])
-
   }
 }
 </script>
