@@ -179,6 +179,7 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' })
     ])
+    console.log(CasereasonTreeData)
     return {
       CasereasonTreeData: CasereasonTreeData.data.entity,
       regionTreeData: regionTreeData.data.entity,
