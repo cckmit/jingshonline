@@ -1,6 +1,6 @@
 <template>
   <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:30px">
-    <el-row class="case">
+    <el-row class="case caseClass">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item >查找案例</el-breadcrumb-item>
@@ -269,9 +269,9 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 //*******************************本页面公共样式*******************************
-.case {
+.caseClass {
 	font-family: MicrosoftYaHei;
 	i{
   font-style: normal

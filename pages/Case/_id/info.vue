@@ -1,6 +1,6 @@
 <template>
   <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-top:30px">
-    <el-row class="case-id">
+    <el-row class="case-id caseInfoClass">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{path:'/case'}" >查找案例</el-breadcrumb-item>
@@ -294,9 +294,9 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 //本页面公共样式
-.case-id{
+.caseInfoClass{
   font-family: MicrosoftYaHei;
   font-size: 14px;
 
@@ -481,14 +481,7 @@ height: 120px;
 }
 }
 }
-//办理律师隐藏头部
- .lawyer{
- .el-collapse-item.is-active{
-   >div:first-child{
-     display: none;
-   }
- }
- }
+
 // 案件认领
 .case-aside-ajrl
 {
@@ -544,4 +537,16 @@ height: 120px;
 }
  }
 
+</style>
+<style lang='scss'>
+//办理律师隐藏头部
+.caseInfoClass{
+ .lawyer{
+ .el-collapse-item.is-active{
+   >div:first-child{
+     display: none;
+   }
+ }
+ }
+ }
 </style>
