@@ -272,6 +272,7 @@ export default {
   watch: {
   },
   mounted() {
+    console.log(this.industryData)
     this.getLawyer()
     // this.getPractice()
     // this.getIndustry()
@@ -306,13 +307,12 @@ export default {
     getLawfirm() { // 获取律所
       this.getLawfirmList().then(res => {
         this.lawfirmData = res
-        console.log(this.lawfirmData)
       })
     },
     getRegion() { // 获取地区
       this.getRegionTreeData().then(res => {
         this.regionData = res
-        console.log(this.regionData)
+
         this.loading = false
       })
     },
@@ -336,7 +336,7 @@ export default {
       this.getLawyer(150)
     },
     handleClick(tab, event) {
-      console.log(tab, event)
+
     },
     filterNode(value, data) {
       if (!value) return true
