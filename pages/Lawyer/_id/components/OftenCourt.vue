@@ -146,9 +146,6 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
-// import axios from 'axios'
-// import setting from '@/plugins/setting'
 export default {
   name: 'OftenCourt',
   components: {
@@ -160,7 +157,7 @@ export default {
   data() {
     return {
       OftenCourtData: [],
-      lawyerId: 0
+      lawyerId: this.$route.params.id
     }
   },
   watch: {},

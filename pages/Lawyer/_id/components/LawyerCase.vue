@@ -3,39 +3,33 @@
     <div class="lawyer-case-select">
       <div class="lawyer-case-item">
         <p>管辖法院 :</p>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"/>
-        </el-select>
+        <treeselect
+          :options="courtData"
+          :disable-branch-nodes="true"
+          :show-count="true"
+          v-model="caseListParam.courtId"
+          placeholder="请选择管辖法院"
+        />
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
-        <!-- <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"/>
-        </el-select> -->
         <treeselect
-          :options="data"
+          :options="courtData"
           :disable-branch-nodes="true"
           :show-count="true"
+          v-model="caseListParam.industryId"
           placeholder="请选择所属行业"
         />
       </div>
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
-        <el-select v-model="practiceData.activePractice" placeholder="请选择">
-          <el-option
-            v-for="item in practiceData.practiceOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"/>
-        </el-select>
+        <treeselect
+          :options="courtData"
+          :disable-branch-nodes="true"
+          :show-count="true"
+          v-model="caseListParam.practiceAreaId"
+          placeholder="请选择所属领域"
+        />
       </div>
     </div>
     <div class="lawyer-case-filter">
@@ -45,10 +39,10 @@
       <i/>
     </div>
     <div class="lawyer-case-list">
-      <div class="lawyer-case-list-item">
+      <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link to="/case/10/info">
-          <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-          <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
+          <div class="case-item-title">{{ item.title }}<span>{{ item.endTime | dateFormat("YYYY-mm-dd") }}</span></div>
+          <p class="case-item-article">{{ item.judgmentResult }}</p>
           <div class="case-item-bottom">
             <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
             <span class="collect" @click="userCollect"><i/>收藏</span>
@@ -108,7 +102,7 @@
         <i class="classic"/>
       </div>
     </div>
-    <Pagination v-show="totalCount>0" :total="totalCount" :page="lawyerCaseSearch.pageIndex" :limit="lawyerCaseSearch.pageCount" @pagination="handlePageChange" />
+    <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
   </div>
 </template>
 
@@ -130,82 +124,11 @@ export default {
   },
   data() {
     return {
-      practiceData: {
-        practiceOption: [
-          {
-            label: '诉讼领域',
-            value: 0
-          }, {
-            label: '非诉讼领域',
-            value: 1
-          }
-        ],
-        activePractice: ''
-      },
-      data: [{
-        id: 1,
-        label: '民事案由',
-        children: [{
-          id: 4,
-          label: '民事案由',
-          children: [{
-            id: 13,
-            label: '民事案由'
-          }, {
-            id: 14,
-            label: '民事案由'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: '刑事案由',
-        children: [{
-          id: 5,
-          label: '公安行政管理',
-          children: [{
-            id: 13,
-            label: '民事案由'
-          }, {
-            id: 14,
-            label: '民事案由'
-          }]
-        }, {
-          id: 6,
-          label: '计划生育行政管理（计划生育）'
-        }, {
-          id: 7,
-          label: '质量监督检验检疫行政管理'
-        }, {
-          id: 8,
-          label: '农业行政管理（农业）'
-        }, {
-          id: 9,
-          label: '交通运输行政管理（交通）'
-        }, {
-          id: 10,
-          label: '专利行政管理（专利）'
-        }, {
-          id: 11,
-          label: '财政行政管理（财政）'
-        }, {
-          id: 12,
-          label: '城市综合执法'
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      },
       // 认证案例列表
       lawyerCaseList: [],
       // 筛选条件高亮
       activeIndex: 1,
       // 分页器
-      lawyerCaseSearch: {
-        pageCount: 10,
-        pageIndex: 1
-      },
-      // 应为案例length
       totalCount: 10,
       // 获取认证案例所需参数 必传
       caseListParam: {
@@ -217,17 +140,57 @@ export default {
         courtId: undefined, // 法院Id number
         caseReasonId: undefined, // 案由Id number
         lawyerId: this.$route.params.id, // 律师Id number
+        industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
         pageCount: 10, // 页目条数 number
         pageIndex: 1// 页码 number
-      }
+      },
+      // 返回案例信息
+      items: [
+        {
+          title: '宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案',
+          practiceAreaId: 0, // 领域id
+          practiceAreaName: '诉讼领域', // 领域名称
+          caseReasonId: 7, // 案由id
+          caseReasonName: '婚姻家庭纠纷', // 案由名称
+          lawyerId: 0, // 律师id
+          lawyerName: '王二', // 律师名称
+          lawfirmId: 6, // 律所id
+          lawfirmName: '京师律师事务所', // 律所名称
+          courtId: 1, // 法院id
+          courtName: '朝阳区人民法院', // 法院name
+          startTime: '2020-01-19T01:46:32.297Z', // 案例开始时间
+          endTime: '2020-01-19T01:46:32.297Z', //  案例结束时间
+          judgmentResult: '宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......' // 案例内容
+        },
+        {
+          title: '刘某与张某得婚姻家庭纠纷案件',
+          practiceAreaId: 1, // 领域id
+          practiceAreaName: '非诉讼领域', // 领域名称
+          caseReasonId: 8, // 案由id
+          caseReasonName: '家产纠纷', // 案由名称
+          lawyerId: 1, // 律师id
+          lawyerName: '李四', // 律师名称
+          lawfirmId: 7, // 律所id
+          lawfirmName: '权力律师事务所', // 律所名称
+          courtId: 2, // 法院id
+          courtName: '海淀区人民法院', // 法院name
+          startTime: '2020-01-19T01:46:32.297Z', // 案例开始时间
+          endTime: '2020-01-19T01:46:32.297Z', //  案例结束时间
+          judgmentResult: '宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......' // 案例内容
+        }
+      ],
+      // 法院数据
+      courtData: [],
+      // 行业树数据
+      industryTree: []
     }
   },
   computed: {
-
   },
   watch: {
+    // 监听检索条件
     caseListParam: {
       deep: true,
       immediate: true,
@@ -237,22 +200,44 @@ export default {
     }
   },
   created() {
-    // this.getLawyerCaseList(this.caseListParam)
-    // 行业树
-    this.getIndustryTreeData().then(res => {
-      console.log(res)
-    })
+    this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList']),
-    ...mapActions('industry', ['getIndustryTreeData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
-      this.GetLawyerCaseList(query).then(res => {
-        if (res.isSucceed) {
-          console.log('成功', res)
-        }
-      })
+      // this.GetLawyerCaseList(query).then(res => {
+      //   if (res.data.entity.isSucceed) {
+      //     this.lawyerCaseList = res.data.entity.items
+      //     // 首次加载处理法院数据
+      //     if (this.courtData.length < 0) {
+      //       this.lawyerCaseList.forEach((item, index) => {
+      //         this.courtData.push({
+      //           id: item.courtId,
+      //           label: item.courtName
+      //         })
+      //       })
+      //     }
+      //     // 首次加载处理行业树数据
+      //     if (this.industryTree.length < 0) {
+      //       this.lawyerCaseList.forEach((item, index) => {
+      //         this.industryTree.push({
+
+      //         })
+      //       })
+      //     }
+      //   }
+      // })
+      this.lawyerCaseList = this.items
+      if (this.courtData.length <= 0) {
+        this.lawyerCaseList.forEach((item, index) => {
+          this.courtData.push({
+            id: item.courtId,
+            label: item.courtName
+          })
+        })
+      }
+      console.log(this.courtData)
     },
     // 改变排序状态
     filterChange(type) {
@@ -329,6 +314,46 @@ export default {
       }
       .is-reverse {
         background: #f68020;
+      }
+      .vue-treeselect {
+        outline: 0;
+      }
+      .vue-treeselect__control{
+        padding-left: 5px;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        width: 280px;
+        height: 30px;
+        line-height: 30px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        background: #fff;
+        -webkit-transition-duration: 200ms;
+        transition-duration: 200ms;
+        -webkit-transition-property: border-color, box-shadow, width, height, background-color, opacity;
+        transition-property: border-color, box-shadow, width, height, background-color, opacity;
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
+      }
+      .vue-treeselect__menu-container {
+        width: 280px;
+      }
+      .vue-treeselect__placeholder {
+        font-size: 14px;
+        line-height: 30px
+      }
+      .vue-treeselect__control-arrow-container {
+        position: relative;
+        left: 5px;
+        width: 30px;
+        height: 30px;
+        background: #f68020
+      }
+      .vue-treeselect__control-arrow--rotated{
+        .vue-treeselect__control-arrow-container {
+          background: #eee
+        }
       }
     }
   }

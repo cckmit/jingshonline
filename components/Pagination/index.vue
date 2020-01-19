@@ -82,12 +82,46 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pagination-container {
   background: #fff;
   padding: 32px 16px;
+  text-align: center;
+  &.hidden{
+   display: none;
+  }
 }
-.pagination-container.hidden {
-  display: none;
+</style>
+<style lang="scss">
+.el-pagination{
+  font-weight: 400;
+  &.is-background{
+    .el-pager{
+      li:not(.disabled){
+        &.active{
+          background-color: #F68020;
+        }
+        &:hover{
+          color: #f68020;
+        }
+      }
+    }
+  }
 }
+.el-select-dropdown__item{
+  &.selected{
+    color: #F68020;
+  }
+}
+.el-pagination__sizes,.el-pagination__jump{
+  .el-input{
+    &.is-focus,&:hover,&:focus{
+      .el-input__inner{
+        border-color: #F68020;
+      }
+    }
+
+  }
+}
+
 </style>

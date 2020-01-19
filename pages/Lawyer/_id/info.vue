@@ -57,9 +57,6 @@ export default {
   components: {
     LawyerDetail
   },
-  props: {
-
-  },
   head() {
     return {
       title: '律师详情',
@@ -102,6 +99,7 @@ export default {
         id: 0, // 律师Id
         realName: '', // 真实姓名
         email: '', // 邮箱
+        phone: '15607021980', // 律师电话 缺少返回信息
         lawfirmName: '', // 律所
         avatarPathId: null, // 头像路径Id
         avatar: '', // 头像路径
@@ -114,7 +112,7 @@ export default {
         isDirector: true, // 是否为主任律师
         regionName: '', // 地区 天津-和平区
         highestDegree: '', // 最高学位
-        status: 2, // 律师目前状态 0-未审核  1 审核通过 2 审核未通过   3 已冻结
+        status: 0, // 律师目前状态 0-未审核  1 审核通过 2 审核未通过   3 已冻结
         followerCount: 0, // 关注人数（关注度）
         clickCount: 0, // 律师浏览量
         caseCount: 0, // 案例总数
@@ -122,20 +120,18 @@ export default {
         practiceareas: [], // 律师擅长领域 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
         industries: [] // 律师擅长行业 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
       }
-
     }
   },
   computed: {
-
   },
   watch: {
-
   },
   mounted() {
-
+    // this.GetLawyerInfo(10).then(res => {
+    //   console.log(res)
+    // })
   },
   methods: {
-
   }
 }
 </script>

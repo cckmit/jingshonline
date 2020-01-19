@@ -7,7 +7,7 @@
       </el-breadcrumb>
       <el-row class="bgf tabselect">
         <el-col :span="24">
-          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="诉讼领域" name="first">
               <ul >
                 <li v-for="(items,index) in suitsData" :key="index">
@@ -306,13 +306,12 @@ export default {
     getLawfirm() { // 获取律所
       this.getLawfirmList().then(res => {
         this.lawfirmData = res
-        console.log(this.lawfirmData)
       })
     },
     getRegion() { // 获取地区
       this.getRegionTreeData().then(res => {
         this.regionData = res
-        console.log(this.regionData)
+
         this.loading = false
       })
     },
@@ -334,9 +333,6 @@ export default {
       this.lawyerSearch.pageCount = val.limit
       this.loading = true
       this.getLawyer(150)
-    },
-    handleClick(tab, event) {
-      console.log(tab, event)
     },
     filterNode(value, data) {
       if (!value) return true
