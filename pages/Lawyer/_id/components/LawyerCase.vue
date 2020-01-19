@@ -182,7 +182,10 @@ export default {
         }
       ],
       // 法院数据
-      courtData: [],
+      courtData: [
+        { id: 1, label: '朝阳区人民法院' },
+        { id: 1, label: '朝阳区人民法院', children: [{ id: 11, label: '高碑店法院', children: [{ id: 111, label: '高级人民法院' }] }] }
+      ],
       // 行业树数据
       industryTree: []
     }
@@ -210,7 +213,7 @@ export default {
       //   if (res.data.entity.isSucceed) {
       //     this.lawyerCaseList = res.data.entity.items
       //     // 首次加载处理法院数据
-      //     if (this.courtData.length < 0) {
+      //     if (this.courtData.length <= 0) {
       //       this.lawyerCaseList.forEach((item, index) => {
       //         this.courtData.push({
       //           id: item.courtId,
@@ -219,7 +222,7 @@ export default {
       //       })
       //     }
       //     // 首次加载处理行业树数据
-      //     if (this.industryTree.length < 0) {
+      //     if (this.industryTree.length <= 0) {
       //       this.lawyerCaseList.forEach((item, index) => {
       //         this.industryTree.push({
 
@@ -318,7 +321,12 @@ export default {
       .vue-treeselect {
         outline: 0;
       }
+      .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+        border-color: none;
+        box-shadow: none;
+      }
       .vue-treeselect__control{
+        outline: none;
         padding-left: 5px;
         display: table;
         table-layout: fixed;
@@ -336,7 +344,11 @@ export default {
         -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
         transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
       }
+      .vue-treeselect__input {
+        font-size: 14px;
+      }
       .vue-treeselect__menu-container {
+        font-size: 14px;
         width: 280px;
       }
       .vue-treeselect__placeholder {
@@ -348,11 +360,11 @@ export default {
         left: 5px;
         width: 30px;
         height: 30px;
-        background: #f68020
+        background:#f2f2f2
       }
-      .vue-treeselect__control-arrow--rotated{
+      .vue-treeselect--open {
         .vue-treeselect__control-arrow-container {
-          background: #eee
+          background: #f68020
         }
       }
     }
