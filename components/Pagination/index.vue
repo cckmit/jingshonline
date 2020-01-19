@@ -108,5 +108,20 @@ export default {
     }
   }
 }
+.el-select-dropdown__item{
+  &.selected{
+    color: #F68020;
+  }
+}
+.el-pagination__sizes,.el-pagination__jump{
+  .el-input{
+    &.is-focus,&:hover,&:focus{
+      .el-input__inner{
+        border-color: #F68020;
+      }
+    }
+
+  }
+}
 
 </style>

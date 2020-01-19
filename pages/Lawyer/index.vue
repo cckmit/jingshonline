@@ -7,18 +7,18 @@
       </el-breadcrumb>
       <el-row class="bgf tabselect">
         <el-col :span="24">
-          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+          <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="诉讼领域" name="first">
               <ul >
                 <li v-for="(items,index) in suitsData" :key="index">
-                  <span v-if="items.children.length===0" @click="suits(items.id,items.name)">
+                  <span v-if="items.children.length===0" @click="practice(items.id,items.name)">
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="suits(item.id,item.name)">{{ item.name }}</li>
+                      <li v-for="(item,index) in items.children" :key="index" @click="practice(item.id,item.name)">{{ item.name }}</li>
                     </ul>
-                    <el-button slot="reference" @click="suits(items.id,items.name)">{{ items.name }}</el-button>
+                    <el-button slot="reference" @click="practice(items.id,items.name)">{{ items.name }}</el-button>
                   </el-popover>
                 </li>
               </ul>
@@ -26,14 +26,14 @@
             <el-tab-pane label="非诉领域" name="second">
               <ul>
                 <li v-for="(items,index) in NosuitsData" :key="index">
-                  <span v-if="items.children.length===0" @click="nosuits(items.id,items.name)">
+                  <span v-if="items.children.length===0" @click="practice(items.id,items.name)">
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="nosuits(item.id,item.name)">{{ item.name }}</li>
+                      <li v-for="(item,index) in items.children" :key="index" @click="practice(item.id,item.name)">{{ item.name }}</li>
                     </ul>
-                    <el-button slot="reference" @click="nosuits(items.id,items.name)">{{ items.name }}</el-button>
+                    <el-button slot="reference" @click="practice(items.id,items.name)">{{ items.name }}</el-button>
                   </el-popover>
                 </li>
               </ul>
@@ -62,7 +62,7 @@
         <p>检索律师</p>
         <div>
           <el-input v-model="lawyerSearch.lawyerName" size="small" clearable placeholder="请输入所要查询的律师姓名"/>
-          <img src="../../assets/lawyer/search.png" alt="" >
+          <img src="../../assets/lawyer/search.png" alt="" @click="selectname">
         </div>
       </div>
       <div class="bgf tree_left">
@@ -77,8 +77,9 @@
           node-key="id"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
+          @node-click="region"
         >
-          <div slot-scope="{ node,data }" class="tree_tools" @click="region(data.id,data.name)">
+          <div slot-scope="{ node }" class="tree_tools" >
             <span>{{ node.data.name }}</span>
           </div>
         </el-tree>
@@ -172,8 +173,8 @@
                   <p>浏览：<span>222</span></p>
                   <p>关注：<span>333</span></p>
                   <div>
-                    <div><img src="../../assets/lawyer/collection.png" alt="">收藏</div>
-                    <div><img src="../../assets/lawyer/share.png" alt="">分享</div>
+                    <div><img src="../../assets/lawyer/collection.png" alt="" @click="collection()">收藏</div>
+                    <div><img src="../../assets/lawyer/share.png" alt="" @click="share()">分享</div>
                   </div>
                 </div>
               </div>
@@ -243,13 +244,12 @@ export default {
       yearend: '', // 年限结束时间
       sortactive: 'active', // 默认排序class
       caseactive: '', // 案例总数排序class
-      sortnum: 0, // 默认排序点击次数
-      casesortnum: 1, // 案例排序点击次数
       selectindustryData: [], // 筛选行业数据
       selectsuitsData: [], // 筛选诉讼领域数据
       selectnosuitsData: [], // 筛选非诉领域数据
       selectregionData: [], // 筛选地区数据
       selectlawfirmData: [], // 筛选律所数据
+      selectnameData: [], // 律师姓名数据
       selectData: [], // 筛选条件数据
       addData: false, // 是否已筛选
       suitsData: [], // 诉讼领域数据
@@ -258,7 +258,7 @@ export default {
       lawfirmData: [], // 律所数据
       regionData: [], // 地区数据
       lawyerData: [],
-      totalCount: 0,
+      totalCount: 1,
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -272,8 +272,7 @@ export default {
   watch: {
   },
   mounted() {
-    console.log(this.industryData)
-    this.getLawyer()
+    // this.getLawyer()
     // this.getPractice()
     // this.getIndustry()
     // this.getLawfirm()
@@ -335,9 +334,6 @@ export default {
       this.loading = true
       this.getLawyer(150)
     },
-    handleClick(tab, event) {
-
-    },
     filterNode(value, data) {
       if (!value) return true
       return data.name.indexOf(value) !== -1
@@ -346,31 +342,32 @@ export default {
       this.lawyerSearch.industryId = id
       this.selectindustryData = {
         id: id,
-        name: name
+        name: '擅长行业：' + name
       }
       this.comparesigle()
     },
-    suits(id, name) {
+    practice(id, name) {
       this.lawyerSearch.practiceAreaId = id
       this.selectsuitsData = {
         id: id,
-        name: name
+        name: '专业领域：' + name
       }
       this.comparesigle()
     },
-    nosuits(id, name) {
-      this.lawyerSearch.practiceAreaId = id
-      this.selectnosuitsData = {
-        id: id,
-        name: name
-      }
-      this.comparesigle()
-    },
-    region(id, name) {
-      this.lawyerSearch.regionId = id
+    // nosuits(id, name) {
+    //   this.lawyerSearch.practiceAreaId = id
+    //   this.selectnosuitsData = {
+    //     id: id,
+    //     name: '非诉领域:' + name
+    //   }
+    //   this.comparesigle()
+    // },
+    region(data) {
+      console.log(data)
+      this.lawyerSearch.regionId = data.id
       this.selectregionData = {
-        id: id,
-        name: name
+        id: data.id,
+        name: '所在城市：' + data.name
       }
       this.comparesigle()
     },
@@ -378,7 +375,7 @@ export default {
       this.lawyerSearch.lawfirmId = id
       this.selectlawfirmData = {
         id: id,
-        name: name
+        name: '所属律所：' + name
       }
       this.comparesigle()
       // this.compareData({ id: id, name: name })
@@ -388,6 +385,13 @@ export default {
       //     { id: id, name: name }
       //   )
       // }
+    },
+    selectname() {
+      this.selectlawfirmData = {
+        id: 0,
+        name: '姓名：' + this.lawyerSearch.lawyerName
+      }
+      this.comparesigle()
     },
     compareData(data) { // 多选比对方法
       this.addData = false
@@ -408,14 +412,17 @@ export default {
       if (this.selectsuitsData.length !== 0) {
         this.selectData.push(this.selectsuitsData)
       }
-      if (this.selectnosuitsData.length !== 0) {
-        this.selectData.push(this.selectnosuitsData)
-      }
+      // if (this.selectnosuitsData.length !== 0) {
+      //   this.selectData.push(this.selectnosuitsData)
+      // }
       if (this.selectregionData.length !== 0) {
         this.selectData.push(this.selectregionData)
       }
       if (this.selectlawfirmData.length !== 0) {
         this.selectData.push(this.selectlawfirmData)
+      }
+      if (this.selectnameData.length !== 0) {
+        this.selectData.push(this.selectnameData)
       }
     },
     selectdelete(data) {
@@ -439,30 +446,38 @@ export default {
       this.lawyerSearch.industryId = ''
     },
     sortselect() { // 默认排序
-      this.sortnum += 1
-      if (this.sortnum % 2 === 0) {
+      if (this.sortactive === '') {
         this.sortactive = 'active'
         this.lawyerSearch.sorting = 1
+        // 删除按照案例数排序class
+        this.caseactive = ''
       } else {
         this.sortactive = ''
         this.lawyerSearch.sorting = ''// 待完善
       }
     },
     caseselect() { // 按照案例数排序
-      this.casesortnum += 1
-      if (this.casesortnum % 2 === 0) {
+      if (this.caseactive === '') {
         this.caseactive = 'active'
         this.lawyerSearch.sorting = 2
+        // 删除默认排序class
+        this.sortactive = ''
       } else {
         this.caseactive = ''
         this.lawyerSearch.sorting = ''// 待完善
       }
+    },
+    collection() { // 收藏
+
+    },
+    share() { // 分享
+
     }
   }
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
   .title{
   height:60px;
   font-size: 14px;
@@ -470,39 +485,6 @@ export default {
   color:#999;
   b{
     color: #666;
-  }
-}
-.tabselect{
-  .el-tabs__item{
-    padding: 10px 35px;
-    height: 50px;
-    font-size: 16px;
-  }
-  .el-tabs__item.is-active{
-    color:#f68020;
-    background:#fff;
-    margin-bottom: -2px;
-  }
-  .el-tabs__nav-scroll{
-    background: #fffdfb;
-    border-bottom: 1px solid #feecde;
-  }
-  .el-tab-pane{
-    ul{
-      padding: 10px 20px 20px 20px;
-      li{
-        display: inline-block;
-        padding: 10px 15px;
-        cursor: pointer;
-        button{
-          border:none;
-          font-size: 16px;
-          color:#333;
-          font-weight: 400;
-          padding: 10px 15px;
-        }
-      }
-    }
   }
 }
 
@@ -539,9 +521,6 @@ ul{
       width:215px;
       margin: 20px 0px;
     }
-    .el-input--small .el-input__inner{
-      height:40px;
-    }
     img{
       float: left;
       margin: 20px 0px;
@@ -562,12 +541,8 @@ ul{
       line-height: 50px;
       height:50px;
       border-bottom: 1px solid #ddd;
-      font-size: 16px;
+      font-size: 14px;
     }
-  }
-  .el-tree-node__content{
-    height:40px;
-    border-bottom: 1px dotted #ddd;
   }
 }
 .selectend{
@@ -636,13 +611,6 @@ ul{
           margin-right: 8px;
           font-weight: 400;
         }
-        .el-input{
-          display: inline-block;
-          width:50px;
-        }
-        .el-input--small .el-input__inner{
-          height:20px;
-        }
         text{
           display: inline-block;
         }
@@ -656,7 +624,6 @@ ul{
   }
   >p{
     float: right;
-    font-size: 15px;
     b{
       color:#de2121;
     }
@@ -720,6 +687,7 @@ ul{
             p{
               padding-top: 30px;
               font-size: 16px;
+              margin-bottom: 10px;
               img{
                 margin-right: 5px;
               }
@@ -735,7 +703,7 @@ ul{
               padding: 0px 15px;
               li{
                 margin: 10px 0px;
-                font-size: 14px;
+                font-size: 16px;
                 span{
                   color:#999;
                 }
@@ -795,6 +763,71 @@ ul{
           }
         }
       }
+    }
+  }
+}
+</style>
+<style lang='scss'>
+.tabselect{
+  .el-tabs__item{
+    padding: 10px 35px;
+    height: 50px;
+    font-size: 16px;
+  }
+  .el-tabs__item.is-active{
+    color:#f68020;
+    background:#fff;
+    margin-bottom: -2px;
+  }
+  .el-tabs__nav-scroll{
+    background: #fffdfb;
+    border-bottom: 1px solid #feecde;
+  }
+  .el-tab-pane{
+    ul{
+      padding: 10px 20px 20px 20px;
+      li{
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+        button{
+          border:none;
+          font-size: 16px;
+          color:#333;
+          font-weight: 400;
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+}
+
+.select-input{
+  div{
+    .el-input--small .el-input__inner{
+      height:40px;
+    }
+  }
+}
+.tree_left{
+  .el-tree-node__content{
+    height:40px;
+    border-bottom: 1px dotted #ddd;
+  }
+}
+.selectsort{
+  .alreadyselect{
+    li{
+      .el-input{
+          display: inline-block;
+          width:50px;
+        }
+        .el-input--small .el-input__inner{
+          height:20px;
+        }
+        .el-input__inner{
+          padding: 0px;
+        }
     }
   }
 }
