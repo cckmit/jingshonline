@@ -1,7 +1,7 @@
 <template>
-  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:30px">
+  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:75px">
     <el-row class="case caseClass">
-      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item >查找案例</el-breadcrumb-item>
       </el-breadcrumb>
@@ -376,6 +376,9 @@ span {
 	margin-left: 10px;
 	font-size: 14px;
 }
+.el-tag--plain{
+  border:none  !important;
+}
     }
 
 .case-content-titleBot {
@@ -445,13 +448,7 @@ li:hover {
 }
 }
 }
-//分页
-.pagination-container[data-v-7df3ee10] {
-	background: #f2f2f2;
-}
-.el-pagination.is-background .el-pager li:not(.disabled).active{
-  background: #f68020;
-}
+
  }
 
 </style>

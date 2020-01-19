@@ -1,7 +1,7 @@
 <template>
-  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-top:30px">
+  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:120px">
     <el-row class="case-id caseInfoClass">
-      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{path:'/case'}" >查找案例</el-breadcrumb-item>
         <el-breadcrumb-item >案例详情</el-breadcrumb-item>
@@ -283,8 +283,7 @@ export default {
     },
     request() {
       this.getCaseInfoData(this.caseId).then(res => {
-        this.caseInfoData = res.data.entity
-        console.log(this.caseInfoData)
+        this.caseInfoData = res
         this.loading = false
       })
     },
