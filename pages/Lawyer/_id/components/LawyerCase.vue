@@ -34,7 +34,7 @@
     </div>
     <div class="lawyer-case-filter">
       <span :class="activeIndex === 1 ? 'filter-active' : ''" @click="filterChange('time')">更新时间</span>
-      <span :class="activeIndex === 2 ? 'filter-active' : ''" @click="filterChange('people')">访问人数</span>
+      <span :class="activeIndex === 2 ? 'filter-active' : ''" @click="filterChange('visitor')">访问人数</span>
       <span :class="activeIndex === 3 ? 'filter-active' : ''" @click="filterChange('count')">收藏数量</span>
       <i/>
     </div>
@@ -247,7 +247,7 @@ export default {
       if (type === 'time') {
         this.activeIndex = 1
       }
-      if (type === 'people') {
+      if (type === 'visitor') {
         this.activeIndex = 2
       }
       if (type === 'count') {
