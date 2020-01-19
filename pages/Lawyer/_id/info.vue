@@ -127,6 +127,9 @@ export default {
   watch: {
   },
   mounted() {
+    // this.GetLawyerInfo(10).then(res => {
+    //   console.log(res)
+    // })
   },
   methods: {
   }
