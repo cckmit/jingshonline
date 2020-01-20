@@ -10,7 +10,7 @@
       <el-col v-bind="caseInfoData" class="case-content case-border">
         <!-- 概要信息 -->
         <div class="case-content-title">
-          <span class="case-title"><i class="titleIcon"/> 概要信息</span>
+          <span id="info" class="case-title"><i class="titleIcon"/> 概要信息</span>
           <p style="float:right">更新时间：<span class="case-font-hover"> {{ caseInfoData.updateTime }}</span></p>
         </div>
         <!-- 案件信息 -->
@@ -36,7 +36,7 @@
         <div class="case-content-main">
           <el-form ref="form" label-width="0">
             <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 当事人信息</p>
+              <p id="client" class="case-title"><i class="titleIcon"/> 当事人信息</p>
               <p>
                 原告毕某某，男，汉族，42岁。
                 原告张某甲，男，汉族，49岁。
@@ -55,7 +55,7 @@
               </p>
             </el-form-item>
             <el-form-item>
-              <p class="case-title"><i class="titleIcon"/>审理经过</p>
+              <p id="after" class="case-title"><i class="titleIcon"/>审理经过</p>
               <p>
                 审理经过
                 原告毕某某、张某甲、张某乙不服被告漯河市环境保护局（以下简称市环保局）作出的环境管理行政审批具体行政行为一案，于2015年2月16日向本院提起行政诉讼。因漯河华泰置业集团有限公司（以下简称漯河华泰公司）、河南蓝森环保科技有限公司（以下简称河南蓝森公司）与被诉具体行政行为有法律上的利害关系，根据《中华人民共和国行政诉讼法》第二十九条之规定，本院依法通知上述两单位作为本案第三人参加诉讼。本院依法组成合议庭，公开开庭进行了审理。原告毕某某、张某甲、张某乙及其委托代理人谢鹏辉、朱晓彬，被告市环保局的委托代理人郭剑锋，第三人漯河华泰公司的委托代理人梁某某，第三人河南蓝森公司的委托代理人钟某某、薛某某到庭参加诉讼。本案现已审理终结。
@@ -108,7 +108,7 @@
               </p>
             </el-form-item>
             <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 裁判结果</p>
+              <p id="result" class="case-title"><i class="titleIcon"/> 裁判结果</p>
               <p>
                 被告漯河市环境保护局于2013年7月15日作出的关于《漯河华泰置业集团有限公司新建华泰龙庭首府项目环境影响报告书》的审批意见程序轻微违法，但不予撤销该行政行为。
                 如不服本判决，可在判决书送达之日起十五日内，向本院递交上诉状，并按对方当事人或代表人的人数提出副本，上诉于河南省漯河市中级人民法院。
@@ -228,6 +228,7 @@
         </div>
       </el-col>
     </el-row>
+    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" />
   </div>
 </template>
 
@@ -235,6 +236,7 @@
 import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
+import ExtraWrap from '@/components/ExtraWrap'
 export default {
   layout: 'case',
   head() {
@@ -246,6 +248,7 @@ export default {
     }
   },
   components: {
+    ExtraWrap
   },
 
   data() {
@@ -254,7 +257,17 @@ export default {
       caseId: 0,
       isShow: true,
       activeNames: ['1'],
-      caseInfoData: []
+      caseInfoData: [],
+      activities: [{
+        id: 'info',
+        title: '活动按期开始'
+      }, {
+        id: 'after',
+        title: '通过审核'
+      }, {
+        id: 'result',
+        title: '创建成功'
+      }]
     }
   },
   async asyncData({ params }) {
