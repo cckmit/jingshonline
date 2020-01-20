@@ -84,8 +84,6 @@ export default {
 
 <style lang="scss" scoped>
 .pagination-container {
-  background: #fff;
-  padding: 32px 16px;
   text-align: center;
   &.hidden{
    display: none;
