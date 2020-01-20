@@ -61,7 +61,8 @@ module.exports = {
     { src: '~plugins/echarts', ssr: false },
     { src: '~plugins/filters', ssr: false },
     { src: '~utils/validate', ssr: false },
-    { src: '~utils/index', ssr: false }
+    { src: '~utils/index', ssr: false },
+    { src: '~/plugins/vue-clipboard2', ssr: false }
   ],
   env: {
     baseUrl: 'http://gateway.dev.jingshonline.net'

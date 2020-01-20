@@ -84,8 +84,6 @@ export default {
 
 <style lang="scss" scoped>
 .pagination-container {
-  background: #fff;
-  padding: 32px 16px;
   text-align: center;
   &.hidden{
    display: none;
@@ -112,9 +110,6 @@ export default {
   &.selected{
     color: #F68020;
   }
-}
-.el-select .el-input__inner:focus {
-  border-color: #F68020
 }
 .el-pagination__sizes,.el-pagination__jump{
   .el-input{
