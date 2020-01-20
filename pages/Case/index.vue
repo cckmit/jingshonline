@@ -89,8 +89,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" />
-    <!-- <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" @download="download" @collection="collectionCase" /> -->
+    <ExtraWrap :plugins="'collection,error,qrcode,totop,share'" :top="100" :left="300" @collection="collectionCase"/>
 
   </div>
 </template>
