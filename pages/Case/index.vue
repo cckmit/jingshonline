@@ -64,20 +64,20 @@
             <li class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/1/info`">
                 <div class="case-content-top">
-                  <p>邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
+                  <p> item.title 邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
                   <p>
-                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：重庆市第二中级人民法院</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：行政征收</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：无所属行业</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：政府</el-col>
+                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：item.lawfirmName重庆市第二中级人民法院</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：item.caseReasonName行政征收</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：item.lawyerName无所属行业</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：item.practiceAreaName政府</el-col>
                   </p>
                   <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                  <p><span>【结果命中】</span>本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
+                  <p><span>【结果命中】</span>item.judgmentResult本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
                 <span class="cursorPointer" @click="collectionCase()"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
-                <span><i class="el-icon-time"/>2016-8-9</span>
+                <span><i class="el-icon-time"/>item.endTime2016-8-9</span>
                 <span>（2015）渝二中法行终字第00085号</span>
               </div>
               <img src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
