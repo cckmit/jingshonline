@@ -136,7 +136,7 @@ export default {
       // 法院数据
       courtData: [
         { id: 1, label: '朝阳区人民法院' },
-        { id: 1, label: '朝阳区人民法院', children: [{ id: 11, label: '高碑店法院', children: [{ id: 111, label: '高级人民法院' }] }] }
+        { id: 2, label: '海淀区人民法院', children: [{ id: 11, label: '高碑店法院', children: [{ id: 111, label: '高级人民法院' }] }] }
       ],
       // 行业树数据
       industryTree: []
@@ -150,6 +150,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val) {
+        console.log('刷新检索条件:', val)
         // this.getLawyerCaseList(val)
       }
     }
@@ -192,18 +193,20 @@ export default {
           })
         })
       }
-      console.log(this.courtData)
     },
     // 改变排序状态
     filterChange(type) {
       if (type === 'time') {
         this.activeIndex = 1
+        this.caseListParam.sorting = 'time'
       }
       if (type === 'visitor') {
         this.activeIndex = 2
+        this.caseListParam.sorting = 'visitor'
       }
       if (type === 'count') {
         this.activeIndex = 3
+        this.caseListParam.sorting = 'count'
       }
     },
     // 翻页操作

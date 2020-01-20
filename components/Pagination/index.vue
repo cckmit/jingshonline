@@ -113,6 +113,9 @@ export default {
     color: #F68020;
   }
 }
+.el-select .el-input__inner:focus {
+  border-color: #F68020
+}
 .el-pagination__sizes,.el-pagination__jump{
   .el-input{
     &.is-focus,&:hover,&:focus{
