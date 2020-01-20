@@ -89,6 +89,9 @@
         </div>
       </el-col>
     </el-row>
+    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" />
+    <!-- <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" @download="download" @collection="collectionCase" /> -->
+
   </div>
 </template>
 
@@ -97,6 +100,7 @@ import Pagination from '@/components/Pagination/index'
 import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
+import ExtraWrap from '@/components/ExtraWrap'
 export default {
   layout: 'case',
   head() {
@@ -108,7 +112,8 @@ export default {
     }
   },
   components: {
-    Pagination
+    Pagination,
+    ExtraWrap
   },
   data() {
     return {
@@ -366,90 +371,89 @@ export default {
   background-color: #fff;
 	padding: 0 20px;
 	.case-content-titleTop{
-  color: #999999;
-	letter-spacing: 1px;
-	height: 50px;
-	line-height: 50px;
-	font-size: 14px;
-span {
-	color: #666666;
-	letter-spacing: 1px;
-	margin-left: 10px;
-	font-size: 14px;
-}
-.el-tag--plain{
-  border:none  !important;
-}
+    color: #999999;
+    letter-spacing: 1px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    span {
+      color: #666666;
+      letter-spacing: 1px;
+      margin-left: 10px;
+      font-size: 14px;
     }
+      .el-tag--plain{
+        border:none  !important;
+      }
+  }
 
-.case-content-titleBot {
-	color: #666666;
-	line-height: 50px;
-	font-size: 14px;
-	span{
-    margin-right: 45px;
-}
+  .case-content-titleBot {
+    color: #666666;
+    line-height: 50px;
+    font-size: 14px;
+    span{
+      margin-right: 45px;
     }
+  }
   }
 
 .case-content-main {
 	margin-top: 16px;
 	ul {
     li{
-  display: block;
-	list-style-type: none;
-	width: auto;
-	margin: 0 auto;
-	margin-top: 16px;
-	border-bottom: 4px solid rgba(217, 217, 217, 0.3);
-	background-color: #fff;
-	.case-content-top{
-   padding: 30px;
-}
+      display: block;
+      list-style-type: none;
+      width: auto;
+      margin: 0 auto;
+      margin-top: 16px;
+      border-bottom: 4px solid rgba(217, 217, 217, 0.3);
+      background-color: #fff;
+      .case-content-top{
+        padding: 30px;
+      }
 
-p {
-	color: #333333;
-	font-size: 14px;
-	line-height: 28px;
-	margin-bottom: 20px;
-	span{
-  display: block
-}
-    }
-
-p:nth-child(1) {
-	letter-spacing: 1px;
-	font-size: 18px;
-}
-
-p:nth-child(2) {
-	color: #999999;
-	font-size: 14px;
-	padding: 0 20px;
-}
+    p{
+      color: #333333;
+      font-size: 14px;
+      line-height: 28px;
+      margin-bottom: 20px;
+      span{
+        display: block
       }
     }
-/*鼠标移入样式改变*/
-li:hover {
-	border-bottom: 4px solid #f68020
-}
+
+    p:nth-child(1) {
+      letter-spacing: 1px;
+      font-size: 18px;
+    }
+
+    p:nth-child(2) {
+      color: #999999;
+      font-size: 14px;
+      padding: 0 20px;
+    }
+      }
+    }
+    /*鼠标移入样式改变*/
+    li:hover {
+      border-bottom: 4px solid #f68020
+    }
   }
 
-.case-content-bottom {
-	height: 29px;
-	line-height: 29px;
-	background-color: #fbfbfb;
-	box-shadow: 0px -1px 0px 0px
-		rgba(0, 0, 0, 0.05);
-	font-size: 12px;
-	color: #666666;
-	span{
-   float: right;
-	margin-right: 20px;
-}
-}
+  .case-content-bottom {
+    height: 29px;
+    line-height: 29px;
+    background-color: #fbfbfb;
+    box-shadow: 0px -1px 0px 0px
+      rgba(0, 0, 0, 0.05);
+    font-size: 12px;
+    color: #666666;
+    span{
+    float: right;
+      margin-right: 20px;
+    }
+  }
 }
 
- }
-
+}
 </style>
