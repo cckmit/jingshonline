@@ -125,7 +125,7 @@
       </div>
       <ul class="lawyerlist">
         <li>
-          <nuxt-link :to="`/lawyer/5/info`">
+          <nuxt-link :to="`/lawyer/7/info`">
             <img src="../../assets/lawyer/lawyer_auth.png" alt="">
             <div class="lawyerlist_lf">
               <img src="../../assets/lawyer/avatar.png" alt="">

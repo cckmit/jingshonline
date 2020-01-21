@@ -76,11 +76,11 @@ export default {
       lawyerInformation: LawyerInformation.data.entity,
       // 律师简历数据
       resumeData: {
-        workExperiences: resume.workExperiences ? resume.workExperiences : [],
-        socialPositions: resume.socialPositions ? resume.socialPositions : [],
-        educations: resume.educations ? resume.educations : [],
-        certificates: resume.certificates ? resume.certificates : [],
-        academics: resume.academics ? resume.academics : []
+        workExperiences: resume.workExperiences,
+        socialPositions: resume.socialPositions,
+        educations: resume.educations,
+        certificates: resume.certificates,
+        academics: resume.academics
       }
     }
   },
