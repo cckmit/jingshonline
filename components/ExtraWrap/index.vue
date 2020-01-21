@@ -101,6 +101,14 @@ export default {
     catalogData: {
       type: Array,
       default: () => {}
+    },
+    copySuccessMessage: {
+      type: String,
+      default: '连接地址复制成功'
+    },
+    copyErrorMessage: {
+      type: String,
+      default: '复制失败'
     }
   },
   data() {
@@ -158,10 +166,16 @@ export default {
     copy() {
       this.$copyText(this.url).then(e => {
         this.$notify({
-          message: '连接地址复制成功',
+          message: this.copySuccessMessage,
           type: 'success'
         })
         console.log(e)
+      }).catch(error => {
+        this.$notify({
+          message: this.copyErrorMessage,
+          type: 'error'
+        })
+        console.log(error)
       })
     },
     doCollection() {
