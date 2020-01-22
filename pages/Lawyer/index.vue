@@ -347,7 +347,7 @@ export default {
       this.multiple('lawfirm', { id: id, name: '所属律所：' + name })
     },
     selectname() {
-      this.multiple('lawyerName', { id: 0, name: '姓名：' + this.lawyerSearch.lawyerName })
+      this.multiple('lawyerName', { id: '0', name: '姓名：' + this.lawyerSearch.lawyerName })
     },
     multiple(type, data) { // 添加筛选方法
       // 多选
