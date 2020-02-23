@@ -45,9 +45,9 @@
         </nuxt-link>
         <p class="case-item-article">{{ item.judgmentResult }}</p>
         <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect" @click="userCollect(index)"><i :class="item.isCollect ? 'el-icon-star-on' : 'el-icon-star-off'">收藏</i></span>
-          <span class="share" @click="userShare"><i/>分享</span>
+          <span :class="'ischeck'? 'check-active':'check'" class="no-select" >已审核</span>
+          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isCollect ? 'el-icon-star-on' : 'el-icon-star-off'">收藏</i></span>
+          <span class="share no-select" @click="userShare"><i/>分享</span>
         </div>
         <i class="classic"/>
       </div>
@@ -150,7 +150,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val) {
-        console.log('刷新检索条件:', val)
+        // console.log('刷新检索条件:', val)
         // this.getLawyerCaseList(val)
       }
     }
@@ -162,6 +162,9 @@ export default {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
+      this.GetLawyerCaseList(query).then(res => {
+        console.log(res)
+      })
       // this.GetLawyerCaseList(query).then(res => {
       //   if (res.data.entity.isSucceed) {
       //     this.lawyerCaseList = res.data.entity.items
@@ -226,6 +229,21 @@ export default {
 </script>
 
 <style lang="scss">
+.no-select{
+
+  -webkit-touch-callout: none; /* iOS Safari */
+
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+
+  -khtml-user-select: none; /* Konqueror */
+
+  -moz-user-select: none; /* Firefox */
+
+  -ms-user-select: none; /* Internet Explorer/Edge */
+
+  user-select: none; /* Non-prefixed version, currently not supported by any browser */
+
+}
 .lawyer-case{
   .pagination-container {
     background: #f2f2f2;
@@ -424,6 +442,7 @@ export default {
           border-radius: 5px;
         }
         .collect {
+          user-select: none;
           .el-icon-star-off:before {
             margin-right: 6px;
           }
