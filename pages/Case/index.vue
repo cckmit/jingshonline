@@ -53,10 +53,16 @@
               <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
             </el-col>
           </el-row>
-          <div class="case-content-titleBot">
-            <span :class="{hover : isSortHover }" class="cursorPointer" @click="getSortCaseData(1)"> 默认排序<i class="el-icon-sort"/></span><span style="display: inline-block;width: 1px;height: 12px;background-color: #cccccc;"/><span :class="{hover : !isSortHover }" class="cursorPointer" @click="getSortCaseData(2)">裁判日期<i class="el-icon-sort"/></span>
-            <p style="float:right">当前条件共找到 <i class="case-font-hover">{{ totalCount }}</i>个结果</p>
-          </div>
+          <el-row class="case-content-titleBot">
+            <el-col :span="18">
+              <ul v-bind="sortData">
+                <li v-for="item in sortData" :key="item.id"><span :class="{ hover:item.id==current}" class="cursorPointer" @click="getSortCaseData(item.displayName,item.id)"> {{ item.name }}<i class="el-icon-sort"/></span></li>
+              </ul>
+            </el-col>
+            <el-col :span="6">
+              <p style="float:right">当前条件共找到 <i class="case-font-hover">{{ totalCount }}</i>个结果</p>
+            </el-col>
+          </el-row>
         </div>
         <div class="case-content-main">
           <ul v-bind="caseData">
@@ -116,13 +122,51 @@ export default {
   },
   data() {
     return {
+      current: 0,
       loading: '',
       totalCount: 100,
       isStarHover: false, // 是否点击收藏变色
-      isSortHover: true, // 拍讯点击变色
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
       caseData: [], // 案例
+      sortData: [
+        {
+          name: '默认排序',
+          label: '0',
+          displayName: 'casestatus',
+          id: 1
+        },
+        {
+          name: '裁判日期',
+          label: '0',
+          displayName: 'endtime',
+          id: 2
+        },
+        {
+          name: '更新时间',
+          label: '0',
+          displayName: 'updatetime',
+          id: 3
+        },
+        {
+          name: '访问人数',
+          label: '0',
+          displayName: 'clickcount',
+          id: 4
+        },
+        {
+          name: '收藏数量',
+          label: '0',
+          displayName: '1',
+          id: 5
+        },
+        {
+          name: '裁判日期',
+          label: '0',
+          displayName: 'endtime',
+          id: 6
+        }
+      ],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -142,7 +186,7 @@ export default {
         lawyerId: 0, // 律师Id
         courtReginId: 0, // 法院所属区域
         sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量
-        sortType: 0, // 排序[ 0, 1 ]
+        sortType: 1, // 排序[ 0, 1 ]
         pageCount: 10, // 诉讼领域
         pageIndex: 1 // 诉讼领域
       }
@@ -166,7 +210,7 @@ export default {
   mounted() {
     this.getCasereasonTree()
     this.getRegionTree()
-    this.getCaseList()
+    // this.getCaseList()
   },
   methods: {
     ...mapActions('case', ['getCaseListData']),
@@ -249,13 +293,10 @@ export default {
       this.getCaseList()
     },
     // 排序点击事件
-    getSortCaseData(sortType) {
-      this.sortType = sortType
-      if (sortType === 1) {
-        this.isSortHover = true
-      } else {
-        this.isSortHover = false
-      }
+    getSortCaseData(sorting, index) {
+      this.current = index
+      this.caseSearch.sorting = sorting
+      this.caseSearch.sortType = this.caseSearch.sortType === 0 ? 1 : 0
       this.getCaseList()
     },
     // 收藏点击事件
@@ -388,8 +429,13 @@ export default {
     color: #666666;
     line-height: 50px;
     font-size: 14px;
+    ul li{
+        display: inline-block;
+        margin-right: 20px;
+    }
     span{
-      margin-right: 45px;
+      padding-right: 20px;
+      border-right: 1px solid #ccc;
     }
   }
   }
