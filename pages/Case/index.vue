@@ -134,17 +134,17 @@ export default {
       },
       caseSearch: {//
         practiceAreaId: 0, // 诉讼领域
-        nonePracticeAreaId: 0, // 非诉讼领域
-        searchKey: 'string', // 搜索关键字: 支持(当事人、律师、专业领域、案由、法院、律所、裁判文书关键字)
-        courtLevel: 0, // 法院等级
-        courtReginId: 0, // 法院所属区域
+        searchKey: 'string', // 搜索关键字: 支持(裁判文书正文,裁判文书标题)
+        courtLevel: 0, // 法院等级 0-6
         courtId: 0, // 法院Id
+        industryId: 0, // 行业ID
         caseReasonId: 0, // 案由Id
         lawyerId: 0, // 律师Id
-        sorting: 'string', // 排序
+        courtReginId: 0, // 法院所属区域
+        sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量
         sortType: 0, // 排序[ 0, 1 ]
         pageCount: 10, // 诉讼领域
-        pageIndex: 1// 诉讼领域
+        pageIndex: 1 // 诉讼领域
       }
     }
   },
@@ -166,7 +166,7 @@ export default {
   mounted() {
     this.getCasereasonTree()
     this.getRegionTree()
-    // this.getCaseList()
+    this.getCaseList()
   },
   methods: {
     ...mapActions('case', ['getCaseListData']),
@@ -180,8 +180,8 @@ export default {
     },
     request() {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
-        this.caseData = res.data.items
-        this.totalCount = res.data.totalCount
+        this.caseData = res.items
+        this.totalCount = res.totalCount
         this.loading = false
       })
     },
@@ -202,42 +202,41 @@ export default {
     handleregionClick(data) {
       this.selectForm.courtInfo = data.fullName
       this.caseSearch.courtId = data.id
-
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 管辖法院关闭
     handleCourtClose(tag) {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由树点击筛选
     handleCasereasonClick(data) {
       this.selectForm.caseReasonInfo = data.name
       this.caseSearch.caseReasonId = data.id
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由关闭
     handleCaseReasonClose(tag) {
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
 
     // 法院等级树点击筛选下侧管辖法院
     handleCourtLevelClick(data) {
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
 
     // 法院等级关闭
     handleCourtLevelClose(tag) {
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
     // 清空筛选条件点击事件
     emptyScreen() {
@@ -247,7 +246,7 @@ export default {
       this.caseSearch.caseReasonId = ''
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 排序点击事件
     getSortCaseData(sortType) {
@@ -257,7 +256,7 @@ export default {
       } else {
         this.isSortHover = false
       }
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 收藏点击事件
     collectionCase() {

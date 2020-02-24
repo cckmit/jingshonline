@@ -3,7 +3,7 @@ import * as Case from '@/api/case/index'
 export const actions = {
 
   /**
-   * 获取律师列表
+   * 获取案件列表
    * @param {commit} commit
    * @param {string} query
    */
@@ -23,7 +23,7 @@ export const actions = {
   },
 
   /**
-   * 获取律师详情
+   * 获取案件详情
    * @param {commit} commit
    * @param {number} id
    */
