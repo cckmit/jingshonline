@@ -267,6 +267,7 @@ export default {
   watch: {
   },
   mounted() {
+    console.log(this.industryData)
     // this.getLawyer()
     // this.getLawfirm()
   },
