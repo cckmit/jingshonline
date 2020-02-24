@@ -66,16 +66,15 @@
         </div>
         <div class="case-content-main">
           <ul v-bind="caseData">
-            <!-- <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative"> -->
-            <li class="case-border case-content-hover" style="position:relative">
+            <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/1/info`">
                 <div class="case-content-top">
-                  <p> item.title 邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行</p>
+                  <p> {{ item.title }}</p>
                   <p>
-                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：item.lawfirmName重庆市第二中级人民法院</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：item.caseReasonName行政征收</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：item.lawyerName无所属行业</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：item.practiceAreaName政府</el-col>
+                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.judgmentNumber }}</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </p>
                   <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
                   <p><span>【结果命中】</span>item.judgmentResult本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
@@ -83,8 +82,8 @@
               </nuxt-link>
               <div class="case-content-bottom">
                 <span class="cursorPointer" @click="collectionCase()"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
-                <span><i class="el-icon-time"/>item.endTime2016-8-9</span>
-                <span>（2015）渝二中法行终字第00085号</span>
+                <span><i class="el-icon-time"/>{{ item.endTime }}</span>
+                <span>{{ item.judgmentNumber }}</span>
               </div>
               <img src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
@@ -177,14 +176,14 @@ export default {
         courtInfo: '' // 管辖法院
       },
       caseSearch: {//
-        practiceAreaId: 0, // 诉讼领域
-        searchKey: 'string', // 搜索关键字: 支持(裁判文书正文,裁判文书标题)
-        courtLevel: 0, // 法院等级 0-6
-        courtId: 0, // 法院Id
-        industryId: 0, // 行业ID
-        caseReasonId: 0, // 案由Id
-        lawyerId: 0, // 律师Id
-        courtReginId: 0, // 法院所属区域
+        practiceAreaId: '', // 诉讼领域
+        searchKey: '', // 搜索关键字: 支持(裁判文书正文,裁判文书标题)
+        courtLevel: '', // 法院等级 0-6
+        courtId: '', // 法院Id
+        industryId: '', // 行业ID
+        caseReasonId: '', // 案由Id
+        lawyerId: '', // 律师Id
+        courtReginId: '', // 法院所属区域
         sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量
         sortType: 1, // 排序[ 0, 1 ]
         pageCount: 10, // 诉讼领域
@@ -210,7 +209,7 @@ export default {
   mounted() {
     this.getCasereasonTree()
     this.getRegionTree()
-    // this.getCaseList()
+    this.getCaseList()
   },
   methods: {
     ...mapActions('case', ['getCaseListData']),
