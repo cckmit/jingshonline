@@ -35,7 +35,7 @@ service.interceptors.response.use(
     // const res = response.data // res is my own data
     const { data, status } = response
     if (data.isSucceed) {
-      const resData = data.entity
+      const resData = data.data
       return { data: resData, status }
     } else {
       const errorInfo = { message: data.message, code: data.statusCode }
