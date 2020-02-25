@@ -60,7 +60,7 @@ header{
   height: 200px;
   padding: 79px 0;
   .case-layout{
-    width: 600px;
+    // width: 600px;
     .icon{
       width: 42px;
       height: 40px;
