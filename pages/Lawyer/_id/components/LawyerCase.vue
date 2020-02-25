@@ -34,8 +34,8 @@
     </div>
     <div class="lawyer-case-filter">
       <span :class="activeIndex === 1 ? 'filter-active' : ''" @click="filterChange('updatetime')">更新时间</span>
-      <span :class="activeIndex === 2 ? 'filter-active' : ''" @click="filterChange('visitorcount')">访问人数</span>
-      <span :class="activeIndex === 3 ? 'filter-active' : ''" @click="filterChange('clickcount')">收藏数量</span>
+      <span :class="activeIndex === 2 ? 'filter-active' : ''" @click="filterChange('clickcount')">访问人数</span>
+      <span :class="activeIndex === 3 ? 'filter-active' : ''" @click="filterChange('followerCount')">收藏数量</span>
       <i/>
     </div>
     <div class="lawyer-case-list">
@@ -111,7 +111,7 @@ export default {
       immediate: true,
       handler(val) {
         console.log('刷新检索条件:', val)
-        // this.getLawyerCaseList(val)
+        this.getLawyerCaseList(val)
       }
     }
   },
@@ -123,6 +123,7 @@ export default {
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
+        console.log(res)
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
@@ -143,13 +144,13 @@ export default {
         this.activeIndex = 1
         this.caseListParam.sorting = 'updatetime'
       }
-      if (type === 'visitorcount') {
-        this.activeIndex = 2
-        this.caseListParam.sorting = 'visitorcount'
-      }
       if (type === 'clickcount') {
-        this.activeIndex = 3
+        this.activeIndex = 2
         this.caseListParam.sorting = 'clickcount'
+      }
+      if (type === 'followerCount') {
+        this.activeIndex = 3
+        this.caseListParam.sorting = 'followerCount'
       }
     },
     // 翻页操作

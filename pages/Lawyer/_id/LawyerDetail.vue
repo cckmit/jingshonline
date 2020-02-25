@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick" >
       <el-tab-pane name="first">
         <span slot="label">律师简历<i>|</i></span>
-        <lawyer-resume :resume-data="resumeData"/>
+        <lawyer-resume :resume-data="resumeData" :lawyer-remark="lawyerRemark"/>
       </el-tab-pane>
       <el-tab-pane name="second">
         <span slot="label">认证案例<i>|</i></span>
@@ -49,6 +49,12 @@ export default {
           certificates: [],
           academics: []
         }
+      }
+    },
+    lawyerRemark: {
+      type: String,
+      default: function() {
+        return ''
       }
     }
   },

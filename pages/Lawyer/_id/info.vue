@@ -1,4 +1,4 @@
-<template>
+// <template>
   <div>
     <div class="lawyer-info-container">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
@@ -28,7 +28,7 @@
           </ul>
           <h4>联系方式</h4>
           <ul>
-            <li><span>联系电话</span>15607021980</li>
+            <li><span>联系电话</span>{{ lawyerInformation.phone }}</li>
             <li><span>律师邮箱</span>{{ lawyerInformation.email }}</li>
           </ul>
           <h4>业务专长</h4>
@@ -43,7 +43,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :resume-data="resumeData"/>
+      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark"/>
     </div>
   </div>
 </template>
@@ -70,10 +70,11 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
-    const resume = lawyerResumeData.data.entity
+    const resume = lawyerResumeData.data.data
+    console.log(LawyerInformation.data.data)
     return {
       // 律师基本信息
-      lawyerInformation: LawyerInformation.data.entity,
+      lawyerInformation: LawyerInformation.data.data,
       // 律师简历数据
       resumeData: {
         workExperiences: resume.workExperiences,

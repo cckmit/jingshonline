@@ -36,11 +36,8 @@ export const UserFollow = lawyerId => {
 
 export const UserCancleFollow = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/follow/cancel`,
-    method: 'delete',
-    data: {
-      lawyerId: lawyerId
-    }
+    url: `${setting.apiPrefix}/customer/lawyer/unfollow/${lawyerId}`,
+    method: 'delete'
   })
 }
 
