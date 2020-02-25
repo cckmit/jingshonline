@@ -35,7 +35,9 @@
             <el-tree
               :data="regionTreeData"
               :props="defaultProps"
+              :load="loadNode"
               node-key="id"
+              lazy
               @node-click="handleregionClick"/>
           </div>
         </div>
@@ -127,6 +129,7 @@ export default {
       isStarHover: false, // 是否点击收藏变色
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
+      regionChildTreeData: [],
       caseData: [], // 案例
       sortData: [
         {
@@ -188,6 +191,11 @@ export default {
         sortType: 1, // 排序[ 0, 1 ]
         pageCount: 10, // 诉讼领域
         pageIndex: 1 // 诉讼领域
+      },
+      props: {
+        label: 'name',
+        children: 'zones',
+        isLeaf: 'leaf'
       }
     }
   },
@@ -208,13 +216,13 @@ export default {
   },
   mounted() {
     this.getCasereasonTree()
-    this.getRegionTree()
+    this.getRegionTree(undefined)
     this.getCaseList()
   },
   methods: {
     ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData']),
     ...mapActions('caseReason', ['getCasereasonTreeData']),
-    ...mapActions('region', ['getRegionTreeData']),
+    ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
 
     // 获取案件
     getCaseList(delayTime = 150) {
@@ -235,12 +243,33 @@ export default {
       })
     },
     // 获取管辖法院
-    getRegionTree(courtLevel = 0) {
-      this.getRegionTreeData(courtLevel).then(res => {
+    getRegionTree(courtLevel) {
+      this.getCourtRegionsData(courtLevel).then(res => {
         this.regionTreeData = res
       })
     },
-
+    // 获取管辖法院子节点
+    getRegionChildTree(regionId) {
+      this.getCourtRegionsChildData(regionId).then(res => {
+        this.regionChildTreeData = res
+      })
+    },
+    // 管辖法院二级懒加载
+    loadNode(node, resolve) {
+      if (node.level === 0) {
+        return resolve([{ name: 'region' }])
+      }
+      if (node.level > 1) return resolve([])
+      setTimeout(() => {
+        const data = [{
+          name: 'leaf',
+          leaf: true
+        }, {
+          name: 'zone'
+        }]
+        resolve(data)
+      }, 500)
+    },
     // 管辖法院树点击筛选
     handleregionClick(data) {
       this.selectForm.courtInfo = data.fullName
@@ -266,7 +295,7 @@ export default {
       this.getCaseList()
     },
 
-    // 法院等级树点击筛选下侧管辖法院
+    // 管辖法院点击
     handleCourtLevelClick(data) {
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
