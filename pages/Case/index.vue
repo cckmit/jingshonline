@@ -67,13 +67,13 @@
         <div class="case-content-main">
           <ul v-bind="caseData">
             <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
-              <nuxt-link :to="`/case/1/info`">
+              <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
                   <p>
-                    <el-col :span="12" class="case-font-hover"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.judgmentNumber }}</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </p>
                   <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
@@ -81,7 +81,7 @@
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
-                <span class="cursorPointer" @click="collectionCase()"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
+                <span class="cursorPointer" @click="collectionCase(item.id, item.isFollow=0)"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
                 <span>{{ item.judgmentNumber }}</span>
               </div>
@@ -212,7 +212,7 @@ export default {
     this.getCaseList()
   },
   methods: {
-    ...mapActions('case', ['getCaseListData']),
+    ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData']),
     ...mapActions('caseReason', ['getCasereasonTreeData']),
     ...mapActions('region', ['getRegionTreeData']),
 
@@ -299,9 +299,24 @@ export default {
       this.getCaseList()
     },
     // 收藏点击事件
-    collectionCase() {
-      this.isStarHover = true
-      // 收藏接口
+    collectionCase(id, isFollow) {
+      if (isFollow === 0) {
+        this.getFollow(id)
+      } else {
+        this.getUnfollow(id)
+      }
+    },
+    // 收藏
+    getFollow(id) {
+      this.getFollowData(id).then(res => {
+        this.isStarHover = true
+      })
+    },
+    // 取消收藏
+    getUnfollow() {
+      this.getUnfollowData().then(res => {
+        this.isStarHover = false
+      })
     },
     // 分页切换点击事件
     handlePageChange(val) {

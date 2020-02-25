@@ -25,3 +25,23 @@ export const getCaseInfo = caseId => {
     method: 'get'
   })
 }
+/**
+ * 收藏
+ * @param {number} caseId
+ */
+export const getFollow = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/follow/${caseId}`,
+    method: 'post'
+  })
+}
+/**
+ * 取消收藏
+ * @param {number} caseId
+ */
+export const getUnfollow = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/unfollow/${caseId}`,
+    method: 'post'
+  })
+}

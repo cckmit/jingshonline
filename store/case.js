@@ -36,6 +36,43 @@ export const actions = {
         reject(error)
       })
     })
+  },
+  /**
+   * 收藏
+   * @param {commit} commit
+   * @param {string} query
+   */
+  getFollowData({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getFollow(query)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  /**
+   * 收藏
+   * @param {commit} commit
+   * @param {string} query
+   */
+  getUnfollowData({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getUnfollow(query)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
   }
-
 }
