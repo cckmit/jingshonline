@@ -138,7 +138,7 @@
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
                     <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
+                      <img :src="item.avatar" :onerror="errorImg" alt="">
                       <div class="case-aside-name">{{ item.realName }}</div>
                     </div>
                   </el-col>
@@ -149,7 +149,7 @@
                 </div>
               </template>
               <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
+                <div class="case-aside-img"><img :src="item.avatar" :onerror="errorImg" alt=""></div>
                 <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
@@ -160,7 +160,7 @@
                 <p>擅长领域：<span v-for="item in caseInfoData.lawyers.practiceareas" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
                 <p>业务专长：<span v-for="item in caseInfoData.lawyers.industries" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
                 <p>案例总数：<span>{{ item.caseCount }}</span></p>
-                <p>更新时间：<span>{{ item.lastModificationTime }}</span></p>
+                <p>更新时间：<span>{{ item.updateTime }}</span></p>
                 <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
                 <p>关注人数：<span class="case-font-hover">{{ item.followerCount }}</span></p>
               </div>
@@ -253,6 +253,7 @@ export default {
 
   data() {
     return {
+      errorImg: 'this.src="' + require('@/assets/case/case-avatar.png') + '"',
       loading: false,
       caseId: 0,
       isShow: true,
@@ -290,7 +291,7 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
-      caseInfoData: caseInfoData.data.entity
+      caseInfoData: caseInfoData.data
     }
   },
   watch: {
