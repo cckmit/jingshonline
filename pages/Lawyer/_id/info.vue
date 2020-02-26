@@ -71,7 +71,6 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     const resume = lawyerResumeData.data.data
-    console.log(LawyerInformation.data.data)
     return {
       // 律师基本信息
       lawyerInformation: LawyerInformation.data.data,
@@ -128,7 +127,6 @@ export default {
   watch: {
   },
   mounted() {
-    console.log(this.lawyerInformation)
   },
   methods: {
   }

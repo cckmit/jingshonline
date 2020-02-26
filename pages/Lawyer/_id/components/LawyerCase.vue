@@ -14,7 +14,7 @@
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
         <treeselect
-          :options="courtData"
+          :options="industryTree"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.industryId"
@@ -24,7 +24,7 @@
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
         <treeselect
-          :options="courtData"
+          :options="practiceAreaData"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.practiceAreaId"
@@ -88,7 +88,7 @@ export default {
         courtReginId: undefined, // 法院所属区域 nmuber || arr
         courtId: undefined, // 法院Id number
         caseReasonId: undefined, // 案由Id number
-        lawyerId: this.$route.params.id, // 律师Id number
+        lawyerId: 37, // 律师Id number
         industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
@@ -99,6 +99,7 @@ export default {
       courtData: [],
       // 行业树数据
       industryTree: [],
+      // 案件领域数据
       practiceAreaData: []
     }
   },
@@ -108,14 +109,13 @@ export default {
     // 监听检索条件
     caseListParam: {
       deep: true,
-      immediate: true,
       handler(val) {
         console.log('刷新检索条件:', val)
         this.getLawyerCaseList(val)
       }
     }
   },
-  mounted() {
+  created() {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
@@ -127,14 +127,23 @@ export default {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
-          console.log(this.lawyerCaseList)
           // 处理案例法院数据
-          this.lawyerCaseList.forEach(item => {
-            this.courtData.push({
-              id: item.courtId,
-              label: item.courtName
+          if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
+            this.lawyerCaseList.forEach(item => {
+              this.courtData.push({
+                id: item.courtId,
+                label: item.courtName
+              })
+              this.industryTree.push({
+                id: item.industryId,
+                label: item.industryName
+              })
+              this.practiceAreaData.push({
+                id: item.practiceAreaId,
+                label: item.practiceAreaName
+              })
             })
-          })
+          }
         }
       })
     },

@@ -1,19 +1,19 @@
 <template>
   <div class="lawyer-detail">
-    <el-tabs v-model="activeName" @tab-click="handleClick" >
-      <el-tab-pane name="first">
+    <el-tabs>
+      <el-tab-pane>
         <span slot="label">律师简历<i>|</i></span>
         <lawyer-resume :resume-data="resumeData" :lawyer-remark="lawyerRemark"/>
       </el-tab-pane>
-      <el-tab-pane name="second">
+      <el-tab-pane>
         <span slot="label">认证案例<i>|</i></span>
         <lawyer-case/>
       </el-tab-pane>
-      <el-tab-pane name="third">
+      <el-tab-pane>
         <span slot="label">专业领域<i>|</i></span>
         <lawyer-professional/>
       </el-tab-pane>
-      <el-tab-pane name="fourth">
+      <el-tab-pane>
         <span slot="label">常去法院</span>
         <often-court/>
       </el-tab-pane>
@@ -60,7 +60,6 @@ export default {
   },
   data() {
     return {
-      activeName: 'first',
       isFollow: false
     }
   },
@@ -75,9 +74,6 @@ export default {
   methods: {
     // 用户关注律师 取消关注
     ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),
-    // tab 切换律师信息
-    handleClick(tab, event) {
-    },
     // 关注按钮操作
     followHandle() {
       if (!this.isFollow) {

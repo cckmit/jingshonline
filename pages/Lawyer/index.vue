@@ -267,8 +267,9 @@ export default {
   watch: {
   },
   mounted() {
-    console.log(this.industryData)
     // this.getLawyer()
+    // this.getPractice()
+    // this.getIndustry()
     // this.getLawfirm()
   },
 
@@ -333,29 +334,90 @@ export default {
     },
     industry(id, name) {
       this.lawyerSearch.industryId = id
-      this.multiple('industry', { id: id, name: '擅长行业：' + name })
+      this.selectindustryData = {
+        id: id,
+        name: '擅长行业：' + name
+      }
+      this.comparesigle()
     },
     practice(id, name) {
       this.lawyerSearch.practiceAreaId = id
-      this.multiple('practice', { id: id, name: '专业领域：' + name })
+      this.selectsuitsData = {
+        id: id,
+        name: '专业领域：' + name
+      }
+      this.comparesigle()
     },
+    // nosuits(id, name) {
+    //   this.lawyerSearch.practiceAreaId = id
+    //   this.selectnosuitsData = {
+    //     id: id,
+    //     name: '非诉领域:' + name
+    //   }
+    //   this.comparesigle()
+    // },
     region(data) {
+      console.log(data)
       this.lawyerSearch.regionId = data.id
-      this.multiple('region', { id: data.id, name: '专业领域：' + data.name })
+      this.selectregionData = {
+        id: data.id,
+        name: '所在城市：' + data.name
+      }
+      this.comparesigle()
     },
     lawfirm(id, name) {
       this.lawyerSearch.lawfirmId = id
-      this.multiple('lawfirm', { id: id, name: '所属律所：' + name })
+      this.selectlawfirmData = {
+        id: id,
+        name: '所属律所：' + name
+      }
+      this.comparesigle()
+      // this.compareData({ id: id, name: name })
+      // const returnData = this.compareData({ id: id, name: name })
+      // if (returnData === false) {
+      //   this.selectData.push(
+      //     { id: id, name: name }
+      //   )
+      // }
     },
     selectname() {
-      this.multiple('lawyerName', { id: '0', name: '姓名：' + this.lawyerSearch.lawyerName })
+      this.selectlawfirmData = {
+        id: 0,
+        name: '姓名：' + this.lawyerSearch.lawyerName
+      }
+      this.comparesigle()
     },
-    multiple(type, data) { // 添加筛选方法
-      // 多选
-      // const hasthis = this.selectData[type].indexOf(data.id) > -1 && this.selectData.indexOf(data.name) > -1
-      // hasthis ? '' : this.selectData[type].push(data)
-      // 单选
-      this.selectData[type] = [data]
+    compareData(data) { // 多选比对方法
+      this.addData = false
+      if (this.selectData.length !== 0) {
+        for (var i = 0; i < this.selectData.length; i++) {
+          if (this.selectData[i].id === data.id && this.selectData[i].name === data.name) {
+            this.addData = true
+          }
+        }
+      }
+      return this.addData
+    },
+    comparesigle() { // 单选
+      this.selectData = []
+      if (this.selectindustryData.length !== 0) {
+        this.selectData.push(this.selectindustryData)
+      }
+      if (this.selectsuitsData.length !== 0) {
+        this.selectData.push(this.selectsuitsData)
+      }
+      // if (this.selectnosuitsData.length !== 0) {
+      //   this.selectData.push(this.selectnosuitsData)
+      // }
+      if (this.selectregionData.length !== 0) {
+        this.selectData.push(this.selectregionData)
+      }
+      if (this.selectlawfirmData.length !== 0) {
+        this.selectData.push(this.selectlawfirmData)
+      }
+      if (this.selectnameData.length !== 0) {
+        this.selectData.push(this.selectnameData)
+      }
     },
     selectdelete(type, data) { // 删除筛选方法
       // 多选
