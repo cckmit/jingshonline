@@ -216,7 +216,7 @@ export default {
   },
   mounted() {
     this.getCasereasonTree()
-    this.getRegionTree(undefined)
+    this.getRegionTree(null)
     this.getCaseList()
   },
   methods: {
@@ -252,6 +252,7 @@ export default {
     getRegionChildTree(regionId) {
       this.getCourtRegionsChildData(regionId).then(res => {
         this.regionChildTreeData = res
+        console.log(res)
       })
     },
     // 管辖法院二级懒加载

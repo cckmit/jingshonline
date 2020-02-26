@@ -45,7 +45,7 @@ export const getCourtRegions = courtLevel => {
  */
 export const getCourtRegionsChild = regionId => {
   return request({
-    url: `${setting.apiPrefix}/court/regions/children`,
+    url: `${setting.apiPrefix}/court/region/children`,
     method: 'post',
     data: {
       input: { regionId: regionId }
