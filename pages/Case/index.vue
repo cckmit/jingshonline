@@ -252,7 +252,6 @@ export default {
     getRegionChildTree(regionId) {
       this.getCourtRegionsChildData(regionId).then(res => {
         this.regionChildTreeData = res
-        console.log(res)
       })
     },
     // 管辖法院二级懒加载
