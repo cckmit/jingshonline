@@ -15,7 +15,7 @@
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label">常去法院</span>
-        <often-court/>
+        <often-court :court-data="courtData" :region-data="regionData" />
       </el-tab-pane>
     </el-tabs>
     <div class="follow" @click="followHandle">
@@ -55,6 +55,18 @@ export default {
       type: String,
       default: function() {
         return ''
+      }
+    },
+    courtData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    regionData: {
+      type: Array,
+      default: function() {
+        return []
       }
     }
   },

@@ -152,7 +152,18 @@ export default {
 
   },
   props: {
-
+    courtData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    regionData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {

@@ -1,4 +1,4 @@
-// <template>
+<template>
   <div>
     <div class="lawyer-info-container">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
@@ -32,6 +32,8 @@
             <li><span>律师邮箱</span>{{ lawyerInformation.email }}</li>
           </ul>
           <h4>业务专长</h4>
+          <!-- <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
+            <li><a href=":javascript">{{ item }}</a></li> -->
           <ul class="lawyer-business">
             <li><a href=":javascript">合同纠纷</a></li>
             <li><a href=":javascript">土地房产</a></li>
@@ -43,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark"/>
+      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :region-data="regionData"/>
     </div>
   </div>
 </template>
@@ -66,11 +68,19 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [lawyerResumeData, LawyerInformation] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, RegionData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
+      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/court`, { input: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/${params.id}`, { 'Content-Type': 'application/json' })
     ])
-    const resume = lawyerResumeData.data.data
+    // 律师业务专长
+    const lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
+      return item.name
+    }).concat(LawyerInformation.data.data.industries.map(item => {
+      return item.name
+    }))
+    const resume = LawyerResumeData.data.data
     return {
       // 律师基本信息
       lawyerInformation: LawyerInformation.data.data,
@@ -81,7 +91,13 @@ export default {
         educations: resume.educations,
         certificates: resume.certificates,
         academics: resume.academics
-      }
+      },
+      // 律师常去法院数据
+      courtData: CourtData.data.data,
+      // 行政区域数据
+      regionData: RegionData.data.data,
+      // 律师业务专长
+      lawyerBusiness: lawyerBusiness
     }
   },
   data() {
@@ -119,7 +135,10 @@ export default {
         lastModificationTime: '', // 最后更新时间 2019-12-30 09:34:20
         practiceareas: [], // 律师擅长领域 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
         industries: [] // 律师擅长行业 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
-      }
+      },
+      courtData: [],
+      regionData: [],
+      lawyerBusiness: []
     }
   },
   computed: {

@@ -119,11 +119,10 @@ export default {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerCaseList']),
+    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
-        console.log(res)
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
@@ -169,7 +168,10 @@ export default {
     },
     // 用户收藏
     userCollect(index) {
-      this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
+      const caseId = this.lawyerCaseList[index].id
+      this.UserFollowCase(caseId).then(res => {
+        this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
+      })
     },
     // 用户分享
     userShare() {

@@ -67,3 +67,15 @@ export const GetLawyerResume = lawyerId => {
     }
   })
 }
+
+/**
+ * 用户收藏律师案例列表案例
+ * @param {number} caseId
+ */
+
+export const UserFollowCase = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/follow/${caseId}`,
+    method: 'post'
+  })
+}
