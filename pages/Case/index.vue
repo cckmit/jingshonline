@@ -273,9 +273,9 @@ export default {
     },
     // 管辖法院树点击筛选
     handleregionClick(data) {
-      this.selectForm.courtInfo = data.fullName
-      data.nodeType === 0 ? this.caseSearch.courtReginId = data.id : this.caseSearch.courtId = data.id //根据nodeType判断传参
-      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.courtReginId = '' //根据nodeType判断滞空参数
+      this.selectForm.courtInfo = data.name
+      data.nodeType === 0 ? this.caseSearch.courtReginId = data.id : this.caseSearch.courtId = data.id // 根据nodeType判断传参
+      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.courtReginId = '' // 根据nodeType判断滞空参数
       this.getCaseList()
     },
     // 管辖法院关闭
