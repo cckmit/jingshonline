@@ -2,6 +2,18 @@
 import request from '@/plugins/request'
 import setting from '@/plugins/setting'
 
+export const searchCase = searchKey => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/conditions`,
+    method: 'post',
+    data: {
+      query: {
+        searchKey
+      }
+    }
+  })
+}
+
 /**
  * 获取案件列表
  * @param {object} query

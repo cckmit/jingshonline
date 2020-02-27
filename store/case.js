@@ -3,6 +3,22 @@ import * as Case from '@/api/case/index'
 export const actions = {
 
   /**
+   * 搜索案件
+   * @param {commit} commit
+   * @param {string} searchKey
+   */
+  CaseSearch({ commit }, searchKey) {
+    return new Promise((resolve, reject) => {
+      Case.searchCase(searchKey).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
    * 获取案件列表
    * @param {commit} commit
    * @param {string} query
