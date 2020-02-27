@@ -35,8 +35,9 @@
             <el-tree
               :data="regionTreeData"
               :props="defaultProps"
+              :expand-on-click-node="false"
               :load="loadNode"
-              node-key="id"
+              node-key="index"
               lazy
               @node-click="handleregionClick"/>
           </div>
@@ -273,7 +274,8 @@ export default {
     // 管辖法院树点击筛选
     handleregionClick(data) {
       this.selectForm.courtInfo = data.fullName
-      this.caseSearch.courtId = data.id
+      data.nodeType === 0 ? this.caseSearch.courtReginId = data.id : this.caseSearch.courtId = data.id //根据nodeType判断传参
+      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.courtReginId = '' //根据nodeType判断滞空参数
       this.getCaseList()
     },
     // 管辖法院关闭
@@ -314,6 +316,7 @@ export default {
     emptyScreen() {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
+      this.caseSearch.courtReginId = ''
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
       this.selectForm.courtLevelInfo = ''
