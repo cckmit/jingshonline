@@ -25,3 +25,30 @@ export const getInfo = id => {
     method: 'get'
   })
 }
+
+/**
+ * 根据法院等级获取法院法院所有的地区信息
+ * @param {object} query
+ */
+export const getCourtRegions = courtLevel => {
+  return request({
+    url: `${setting.apiPrefix}/court/regions`,
+    method: 'post',
+    data: {
+      input: { courtLevel: courtLevel }
+    }
+  })
+}
+/**
+ * 根据法院等级获取法院法院获取该某个地区区域的子节点
+ * @param {object} query
+ */
+export const getCourtRegionsChild = regionId => {
+  return request({
+    url: `${setting.apiPrefix}/court/region/children`,
+    method: 'post',
+    data: {
+      input: { regionId: regionId }
+    }
+  })
+}

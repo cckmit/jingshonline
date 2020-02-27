@@ -35,7 +35,7 @@
         </el-row>
       </div>
     </div>
-    <div :style="{background:`url(${bjcenter}) center no-repeat`}" class="content center">
+    <div :style="{background:`url(${bjcenter}) no-repeat`}" class="content center">
       <div>
         <div>
           <h2>案源合作APP</h2>

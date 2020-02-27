@@ -6,7 +6,7 @@
           <el-input v-model="loginForm.account" placeholder="请输入用户名或手机号"/>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" placeholder="请输入密码"/>
+          <el-input v-model="loginForm.password" type="password" placeholder="请输入密码"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitLogin">登录</el-button>
@@ -24,7 +24,7 @@
           <el-input v-model="registerForm.verificationCode" placeholder="请输入验证码"/>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="registerForm.password" placeholder="请输入密码(不少于6位)"/>
+          <el-input v-model="registerForm.password" type="password" placeholder="请输入密码(不少于6位)"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitRegister">注册</el-button>
@@ -98,7 +98,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('account', ['Login', 'Register']),
+    ...mapActions('account', ['Login', 'Register', 'GetLoginUserInfo']),
     changeForm(type) {
       this.type = type
       // this.type === 'login' ? this.registerForm.resetFields() : this.loginForm.resetFields()
@@ -113,7 +113,15 @@ export default {
       this.$refs.loginForm.validate(valid => {
         console.log(valid)
         if (valid) {
-          this.Login(this.loginForm)
+          this.Login(this.loginForm).then(res => {
+            this.$notify({
+              type: 'success',
+              title: '提示',
+              message: '账号登录成功'
+            })
+            this.GetLoginUserInfo()
+            this.formVisible = false
+          })
         }
       })
     },
