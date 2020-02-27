@@ -64,9 +64,9 @@ export default {
       }
     },
     chartData: {
-      type: Array,
+      type: Object,
       default: function() {
-        return []
+        return {}
       }
     }
   },

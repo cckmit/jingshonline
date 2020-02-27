@@ -76,3 +76,14 @@ export const UserFollowCase = caseId => {
     method: 'post'
   })
 }
+/**
+ * 用户取消收藏律师案例列表案例
+ * @param {number} caseId
+ */
+
+export const UserUnFollowCase = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/unfollow/${caseId}`,
+    method: 'post'
+  })
+}

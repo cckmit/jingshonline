@@ -46,10 +46,10 @@
         <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
         <div class="case-item-bottom">
           <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
-          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isCollect ? 'el-icon-star-on' : 'el-icon-star-off'">收藏</i></span>
+          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
           <span class="share no-select" @click="userShare"><i/>分享</span>
         </div>
-        <i class="classic"/>
+        <i v-if="item.isClassicCase" class="classic"/>
       </div>
     </div>
     <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
@@ -119,14 +119,13 @@ export default {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase']),
+    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
-          console.log(this.lawyerCaseList)
           // 处理案例法院数据
           if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
             this.lawyerCaseList.forEach(item => {
@@ -169,11 +168,16 @@ export default {
     },
     // 用户收藏
     userCollect(index) {
-      const caseId = this.lawyerCaseList[index].id
-      this.UserFollowCase(caseId).then(res => {
-        console.log(res)
-        this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
-      })
+      const caseIndex = this.lawyerCaseList[index]
+      if (caseIndex.isFollow) {
+        this.UserUnFollowCase(caseIndex.id).then(res => {
+          this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
+        })
+      } else {
+        this.UserFollowCase(caseIndex.id).then(res => {
+          this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
+        })
+      }
     },
     // 用户分享
     userShare() {
@@ -199,6 +203,7 @@ export default {
 
 }
 .lawyer-case{
+  padding-bottom: 24px;
   .pagination-container {
     background: #f2f2f2;
   }
@@ -396,6 +401,8 @@ export default {
           border-radius: 5px;
         }
         .collect {
+          width: 60px;
+          text-align: center;
           user-select: none;
           .el-icon-star-off:before {
             margin-right: 6px;

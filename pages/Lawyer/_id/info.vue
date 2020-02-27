@@ -68,11 +68,12 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [LawyerResumeData, LawyerInformation, CourtData, ChartData] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, {}, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' })
     ])
     // 律师业务专长
     const lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
@@ -81,7 +82,6 @@ export default {
       return item.name
     }))
     const resume = LawyerResumeData.data.data
-    console.log(LawyerInformation.data.data)
     return {
       // 律师基本信息
       lawyerInformation: LawyerInformation.data.data,
@@ -98,7 +98,10 @@ export default {
       // 律师业务专长
       lawyerBusiness: lawyerBusiness,
       // 图表数据
-      chartData: ChartData.data.data
+      chartData: {
+        practicea: PracticData.data.data,
+        noPracticea: NoPracticData.data.data
+      }
     }
   },
   data() {
@@ -148,9 +151,7 @@ export default {
   watch: {
   },
   mounted() {
-    axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${this.$route.params.id}`, {}, { 'Content-Type': 'application/json' }).then(res => {
-      console.log(res)
-    })
+    console.log(this.lawyerInformation)
   },
   methods: {
   }
@@ -236,9 +237,10 @@ export default {
         margin-bottom: 17px;
       }
       ul li {
+        overflow: hidden;
         list-style: none;
         font-size: 14px;
-        line-height: 14px;
+        line-height: 16px;
         color: #333;
         margin-bottom: 27px;
         white-space: nowrap;

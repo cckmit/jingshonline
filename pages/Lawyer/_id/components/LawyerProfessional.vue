@@ -1,7 +1,7 @@
 <template>
   <div class="lawyer-professional">
-    <div id="Litigation" ref="Litigation" style="width:520px;height:400px;"/>
-    <div id="LitigationTwo" ref="LitigationTwo" style="width:520px;height:400px;"/>
+    <div v-if="chartData.practicea.length > 0" id="Litigation" ref="Litigation" style="width:550px;height:450px;"/>
+    <div v-if="chartData.noPracticea.length > 0" id="LitigationTwo" ref="LitigationTwo" style="width:550px;height:450px;"/>
   </div>
 </template>
 
@@ -13,15 +13,15 @@ export default {
   },
   props: {
     chartData: {
-      type: Array,
+      type: Object,
       default: function() {
-        return []
+        return {}
       }
     }
   },
   data() {
     return {
-      option: {
+      practiceaOptions: {
         title: {
           text: '诉讼领域案例分布图',
           left: 'center'
@@ -32,7 +32,53 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          left: 'left'
+          left: 'left',
+          top: 'middle',
+          width: 200
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            restore: { show: true }
+          }
+        },
+        series: [
+          {
+            name: '当前领域',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      },
+      noPracticeaOptions: {
+        title: {
+          text: '非诉讼领域案例分布图',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            restore: { show: true }
+          }
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          top: 'middle'
         },
         series: [
           {
@@ -41,13 +87,6 @@ export default {
             radius: '55%',
             center: ['50%', '60%'],
             data: [
-              { value: 335, name: '房产土地' },
-              { value: 310, name: '合同纠纷' },
-              { value: 234, name: '物权纠纷' },
-              { value: 135, name: '婚姻继承' },
-              { value: 1548, name: '劳动纠纷' },
-              { value: 15, name: '行政案件' },
-              { value: 15, name: '侵权纠纷' }
             ],
             emphasis: {
               itemStyle: {
@@ -63,24 +102,45 @@ export default {
     }
   },
   computed: {
-
   },
   watch: {
 
+  },
+  created() {
+    if (this.chartData.practicea.length > 0) {
+      this.chartData.practicea.forEach(item => {
+        this.practiceaOptions.series[0].data.push({
+          value: item.count,
+          name: item.name
+        })
+      })
+    }
+    if (this.chartData.noPracticea.length > 0) {
+      this.chartData.noPracticea.forEach(item => {
+        this.noPracticeaOptions.series[0].data.push({
+          value: item.count,
+          name: item.name
+        })
+      })
+    }
   },
   mounted() {
     this.initChart()
   },
   methods: {
     initChart() {
-      const myChart = this.$echarts.init(this.$refs.Litigation)
-      const myChartTwo = this.$echarts.init(this.$refs.LitigationTwo)
-      myChart.setOption(this.option)
-      myChartTwo.setOption(this.option)
+      if (this.chartData.practicea.length > 0) {
+        const myChart = this.$echarts.init(this.$refs.Litigation)
+        myChart.setOption(this.practiceaOptions)
+      }
+      if (this.chartData.noPracticea.length > 0) {
+        const myChartTwo = this.$echarts.init(this.$refs.LitigationTwo)
+        myChartTwo.setOption(this.noPracticeaOptions)
+      }
     }
   }
 }
-</script>>
+</script>
 
 <style lang="scss" scoped>
 .lawyer-professional {
