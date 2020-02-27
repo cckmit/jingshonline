@@ -133,12 +133,12 @@
             <span class="case-title"><i class="titleIcon"/>办理律师</span>
           </div>
           <el-collapse v-model="activeNames" accordion class="lawyer" @change="handleChange">
-            <el-collapse-item v-for="item in caseInfoData.lawyers" :key="item.lawyerId" name="1">
+            <el-collapse-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
               <template v-if="isShow" slot="title">
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
                     <div class="case-aside-img">
-                      <img :src="item.avatar" :onerror="errorImg" alt="">
+                      <img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt="">
                       <div class="case-aside-name">{{ item.realName }}</div>
                     </div>
                   </el-col>
@@ -149,7 +149,7 @@
                 </div>
               </template>
               <div class="case-aside-photo">
-                <div class="case-aside-img"><img :src="item.avatar" :onerror="errorImg" alt=""></div>
+                <div class="case-aside-img"><img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt=""></div>
                 <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
@@ -237,6 +237,7 @@ import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
+import errorImg from '@/assets/case/case-avatar.png'
 export default {
   layout: 'case',
   head() {
@@ -253,11 +254,11 @@ export default {
 
   data() {
     return {
-      errorImg: 'this.src="' + require('@/assets/case/case-avatar.png') + '"',
+      errorImg: errorImg,
       loading: false,
       caseId: 0,
       isShow: true,
-      activeNames: ['1'],
+      activeNames: 0,
       caseInfoData: [],
       activities: [{
         id: 'client',
@@ -584,6 +585,9 @@ height: 120px;
      display: none;
    }
  }
+  .el-collapse-item__header{
+height: auto;
+}
  }
  }
 </style>
