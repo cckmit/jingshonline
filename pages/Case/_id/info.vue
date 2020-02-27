@@ -10,7 +10,7 @@
       <el-col v-bind="caseInfoData" class="case-content case-border">
         <!-- 概要信息 -->
         <div class="case-content-title">
-          <span id="info" class="case-title"><i class="titleIcon"/> 概要信息</span>
+          <span id="client" class="case-title"><i class="titleIcon"/> 概要信息</span>
           <p style="float:right">更新时间：<span class="case-font-hover"> {{ caseInfoData.updateTime }}</span></p>
         </div>
         <!-- 案件信息 -->
@@ -36,7 +36,7 @@
         <div class="case-content-main">
           <el-form ref="form" label-width="0">
             <el-form-item>
-              <p id="client" class="case-title"><i class="titleIcon"/> 当事人信息</p>
+              <p id="First" class="case-title"><i class="titleIcon"/> 当事人信息</p>
               <p>
                 原告毕某某，男，汉族，42岁。
                 原告张某甲，男，汉族，49岁。
@@ -55,7 +55,7 @@
               </p>
             </el-form-item>
             <el-form-item>
-              <p id="after" class="case-title"><i class="titleIcon"/>审理经过</p>
+              <p id="Second" class="case-title"><i class="titleIcon"/>审理经过</p>
               <p>
                 审理经过
                 原告毕某某、张某甲、张某乙不服被告漯河市环境保护局（以下简称市环保局）作出的环境管理行政审批具体行政行为一案，于2015年2月16日向本院提起行政诉讼。因漯河华泰置业集团有限公司（以下简称漯河华泰公司）、河南蓝森环保科技有限公司（以下简称河南蓝森公司）与被诉具体行政行为有法律上的利害关系，根据《中华人民共和国行政诉讼法》第二十九条之规定，本院依法通知上述两单位作为本案第三人参加诉讼。本院依法组成合议庭，公开开庭进行了审理。原告毕某某、张某甲、张某乙及其委托代理人谢鹏辉、朱晓彬，被告市环保局的委托代理人郭剑锋，第三人漯河华泰公司的委托代理人梁某某，第三人河南蓝森公司的委托代理人钟某某、薛某某到庭参加诉讼。本案现已审理终结。
@@ -108,7 +108,7 @@
               </p>
             </el-form-item>
             <el-form-item>
-              <p id="result" class="case-title"><i class="titleIcon"/> 裁判结果</p>
+              <p id="Finally" class="case-title"><i class="titleIcon"/> 裁判结果</p>
               <p>
                 被告漯河市环境保护局于2013年7月15日作出的关于《漯河华泰置业集团有限公司新建华泰龙庭首府项目环境影响报告书》的审批意见程序轻微违法，但不予撤销该行政行为。
                 如不服本判决，可在判决书送达之日起十五日内，向本院递交上诉状，并按对方当事人或代表人的人数提出副本，上诉于河南省漯河市中级人民法院。
@@ -133,12 +133,12 @@
             <span class="case-title"><i class="titleIcon"/>办理律师</span>
           </div>
           <el-collapse v-model="activeNames" accordion class="lawyer" @change="handleChange">
-            <el-collapse-item v-for="item in caseInfoData.lawyers" :key="item.lawyerId" name="1">
+            <el-collapse-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
               <template v-if="isShow" slot="title">
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
                     <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
+                      <img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt="">
                       <div class="case-aside-name">{{ item.realName }}</div>
                     </div>
                   </el-col>
@@ -149,7 +149,7 @@
                 </div>
               </template>
               <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
+                <div class="case-aside-img"><img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt=""></div>
                 <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
@@ -160,7 +160,7 @@
                 <p>擅长领域：<span v-for="item in caseInfoData.lawyers.practiceareas" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
                 <p>业务专长：<span v-for="item in caseInfoData.lawyers.industries" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
                 <p>案例总数：<span>{{ item.caseCount }}</span></p>
-                <p>更新时间：<span>{{ item.lastModificationTime }}</span></p>
+                <p>更新时间：<span>{{ item.updateTime }}</span></p>
                 <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
                 <p>关注人数：<span class="case-font-hover">{{ item.followerCount }}</span></p>
               </div>
@@ -228,7 +228,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" />
+    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" @download="download" @collection="collectionCase"/>
   </div>
 </template>
 
@@ -237,6 +237,7 @@ import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
+import errorImg from '@/assets/case/case-avatar.png'
 export default {
   layout: 'case',
   head() {
@@ -253,20 +254,36 @@ export default {
 
   data() {
     return {
+      errorImg: errorImg,
       loading: false,
       caseId: 0,
       isShow: true,
-      activeNames: ['1'],
+      activeNames: 0,
       caseInfoData: [],
       activities: [{
-        id: 'info',
-        title: '活动按期开始'
+        id: 'client',
+        title: '概要信息'
       }, {
-        id: 'after',
-        title: '通过审核'
+        id: 'First',
+        title: '当事人信息'
       }, {
-        id: 'result',
-        title: '创建成功'
+        id: 'Second',
+        title: '审理经过'
+      }, {
+        id: 'After',
+        title: '原告辩称'
+      }, {
+        id: 'Third',
+        title: '被告辩称'
+      }, {
+        id: 'Fourth',
+        title: '本院查明'
+      }, {
+        id: 'Fifth',
+        title: '本院认为'
+      }, {
+        id: 'Finally',
+        title: '裁判结果'
       }]
     }
   },
@@ -275,7 +292,7 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
-      caseInfoData: caseInfoData.data.entity
+      caseInfoData: caseInfoData.data
     }
   },
   watch: {
@@ -559,6 +576,9 @@ height: 120px;
      display: none;
    }
  }
+  .el-collapse-item__header{
+height: auto;
+}
  }
  }
 </style>

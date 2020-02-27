@@ -43,5 +43,35 @@ export const actions = {
           reject(error)
         })
     })
+  },
+  /**
+   * 根据法院等级获取法院法院所有的地区信息
+   * @param {commit} param0
+   * @param {object} courtLevel
+   */
+  async getCourtRegionsData({ commit }, courtLevel) {
+    return new Promise((resolve, reject) => {
+      Region.getCourtRegions(courtLevel).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 根据法院等级获取法院法院获取该某个地区区域的子节点
+   * @param {commit} param0
+   * @param {object} courtLevel
+   */
+  async getCourtRegionsChildData({ commit }, courtLevel) {
+    return new Promise((resolve, reject) => {
+      Region.getCourtRegionsChild(courtLevel).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }

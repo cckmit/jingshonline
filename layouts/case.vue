@@ -22,6 +22,7 @@ import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import banner from '@/assets/case/case_banner.png'
 import icon from '@/assets/case/case_search.png'
+import { mapActions } from 'vuex'
 export default {
   name: 'CaseLayout',
 
@@ -44,8 +45,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions('case', ['CaseSearch']),
     search() {
       console.log(this.searchText)
+
+      this.CaseSearch(this.searchText).then(res => {
+        console.log(res)
+      })
     }
   }
 }

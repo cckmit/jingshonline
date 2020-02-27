@@ -40,13 +40,14 @@ export default {
             type: 'pie',
             radius: '55%',
             center: ['50%', '60%'],
-            // 律师删除领域相关数据 name 对应上lengend上得data
             data: [
-              { value: 5, name: '房产土地' },
-              { value: 10, name: '合同纠纷' },
-              { value: 20, name: '物权纠纷' },
-              { value: 30, name: '婚姻继承' },
-              { value: 35, name: '劳动纠纷' }
+              { value: 335, name: '房产土地' },
+              { value: 310, name: '合同纠纷' },
+              { value: 234, name: '物权纠纷' },
+              { value: 135, name: '婚姻继承' },
+              { value: 1548, name: '劳动纠纷' },
+              { value: 15, name: '行政案件' },
+              { value: 15, name: '侵权纠纷' }
             ],
             emphasis: {
               itemStyle: {

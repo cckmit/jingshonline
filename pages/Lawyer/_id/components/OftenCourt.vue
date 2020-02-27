@@ -90,7 +90,6 @@ export default {
         ul {
           margin-left: 20px;
          li {
-           cursor: pointer;
           list-style-image: url("../../../../assets/lawyerinfo/dot.png");
           font-size: 12px;
           line-height: 30px;
