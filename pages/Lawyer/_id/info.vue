@@ -45,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :region-data="regionData"/>
+      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
     </div>
   </div>
 </template>
@@ -68,11 +68,11 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [LawyerResumeData, LawyerInformation, CourtData, RegionData] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, ChartData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
-      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/court`, { input: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/${params.id}`, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, {}, { 'Content-Type': 'application/json' })
     ])
     // 律师业务专长
     const lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
@@ -94,10 +94,10 @@ export default {
       },
       // 律师常去法院数据
       courtData: CourtData.data.data,
-      // 行政区域数据
-      regionData: RegionData.data.data,
       // 律师业务专长
-      lawyerBusiness: lawyerBusiness
+      lawyerBusiness: lawyerBusiness,
+      // 图表数据
+      chartData: ChartData.data.data
     }
   },
   data() {
@@ -115,7 +115,7 @@ export default {
         id: 0, // 律师Id
         realName: '', // 真实姓名
         email: '', // 邮箱
-        phone: '15607021980', // 律师电话 缺少返回信息
+        phone: '', // 律师电话 缺少返回信息
         lawfirmName: '', // 律所
         avatarPathId: null, // 头像路径Id
         avatar: '', // 头像路径
@@ -138,7 +138,8 @@ export default {
       },
       courtData: [],
       regionData: [],
-      lawyerBusiness: []
+      lawyerBusiness: [],
+      chartData: []
     }
   },
   computed: {
@@ -236,6 +237,10 @@ export default {
         line-height: 14px;
         color: #333;
         margin-bottom: 27px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
         span {
           width: 58px;
           display: inline-block;

@@ -11,11 +11,11 @@
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label">专业领域<i>|</i></span>
-        <lawyer-professional/>
+        <lawyer-professional :chart-data="chartData"/>
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label">常去法院</span>
-        <often-court :court-data="courtData" :region-data="regionData" />
+        <often-court :court-data="courtData" />
       </el-tab-pane>
     </el-tabs>
     <div class="follow" @click="followHandle">
@@ -63,7 +63,7 @@ export default {
         return []
       }
     },
-    regionData: {
+    chartData: {
       type: Array,
       default: function() {
         return []
