@@ -1,7 +1,7 @@
 <template>
   <div class="lawyer-resume">
     <div class="lawyer-present">
-      <p>曾在政府部门、政协、工商联、司法局法律电大、律师事务所、公证处注册执业、国企集团董事会民企高管以及中国政法大学成人教育学院法律研究生班内蒙教学部，民主与法制社内蒙古事业发展中心、北京师范大学博士后工作站等单位，跨地域跨领域多行业多层次从事过工作，得到很多历炼积累了丰富的实践经验。</p>
+      <p>{{ lawyerRemark }}</p>
     </div>
     <div class="lawyer-main">
       <div v-if="resumeData.workExperiences.length > 0" class="lawyer-work lawyer-wrapper">
@@ -83,6 +83,12 @@ export default {
           // 学术成果
           academics: []
         }
+      }
+    },
+    lawyerRemark: {
+      type: String,
+      default: function() {
+        return ''
       }
     }
   },

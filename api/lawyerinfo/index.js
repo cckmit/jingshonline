@@ -36,11 +36,8 @@ export const UserFollow = lawyerId => {
 
 export const UserCancleFollow = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/follow/cancel`,
-    method: 'delete',
-    data: {
-      lawyerId: lawyerId
-    }
+    url: `${setting.apiPrefix}/customer/lawyer/unfollow/${lawyerId}`,
+    method: 'delete'
   })
 }
 
@@ -68,5 +65,17 @@ export const GetLawyerResume = lawyerId => {
     data: {
       lawyerId: lawyerId
     }
+  })
+}
+
+/**
+ * 用户收藏律师案例列表案例
+ * @param {number} caseId
+ */
+
+export const UserFollowCase = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/follow/${caseId}`,
+    method: 'post'
   })
 }

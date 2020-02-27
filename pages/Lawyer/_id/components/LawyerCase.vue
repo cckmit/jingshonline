@@ -14,7 +14,7 @@
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
         <treeselect
-          :options="courtData"
+          :options="industryTree"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.industryId"
@@ -24,7 +24,7 @@
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
         <treeselect
-          :options="courtData"
+          :options="practiceAreaData"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.practiceAreaId"
@@ -33,71 +33,21 @@
       </div>
     </div>
     <div class="lawyer-case-filter">
-      <span :class="activeIndex === 1 ? 'filter-active' : ''" @click="filterChange('time')">更新时间</span>
-      <span :class="activeIndex === 2 ? 'filter-active' : ''" @click="filterChange('people')">访问人数</span>
-      <span :class="activeIndex === 3 ? 'filter-active' : ''" @click="filterChange('count')">收藏数量</span>
+      <span :class="activeIndex === 1 ? 'filter-active' : ''" @click="filterChange('updatetime')">更新时间</span>
+      <span :class="activeIndex === 2 ? 'filter-active' : ''" @click="filterChange('clickcount')">访问人数</span>
+      <span :class="activeIndex === 3 ? 'filter-active' : ''" @click="filterChange('followerCount')">收藏数量</span>
       <i/>
     </div>
     <div class="lawyer-case-list">
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
-        <nuxt-link to="/case/10/info">
-          <div class="case-item-title">{{ item.title }}<span>{{ item.endTime | dateFormat("YYYY-mm-dd") }}</span></div>
-          <p class="case-item-article">{{ item.judgmentResult }}</p>
-          <div class="case-item-bottom">
-            <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-            <span class="collect" @click="userCollect"><i/>收藏</span>
-            <span class="share" @click="userShare"><i/>分享</span>
-          </div>
-          <i class="classic"/>
+        <nuxt-link :to="'/case/'+item.id+'/info'">
+          <div class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
         </nuxt-link>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
+        <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
         <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="'ischeck'? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
-        </div>
-        <i class="classic"/>
-      </div>
-      <div class="lawyer-case-list-item">
-        <div class="case-item-title">宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案<span>2019-12-17</span></div>
-        <p class="case-item-article">宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......</p>
-        <div class="case-item-bottom">
-          <span :class="0? 'check-active':'check'" >已审核</span>
-          <span class="collect"><i/>收藏</span>
-          <span class="share"><i/>分享</span>
+          <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
+          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isCollect ? 'el-icon-star-on' : 'el-icon-star-off'">收藏</i></span>
+          <span class="share no-select" @click="userShare"><i/>分享</span>
         </div>
         <i class="classic"/>
       </div>
@@ -132,59 +82,25 @@ export default {
       totalCount: 10,
       // 获取认证案例所需参数 必传
       caseListParam: {
-        practiceAreaId: undefined, // 诉讼领域Id number 【诉讼领域,非诉讼领域】
-        nonePracticeAreaId: undefined, // 非诉讼领域Id number 【诉讼领域,非诉讼领域】
+        practiceAreaId: undefined, // 领域Id number 【诉讼领域,非诉讼领域】
         searchKey: '', // 搜索关键字: 支持(当事人、律师、专业领域、案由、法院、律所、裁判文书关键字) string
         courtLevel: undefined, // 法院等级 number
         courtReginId: undefined, // 法院所属区域 nmuber || arr
         courtId: undefined, // 法院Id number
         caseReasonId: undefined, // 案由Id number
-        lawyerId: this.$route.params.id, // 律师Id number
+        lawyerId: 37, // 律师Id number
         industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
         pageCount: 10, // 页目条数 number
         pageIndex: 1// 页码 number
       },
-      // 返回案例信息
-      items: [
-        {
-          title: '宋雪强与汇天网络科技有限公司关于房屋租赁合同纠纷案',
-          practiceAreaId: 0, // 领域id
-          practiceAreaName: '诉讼领域', // 领域名称
-          caseReasonId: 7, // 案由id
-          caseReasonName: '婚姻家庭纠纷', // 案由名称
-          lawyerId: 0, // 律师id
-          lawyerName: '王二', // 律师名称
-          lawfirmId: 6, // 律所id
-          lawfirmName: '京师律师事务所', // 律所名称
-          courtId: 1, // 法院id
-          courtName: '朝阳区人民法院', // 法院name
-          startTime: '2020-01-19T01:46:32.297Z', // 案例开始时间
-          endTime: '2020-01-19T01:46:32.297Z', //  案例结束时间
-          judgmentResult: '宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......' // 案例内容
-        },
-        {
-          title: '刘某与张某得婚姻家庭纠纷案件',
-          practiceAreaId: 1, // 领域id
-          practiceAreaName: '非诉讼领域', // 领域名称
-          caseReasonId: 8, // 案由id
-          caseReasonName: '家产纠纷', // 案由名称
-          lawyerId: 1, // 律师id
-          lawyerName: '李四', // 律师名称
-          lawfirmId: 7, // 律所id
-          lawfirmName: '权力律师事务所', // 律所名称
-          courtId: 2, // 法院id
-          courtName: '海淀区人民法院', // 法院name
-          startTime: '2020-01-19T01:46:32.297Z', // 案例开始时间
-          endTime: '2020-01-19T01:46:32.297Z', //  案例结束时间
-          judgmentResult: '宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209宋雪强与汇天网络科技有限公司一案二审民事判决书	北京市第三中级人民法院 二审 （2015）三中民终字第06709号	【文书来源汇天网络科技有限公司，住所地北京市通州庄大街1号209......' // 案例内容
-        }
-      ],
       // 法院数据
       courtData: [],
       // 行业树数据
-      industryTree: []
+      industryTree: [],
+      // 案件领域数据
+      practiceAreaData: []
     }
   },
   computed: {
@@ -193,9 +109,9 @@ export default {
     // 监听检索条件
     caseListParam: {
       deep: true,
-      immediate: true,
       handler(val) {
-        // this.getLawyerCaseList(val)
+        console.log('刷新检索条件:', val)
+        this.getLawyerCaseList(val)
       }
     }
   },
@@ -203,52 +119,46 @@ export default {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerCaseList']),
+    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
-      // this.GetLawyerCaseList(query).then(res => {
-      //   if (res.data.entity.isSucceed) {
-      //     this.lawyerCaseList = res.data.entity.items
-      //     // 首次加载处理法院数据
-      //     if (this.courtData.length < 0) {
-      //       this.lawyerCaseList.forEach((item, index) => {
-      //         this.courtData.push({
-      //           id: item.courtId,
-      //           label: item.courtName
-      //         })
-      //       })
-      //     }
-      //     // 首次加载处理行业树数据
-      //     if (this.industryTree.length < 0) {
-      //       this.lawyerCaseList.forEach((item, index) => {
-      //         this.industryTree.push({
-
-      //         })
-      //       })
-      //     }
-      //   }
-      // })
-      this.lawyerCaseList = this.items
-      if (this.courtData.length <= 0) {
-        this.lawyerCaseList.forEach((item, index) => {
-          this.courtData.push({
-            id: item.courtId,
-            label: item.courtName
-          })
-        })
-      }
-      console.log(this.courtData)
+      this.GetLawyerCaseList(query).then(res => {
+        if (res !== null) {
+          this.totalCount = res.totalCount
+          this.lawyerCaseList = res.items
+          // 处理案例法院数据
+          if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
+            this.lawyerCaseList.forEach(item => {
+              this.courtData.push({
+                id: item.courtId,
+                label: item.courtName
+              })
+              this.industryTree.push({
+                id: item.industryId,
+                label: item.industryName
+              })
+              this.practiceAreaData.push({
+                id: item.practiceAreaId,
+                label: item.practiceAreaName
+              })
+            })
+          }
+        }
+      })
     },
     // 改变排序状态
     filterChange(type) {
-      if (type === 'time') {
+      if (type === 'updatetime') {
         this.activeIndex = 1
+        this.caseListParam.sorting = 'updatetime'
       }
-      if (type === 'people') {
+      if (type === 'clickcount') {
         this.activeIndex = 2
+        this.caseListParam.sorting = 'clickcount'
       }
-      if (type === 'count') {
+      if (type === 'followerCount') {
         this.activeIndex = 3
+        this.caseListParam.sorting = 'followerCount'
       }
     },
     // 翻页操作
@@ -257,7 +167,11 @@ export default {
       this.caseListParam.pageCount = val.limit
     },
     // 用户收藏
-    userCollect() {
+    userCollect(index) {
+      const caseId = this.lawyerCaseList[index].id
+      this.UserFollowCase(caseId).then(res => {
+        this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
+      })
     },
     // 用户分享
     userShare() {
@@ -267,6 +181,21 @@ export default {
 </script>
 
 <style lang="scss">
+.no-select{
+
+  -webkit-touch-callout: none; /* iOS Safari */
+
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+
+  -khtml-user-select: none; /* Konqueror */
+
+  -moz-user-select: none; /* Firefox */
+
+  -ms-user-select: none; /* Internet Explorer/Edge */
+
+  user-select: none; /* Non-prefixed version, currently not supported by any browser */
+
+}
 .lawyer-case{
   .pagination-container {
     background: #f2f2f2;
@@ -387,15 +316,15 @@ export default {
     .lawyer-case-list-item {
       background: #fff;
       cursor: pointer;
-      height: 168px;
+      height: auto;
       border-width: 1px 1px 1px 3px;
       border-style: solid;
       border-color:#eee #eee #eee #c5c5c5;
-      padding-left: 24px;
-      padding-right: 28px;
       position: relative;
       margin-bottom: 16px;
       .case-item-title {
+        padding-left: 24px;
+        padding-right: 28px;
         font-size: 16px;
         color: #333333;
         line-height: 16px;
@@ -405,10 +334,12 @@ export default {
         overflow: hidden;
         span{
           position: absolute;
-          right: 0;
+          right: 28px;
         }
       }
       .case-item-article {
+        padding-left: 24px;
+        padding-right: 28px;
         font-size: 14px;
         line-height: 24px;
         color: #999999;
@@ -420,13 +351,11 @@ export default {
         -webkit-box-orient: vertical;
       }
       .case-item-bottom {
-        position: absolute;
         left: 2px;
         bottom: -3px;
         width:100%;
         height: 29px;
         background: #fbfbfb;
-        padding-right: 10px;
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -456,6 +385,14 @@ export default {
           border-radius: 5px;
         }
         .collect {
+          user-select: none;
+          .el-icon-star-off:before {
+            margin-right: 6px;
+          }
+          .el-icon-star-on:before {
+            margin-right: 6px;
+            color: #f68020
+          }
           i {
             display: inline-block;
             width: 12px;

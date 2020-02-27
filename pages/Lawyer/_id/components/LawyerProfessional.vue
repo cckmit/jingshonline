@@ -11,7 +11,14 @@ export default {
   components: {
 
   },
-  props: {},
+  props: {
+    chartData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
+  },
   data() {
     return {
       option: {
@@ -25,8 +32,7 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          left: 'left',
-          data: ['房产土地', '合同纠纷', '物权纠纷', '婚姻继承', '劳动纠纷', '行政案件', '侵权纠纷']
+          left: 'left'
         },
         series: [
           {

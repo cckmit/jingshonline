@@ -19,6 +19,9 @@ export const mutations = {
 
   SET_REAL_NAME: (state, realName) => {
     state.realName = realName
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar
   }
 }
 export const actions = {
@@ -29,7 +32,7 @@ export const actions = {
         const { data } = response
         commit('SET_TOKEN', data)
         cookie.set('token', data)
-        resolve()
+        resolve(data)
       })
         .catch(error => {
           reject(error)
@@ -61,7 +64,8 @@ export const actions = {
     return new Promise((resolve, reject) => {
       commit('SET_NAME', '')
       commit('SET_REAL_NAME', '')
-      cookie.remove() // 移除token
+      commit('SET_AVATAR', '')
+      cookie.remove('token') // 移除token
       // resetRouter() // 重置路由
       resolve()
     })
@@ -76,9 +80,10 @@ export const actions = {
           if (!data) {
             reject('获取登录用户信息失败,请重新登录')
           }
-          const { userName, realName } = data
+          const { userName, realName, avatar } = data
           commit('SET_NAME', userName)
           commit('SET_REAL_NAME', realName)
+          commit('SET_AVATAR', avatar)
           resolve(data)
         })
         .catch(error => {
