@@ -5,7 +5,7 @@
 import { MessageBox, Message } from 'element-ui' // 引用饿了么UI消息组件
 import axios from 'axios' // 引用axios
 // import store from '@/store'
-// import cookie from './cookie'
+import cookie from './cookie'
 
 // create an axios instance
 const service = axios.create({
@@ -20,7 +20,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // config.headers['Authorization'] = cookie.get('token')
+    cookie.get('token') ? config.headers['Authorization'] = cookie.get('token') : ''
     return config
   },
   error => {
