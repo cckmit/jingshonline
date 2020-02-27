@@ -126,6 +126,7 @@ export default {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
+          console.log(this.lawyerCaseList)
           // 处理案例法院数据
           if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
             this.lawyerCaseList.forEach(item => {
@@ -170,6 +171,7 @@ export default {
     userCollect(index) {
       const caseId = this.lawyerCaseList[index].id
       this.UserFollowCase(caseId).then(res => {
+        console.log(res)
         this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
       })
     },
@@ -247,7 +249,12 @@ export default {
       .vue-treeselect {
         outline: 0;
       }
+      .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+        border-color: none;
+        box-shadow: none;
+      }
       .vue-treeselect__control{
+        outline: none;
         padding-left: 5px;
         display: table;
         table-layout: fixed;
@@ -265,7 +272,11 @@ export default {
         -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
         transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
       }
+      .vue-treeselect__input {
+        font-size: 14px;
+      }
       .vue-treeselect__menu-container {
+        font-size: 14px;
         width: 280px;
       }
       .vue-treeselect__placeholder {
@@ -277,11 +288,11 @@ export default {
         left: 5px;
         width: 30px;
         height: 30px;
-        background: #f68020
+        background:#f2f2f2
       }
-      .vue-treeselect__control-arrow--rotated{
+      .vue-treeselect--open {
         .vue-treeselect__control-arrow-container {
-          background: #eee
+          background: #f68020
         }
       }
     }
@@ -395,11 +406,6 @@ export default {
           }
           i {
             display: inline-block;
-            width: 12px;
-            height: 12px;
-            background-image: url("../../../../assets/lawyerinfo/star.png");
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
             margin-right: 6px;
             vertical-align: -1px;
           }
@@ -434,4 +440,5 @@ export default {
     }
   }
 }
+
 </style>

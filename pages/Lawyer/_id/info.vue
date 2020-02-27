@@ -81,6 +81,7 @@ export default {
       return item.name
     }))
     const resume = LawyerResumeData.data.data
+    console.log(LawyerInformation.data.data)
     return {
       // 律师基本信息
       lawyerInformation: LawyerInformation.data.data,
@@ -147,9 +148,9 @@ export default {
   watch: {
   },
   mounted() {
-    // this.GetLawyerInfo(10).then(res => {
-    //   console.log(res)
-    // })
+    axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${this.$route.params.id}`, {}, { 'Content-Type': 'application/json' }).then(res => {
+      console.log(res)
+    })
   },
   methods: {
   }
@@ -241,7 +242,6 @@ export default {
         color: #333;
         margin-bottom: 27px;
         white-space: nowrap;
-        overflow: hidden;
         text-overflow: ellipsis;
         -o-text-overflow: ellipsis;
         span {

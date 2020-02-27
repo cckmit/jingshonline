@@ -21,11 +21,8 @@ export const GetLawyerCaseList = query => {
  */
 export const UserFollow = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/follow`,
-    method: 'post',
-    data: {
-      lawyerId: lawyerId
-    }
+    url: `${setting.apiPrefix}/customer/lawyer/follow/${lawyerId}`,
+    method: 'post'
   })
 }
 

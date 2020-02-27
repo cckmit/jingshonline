@@ -19,8 +19,8 @@
       </el-tab-pane>
     </el-tabs>
     <div class="follow" @click="followHandle">
-      <i/>
-      <a href="#">关注</a>
+      <i :class="!isFollow ? 'follow-icon' : ''"/>
+      <a href="#">{{ !isFollow ? '关注' : '取消关注' }}</a>
     </div>
   </div>
 </template>
@@ -82,16 +82,23 @@ export default {
 
   },
   mounted() {
-
   },
   methods: {
     // 用户关注律师 取消关注
     ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),
     // 关注按钮操作
     followHandle() {
-      this.UserFollow(this.$route.params.id).then(res => {
-        console.log(res)
-      })
+      if (!this.isFollow) {
+        this.UserFollow(this.$route.params.id).then(res => {
+          console.log('成功关注')
+          this.isFollow = !this.isFollow
+        })
+      } else {
+        this.UserCancleFollow(this.$route.params.id).then(res => {
+          console.log('成功取消关注')
+          this.isFollow = !this.isFollow
+        })
+      }
     }
   }
 }
@@ -139,31 +146,33 @@ export default {
     }
   }
   .follow {
+    text-align: center;
     overflow: hidden;
     position: absolute;
+    display: flex;
     top: 13px;
     right: 33px;
-    width: 78px;
+    width: 80px;
+    height: 30px;
     border: 1px solid #d5dce1;
-    text-align: left;
-    line-height: 28px;
+    line-height: 30px;
     font-size: 14px;
     border-radius: 6%;
     cursor: pointer;
-    i {
-      float: left;
-      position: absolute;
+    .follow-icon {
+      display: inline-block;
       width: 14px;
       height: 15px;
       background-image: url("../../../assets/lawyerinfo/lawyerfollow.png");
       background-size: 100% 100%;
-      left: 15px;
-      top: 7px;
-      margin-right: 6px;
+      margin-left: 16px;
+      margin-top:6px;
     }
     a {
+      margin: 0 auto;
+      text-align: center;
+      line-height: 30px;
       color: #737373;
-      margin-left: 34px;
     }
   }
 
