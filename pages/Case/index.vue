@@ -257,16 +257,16 @@ export default {
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
       if (node.level === 0) {
-        return resolve([{ name: 'region' }])
+        return resolve([])
       }
-      if (node.level > 1) return resolve([])
+      if (node.level > 0) {
+        this.getCourtRegionsChildData(node.data.id).then(res => {
+          this.regionChildTreeData = res
+          return resolve([this.regionChildTreeData])
+        })
+      }
       setTimeout(() => {
-        const data = [{
-          name: 'leaf',
-          leaf: true
-        }, {
-          name: 'zone'
-        }]
+        const data = this.regionChildTreeData
         resolve(data)
       }, 500)
     },
