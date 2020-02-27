@@ -95,7 +95,12 @@
         <div class="selecttab">
           <span>筛选条件：</span>
           <ul class="alreadyselect">
-            <li v-for="(items,index) in selectData" :key="index"><span>{{ items.name }}</span><small @click="selectdelete(items)"><i class="fa fa-times"/></small></li>
+            <!-- <li v-for="(items,index) in selectData" :key="index"><span>{{ items.name }}</span><small @click="selectdelete(items)"><i class="fa fa-times"/></small></li> -->
+            <li v-for="(items,index) in selectData.industry" v-show="selectData.industry!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('industry',items)"><i class="fa fa-times"/></small></li>
+            <li v-for="(items,index) in selectData.practice" v-show="selectData.practice!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('practice',items)"><i class="fa fa-times"/></small></li>
+            <li v-for="(items,index) in selectData.region" v-show="selectData.region!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('region',items)"><i class="fa fa-times"/></small></li>
+            <li v-for="(items,index) in selectData.lawfirm" v-show="selectData.lawfirm!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('lawfirm',items)"><i class="fa fa-times"/></small></li>
+            <li v-for="(items,index) in selectData.lawyerName" v-show="selectData.lawyerName!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('lawyerName',items)"><i class="fa fa-times"/></small></li>
           </ul>
           <p @click="selectempty">
             <img src="../../assets/lawyer/empty.png" alt="">
@@ -207,10 +212,10 @@ export default {
     ])
     return {
       lawyerData: lawyerData.data.items,
-      suitsData: suitsData.data.entity[0].children, // .data[0].children,
-      NosuitsData: NosuitsData.data.entity[0].children, // .data[0].children,
-      industryData: industryData.data.entity,
-      regionData: regionData.data.entity
+      suitsData: suitsData.data.data[0].children, // .data[0].children,
+      NosuitsData: NosuitsData.data.data[0].children, // .data[0].children,
+      industryData: industryData.data.data,
+      regionData: regionData.data.data
     }
   },
 
@@ -229,28 +234,17 @@ export default {
         sorting: 0, // 排序
         regionId: '' // 律师所属地区
       },
-      lawyerSearchName: {// 已选条件数据
-        lawfirmId: '', // 所属律所
-        lawfirmName: '',
-        practiceAreaId: '', // 擅长领域
-        practiceAreaName: '',
-        industryId: '', // 擅长行业
-        industryName: '',
-        regionId: '', // 律师所属地区
-        regionName: ''
-      },
       yearstart: '', // 年限开始时间
       yearend: '', // 年限结束时间
       sortactive: 'active', // 默认排序class
       caseactive: '', // 案例总数排序class
-      sortnum: 0, // 默认排序点击次数
-      casesortnum: 1, // 案例排序点击次数
-      selectindustryData: [], // 筛选行业数据
-      selectsuitsData: [], // 筛选诉讼领域数据
-      selectnosuitsData: [], // 筛选非诉领域数据
-      selectregionData: [], // 筛选地区数据
-      selectlawfirmData: [], // 筛选律所数据
-      selectData: [], // 筛选条件数据
+      selectData: {
+        industry: [],
+        practice: [],
+        region: [],
+        lawfirm: [],
+        lawyerName: []
+      }, // 筛选条件数据
       addData: false, // 是否已筛选
       suitsData: [], // 诉讼领域数据
       NosuitsData: [], // 非诉领域数据
@@ -277,7 +271,6 @@ export default {
     // this.getPractice()
     // this.getIndustry()
     // this.getLawfirm()
-    // this.getRegion()
   },
 
   methods: {
@@ -418,18 +411,15 @@ export default {
         this.selectData.push(this.selectlawfirmData)
       }
     },
-    selectdelete(data) {
-      for (var i = 0; i < this.selectData.length; i++) {
-        if (this.selectData[i].id === data.id && this.selectData[i].name === data.name) {
-          this.selectData.splice([i], 1)
-        }
-      }
-      // this.selectData.forEach(item => {
-      //   console.log(item)
-      //   if (item.id === data.id && item.name === data.name) {
-      //     item = {}
+    selectdelete(type, data) { // 删除筛选方法
+      // 多选
+      // for (var i = 0; i < this.selectData[type].length; i++) {
+      //   if (this.selectData[type][i].id === data.id && this.selectData[type][i].name === data.name) {
+      //     this.selectData[type].splice([i], 1)
       //   }
-      // })
+      // }
+      // 单选
+      this.selectData[type] = []
     },
     selectempty() { // 清空筛选条件
       this.selectData = []

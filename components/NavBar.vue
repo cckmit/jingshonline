@@ -20,7 +20,7 @@
             <!-- <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link> -->
             <el-dropdown class="user_info">
               <span class="el-dropdown-link">
-                <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name || '似懂非懂' }}</span></nuxt-link>
+                <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter" style="color:#606266;">个人中心</nuxt-link></el-dropdown-item>
@@ -28,7 +28,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </el-menu-item>
-          <el-menu-item v-else index="login" @click="loginVisible=true"><span>注册</span><span>登录</span></el-menu-item>
+          <el-menu-item v-else index="login" @click="loginVisible=true"><span>注册 | 登录</span></el-menu-item>
         </el-menu>
       </div>
       <img v-if="url.name!=='index'" :src="telephone" class="telephone" style="height:32px;float:right;margin:17px 30px 17px 0;position:absolute;top:0;right:0;" alt="telephont">
@@ -64,7 +64,7 @@ export default {
       telephone: telephone,
       url: this.$route,
       activeNav: 'index',
-      hasLogin: true, // this.$cookie.get('token'),
+      hasLogin: this.$cookie.get('token'),
       loginVisible: false
     }
   },
@@ -78,10 +78,11 @@ export default {
 
   mounted() {
     this.selectActiveNav()
+    this.getUserInfo()
   },
 
   methods: {
-    ...mapActions('account', ['Logout']),
+    ...mapActions('account', ['Logout', 'GetLoginUserInfo']),
     selectActiveNav() {
       this.activeNav = this.$route ? this.$route.name.toLocaleLowerCase() : 'index'
     },
@@ -92,6 +93,9 @@ export default {
       this.Logout().then(res => {
         this.$router.push(`/`)
       })
+    },
+    getUserInfo() {
+      this.hasLogin ? this.GetLoginUserInfo() : ''
     }
   }
 }

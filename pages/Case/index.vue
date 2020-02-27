@@ -80,7 +80,7 @@
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </p>
                   <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                  <p><span>【结果命中】</span>item.judgmentResult本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
+                  <p><span>【结果命中】</span>本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
@@ -205,6 +205,7 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
     ])
+    console.log(CasereasonTreeData)
     return {
       CasereasonTreeData: CasereasonTreeData.data.entity,
       regionTreeData: regionTreeData.data.entity
@@ -232,8 +233,8 @@ export default {
     },
     request() {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
-        this.caseData = res.items
-        this.totalCount = res.totalCount
+        this.caseData = res.data.items
+        this.totalCount = res.data.totalCount
         this.loading = false
       })
     },
@@ -282,35 +283,35 @@ export default {
     handleCourtClose(tag) {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
-      this.getCaseList()
+      // this.getCaseList()
     },
     // 具体案由树点击筛选
     handleCasereasonClick(data) {
       this.selectForm.caseReasonInfo = data.name
       this.caseSearch.caseReasonId = data.id
-      this.getCaseList()
+      // this.getCaseList()
     },
     // 具体案由关闭
     handleCaseReasonClose(tag) {
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
-      this.getCaseList()
+      // this.getCaseList()
     },
 
     // 管辖法院点击
     handleCourtLevelClick(data) {
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
-      this.getRegionTree(this.caseSearch.courtLevel)
-      this.getCaseList()
+      // this.getRegionTree(this.courtLevel)
+      // this.getCaseList()
     },
 
     // 法院等级关闭
     handleCourtLevelClose(tag) {
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      this.getRegionTree(this.caseSearch.courtLevel)
-      this.getCaseList()
+      // this.getRegionTree(this.courtLevel)
+      // this.getCaseList()
     },
     // 清空筛选条件点击事件
     emptyScreen() {
@@ -321,7 +322,7 @@ export default {
       this.caseSearch.caseReasonId = ''
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      this.getCaseList()
+      // this.getCaseList()
     },
     // 排序点击事件
     getSortCaseData(sorting, index) {

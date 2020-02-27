@@ -28,10 +28,12 @@
           </ul>
           <h4>联系方式</h4>
           <ul>
-            <li><span>联系电话</span>15607021980</li>
+            <li><span>联系电话</span>{{ lawyerInformation.phone }}</li>
             <li><span>律师邮箱</span>{{ lawyerInformation.email }}</li>
           </ul>
           <h4>业务专长</h4>
+          <!-- <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
+            <li><a href=":javascript">{{ item }}</a></li> -->
           <ul class="lawyer-business">
             <li><a href=":javascript">合同纠纷</a></li>
             <li><a href=":javascript">土地房产</a></li>
@@ -43,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :resume-data="resumeData"/>
+      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
     </div>
   </div>
 </template>
@@ -66,22 +68,36 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [lawyerResumeData, LawyerInformation] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, ChartData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, {}, { 'Content-Type': 'application/json' })
     ])
-    const resume = lawyerResumeData.data.entity
+    // 律师业务专长
+    const lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
+      return item.name
+    }).concat(LawyerInformation.data.data.industries.map(item => {
+      return item.name
+    }))
+    const resume = LawyerResumeData.data.data
     return {
       // 律师基本信息
-      lawyerInformation: LawyerInformation.data.entity,
+      lawyerInformation: LawyerInformation.data.data,
       // 律师简历数据
       resumeData: {
-        workExperiences: resume.workExperiences ? resume.workExperiences : [],
-        socialPositions: resume.socialPositions ? resume.socialPositions : [],
-        educations: resume.educations ? resume.educations : [],
-        certificates: resume.certificates ? resume.certificates : [],
-        academics: resume.academics ? resume.academics : []
-      }
+        workExperiences: resume.workExperiences,
+        socialPositions: resume.socialPositions,
+        educations: resume.educations,
+        certificates: resume.certificates,
+        academics: resume.academics
+      },
+      // 律师常去法院数据
+      courtData: CourtData.data.data,
+      // 律师业务专长
+      lawyerBusiness: lawyerBusiness,
+      // 图表数据
+      chartData: ChartData.data.data
     }
   },
   data() {
@@ -99,7 +115,7 @@ export default {
         id: 0, // 律师Id
         realName: '', // 真实姓名
         email: '', // 邮箱
-        phone: '15607021980', // 律师电话 缺少返回信息
+        phone: '', // 律师电话 缺少返回信息
         lawfirmName: '', // 律所
         avatarPathId: null, // 头像路径Id
         avatar: '', // 头像路径
@@ -119,7 +135,11 @@ export default {
         lastModificationTime: '', // 最后更新时间 2019-12-30 09:34:20
         practiceareas: [], // 律师擅长领域 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
         industries: [] // 律师擅长行业 [{knowledgeId:领域/行业Id,name:领域/行业名称,caseCount:案例数}]
-      }
+      },
+      courtData: [],
+      regionData: [],
+      lawyerBusiness: [],
+      chartData: []
     }
   },
   computed: {
@@ -220,6 +240,10 @@ export default {
         line-height: 14px;
         color: #333;
         margin-bottom: 27px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
         span {
           width: 58px;
           display: inline-block;
