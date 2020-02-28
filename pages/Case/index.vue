@@ -69,7 +69,7 @@
         </div>
         <div class="case-content-main">
           <ul v-bind="caseData">
-            <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
+            <li v-for="(item, index) in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
@@ -84,7 +84,7 @@
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
-                <span class="cursorPointer" @click="collectionCase(item.id, item.isFollow)"><i :class="{ hover:isStarHover===item.isFollow}" class="el-icon-star-off"/>收藏</span>
+                <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
                 <span>{{ item.judgmentNumber }}</span>
               </div>
@@ -331,24 +331,17 @@ export default {
       this.getCaseList()
     },
     // 收藏点击事件
-    collectionCase(id, isFollow) {
-      if (isFollow === false) {
-        this.getFollow(id)
+    collectionCase(id, index) {
+      const coll = !this.caseData[index].isFollow
+      this.$set(this.caseData[index], 'isFollow', coll)
+      if (coll) { // 收藏
+        this.getFollowData(id).then(res => {
+        })
       } else {
-        this.getUnfollow(id)
+        // 取消收藏
+        this.getUnfollowData(id).then(res => {
+        })
       }
-    },
-    // 收藏
-    getFollow(id) {
-      this.getFollowData(id).then(res => {
-        this.isStarHover = true
-      })
-    },
-    // 取消收藏
-    getUnfollow() {
-      this.getUnfollowData().then(res => {
-        this.isStarHover = false
-      })
     },
     // 分页切换点击事件
     handlePageChange(val) {
