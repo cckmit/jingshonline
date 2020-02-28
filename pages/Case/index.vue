@@ -84,11 +84,11 @@
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
-                <span class="cursorPointer" @click="collectionCase(item.id, item.isFollow=0)"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
+                <span class="cursorPointer" @click="collectionCase(item.id, item.isFollow)"><i :class="{ hover:isStarHover===item.isFollow}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
                 <span>{{ item.judgmentNumber }}</span>
               </div>
-              <img src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+              <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
           </ul>
         </div>
@@ -126,7 +126,7 @@ export default {
     return {
       current: 0,
       loading: '',
-      totalCount: 100,
+      totalCount: 0,
       isStarHover: false, // 是否点击收藏变色
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
@@ -205,7 +205,6 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
     ])
-    console.log(CasereasonTreeData)
     return {
       CasereasonTreeData: CasereasonTreeData.data.entity,
       regionTreeData: regionTreeData.data.entity
@@ -233,8 +232,8 @@ export default {
     },
     request() {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
-        this.caseData = res.data.items
-        this.totalCount = res.data.totalCount
+        this.caseData = res.items
+        this.totalCount = res.totalCount
         this.loading = false
       })
     },
@@ -283,35 +282,35 @@ export default {
     handleCourtClose(tag) {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由树点击筛选
     handleCasereasonClick(data) {
       this.selectForm.caseReasonInfo = data.name
       this.caseSearch.caseReasonId = data.id
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由关闭
     handleCaseReasonClose(tag) {
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
 
     // 管辖法院点击
     handleCourtLevelClick(data) {
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
 
     // 法院等级关闭
     handleCourtLevelClose(tag) {
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
     // 清空筛选条件点击事件
     emptyScreen() {
@@ -322,7 +321,7 @@ export default {
       this.caseSearch.caseReasonId = ''
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 排序点击事件
     getSortCaseData(sorting, index) {
@@ -333,7 +332,7 @@ export default {
     },
     // 收藏点击事件
     collectionCase(id, isFollow) {
-      if (isFollow === 0) {
+      if (isFollow === false) {
         this.getFollow(id)
       } else {
         this.getUnfollow(id)
