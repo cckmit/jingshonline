@@ -1,13 +1,13 @@
 <template>
   <div class="lawyer-resume">
     <div class="lawyer-present">
-      <p>{{ lawyerRemark }}</p>
+      <p>{{ lawyerRemark ? lawyerRemark : '暂无该律师简述...' }}</p>
     </div>
     <div class="lawyer-main">
       <div class="lawyer-work lawyer-wrapper">
         <p class="lawyer-header"><i/>工作经历</p>
         <div class="card-container">
-          <ul v-if="resumeData.workExperiences.length > 0" class="work-card type-cards" >
+          <ul v-if="resumeData.workExperiences && resumeData.workExperiences.length" class="work-card type-cards" >
             <li v-for="(item,index) in resumeData.workExperiences" :key="index">
               <p>{{ item.organization }}</p>
               <p>{{ item.position }}</p>
@@ -20,7 +20,7 @@
       <div class="lawyer-study lawyer-wrapper">
         <p class="lawyer-header"><i/>教育经历</p>
         <div class="card-container">
-          <ul v-if="resumeData.educations.length" class="work-card type-cards">
+          <ul v-if="resumeData.educations && resumeData.educations.length" class="work-card type-cards">
             <li v-for="(item,index) in resumeData.educations" :key="index">
               <p>{{ item.school }}</p>
               <p>{{ item.degree }}</p>
@@ -33,7 +33,7 @@
       <div class="lawyer-learn lawyer-wrapper">
         <p class="lawyer-header"><i/>学术成果</p>
         <div class="card-container">
-          <ul v-if="resumeData.academics.length > 0" class="work-card type-text">
+          <ul v-if="resumeData.academics && resumeData.academics.length" class="work-card type-text">
             <li v-for="(item,index) in resumeData.academics" :key="index">
               {{ item.name }}
             </li>
@@ -44,7 +44,7 @@
       <div class="lawyer-industry lawyer-wrapper">
         <p class="lawyer-header"><i/>行业资质</p>
         <div class="card-container">
-          <ul v-if="resumeData.certificates.length > 0" class="work-card type-text">
+          <ul v-if="resumeData.certificates && resumeData.certificates.length" class="work-card type-text">
             <li v-for="(item,index) in resumeData.certificates" :key="index" >
               {{ item.name }}
             </li>
@@ -55,7 +55,7 @@
       <div class="lawyer-society lawyer-wrapper">
         <p class="lawyer-header"><i/>社会职务</p>
         <div class="card-container">
-          <ul v-if="resumeData.socialPositions.length > 0" class="work-card type-text">
+          <ul v-if="resumeData.socialPositions && resumeData.socialPositions.length" class="work-card type-text">
             <li v-for="(item,index) in resumeData.socialPositions" :key="index">
               {{ item.name }}
             </li>

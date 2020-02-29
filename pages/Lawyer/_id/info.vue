@@ -75,33 +75,64 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' })
     ])
-    // 律师业务专长
-    const lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
-      return item.name
-    }).concat(LawyerInformation.data.data.industries.map(item => {
-      return item.name
-    }))
-    const resume = LawyerResumeData.data.data
+    // 律师基础信息数据容错
+    let lawyerInformationData = {}
+    if (LawyerInformation.data.data) {
+      lawyerInformationData = LawyerInformation.data.data
+    }
+    // 律师业务专长数据容错
+    let lawyerBusiness = []
+    if (lawyerInformationData.practiceareas && lawyerInformationData.practiceareas.length) {
+      lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
+        return item.name
+      }).concat(LawyerInformation.data.data.industries.map(item => {
+        return item.name
+      }))
+    }
+    // 律师简历信息数据容错
+    const resumeData = {}
+    if (LawyerResumeData.data.data) {
+      const resumeInfo = LawyerResumeData.data.data
+      if (resumeInfo.workExperiences) {
+        resumeData.workExperiences = resumeInfo.workExperiences
+      }
+      if (resumeInfo.socialPositions) {
+        resumeData.socialPositions = resumeInfo.socialPositions
+      }
+      if (resumeInfo.educations) {
+        resumeData.educations = resumeInfo.educations
+      }
+      if (resumeInfo.certificates) {
+        resumeData.certificates = resumeInfo.certificates
+      }
+      if (resumeInfo.academics) {
+        resumeData.academics = resumeInfo.academics
+      }
+    }
+    // 律师常去法院数据容错
+    let courtData = []
+    if (CourtData.data.data && CourtData.data.data.length) {
+      courtData = CourtData.data.data
+    }
+    // 图标数据容错
+    const chartData = {}
+    if (PracticData.data.data) {
+      chartData.practicea = PracticData.data.data
+    }
+    if (NoPracticData.data.data) {
+      chartData.noPracticea = NoPracticData.data.data
+    }
     return {
       // 律师基本信息
-      lawyerInformation: LawyerInformation.data.data,
+      lawyerInformation: lawyerInformationData,
       // 律师简历数据
-      resumeData: {
-        workExperiences: resume.workExperiences,
-        socialPositions: resume.socialPositions,
-        educations: resume.educations,
-        certificates: resume.certificates,
-        academics: resume.academics
-      },
+      resumeData: resumeData,
       // 律师常去法院数据
-      courtData: CourtData.data.data,
+      courtData: courtData,
       // 律师业务专长
       lawyerBusiness: lawyerBusiness,
       // 图表数据
-      chartData: {
-        practicea: PracticData.data.data,
-        noPracticea: NoPracticData.data.data
-      }
+      chartData: chartData
     }
   },
   data() {
@@ -114,7 +145,7 @@ export default {
         certificates: [],
         academics: []
       },
-      // 律师基本信息 缺少手机号 以及律师备注信息（律师简介）
+      // 律师基本信息
       lawyerInformation: {
         id: 0, // 律师Id
         realName: '', // 真实姓名
