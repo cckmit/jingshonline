@@ -2,7 +2,7 @@
   <el-row :gutter="20">
     <el-col :span="24">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
-        <el-breadcrumb-item :to="{path:'/'}">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>查找律师</el-breadcrumb-item>
       </el-breadcrumb>
       <el-row class="bgf tabselect">
@@ -10,45 +10,84 @@
           <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="诉讼领域" name="first">
               <ul>
-                <li v-for="(items,index) in suitsData" :key="index">
-                  <span v-if="items.children.length===0" @click="practice(items.id,items.name)">
+                <li v-for="(items, index) in suitsData" :key="index">
+                  <span
+                    v-if="items.children.length === 0"
+                    @click="practice(items.id, items.name)"
+                  >
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="practice(item.id,item.name)">{{ item.name }}</li>
+                      <li
+                        v-for="(item, index) in items.children"
+                        :key="index"
+                        @click="practice(item.id, item.name)"
+                      >
+                        {{ item.name }}
+                      </li>
                     </ul>
-                    <el-button slot="reference" @click="practice(items.id,items.name)">{{ items.name }}</el-button>
+                    <el-button
+                      slot="reference"
+                      @click="practice(items.id, items.name)"
+                    >{{ items.name }}</el-button
+                    >
                   </el-popover>
                 </li>
               </ul>
             </el-tab-pane>
             <el-tab-pane label="非诉领域" name="second">
               <ul>
-                <li v-for="(items,index) in NosuitsData" :key="index">
-                  <span v-if="items.children.length===0" @click="practice(items.id,items.name)">
+                <li v-for="(items, index) in NosuitsData" :key="index">
+                  <span
+                    v-if="items.children.length === 0"
+                    @click="practice(items.id, items.name)"
+                  >
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="practice(item.id,item.name)">{{ item.name }}</li>
+                      <li
+                        v-for="(item, index) in items.children"
+                        :key="index"
+                        @click="practice(item.id, item.name)"
+                      >
+                        {{ item.name }}
+                      </li>
                     </ul>
-                    <el-button slot="reference" @click="practice(items.id,items.name)">{{ items.name }}</el-button>
+                    <el-button
+                      slot="reference"
+                      @click="practice(items.id, items.name)"
+                    >{{ items.name }}</el-button
+                    >
                   </el-popover>
                 </li>
               </ul>
             </el-tab-pane>
             <el-tab-pane label="擅长行业" name="third">
               <ul>
-                <li v-for="(items,index) in industryData" :key="index">
-                  <span v-if="items.children.length===0" @click="industry(items.id,items.name)">
+                <li v-for="(items, index) in industryData" :key="index">
+                  <span
+                    v-if="items.children.length === 0"
+                    @click="industry(items.id, items.name)"
+                  >
                     {{ items.name }}
                   </span>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
-                      <li v-for="(item,index) in items.children" :key="index" @click="industry(item.id,item.name)">{{ item.name }}</li>
+                      <li
+                        v-for="(item, index) in items.children"
+                        :key="index"
+                        @click="industry(item.id, item.name)"
+                      >
+                        {{ item.name }}
+                      </li>
                     </ul>
-                    <el-button slot="reference" @click="industry(items.id,items.name)">{{ items.name }}</el-button>
+                    <el-button
+                      slot="reference"
+                      @click="industry(items.id, items.name)"
+                    >{{ items.name }}</el-button
+                    >
                   </el-popover>
                 </li>
               </ul>
@@ -61,23 +100,52 @@
       <div class="select-input">
         <p>检索律师</p>
         <div>
-          <el-input v-model="lawyerSearch.lawyerName" size="small" clearable placeholder="请输入所要查询的律师姓名" />
-          <img src="../../assets/lawyer/search.png" alt="" @click="selectname">
+          <el-input
+            v-model="lawyerSearch.lawyerName"
+            size="small"
+            clearable
+            placeholder="请输入所要查询的律师姓名"
+          />
+          <img
+            src="../../assets/lawyer/search.png"
+            alt=""
+            @click="selectname"
+          >
         </div>
       </div>
       <div class="bgf tree_left">
         <p>城市</p>
-        <el-tree ref="tree2" :data="regionData" :props="defaultProps" :indent="24" :highlight-current="true" :filter-node-method="filterNode" node-key="id" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" @node-click="region">
+        <el-tree
+          v-if="regionData.length!==0"
+          ref="tree2"
+          :data="regionData"
+          :props="defaultProps"
+          :indent="24"
+          :highlight-current="true"
+          :filter-node-method="filterNode"
+          node-key="id"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          @node-click="region"
+        >
           <div slot-scope="{ node }" class="tree_tools">
             <span>{{ node.data.name }}</span>
           </div>
         </el-tree>
+        <span v-else class="emptyData">暂无数据</span>
       </div>
       <div class="bgf tree_left">
         <p>律所</p>
-        <ul>
-          <li v-for="(items,index) in lawfirmData" :key="index" @click="lawfirm(items)">{{ items.name }}</li>
+        <ul v-if="lawfirmData.length!==0">
+          <li
+            v-for="(items, index) in lawfirmData"
+            :key="index"
+            @click="lawfirm(items)"
+          >
+            {{ items.name }}
+          </li>
         </ul>
+        <span v-else class="emptyData">暂无数据</span>
       </div>
     </el-col>
     <el-col :span="18">
@@ -86,47 +154,115 @@
           <span>筛选条件：</span>
           <ul class="alreadyselect">
             <!-- <li v-for="(items,index) in selectData" :key="index"><span>{{ items.name }}</span><small @click="selectdelete(items)"><i class="fa fa-times"/></small></li> -->
-            <li v-for="(items,index) in selectData.industry" v-show="selectData.industry!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('industry',items)"><i class="fa fa-times" /></small></li>
-            <li v-for="(items,index) in selectData.practice" v-show="selectData.practice!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('practice',items)"><i class="fa fa-times" /></small></li>
-            <li v-for="(items,index) in selectData.region" v-show="selectData.region!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('region',items)"><i class="fa fa-times" /></small></li>
-            <li v-for="(items,index) in selectData.lawfirm" v-show="selectData.lawfirm!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('lawfirm',items)"><i class="fa fa-times" /></small></li>
-            <li v-for="(items,index) in selectData.lawyerName" v-show="selectData.lawyerName!==[]" :key="index"><span>{{ items.name }}</span><small @click="selectdelete('lawyerName',items)"><i class="fa fa-times" /></small></li>
+            <li
+              v-for="(items, index) in selectData.industry"
+              v-show="selectData.industry !== []"
+              :key="index"
+            >
+              <span>{{ items.name }}</span>
+              <small @click="selectdelete('industry', items)">
+                <i class="fa fa-times" />
+              </small>
+            </li>
+            <li
+              v-for="(items, index) in selectData.practice"
+              v-show="selectData.practice !== []"
+              :key="index"
+            >
+              <span>{{ items.name }}</span>
+              <small @click="selectdelete('practice', items)">
+                <i class="fa fa-times" />
+              </small>
+            </li>
+            <li
+              v-for="(items, index) in selectData.region"
+              v-show="selectData.region !== []"
+              :key="index"
+            >
+              <span>{{ items.name }}</span>
+              <small @click="selectdelete('region', items)">
+                <i class="fa fa-times" />
+              </small>
+            </li>
+            <li
+              v-for="(items, index) in selectData.lawfirm"
+              v-show="selectData.lawfirm !== []"
+              :key="index"
+            >
+              <span>{{ items.name }}</span>
+              <small @click="selectdelete('lawfirm', items)">
+                <i class="fa fa-times" />
+              </small>
+            </li>
+            <li
+              v-for="(items, index) in selectData.lawyerName"
+              v-show="selectData.lawyerName !== []"
+              :key="index"
+            >
+              <span>{{ items.name }}</span>
+              <small @click="selectdelete('lawyerName', items)">
+                <i class="fa fa-times" />
+              </small>
+            </li>
           </ul>
           <p @click="selectempty">
-            <img src="../../assets/lawyer/empty.png" alt="">
+            <img src="../../assets/lawyer/empty.png" alt="" >
             <span>清空筛选条件</span>
           </p>
         </div>
         <div class="selectsort">
           <ul class="alreadyselect">
-            <li :class="sortactive" @click="sortselect"><span>默认排序</span></li>
-            <li :class="caseactive" @click="caseselect"><span>案例总数</span></li>
+            <li :class="sortactive" @click="sortselect">
+              <span>默认排序</span>
+            </li>
+            <li :class="caseactive" @click="caseselect">
+              <span>案例总数</span>
+            </li>
             <li>
               <b>年限</b>
-              <el-input v-model="yearstart" size="small" clearable />&nbsp;&nbsp;--&nbsp;
-              <el-input v-model="yearend" size="small" clearable />&nbsp;&nbsp;年
+              <el-input
+                v-model="lawyerSearch.littlePracticeYears"
+                size="small"
+              />&nbsp;&nbsp;--&nbsp;
+              <el-input
+                v-model="lawyerSearch.largePracticeYears"
+                size="small"
+              />&nbsp;&nbsp;年
             </li>
           </ul>
           <p>
-            当前条件共找到<b>{{ totalCount }}</b>个结果
+            当前条件共找到
+            <b>{{ totalCount }}</b
+            >个结果
           </p>
         </div>
       </div>
       <ul class="lawyerlist">
-        <li v-for="(items,index) in lawyerData" :key="index">
+        <li v-for="(items, index) in lawyerData" :key="index">
           <nuxt-link :to="`/lawyer/5/info`">
-            <img v-show="items.isRecommend" src="../../assets/lawyer/lawyer_auth.png" alt="">
+            <img
+              v-show="items.isRecommend"
+              src="../../assets/lawyer/lawyer_auth.png"
+              alt=""
+            >
             <div class="lawyerlist_lf">
-              <img v-if="items.avatar===''" src="../../assets/lawyer/avatar.png" alt="">
-              <img v-else :src="items.avatar" alt="">
+              <img
+                v-if="items.avatar === ''"
+                src="../../assets/lawyer/avatar.png"
+                alt=""
+              >
+              <img v-else :src="items.avatar" alt="" >
               <span v-show="items.isDirector">部门主任</span>
             </div>
             <div class="lawyerlist_rt">
-              <b><span>{{ items.name }}</span>律师</b>
+              <b>
+                <span>{{ items.name }}</span
+              >律师</b
+              >
               <div>
                 <div>
                   <p>
-                    <img src="../../assets/lawyer/arrow.png" alt="">
+                    <img src="../../assets/lawyer/arrow.png" alt="" >
                     <b>基础信息&nbsp;●&nbsp;</b>
                     <span>INFORMATION</span>
                   </p>
@@ -151,22 +287,45 @@
                 </div>
                 <div class="lawyerlist_mid">
                   <p>
-                    <img src="../../assets/lawyer/arrow.png" alt="">
+                    <img src="../../assets/lawyer/arrow.png" alt="" >
                     <b>专业领域&nbsp;●&nbsp;</b>
                     <span>EXPERTISE</span>
                   </p>
                   <ul>
-                    <li v-for="item in items.skilfulPracticeAreas" :key="item.id">{{ item.name }}</li>
+                    <li
+                      v-for="item in items.skilfulPracticeAreas"
+                      :key="item.id"
+                    >
+                      {{ item.name }}
+                    </li>
                   </ul>
                 </div>
                 <div class="lawyerlist_action">
                   <span>更新时间：</span>
                   <b>{{ items.updateTime }}</b>
-                  <p>浏览：<span>{{ items.clickCount }}</span></p>
-                  <p>关注：<span>{{ items.followerCount }}</span></p>
+                  <p>
+                    浏览：
+                    <span>{{ items.clickCount }}</span>
+                  </p>
+                  <p>
+                    关注：
+                    <span>{{ items.followerCount }}</span>
+                  </p>
                   <div>
-                    <div><img src="../../assets/lawyer/collection.png" alt="" @click="collection()">收藏</div>
-                    <div><img src="../../assets/lawyer/share.png" alt="" @click="share()">分享</div>
+                    <div>
+                      <img
+                        src="../../assets/lawyer/collection.png"
+                        alt=""
+                        @click="collection()"
+                      >收藏
+                    </div>
+                    <div>
+                      <img
+                        src="../../assets/lawyer/share.png"
+                        alt=""
+                        @click="share()"
+                      >分享
+                    </div>
                   </div>
                 </div>
               </div>
@@ -174,7 +333,13 @@
           </nuxt-link>
         </li>
       </ul>
-      <Pagination v-show="totalCount>0" :total="totalCount" :page="lawyerSearch.pageIndex" :limit="lawyerSearch.pageCount" @pagination="handlePageChange" />
+      <Pagination
+        v-show="totalCount > 0"
+        :total="totalCount"
+        :page="lawyerSearch.pageIndex"
+        :limit="lawyerSearch.pageCount"
+        @pagination="handlePageChange"
+      />
     </el-col>
   </el-row>
 </template>
@@ -191,12 +356,33 @@ export default {
     Pagination
   },
   async asyncData({ params }) {
-    const [lawyerData, suitsData, NosuitsData, industryData, regionData] = await Promise.all([
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/1`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/2`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
+    const [
+      lawyerData,
+      suitsData,
+      NosuitsData,
+      industryData,
+      regionData
+    ] = await Promise.all([
+      axios.get(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`,
+        { 'Content-Type': 'application/json' }
+      ),
+      axios.get(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/1`,
+        { 'Content-Type': 'application/json' }
+      ),
+      axios.get(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/2`,
+        { 'Content-Type': 'application/json' }
+      ),
+      axios.get(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`,
+        { 'Content-Type': 'application/json' }
+      ),
+      axios.get(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`,
+        { 'Content-Type': 'application/json' }
+      )
     ])
     return {
       lawyerData: lawyerData.data.items,
@@ -220,9 +406,11 @@ export default {
         practiceAreaId: '', // 擅长领域
         industryId: '', // 擅长行业
         sorting: {
-          'points': 0
+          points: 0
         }, // 排序
-        regionId: '' // 律师所属地区
+        regionId: '', // 律师所属地区
+        littlePracticeYears: 0, // 执业年限小值
+        largePracticeYears: 0 // 执业年限大值
       },
       yearstart: '', // 年限开始时间
       yearend: '', // 年限结束时间
@@ -246,27 +434,35 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'name'
+      },
+      lawfirmsearch: {
+        // name: '',
+        // regionId: 0,
+        // creditCode: '',
+        // lawfirmType: 0
       }
     }
   },
-  computed: {
+  computed: {},
 
-  },
-
-  watch: {
-  },
+  watch: {},
   mounted() {
     this.getLawyer()
-    // this.getLawfirm()
+    this.getLawfirmData()
   },
 
   methods: {
     ...mapActions('lawyer', ['GetLawyerList']),
-    ...mapActions('practice', ['getPracticeTreeData', 'getPracticesuitsData', 'getPracticeNosuitsData']),
+    ...mapActions('practice', [
+      'getPracticeTreeData',
+      'getPracticesuitsData',
+      'getPracticeNosuitsData'
+    ]),
     ...mapActions('industry', ['getIndustryTreeData']),
-    ...mapActions('lawfirm', ['getLawfirmList']),
+    ...mapActions('lawfirm', ['getLawfirm']),
     ...mapActions('region', ['getRegionTreeData']),
-    getPractice() { // 获取领域
+    getPractice() {
+      // 获取领域
       // this.getPracticeTreeData().then(res => {
       //   this.suitsData = res[0].children
       //   this.NosuitsData = res[1].children
@@ -278,18 +474,23 @@ export default {
         this.NosuitsData = res[0].children
       })
     },
-    getIndustry() { // 获取行业
+    getIndustry() {
+      // 获取行业
       this.getIndustryTreeData().then(res => {
         this.industryData = res
         console.log(this.industryData)
       })
     },
-    getLawfirm() { // 获取律所
-      this.getLawfirmList().then(res => {
+    getLawfirmData() {
+      // 获取律所
+      this.getLawfirm({
+        ...this.lawfirmsearch
+      }).then(res => {
         this.lawfirmData = res
       })
     },
-    getRegion() { // 获取地区
+    getRegion() {
+      // 获取地区
       this.getRegionTreeData().then(res => {
         this.regionData = res
 
@@ -302,7 +503,9 @@ export default {
       setTimeout(this.request)
     },
     request() {
-      this.GetLawyerList({ ...this.lawyerSearch, ...this.$refs.lawyerSearch }).then(res => {
+      this.GetLawyerList({
+        ...this.lawyerSearch
+      }).then(res => {
         this.lawyerData = res.items
         this.totalCount = res.totalCount
         this.loading = false
@@ -331,21 +534,28 @@ export default {
       this.lawyerSearch.regionId = data.id
       this.multiple('region', { id: data.id, name: '专业领域：' + data.name })
     },
-    lawfirm(id, name) {
-      this.lawyerSearch.lawfirmId = id
-      this.multiple('lawfirm', { id: id, name: '所属律所：' + name })
+    lawfirm(data) {
+      this.lawyerSearch.lawfirmId = data.id
+      this.multiple('lawfirm', { id: data.id, name: '所属律所：' + data.name })
     },
     selectname() {
-      this.multiple('lawyerName', { id: 0, name: '姓名：' + this.lawyerSearch.lawyerName })
+      this.multiple('lawyerName', {
+        id: 0,
+        name: '姓名：' + this.lawyerSearch.lawyerName
+      })
     },
-    multiple(type, data) { // 添加筛选方法
+    multiple(type, data) {
+      // 添加筛选方法
       // 多选
       // const hasthis = this.selectData[type].indexOf(data.id) > -1 && this.selectData.indexOf(data.name) > -1
       // hasthis ? '' : this.selectData[type].push(data)
       // 单选
       this.selectData[type] = [data]
+      // 更新数据
+      this.getLawyer()
     },
-    selectdelete(type, data) { // 删除筛选方法
+    selectdelete(type, data) {
+      // 删除筛选方法
       // 多选
       // for (var i = 0; i < this.selectData[type].length; i++) {
       //   if (this.selectData[type][i].id === data.id && this.selectData[type][i].name === data.name) {
@@ -354,51 +564,81 @@ export default {
       // }
       // 单选
       this.selectData[type] = []
+      // 删除请求中筛选值
+      this.deleteData(type)
+      // 更新数据
+      this.getLawyer()
     },
-    selectempty() { // 清空筛选条件
+    deleteData(type) {
+      if (type === 'industry') {
+        this.lawyerSearch.industryId = ''
+      }
+      if (type === 'practice') {
+        this.lawyerSearch.practiceAreaId = ''
+      }
+      if (type === 'region') {
+        this.lawyerSearch.regionId = ''
+      }
+      if (type === 'lawfirm') {
+        this.lawyerSearch.lawfirmId = ''
+      }
+      if (type === 'lawyerName') {
+        this.lawyerSearch.lawyerName = ''
+      }
+    },
+    selectempty() {
+      // 清空筛选条件
       this.selectData = []
       this.lawyerSearch.practiceAreaId = ''
       this.lawyerSearch.lawfirmId = ''
       this.lawyerSearch.regionId = ''
       this.lawyerSearch.industryId = ''
+      // 重新请求数据
+      this.getLawyer()
     },
-    sortselect() { // 默认排序
+    sortselect() {
+      // 默认排序
       if (this.sortactive === '') {
         this.sortactive = 'active'
         this.lawyerSearch.sorting = {
-          'points': 0
+          points: 0
         }
         // 删除按照案例数排序class
         this.caseactive = ''
       } else {
         this.sortactive = ''
-        this.lawyerSearch.sorting = ''// 待完善
+        this.lawyerSearch.sorting = '' // 待完善
       }
+      // 重新请求数据
+      this.getLawyer()
     },
-    caseselect() { // 按照案例数排序
+    caseselect() {
+      // 按照案例数排序
       if (this.caseactive === '') {
         this.caseactive = 'active'
         this.lawyerSearch.sorting = {
-          'conditioncasecount': 0
+          conditioncasecount: 0
         }
         // 删除默认排序class
         this.sortactive = ''
       } else {
         this.caseactive = ''
-        this.lawyerSearch.sorting = ''// 待完善
+        this.lawyerSearch.sorting = '' // 待完善
       }
+      // 重新请求数据
+      this.getLawyer()
     },
-    collection() { // 收藏
-
+    collection() {
+      // 收藏
     },
-    share() { // 分享
-
+    share() {
+      // 分享
     }
   }
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .title {
   height: 60px;
   font-size: 14px;
@@ -524,7 +764,7 @@ ul {
         color: #333;
         margin-right: 8px;
         cursor: pointer;
-        background: url('../../assets/lawyer/sortdefault.png') no-repeat 70px
+        background: url("../../assets/lawyer/sortdefault.png") no-repeat 70px
           6px;
       }
       b {
@@ -539,7 +779,7 @@ ul {
     .active {
       > span {
         color: #f68020;
-        background: url('../../assets/lawyer/sort.png') no-repeat 70px 6px;
+        background: url("../../assets/lawyer/sort.png") no-repeat 70px 6px;
       }
     }
   }
@@ -571,7 +811,7 @@ ul {
         position: relative;
         > img {
           width: 100%;
-          min-height:251px;
+          min-height: 251px;
         }
         > span {
           background: #000;
@@ -640,7 +880,7 @@ ul {
             width: 30%;
             border-left: 1px dotted #ddd;
             border-right: 1px dotted #ddd;
-            min-height:185px;
+            min-height: 185px;
             ul {
               padding: 0px 20px;
             }
@@ -690,7 +930,7 @@ ul {
   }
 }
 </style>
-<style lang='scss'>
+<style lang="scss">
 .tabselect {
   .el-tabs__item {
     padding: 10px 35px;
@@ -737,6 +977,11 @@ ul {
     height: 40px;
     border-bottom: 1px dotted #ddd;
   }
+  .emptyData{
+    padding: 10px 15px;
+    display: inline-block;
+    color: #999;
+  }
 }
 .selectsort {
   .alreadyselect {
@@ -756,5 +1001,6 @@ ul {
 }
 .pagination-container {
   text-align: center;
+  margin: 40px 0px;
 }
 </style>
