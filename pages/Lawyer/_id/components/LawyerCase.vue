@@ -45,7 +45,7 @@
           <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
           <div class="case-item-bottom">
             <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
-            <span class="collect no-select" @click="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
+            <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
             <span class="share no-select" @click="userShare"><i/>分享</span>
           </div>
           <i v-if="item.isClassicCase" class="classic"/>
