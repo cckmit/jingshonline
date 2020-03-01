@@ -57,6 +57,12 @@ export default {
         return ''
       }
     },
+    realName: {
+      type: String,
+      default: function() {
+        return ''
+      }
+    },
     courtData: {
       type: Array,
       default: function() {
@@ -90,12 +96,18 @@ export default {
     followHandle() {
       if (!this.isFollow) {
         this.UserFollow(this.$route.params.id).then(res => {
-          console.log('成功关注')
+          this.$notify({
+            message: `关注律师 : ${this.realName}`,
+            duration: 2000
+          })
           this.isFollow = !this.isFollow
         })
       } else {
         this.UserCancleFollow(this.$route.params.id).then(res => {
-          console.log('成功取消关注')
+          this.$notify({
+            message: `取消关注律师 : ${this.realName}`,
+            duration: 2000
+          })
           this.isFollow = !this.isFollow
         })
       }

@@ -45,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
+      <lawyer-detail :real-name="lawyerInformation.realName" :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
     </div>
   </div>
 </template>

@@ -42,14 +42,14 @@
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link :to="'/case/'+item.id+'/info'">
           <div class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
+          <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
+          <div class="case-item-bottom">
+            <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
+            <span class="collect no-select" @click="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
+            <span class="share no-select" @click="userShare"><i/>分享</span>
+          </div>
+          <i v-if="item.isClassicCase" class="classic"/>
         </nuxt-link>
-        <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
-        <div class="case-item-bottom">
-          <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
-          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
-          <span class="share no-select" @click="userShare"><i/>分享</span>
-        </div>
-        <i v-if="item.isClassicCase" class="classic"/>
       </div>
     </div>
     <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
@@ -128,23 +128,38 @@ export default {
           this.lawyerCaseList = res.items
           // 处理案例法院数据
           if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
+            const court = []
+            const industry = []
+            const practice = []
             this.lawyerCaseList.forEach(item => {
-              this.courtData.push({
+              court.push({
                 id: item.courtId,
                 label: item.courtName
               })
-              this.industryTree.push({
+
+              industry.push({
                 id: item.industryId,
                 label: item.industryName
               })
-              this.practiceAreaData.push({
+              practice.push({
                 id: item.practiceAreaId,
                 label: item.practiceAreaName
               })
             })
+            this.courtData = this.unique(court)
+            this.industryTree = this.unique(industry)
+            this.practiceAreaData = this.unique(practice)
           }
         }
       })
+    },
+    // 检索条件去重
+    unique(arr) {
+      const obj = {}
+      return arr.reduce((cur, next) => {
+        obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
+        return cur
+      }, [])
     },
     // 改变排序状态
     filterChange(type) {
@@ -171,10 +186,18 @@ export default {
       const caseIndex = this.lawyerCaseList[index]
       if (caseIndex.isFollow) {
         this.UserUnFollowCase(caseIndex.id).then(res => {
+          this.$notify({
+            message: `取消收藏案例 : ${this.lawyerCaseList[index].title}`,
+            duration: 2000
+          })
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       } else {
         this.UserFollowCase(caseIndex.id).then(res => {
+          this.$notify({
+            message: `收藏成功案例 : ${this.lawyerCaseList[index].title}`,
+            duration: 2000
+          })
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       }
