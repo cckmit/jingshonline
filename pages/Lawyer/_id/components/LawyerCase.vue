@@ -134,7 +134,6 @@ export default {
   },
   mounted() {
     this.url = window.location.href.replace(/lawyer/g, 'case')
-    console.log(this.url)
     this.getQrcode()
   },
   methods: {
