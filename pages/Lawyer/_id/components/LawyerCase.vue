@@ -42,16 +42,25 @@
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link :to="'/case/'+item.id+'/info'">
           <div class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
+          <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
+          <div class="case-item-bottom">
+            <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
+            <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
+            <span class="share no-select" @click="shareVisible=true"><i/>分享</span>
+          </div>
+          <i v-if="item.isClassicCase" class="classic"/>
         </nuxt-link>
-        <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
-        <div class="case-item-bottom">
-          <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
-          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
-          <span class="share no-select" @click="userShare"><i/>分享</span>
-        </div>
-        <i v-if="item.isClassicCase" class="classic"/>
       </div>
     </div>
+    <el-dialog :visible.sync="shareVisible" top="35vh" width="400px" title="分享">
+      <div class="share">
+        <el-input v-model="url" size="mini"/>
+        <div>
+          <el-button size="mini" icon="el-icon-share" @click.prevent="copy">分享</el-button>
+        </div>
+        <img :src="qrimg">
+      </div>
+    </el-dialog>
     <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
   </div>
 </template>
@@ -63,6 +72,7 @@ import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 // import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import QRCode from 'qrcode'
 export default {
   name: 'LawyerCase',
   components: {
@@ -100,7 +110,11 @@ export default {
       // 行业树数据
       industryTree: [],
       // 案件领域数据
-      practiceAreaData: []
+      practiceAreaData: [],
+      // 分享
+      shareVisible: false,
+      url: '',
+      qrimg: ''
     }
   },
   computed: {
@@ -118,6 +132,10 @@ export default {
   created() {
     this.getLawyerCaseList(this.caseListParam)
   },
+  mounted() {
+    this.url = window.location.href.replace(/lawyer/g, 'case')
+    this.getQrcode()
+  },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
     // 获取认证案例列表
@@ -128,23 +146,38 @@ export default {
           this.lawyerCaseList = res.items
           // 处理案例法院数据
           if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
+            const court = []
+            const industry = []
+            const practice = []
             this.lawyerCaseList.forEach(item => {
-              this.courtData.push({
+              court.push({
                 id: item.courtId,
                 label: item.courtName
               })
-              this.industryTree.push({
+
+              industry.push({
                 id: item.industryId,
                 label: item.industryName
               })
-              this.practiceAreaData.push({
+              practice.push({
                 id: item.practiceAreaId,
                 label: item.practiceAreaName
               })
             })
+            this.courtData = this.unique(court)
+            this.industryTree = this.unique(industry)
+            this.practiceAreaData = this.unique(practice)
           }
         }
       })
+    },
+    // 检索条件去重
+    unique(arr) {
+      const obj = {}
+      return arr.reduce((cur, next) => {
+        obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
+        return cur
+      }, [])
     },
     // 改变排序状态
     filterChange(type) {
@@ -171,16 +204,42 @@ export default {
       const caseIndex = this.lawyerCaseList[index]
       if (caseIndex.isFollow) {
         this.UserUnFollowCase(caseIndex.id).then(res => {
+          this.$notify({
+            message: `取消收藏案例 : ${this.lawyerCaseList[index].title}`,
+            duration: 2000
+          })
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       } else {
         this.UserFollowCase(caseIndex.id).then(res => {
+          this.$notify({
+            message: `收藏成功案例 : ${this.lawyerCaseList[index].title}`,
+            duration: 2000
+          })
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       }
     },
     // 用户分享
-    userShare() {
+    getQrcode() {
+      QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
+        this.qrimg = url
+      })
+    },
+    copy() {
+      this.$copyText(this.url).then(e => {
+        this.$notify({
+          message: '连接地址复制成功',
+          type: 'success'
+        })
+        console.log(e)
+      }).catch(error => {
+        this.$notify({
+          message: '复制失败',
+          type: 'error'
+        })
+        console.log(error)
+      })
     }
   }
 }
@@ -444,6 +503,16 @@ export default {
     }
     .lawyer-case-list-item:hover {
       border-color:#eee #eee #eee #f68020;
+    }
+  }
+    /* 分享 */
+  .share{
+    div{
+      margin-top: 5px;
+      text-align: right;
+    }
+    img{
+      width: 100px;
     }
   }
 }

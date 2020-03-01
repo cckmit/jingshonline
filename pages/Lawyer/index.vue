@@ -238,13 +238,9 @@
         </div>
       </div>
       <ul class="lawyerlist">
-        <li v-for="(items, index) in lawyerData" :key="index">
-          <nuxt-link :to="`/lawyer/5/info`">
-            <img
-              v-show="items.isRecommend"
-              src="../../assets/lawyer/lawyer_auth.png"
-              alt=""
-            >
+        <li v-for="(items,index) in lawyerData" :key="index">
+          <nuxt-link :to="'/lawyer/'+items.id+'/info'">
+            <img v-show="items.isRecommend" src="../../assets/lawyer/lawyer_auth.png" alt="">
             <div class="lawyerlist_lf">
               <img
                 v-if="items.avatar === ''"

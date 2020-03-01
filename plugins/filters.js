@@ -22,6 +22,5 @@ const Filters = {
 }
 
 Object.keys(Filters).forEach(key => {
-  console.log(key)
   Vue.filter(key, Filters[key])
 })

@@ -1,7 +1,7 @@
 <template>
   <div class="lawyer-professional">
-    <div v-if="chartData.practicea.length > 0" id="Litigation" ref="Litigation" style="width:550px;height:450px;"/>
-    <div v-if="chartData.noPracticea.length > 0" id="LitigationTwo" ref="LitigationTwo" style="width:550px;height:450px;"/>
+    <div v-if="chartData.practicea && chartData.practicea.length" id="Litigation" ref="Litigation" style="width:550px;height:450px;"/>
+    <div v-if="chartData.noPracticea && chartData.noPracticea.length" id="LitigationTwo" ref="LitigationTwo" style="width:550px;height:450px;"/>
   </div>
 </template>
 
@@ -15,7 +15,10 @@ export default {
     chartData: {
       type: Object,
       default: function() {
-        return {}
+        return {
+          practicea: [],
+          noPracticea: []
+        }
       }
     }
   },
@@ -107,7 +110,8 @@ export default {
 
   },
   created() {
-    if (this.chartData.practicea.length > 0) {
+    console.log(this.chartData)
+    if (this.chartData.practicea && this.chartData.practicea.length > 0) {
       this.chartData.practicea.forEach(item => {
         this.practiceaOptions.series[0].data.push({
           value: item.count,
@@ -115,7 +119,7 @@ export default {
         })
       })
     }
-    if (this.chartData.noPracticea.length > 0) {
+    if (this.chartData.noPracticea && this.chartData.noPracticea.length > 0) {
       this.chartData.noPracticea.forEach(item => {
         this.noPracticeaOptions.series[0].data.push({
           value: item.count,
@@ -129,11 +133,11 @@ export default {
   },
   methods: {
     initChart() {
-      if (this.chartData.practicea.length > 0) {
+      if (this.chartData.practicea && this.chartData.practicea.length) {
         const myChart = this.$echarts.init(this.$refs.Litigation)
         myChart.setOption(this.practiceaOptions)
       }
-      if (this.chartData.noPracticea.length > 0) {
+      if (this.chartData.noPracticea && this.chartData.noPracticea.length) {
         const myChartTwo = this.$echarts.init(this.$refs.LitigationTwo)
         myChartTwo.setOption(this.noPracticeaOptions)
       }
