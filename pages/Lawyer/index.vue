@@ -596,14 +596,16 @@ export default {
       // 默认排序
       if (this.sortactive === '') {
         this.sortactive = 'active'
+        this.caseactive = ''
         this.lawyerSearch.sorting = {
           points: 0
         }
-        // 删除按照案例数排序class
-        this.caseactive = ''
       } else {
         this.sortactive = ''
-        this.lawyerSearch.sorting = '' // 待完善
+        this.caseactive = 'active'
+        this.lawyerSearch.sorting = {
+          conditioncasecount: 0
+        } // 待完善
       }
       // 重新请求数据
       this.getLawyer()
@@ -612,14 +614,16 @@ export default {
       // 按照案例数排序
       if (this.caseactive === '') {
         this.caseactive = 'active'
+        this.sortactive = ''
         this.lawyerSearch.sorting = {
           conditioncasecount: 0
         }
-        // 删除默认排序class
-        this.sortactive = ''
       } else {
         this.caseactive = ''
-        this.lawyerSearch.sorting = '' // 待完善
+        this.sortactive = 'active'
+        this.lawyerSearch.sorting = {
+          points: 0
+        } // 待完善
       }
       // 重新请求数据
       this.getLawyer()
