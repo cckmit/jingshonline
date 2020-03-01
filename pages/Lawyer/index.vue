@@ -108,20 +108,21 @@
             </li>
           </ul>
           <p>
-            当前条件共找到<b>355</b>个结果
+            当前条件共找到<b>{{ totalCount }}</b>个结果
           </p>
         </div>
       </div>
       <ul class="lawyerlist">
-        <li>
+        <li v-for="(items,index) in lawyerData" :key="index">
           <nuxt-link :to="`/lawyer/5/info`">
-            <img src="../../assets/lawyer/lawyer_auth.png" alt="">
+            <img v-show="items.isRecommend" src="../../assets/lawyer/lawyer_auth.png" alt="">
             <div class="lawyerlist_lf">
-              <img src="../../assets/lawyer/avatar.png" alt="">
-              <span>部门主任</span>
+              <img v-if="items.avatar===''" src="../../assets/lawyer/avatar.png" alt="">
+              <img v-else :src="items.avatar" alt="">
+              <span v-show="items.isDirector">部门主任</span>
             </div>
             <div class="lawyerlist_rt">
-              <b><span>刘志明</span>律师</b>
+              <b><span>{{ items.name }}</span>律师</b>
               <div>
                 <div>
                   <p>
@@ -132,19 +133,19 @@
                   <ul>
                     <li>
                       <span>执业年限</span>
-                      <b>8年</b>
+                      <b>{{ items.practiceYears }}年</b>
                     </li>
                     <li>
                       <span>案例总数</span>
-                      <b>325例</b>
+                      <b>{{ items.caseCount }}例</b>
                     </li>
                     <li>
                       <span>所在律所</span>
-                      <b>北京市京师律师事务所</b>
+                      <b>{{ items.lawfirmName }}</b>
                     </li>
                     <li>
                       <span>所在地址</span>
-                      <b>北京市-朝阳区</b>
+                      <b>{{ items.regionName }}</b>
                     </li>
                   </ul>
                 </div>
@@ -155,17 +156,14 @@
                     <span>EXPERTISE</span>
                   </p>
                   <ul>
-                    <li>诉讼仲裁</li>
-                    <li>公司法律服务</li>
-                    <li>诉讼仲裁</li>
-                    <li>公司法律服务</li>
+                    <li v-for="item in items.skilfulPracticeAreas" :key="item.id">{{ item.name }}</li>
                   </ul>
                 </div>
                 <div class="lawyerlist_action">
                   <span>更新时间：</span>
-                  <b>2019-07-15</b>
-                  <p>浏览：<span>222</span></p>
-                  <p>关注：<span>333</span></p>
+                  <b>{{ items.updateTime }}</b>
+                  <p>浏览：<span>{{ items.clickCount }}</span></p>
+                  <p>关注：<span>{{ items.followerCount }}</span></p>
                   <div>
                     <div><img src="../../assets/lawyer/collection.png" alt="" @click="collection()">收藏</div>
                     <div><img src="../../assets/lawyer/share.png" alt="" @click="share()">分享</div>
@@ -221,7 +219,9 @@ export default {
         lawfirmId: '', // 所属律所
         practiceAreaId: '', // 擅长领域
         industryId: '', // 擅长行业
-        sorting: 0, // 排序
+        sorting: {
+          'points': 0
+        }, // 排序
         regionId: '' // 律师所属地区
       },
       yearstart: '', // 年限开始时间
@@ -256,7 +256,7 @@ export default {
   watch: {
   },
   mounted() {
-    // this.getLawyer()
+    this.getLawyer()
     // this.getLawfirm()
   },
 
@@ -303,8 +303,8 @@ export default {
     },
     request() {
       this.GetLawyerList({ ...this.lawyerSearch, ...this.$refs.lawyerSearch }).then(res => {
-        this.lawyerData = res.data.items
-        this.totalCount = res.data.totalCount
+        this.lawyerData = res.items
+        this.totalCount = res.totalCount
         this.loading = false
       })
     },
@@ -365,7 +365,9 @@ export default {
     sortselect() { // 默认排序
       if (this.sortactive === '') {
         this.sortactive = 'active'
-        this.lawyerSearch.sorting = 1
+        this.lawyerSearch.sorting = {
+          'points': 0
+        }
         // 删除按照案例数排序class
         this.caseactive = ''
       } else {
@@ -376,7 +378,9 @@ export default {
     caseselect() { // 按照案例数排序
       if (this.caseactive === '') {
         this.caseactive = 'active'
-        this.lawyerSearch.sorting = 2
+        this.lawyerSearch.sorting = {
+          'conditioncasecount': 0
+        }
         // 删除默认排序class
         this.sortactive = ''
       } else {
@@ -567,6 +571,7 @@ ul {
         position: relative;
         > img {
           width: 100%;
+          min-height:251px;
         }
         > span {
           background: #000;
@@ -635,6 +640,7 @@ ul {
             width: 30%;
             border-left: 1px dotted #ddd;
             border-right: 1px dotted #ddd;
+            min-height:185px;
             ul {
               padding: 0px 20px;
             }
