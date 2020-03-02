@@ -4,7 +4,27 @@
     <header v-if="url.name.toLocaleLowerCase()==='case'" :style="{background:`url(${banner}) center no-repeat`}" class="content" >
       <div class="case_layou_search">
         <div class="prefix">综合搜索</div>
+        <!-- <el-autocomplete :fetch-suggestions="search" @select="searchChange">
+          <template slot-scope="{ item.conditions }">
+            <div>
+              {{ item.describe }}
+              <div v-for="(items, index) in item.conditions" :key="index">{{ items.name }}</div>
+            </div>
+           <el-option-group
+              v-for="(group, index) in item"
+              :key="index"
+              :label="group.describe">
+              <el-option
+                v-for="(item,indexs) in group.conditions"
+                :key="indexs"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-option-group>
+          </template>
+        </el-autocomplete> -->
         <el-select
+          ref="case_layout_search"
           v-model="searchText"
           :remote-method="search"
           :loading="loading"
@@ -12,6 +32,7 @@
           remote
           reserve-keyword
           placeholder="请输入案由、关键词、法院、当事人、律师"
+          @change="searchChange"
         >
           <el-option-group
             v-for="(group, index) in options"
@@ -21,7 +42,8 @@
               v-for="(item,indexs) in group.conditions"
               :key="indexs"
               :label="item.name"
-              :value="item.id" />
+              :value="item.id"
+            />
           </el-option-group>
         </el-select>
         <div class="icon" @click="search">
@@ -66,10 +88,17 @@ export default {
   },
   methods: {
     ...mapActions('case', ['CaseSearch']),
-    search() {
-      this.CaseSearch(this.searchText).then(res => {
+    search(query, cb) {
+      this.CaseSearch(query).then(res => {
         this.options = res
+        // cb([...res])
       })
+    },
+    searchChange(index, e, item) {
+      debugger
+      console.log(index)
+      console.log(e)
+      console.log(item)
     }
   }
 }
@@ -105,6 +134,7 @@ export default {
 }
 </style>
 <style lang="scss">
+  .case_layou_search{
     .el-select{
       .el-input{
         .el-input__inner{
@@ -117,4 +147,5 @@ export default {
         }
       }
     }
+  }
 </style>
