@@ -5,12 +5,12 @@
       <div class="case_layou_search">
         <div class="prefix">综合搜索</div>
         <!-- <el-autocomplete :fetch-suggestions="search" @select="searchChange">
-          <template slot-scope="{ item.conditions }">
+          <template slot-scope="{ item }">
             <div>
               {{ item.describe }}
               <div v-for="(items, index) in item.conditions" :key="index">{{ items.name }}</div>
             </div>
-           <el-option-group
+            <el-option-group
               v-for="(group, index) in item"
               :key="index"
               :label="group.describe">
@@ -91,7 +91,7 @@ export default {
     search(query, cb) {
       this.CaseSearch(query).then(res => {
         this.options = res
-        // cb([...res])
+        cb([...res])
       })
     },
     searchChange(index, e, item) {
@@ -126,8 +126,7 @@ export default {
       background: rgba($color: #fff, $alpha: 0.8);
       padding-top: 1px;
     }
-    .el-select{
-      width: 615px;
+    .el-select  {
       float: left;
     }
   }
@@ -135,7 +134,7 @@ export default {
 </style>
 <style lang="scss">
   .case_layou_search{
-    .el-select{
+    .el-select,.el-autocomplete{
       .el-input{
         .el-input__inner{
           width: 615px;
@@ -145,6 +144,11 @@ export default {
           height: 42px;
           line-height: 42px;
         }
+      }
+    }
+    .el-autocomplete{
+      .el-input{
+        float: left;
       }
     }
   }
