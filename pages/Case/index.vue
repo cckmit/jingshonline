@@ -262,19 +262,10 @@ export default {
     },
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
-      if (node.level === 0) {
-        return resolve([])
-      }
-      if (node.level > 0) {
-        this.getCourtRegionsChildData(node.data.id).then(res => {
-          this.regionChildTreeData = res
-          return resolve([this.regionChildTreeData])
-        })
-      }
-      setTimeout(() => {
-        const data = this.regionChildTreeData
-        resolve(data)
-      }, 500)
+      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id).then(res => {
+        this.regionChildTreeData = res
+        return resolve(res)
+      }) : resolve([])
     },
     // 管辖法院树点击筛选
     handleregionClick(data) {
