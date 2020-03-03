@@ -97,7 +97,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'error,qrcode,totop,share'" :top="100" :left="300"/>
+    <ExtraWrap :plugins="'error,qrcode,totop,share'" :top="400" :left="100"/>
 
   </div>
 </template>

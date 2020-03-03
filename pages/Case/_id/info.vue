@@ -229,7 +229,7 @@
         </div> -->
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
+    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
   </div>
 </template>
 
@@ -608,6 +608,7 @@ height: 120px;
 
 </style>
 <style lang='scss'>
+
 //办理律师隐藏头部
 .caseInfoClass{
  .lawyer{
