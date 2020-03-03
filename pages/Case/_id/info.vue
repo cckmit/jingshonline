@@ -313,7 +313,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('case', ['getCaseInfoData']),
+    ...mapActions('case', ['getCaseInfoData', 'getFollowData', 'getUnfollowData']),
     // 获取案件
     getcaseInfoData(delayTime = 150) {
       this.loading = true
@@ -329,8 +329,23 @@ export default {
     },
     // 收藏点击事件
     collectionCase() {
-      console.log('收藏')
-      // 收藏接口
+      // const coll = !this.caseInfoData.isFollow
+      // if (coll) { // 收藏
+      //   this.getFollowData(this.caseInfoData).then(res => {
+      //     this.$notify({
+      //       message: '收藏成功',
+      //       type: 'success'
+      //     })
+      //   })
+      // } else {
+      //   // 取消收藏
+      //   this.getUnfollowData().then(res => {
+      //     this.$notify({
+      //       message: '已取消收藏',
+      //       type: 'success'
+      //     })
+      //   })
+      // }
     },
     // 下载事件
     download() {

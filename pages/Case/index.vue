@@ -97,7 +97,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'collection,error,qrcode,totop,share'" :top="100" :left="300" @collection="collectionCase"/>
+    <ExtraWrap :plugins="'error,qrcode,totop,share'" :top="100" :left="300"/>
 
   </div>
 </template>
@@ -336,10 +336,18 @@ export default {
       this.$set(this.caseData[index], 'isFollow', coll)
       if (coll) { // 收藏
         this.getFollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
         })
       } else {
         // 取消收藏
         this.getUnfollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
         })
       }
     },
