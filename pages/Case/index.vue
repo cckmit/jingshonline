@@ -222,7 +222,33 @@ export default {
     this.getCaseList()
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
-      console.log(data ? JSON.parse(data) : '')
+      data = data ? JSON.parse(data) : ''
+      // console.log(data)
+      if (data !== '') {
+        const conditionKey = data.conditionKey
+        switch (conditionKey) {
+          case 1:
+            this.caseSearch.caseReasonId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 2:
+            this.caseSearch.courtId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 3:
+            this.caseSearch.industryId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 4:
+            this.caseSearch.courtReginId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 5:
+            this.caseSearch.practiceAreaId = data.id
+            break
+        }
+      }
+      this.getCaseList()
     })
   },
   methods: {
@@ -271,7 +297,7 @@ export default {
     handleregionClick(data) {
       this.selectForm.courtInfo = data.name
       data.nodeType === 0 ? this.caseSearch.courtReginId = data.id : this.caseSearch.courtId = data.id // 根据nodeType判断传参
-      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.courtReginId = '' // 根据nodeType判断滞空参数
+      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.practiceAreaId = '' // 根据nodeType判断滞空参数
       this.getCaseList()
     },
     // 管辖法院关闭
