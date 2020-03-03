@@ -33,7 +33,7 @@
           </el-row>
         </div>
         <!-- 其他信息 -->
-        <div class="case-content-main">
+        <div id="detail" class="case-content-main">
           <div class="case-judgment" v-html="caseInfoData.judgmentDocument">{{ caseInfoData.judgmentDocument }}</div>
           <!-- <el-form ref="form" label-width="0">
             <el-form-item>
@@ -169,7 +169,7 @@
           </el-collapse>
         </div>
         <!-- /* 案件认领-->
-        <div class="case-aside-main case-aside-ajrl case-border">
+        <!-- <div class="case-aside-main case-aside-ajrl case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
@@ -207,9 +207,9 @@
             </el-form>
 
           </div>
-        </div>
+        </div> -->
         <!-- /*相关案例 -->
-        <div class="case-aside-main case-aside-xgal case-border">
+        <!-- <div class="case-aside-main case-aside-xgal case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
@@ -226,10 +226,10 @@
               <el-form-item>10 、郑银花与北京市住房和城乡建设委员会及白春生,白志增,郑粟杰,北京万柳置业集团有限公司,梁帅关于房屋登记行为案   </el-form-item>
             </el-form>
           </div>
-        </div>
+        </div> -->
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" @download="download" @collection="collectionCase"/>
+    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" @download="download" @collection="collectionCase"/>
   </div>
 </template>
 
@@ -261,30 +261,37 @@ export default {
       isShow: true,
       activeNames: 0,
       caseInfoData: [],
+      // activities: [{
+      //   id: 'client',
+      //   title: '概要信息'
+      // }, {
+      //   id: 'First',
+      //   title: '当事人信息'
+      // }, {
+      //   id: 'Second',
+      //   title: '审理经过'
+      // }, {
+      //   id: 'After',
+      //   title: '原告辩称'
+      // }, {
+      //   id: 'Third',
+      //   title: '被告辩称'
+      // }, {
+      //   id: 'Fourth',
+      //   title: '本院查明'
+      // }, {
+      //   id: 'Fifth',
+      //   title: '本院认为'
+      // }, {
+      //   id: 'Finally',
+      //   title: '裁判结果'
+      // }],
       activities: [{
         id: 'client',
         title: '概要信息'
       }, {
-        id: 'First',
-        title: '当事人信息'
-      }, {
-        id: 'Second',
-        title: '审理经过'
-      }, {
-        id: 'After',
-        title: '原告辩称'
-      }, {
-        id: 'Third',
-        title: '被告辩称'
-      }, {
-        id: 'Fourth',
-        title: '本院查明'
-      }, {
-        id: 'Fifth',
-        title: '本院认为'
-      }, {
-        id: 'Finally',
-        title: '裁判结果'
+        id: 'detail',
+        title: '详情'
       }]
     }
   },
