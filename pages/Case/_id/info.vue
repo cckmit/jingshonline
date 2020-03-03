@@ -34,7 +34,8 @@
         </div>
         <!-- 其他信息 -->
         <div class="case-content-main">
-          <el-form ref="form" label-width="0">
+          <div class="case-judgment" v-html="caseInfoData.judgmentDocument">{{ caseInfoData.judgmentDocument }}</div>
+          <!-- <el-form ref="form" label-width="0">
             <el-form-item>
               <p id="First" class="case-title"><i class="titleIcon"/> 当事人信息</p>
               <p>
@@ -122,7 +123,7 @@
                 书记员张歌
               </p>
             </el-form-item>
-          </el-form>
+          </el-form> -->
         </div>
       </el-col>
       <!-- /*右边 -->
@@ -409,12 +410,16 @@ margin-bottom: 0;
 
 .case-content-main {
     padding: 0 20px 20px 20px;
-    .el-form-item__content{
-      margin: 10px 0;
-}
+//     .el-form-item__content{
+//       margin: 10px 0;
+// }
 
-p {
-    line-height: 36px;
+// p {
+//     line-height: 36px;
+//     color: #333333;
+// }
+.case-judgment{
+   line-height: 36px;
     color: #333333;
 }
   }
