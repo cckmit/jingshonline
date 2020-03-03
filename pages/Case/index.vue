@@ -73,14 +73,14 @@
               <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
-                  <p>
+                  <div class="caseCol">
                     <el-col :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
-                  </p>
-                  <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                  <p><span>【结果命中】</span>本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
+                  </div>
+                  <div class="case-judgment" v-html="item.highlight.judgmentDocument[0]">{{ item.highlight.judgmentDocument[0] }}
+                  </div>
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
@@ -509,10 +509,16 @@ export default {
       font-size: 18px;
     }
 
-    p:nth-child(2) {
+    .caseCol {
       color: #999999;
       font-size: 14px;
-      padding: 0 20px;
+      height: 40px;
+    }
+    .case-judgment{
+      color: #333333;
+      font-size: 14px;
+      line-height: 28px;
+      margin-top: 20px;
     }
       }
     }
