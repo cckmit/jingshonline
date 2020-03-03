@@ -132,5 +132,34 @@ export const actions = {
         reject(error)
       })
     })
+  },
+
+  /**
+   * 收藏律师
+   * @param {number} id
+   */
+  LawyerCollecte(id) {
+    return new Promise((resolve, reject) => {
+      Lawyer.collecteData(id).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 取消收藏律师
+   * @param {number} id
+   */
+  LawyerUnCollecte(id) {
+    return new Promise((resolve, reject) => {
+      Lawyer.uncollecteData(id).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }

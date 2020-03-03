@@ -63,3 +63,23 @@ export const ChangePassword = passwordData => {
     }
   })
 }
+/**
+ * 收藏律师
+ * @param {object} id
+ */
+export const collecteData = id => {
+  return request({
+    url: `${setting.apiPrefix}/customer/lawyer/follow/${id}`,
+    method: 'post'
+  })
+}
+/**
+ * 取消收藏律师
+ * @param {object} id
+ */
+export const uncollecteData = id => {
+  return request({
+    url: `${setting.apiPrefix}/customer/lawyer/unfollow/${id}`,
+    method: 'delete'
+  })
+}

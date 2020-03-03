@@ -223,10 +223,12 @@
               <el-input
                 v-model="lawyerSearch.littlePracticeYears"
                 size="small"
+                @input="selectlittleyears"
               />&nbsp;&nbsp;--&nbsp;
               <el-input
                 v-model="lawyerSearch.largePracticeYears"
                 size="small"
+                @input="selectlargeyears"
               />&nbsp;&nbsp;年
             </li>
           </ul>
@@ -312,7 +314,7 @@
                       <img
                         src="../../assets/lawyer/collection.png"
                         alt=""
-                        @click="collection()"
+                        @click="collection(items)"
                       >收藏
                     </div>
                     <div>
@@ -401,9 +403,8 @@ export default {
         lawfirmId: '', // 所属律所
         practiceAreaId: '', // 擅长领域
         industryId: '', // 擅长行业
-        sorting: {
-          points: 0
-        }, // 排序
+        sorting: 'points', // 排序
+        sortType: 0,
         regionId: '', // 律师所属地区
         littlePracticeYears: 0, // 执业年限小值
         largePracticeYears: 0 // 执业年限大值
@@ -436,7 +437,12 @@ export default {
         // regionId: 0,
         // creditCode: '',
         // lawfirmType: 0
-      }
+      },
+      searchtimelittle: '', // 输入框时间
+      searchtimelarge: '',
+      littlesettime: '', // 定时器
+      largesettime: '',
+      isCollecte: false// 是否收藏
     }
   },
   computed: {},
@@ -448,7 +454,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('lawyer', ['GetLawyerList']),
+    ...mapActions('lawyer', ['GetLawyerList', 'LawyerCollecte', 'LawyerUnCollecte']),
     ...mapActions('practice', [
       'getPracticeTreeData',
       'getPracticesuitsData',
@@ -597,15 +603,11 @@ export default {
       if (this.sortactive === '') {
         this.sortactive = 'active'
         this.caseactive = ''
-        this.lawyerSearch.sorting = {
-          points: 0
-        }
+        this.lawyerSearch.sorting = 'points'
       } else {
         this.sortactive = ''
         this.caseactive = 'active'
-        this.lawyerSearch.sorting = {
-          conditioncasecount: 0
-        } // 待完善
+        this.lawyerSearch.sorting = 'conditioncasecount'
       }
       // 重新请求数据
       this.getLawyer()
@@ -615,21 +617,64 @@ export default {
       if (this.caseactive === '') {
         this.caseactive = 'active'
         this.sortactive = ''
-        this.lawyerSearch.sorting = {
-          conditioncasecount: 0
-        }
+        this.lawyerSearch.sorting = 'conditioncasecount'
       } else {
         this.caseactive = ''
         this.sortactive = 'active'
-        this.lawyerSearch.sorting = {
-          points: 0
-        } // 待完善
+        this.lawyerSearch.sorting = 'points'
       }
       // 重新请求数据
       this.getLawyer()
     },
-    collection() {
+    selectlittleyears() {
+      this.searchtimelittle = new Date().getTime()
+      this.timelittle()
+    },
+    selectlargeyears() {
+      this.searchtimelarge = new Date().getTime()
+      this.timelarge()
+    },
+    timelittle() {
+      const _this = this
+      this.littlesettime = setTimeout(function() {
+        var x = new Date().getTime() - this.searchtimelittle
+        if (x < 490) {
+          clearInterval(this.littlesettime)
+        } else {
+          _this.getLawyer()
+        }
+      }, 500)
+    },
+    timelarge() {
+      const _this = this
+      this.largesettime = setTimeout(function() {
+        var x = new Date().getTime() - this.searchtimelarge
+        if (x < 490) {
+          clearInterval(this.largesettime)
+        } else {
+          _this.getLawyer()
+        }
+      }, 500)
+    },
+    collection(data) {
       // 收藏
+      if (!this.isCollecte) {
+        this.LawyerCollecte(data.id).then(res => {
+          this.$notify({
+            message: `收藏律师 : ` + data.name,
+            duration: 2000
+          })
+          this.isCollecte = !this.isCollecte
+        })
+      } else {
+        this.LawyerUnCollecte(data.id).then(res => {
+          this.$notify({
+            message: `取消收藏 : ` + data.name,
+            duration: 2000
+          })
+          this.isCollecte = !this.isCollecte
+        })
+      }
     },
     share() {
       // 分享
