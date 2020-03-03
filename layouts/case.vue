@@ -4,35 +4,18 @@
     <header v-if="url.name.toLocaleLowerCase()==='case'" :style="{background:`url(${banner}) center no-repeat`}" class="content" >
       <div class="case_layou_search">
         <div class="prefix">综合搜索</div>
-        <!-- <el-autocomplete :fetch-suggestions="search" @select="searchChange">
-          <template slot-scope="{ item }">
-            <div>
-              {{ item.describe }}
-              <div v-for="(items, index) in item.conditions" :key="index">{{ items.name }}</div>
-            </div>
-            <el-option-group
-              v-for="(group, index) in item"
-              :key="index"
-              :label="group.describe">
-              <el-option
-                v-for="(item,indexs) in group.conditions"
-                :key="indexs"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-option-group>
-          </template>
-        </el-autocomplete> -->
         <el-select
           ref="case_layout_search"
           v-model="searchText"
           :remote-method="search"
           :loading="loading"
           filterable
+          clearable
           remote
           reserve-keyword
           placeholder="请输入案由、关键词、法院、当事人、律师"
           @change="searchChange"
+          @keydown.13.native="search()"
         >
           <el-option-group
             v-for="(group, index) in options"
@@ -42,7 +25,7 @@
               v-for="(item,indexs) in group.conditions"
               :key="indexs"
               :label="item.name"
-              :value="item.id"
+              :value="JSON.stringify(item)"
             />
           </el-option-group>
         </el-select>
@@ -63,6 +46,7 @@ import Footer from '@/components/Footer'
 import banner from '@/assets/case/case_banner.png'
 import icon from '@/assets/case/case_search.png'
 import { mapActions } from 'vuex'
+import Bus from '@/utils/bus.js'
 export default {
   name: 'CaseLayout',
 
@@ -88,17 +72,13 @@ export default {
   },
   methods: {
     ...mapActions('case', ['CaseSearch']),
-    search(query, cb) {
+    search(query) {
       this.CaseSearch(query).then(res => {
         this.options = res
-        cb([...res])
       })
     },
-    searchChange(index, e, item) {
-      debugger
-      console.log(index)
-      console.log(e)
-      console.log(item)
+    searchChange(key) {
+      Bus.$emit('searchKey', key)
     }
   }
 }
@@ -134,7 +114,7 @@ export default {
 </style>
 <style lang="scss">
   .case_layou_search{
-    .el-select,.el-autocomplete{
+    .el-select{
       .el-input{
         .el-input__inner{
           width: 615px;
@@ -144,11 +124,6 @@ export default {
           height: 42px;
           line-height: 42px;
         }
-      }
-    }
-    .el-autocomplete{
-      .el-input{
-        float: left;
       }
     }
   }

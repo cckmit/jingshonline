@@ -108,6 +108,7 @@ import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
+import Bus from '@/utils/bus.js'
 export default {
   layout: 'case',
   head() {
@@ -219,6 +220,10 @@ export default {
     this.getCasereasonTree()
     this.getRegionTree(null)
     this.getCaseList()
+    // 监听综合搜索传值
+    Bus.$on('searchKey', (data) => {
+      console.log(data ? JSON.parse(data) : '')
+    })
   },
   methods: {
     ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData']),
