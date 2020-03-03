@@ -29,7 +29,7 @@
             />
           </el-option-group>
         </el-select>
-        <div class="icon" @click="search">
+        <div class="icon" @click="searchChange(searchText)">
           <img :src="icon" alt="">
         </div>
       </div>
@@ -59,6 +59,7 @@ export default {
       banner: banner,
       icon: icon,
       searchText: '',
+      searchKey: {},
       url: this.$route,
       loading: false,
       options: []
