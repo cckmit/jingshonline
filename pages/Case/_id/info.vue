@@ -229,7 +229,7 @@
         </div> -->
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" @download="download" @collection="collectionCase"/>
+    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
   </div>
 </template>
 
@@ -260,6 +260,7 @@ export default {
       caseId: 0,
       isShow: true,
       activeNames: 0,
+      isFollow: false,
       caseInfoData: [],
       // activities: [{
       //   id: 'client',
@@ -300,7 +301,8 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
-      caseInfoData: caseInfoData.data
+      caseInfoData: caseInfoData.data,
+      isFollow: caseInfoData.data.isFollow
     }
   },
   watch: {
@@ -322,6 +324,7 @@ export default {
     request() {
       this.getCaseInfoData(this.caseId).then(res => {
         this.caseInfoData = res
+        this.isFollow = res.isFollow
         this.loading = false
       })
     },
@@ -329,23 +332,24 @@ export default {
     },
     // 收藏点击事件
     collectionCase() {
-      // const coll = !this.caseInfoData.isFollow
-      // if (coll) { // 收藏
-      //   this.getFollowData(this.caseInfoData).then(res => {
-      //     this.$notify({
-      //       message: '收藏成功',
-      //       type: 'success'
-      //     })
-      //   })
-      // } else {
-      //   // 取消收藏
-      //   this.getUnfollowData().then(res => {
-      //     this.$notify({
-      //       message: '已取消收藏',
-      //       type: 'success'
-      //     })
-      //   })
-      // }
+      const coll = !this.isFollow
+      const id = this.caseInfoData.id
+      if (coll) { // 收藏
+        this.getFollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+        })
+      } else {
+        // 取消收藏
+        this.getUnfollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+        })
+      }
     },
     // 下载事件
     download() {
@@ -604,6 +608,7 @@ height: 120px;
 
 </style>
 <style lang='scss'>
+
 //办理律师隐藏头部
 .caseInfoClass{
  .lawyer{
