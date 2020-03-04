@@ -223,10 +223,12 @@
               <el-input
                 v-model="lawyerSearch.littlePracticeYears"
                 size="small"
+                @input="selectlittleyears"
               />&nbsp;&nbsp;--&nbsp;
               <el-input
                 v-model="lawyerSearch.largePracticeYears"
                 size="small"
+                @input="selectlargeyears"
               />&nbsp;&nbsp;年
             </li>
           </ul>
@@ -308,18 +310,21 @@
                     <span>{{ items.followerCount }}</span>
                   </p>
                   <div>
-                    <div>
+                    <div @click="collection(items)">
                       <img
+                        v-if="items.isFollow"
                         src="../../assets/lawyer/collection.png"
-                        alt=""
-                        @click="collection()"
-                      >收藏
+                        alt="">
+                      <img
+                        v-else
+                        src="../../assets/lawyer/collection.png"
+                        alt="">
+                      {{ !items.isFollow ? '收藏' : '取消收藏' }}
                     </div>
-                    <div>
+                    <div @click="share(items.id)">
                       <img
                         src="../../assets/lawyer/share.png"
                         alt=""
-                        @click="share()"
                       >分享
                     </div>
                   </div>
@@ -329,6 +334,15 @@
           </nuxt-link>
         </li>
       </ul>
+      <el-dialog :visible.sync="visible" top="35vh" width="400px" title="分享">
+        <div class="share">
+          <div>
+            <el-input v-model="url" size="mini"/>
+            <el-button size="mini" icon="el-icon-share" @click="copy">复制链接</el-button>
+          </div>
+          <img :src="qrimg">
+        </div>
+      </el-dialog>
       <Pagination
         v-show="totalCount > 0"
         :total="totalCount"
@@ -345,6 +359,7 @@ import Pagination from '../../components/Pagination/index'
 import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
+import QRCode from 'qrcode'
 export default {
   layout: 'lawyer',
   name: 'Lawyer',
@@ -388,7 +403,16 @@ export default {
       regionData: regionData.data.data
     }
   },
-
+  props: {
+    copySuccessMessage: {
+      type: String,
+      default: '连接地址复制成功'
+    },
+    copyErrorMessage: {
+      type: String,
+      default: '复制失败'
+    }
+  },
   data() {
     return {
       loading: false,
@@ -401,9 +425,8 @@ export default {
         lawfirmId: '', // 所属律所
         practiceAreaId: '', // 擅长领域
         industryId: '', // 擅长行业
-        sorting: {
-          points: 0
-        }, // 排序
+        sorting: 'points', // 排序
+        sortType: 0,
         regionId: '', // 律师所属地区
         littlePracticeYears: 0, // 执业年限小值
         largePracticeYears: 0 // 执业年限大值
@@ -436,7 +459,14 @@ export default {
         // regionId: 0,
         // creditCode: '',
         // lawfirmType: 0
-      }
+      },
+      searchtimelittle: '', // 输入框时间
+      searchtimelarge: '',
+      littlesettime: '', // 定时器
+      largesettime: '',
+      visible: false, // 分享弹框
+      url: '', // 分享链接
+      qrimg: '' // 二维码
     }
   },
   computed: {},
@@ -448,7 +478,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('lawyer', ['GetLawyerList']),
+    ...mapActions('lawyer', ['GetLawyerList', 'LawyerCollecte', 'LawyerUnCollecte']),
     ...mapActions('practice', [
       'getPracticeTreeData',
       'getPracticesuitsData',
@@ -489,7 +519,6 @@ export default {
       // 获取地区
       this.getRegionTreeData().then(res => {
         this.regionData = res
-
         this.loading = false
       })
     },
@@ -597,15 +626,11 @@ export default {
       if (this.sortactive === '') {
         this.sortactive = 'active'
         this.caseactive = ''
-        this.lawyerSearch.sorting = {
-          points: 0
-        }
+        this.lawyerSearch.sorting = 'points'
       } else {
         this.sortactive = ''
         this.caseactive = 'active'
-        this.lawyerSearch.sorting = {
-          conditioncasecount: 0
-        } // 待完善
+        this.lawyerSearch.sorting = 'conditioncasecount'
       }
       // 重新请求数据
       this.getLawyer()
@@ -615,24 +640,94 @@ export default {
       if (this.caseactive === '') {
         this.caseactive = 'active'
         this.sortactive = ''
-        this.lawyerSearch.sorting = {
-          conditioncasecount: 0
-        }
+        this.lawyerSearch.sorting = 'conditioncasecount'
       } else {
         this.caseactive = ''
         this.sortactive = 'active'
-        this.lawyerSearch.sorting = {
-          points: 0
-        } // 待完善
+        this.lawyerSearch.sorting = 'points'
       }
       // 重新请求数据
       this.getLawyer()
     },
-    collection() {
-      // 收藏
+    selectlittleyears() {
+      this.searchtimelittle = new Date().getTime()
+      this.timelittle()
     },
-    share() {
+    selectlargeyears() {
+      this.searchtimelarge = new Date().getTime()
+      this.timelarge()
+    },
+    timelittle() {
+      const _this = this
+      this.littlesettime = setTimeout(function() {
+        var x = new Date().getTime() - this.searchtimelittle
+        if (x < 490) {
+          clearInterval(this.littlesettime)
+        } else {
+          _this.getLawyer()
+        }
+      }, 500)
+    },
+    timelarge() {
+      const _this = this
+      this.largesettime = setTimeout(function() {
+        var x = new Date().getTime() - this.searchtimelarge
+        if (x < 490) {
+          clearInterval(this.largesettime)
+        } else {
+          _this.getLawyer()
+        }
+      }, 500)
+    },
+    collection(data) { // 收藏
+      // 判断是否登录
+      event.preventDefault()
+      console.log(data.id)
+      if (!data.isFollow) {
+        this.LawyerCollecte(data.id).then(res => {
+          this.$notify({
+            message: `收藏律师 : ` + data.name,
+            duration: 2000
+          })
+        })
+      } else {
+        this.LawyerUnCollecte(data.id).then(res => {
+          this.$notify({
+            message: `取消收藏 : ` + data.name,
+            duration: 2000
+          })
+        })
+      }
+      this.getLawyer()
+    },
+    share(id) {
       // 分享
+      event.preventDefault()
+      this.visible = true
+      this.url = window.location.href + '/' + id + '/list'
+      // 生成二维码
+      this.getQrcode()
+    },
+    getQrcode() {
+      console.log(this.url)
+      QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
+        this.qrimg = url
+      })
+    },
+    copy() {
+      this.$copyText(this.url).then(e => {
+        this.$notify({
+          message: this.copySuccessMessage,
+          type: 'success'
+        })
+        console.log(e)
+      }).catch(error => {
+        this.$notify({
+          message: this.copyErrorMessage,
+          type: 'error'
+        })
+        console.log(error)
+      })
     }
   }
 }
