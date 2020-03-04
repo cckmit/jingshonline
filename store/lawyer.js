@@ -136,11 +136,11 @@ export const actions = {
 
   /**
    * 收藏律师
-   * @param {number} id
+   * @param {number} lawyerId
    */
-  LawyerCollecte(id) {
+  LawyerCollecte({ commit }, lawyerId) {
     return new Promise((resolve, reject) => {
-      Lawyer.collecteData(id).then(response => {
+      Lawyer.collecteData(lawyerId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -150,11 +150,11 @@ export const actions = {
   },
   /**
    * 取消收藏律师
-   * @param {number} id
+   * @param {number} lawyerId
    */
-  LawyerUnCollecte(id) {
+  LawyerUnCollecte({ commit }, lawyerId) {
     return new Promise((resolve, reject) => {
-      Lawyer.uncollecteData(id).then(response => {
+      Lawyer.uncollecteData(lawyerId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {

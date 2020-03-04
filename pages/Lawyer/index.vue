@@ -310,18 +310,21 @@
                     <span>{{ items.followerCount }}</span>
                   </p>
                   <div>
-                    <div>
+                    <div @click="collection(items)">
                       <img
+                        v-if="items.isFollow"
                         src="../../assets/lawyer/collection.png"
-                        alt=""
-                        @click="collection(items)"
-                      >收藏
+                        alt="">
+                      <img
+                        v-else
+                        src="../../assets/lawyer/collection.png"
+                        alt="">
+                      {{ !items.isFollow ? '收藏' : '取消收藏' }}
                     </div>
-                    <div>
+                    <div @click="share()">
                       <img
                         src="../../assets/lawyer/share.png"
                         alt=""
-                        @click="share()"
                       >分享
                     </div>
                   </div>
@@ -441,8 +444,7 @@ export default {
       searchtimelittle: '', // 输入框时间
       searchtimelarge: '',
       littlesettime: '', // 定时器
-      largesettime: '',
-      isCollecte: false// 是否收藏
+      largesettime: ''
     }
   },
   computed: {},
@@ -656,15 +658,16 @@ export default {
         }
       }, 500)
     },
-    collection(data) {
-      // 收藏
-      if (!this.isCollecte) {
+    collection(data) { // 收藏
+      // 判断是否登录
+      event.preventDefault()
+      console.log(data.id)
+      if (!data.isFollow) {
         this.LawyerCollecte(data.id).then(res => {
           this.$notify({
             message: `收藏律师 : ` + data.name,
             duration: 2000
           })
-          this.isCollecte = !this.isCollecte
         })
       } else {
         this.LawyerUnCollecte(data.id).then(res => {
@@ -672,12 +675,13 @@ export default {
             message: `取消收藏 : ` + data.name,
             duration: 2000
           })
-          this.isCollecte = !this.isCollecte
         })
       }
+      this.getLawyer()
     },
     share() {
       // 分享
+      event.preventDefault()
     }
   }
 }

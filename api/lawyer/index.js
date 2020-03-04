@@ -65,21 +65,21 @@ export const ChangePassword = passwordData => {
 }
 /**
  * 收藏律师
- * @param {object} id
+ * @param {number} lawyerId
  */
-export const collecteData = id => {
+export const collecteData = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/follow/${id}`,
+    url: `${setting.apiPrefix}/customer/lawyer/follow/${lawyerId}`,
     method: 'post'
   })
 }
 /**
  * 取消收藏律师
- * @param {object} id
+ * @param {number} lawyerId
  */
-export const uncollecteData = id => {
+export const uncollecteData = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/unfollow/${id}`,
+    url: `${setting.apiPrefix}/customer/lawyer/unfollow/${lawyerId}`,
     method: 'delete'
   })
 }
