@@ -9,7 +9,6 @@
 export default {
   name: 'LawyerProfessional',
   components: {
-
   },
   props: {
     chartData: {

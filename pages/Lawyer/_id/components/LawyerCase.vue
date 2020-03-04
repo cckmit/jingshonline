@@ -41,12 +41,12 @@
     <div class="lawyer-case-list">
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link :to="'/case/'+item.id+'/info'">
-          <div class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
-          <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
+          <div v-if="item.highlight.title" class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
+          <p class="case-item-article" v-html="item.highlight.judgmentDocument ? item.highlight.judgmentDocument[0] : '无该案件详情数据'"/>
           <div class="case-item-bottom">
             <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
             <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
-            <span class="share no-select" @click="shareVisible=true"><i/>分享</span>
+            <span class="share no-select" @click.prevent="share(item.id)"><i/>分享</span>
           </div>
           <i v-if="item.isClassicCase" class="classic"/>
         </nuxt-link>
@@ -98,7 +98,7 @@ export default {
         courtReginId: undefined, // 法院所属区域 nmuber || arr
         courtId: undefined, // 法院Id number
         caseReasonId: undefined, // 案由Id number
-        lawyerId: 37, // 律师Id number
+        lawyerId: this.$route.params.id, // 律师Id number
         industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
@@ -133,8 +133,6 @@ export default {
     this.getLawyerCaseList(this.caseListParam)
   },
   mounted() {
-    this.url = window.location.href.replace(/lawyer/g, 'case')
-    this.getQrcode()
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
@@ -176,6 +174,12 @@ export default {
       const obj = {}
       return arr.reduce((cur, next) => {
         obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
+        // 检索条件容错
+        cur.forEach((item, index) => {
+          if (String(item.id) === 'null') {
+            cur.splice(index, 1)
+          }
+        })
         return cur
       }, [])
     },
@@ -221,18 +225,24 @@ export default {
       }
     },
     // 用户分享
+    share(id) {
+      this.shareVisible = true
+      this.url = window.location.origin + `/case/${id}/info`
+      this.getQrcode()
+    },
+    // 获取二维码
     getQrcode() {
       QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
         this.qrimg = url
       })
     },
+    // 复制链接
     copy() {
       this.$copyText(this.url).then(e => {
         this.$notify({
-          message: '连接地址复制成功',
+          message: '链接地址复制成功',
           type: 'success'
         })
-        console.log(e)
       }).catch(error => {
         this.$notify({
           message: '复制失败',

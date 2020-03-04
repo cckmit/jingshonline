@@ -63,6 +63,12 @@ export default {
         return ''
       }
     },
+    isFollow: {
+      type: Boolean,
+      default: function() {
+        return false
+      }
+    },
     courtData: {
       type: Array,
       default: function() {
@@ -78,7 +84,6 @@ export default {
   },
   data() {
     return {
-      isFollow: false
     }
   },
   computed: {
