@@ -3,7 +3,7 @@
     <div class="lawyer-info-container">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{path:'/LawyerInfo'}">查找律师</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path:'/Lawyer'}">查找律师</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="lawyer-info-card">
         <div v-if="lawyerInformation.status === 2" class="lawyer-isAuthentication"/>
@@ -12,24 +12,24 @@
             <img :src="lawyerInformation.avatar" alt="律师头像">
           </a>
           <div class="lawyer-info-detail">
-            <p class="lawyer-name">{{ lawyerInformation.realName }}</p>
-            <p class="lawyer-year"><span>{{ lawyerInformation.experienceYear }}年</span><span>{{ lawyerInformation.caseCount }}例</span></p>
-            <p class="lawyer-id"><span>ID: {{ lawyerInformation.id }} 最后更新时间: </span></p>
-            <p class="lawyer-time">{{ lawyerInformation.lastModificationTime }} </p>
+            <p class="lawyer-name">{{ lawyerInformation.realName || '暂无' }}</p>
+            <p class="lawyer-year"><span>{{ lawyerInformation.experienceYear || '0' }}年</span><span>{{ lawyerInformation.caseCount || '0' }}例</span></p>
+            <p class="lawyer-id"><span>ID: {{ lawyerInformation.id || '暂无' }} 最后更新时间: </span></p>
+            <p class="lawyer-time">{{ lawyerInformation.lastModificationTime || '暂无' }} </p>
           </div>
         </div>
         <div class="lawyer-information">
           <h4>基本信息</h4>
           <ul>
-            <li><span>所在律所</span>{{ lawyerInformation.lawfirmName }}</li>
-            <li><span>所在地</span>{{ lawyerInformation.regionName }}</li>
-            <li><span>最高学历</span>{{ lawyerInformation.highestDegree }} </li>
-            <li><span>执业证号</span>{{ lawyerInformation.licenceNo }}</li>
+            <li><span>所在律所</span>{{ lawyerInformation.lawfirmName || '暂无' }}</li>
+            <li><span>所在地</span>{{ lawyerInformation.regionName || '暂无' }}</li>
+            <li><span>最高学历</span>{{ lawyerInformation.highestDegree || '暂无' }} </li>
+            <li><span>执业证号</span>{{ lawyerInformation.licenceNo || '暂无' }}</li>
           </ul>
           <h4>联系方式</h4>
           <ul>
-            <li><span>联系电话</span>{{ lawyerInformation.phone }}</li>
-            <li><span>律师邮箱</span>{{ lawyerInformation.email }}</li>
+            <li><span>联系电话</span>{{ lawyerInformation.phone || '暂无' }}</li>
+            <li><span>律师邮箱</span>{{ lawyerInformation.email || '暂无' }}</li>
           </ul>
           <h4>业务专长</h4>
           <!-- <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
@@ -45,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
+      <lawyer-detail :is-follow="lawyerInformation.isFollow" :real-name="lawyerInformation.realName" :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
     </div>
   </div>
 </template>
@@ -68,36 +68,71 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [LawyerResumeData, LawyerInformation, CourtData, ChartData] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, {}, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' })
     ])
-    // 律师业务专长
-    const lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
-      return item.name
-    }).concat(LawyerInformation.data.data.industries.map(item => {
-      return item.name
-    }))
-    const resume = LawyerResumeData.data.data
+    // 律师基础信息数据容错
+    let lawyerInformationData = {}
+    if (LawyerInformation.data.data) {
+      lawyerInformationData = LawyerInformation.data.data
+    }
+    // 律师业务专长数据容错
+    let lawyerBusiness = []
+    if (lawyerInformationData.practiceareas && lawyerInformationData.practiceareas.length) {
+      lawyerBusiness = LawyerInformation.data.data.practiceareas.map(item => {
+        return item.name
+      }).concat(LawyerInformation.data.data.industries.map(item => {
+        return item.name
+      }))
+    }
+    // 律师简历信息数据容错
+    const resumeData = {}
+    if (LawyerResumeData.data.data) {
+      const resumeInfo = LawyerResumeData.data.data
+      if (resumeInfo.workExperiences) {
+        resumeData.workExperiences = resumeInfo.workExperiences
+      }
+      if (resumeInfo.socialPositions) {
+        resumeData.socialPositions = resumeInfo.socialPositions
+      }
+      if (resumeInfo.educations) {
+        resumeData.educations = resumeInfo.educations
+      }
+      if (resumeInfo.certificates) {
+        resumeData.certificates = resumeInfo.certificates
+      }
+      if (resumeInfo.academics) {
+        resumeData.academics = resumeInfo.academics
+      }
+    }
+    // 律师常去法院数据容错
+    let courtData = []
+    if (CourtData.data.data && CourtData.data.data.length) {
+      courtData = CourtData.data.data
+    }
+    // 图标数据容错
+    const chartData = {}
+    if (PracticData.data.data) {
+      chartData.practicea = PracticData.data.data
+    }
+    if (NoPracticData.data.data) {
+      chartData.noPracticea = NoPracticData.data.data
+    }
     return {
       // 律师基本信息
-      lawyerInformation: LawyerInformation.data.data,
+      lawyerInformation: lawyerInformationData,
       // 律师简历数据
-      resumeData: {
-        workExperiences: resume.workExperiences,
-        socialPositions: resume.socialPositions,
-        educations: resume.educations,
-        certificates: resume.certificates,
-        academics: resume.academics
-      },
+      resumeData: resumeData,
       // 律师常去法院数据
-      courtData: CourtData.data.data,
+      courtData: courtData,
       // 律师业务专长
       lawyerBusiness: lawyerBusiness,
       // 图表数据
-      chartData: ChartData.data.data
+      chartData: chartData
     }
   },
   data() {
@@ -110,7 +145,7 @@ export default {
         certificates: [],
         academics: []
       },
-      // 律师基本信息 缺少手机号 以及律师备注信息（律师简介）
+      // 律师基本信息
       lawyerInformation: {
         id: 0, // 律师Id
         realName: '', // 真实姓名
@@ -147,6 +182,7 @@ export default {
   watch: {
   },
   mounted() {
+    console.log(this.lawyerInformation)
     // this.GetLawyerInfo(10).then(res => {
     //   console.log(res)
     // })
@@ -235,13 +271,13 @@ export default {
         margin-bottom: 17px;
       }
       ul li {
+        overflow: hidden;
         list-style: none;
         font-size: 14px;
-        line-height: 14px;
+        line-height: 16px;
         color: #333;
         margin-bottom: 27px;
         white-space: nowrap;
-        overflow: hidden;
         text-overflow: ellipsis;
         -o-text-overflow: ellipsis;
         span {

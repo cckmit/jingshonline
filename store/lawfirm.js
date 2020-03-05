@@ -32,10 +32,11 @@ export const actions = {
   /**
    * 获取律所数据无参数查询
    * @param {commit} param0
+   * @param {object} query
    */
-  getLawfirm({ commit }) {
+  getLawfirm({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Lawfirm.get().then(response => {
+      Lawfirm.get(query).then(response => {
         const {
           data
         } = response
