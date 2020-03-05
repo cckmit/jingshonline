@@ -10,7 +10,7 @@
           <el-tabs v-model="activeName" type="card">
             <el-tab-pane label="诉讼领域" name="first">
               <ul>
-                <li v-for="(items, index) in suitsData" :key="index">
+                <li v-for="items in suitsData" :key="items.id">
                   <span
                     v-if="items.children.length === 0"
                     @click="practice(items.id, items.name)"
@@ -38,7 +38,7 @@
             </el-tab-pane>
             <el-tab-pane label="非诉领域" name="second">
               <ul>
-                <li v-for="(items, index) in NosuitsData" :key="index">
+                <li v-for="items in NosuitsData" :key="items.id">
                   <span
                     v-if="items.children.length === 0"
                     @click="practice(items.id, items.name)"
@@ -66,7 +66,7 @@
             </el-tab-pane>
             <el-tab-pane label="擅长行业" name="third">
               <ul>
-                <li v-for="(items, index) in industryData" :key="index">
+                <li v-for="items in industryData" :key="items.id">
                   <span
                     v-if="items.children.length === 0"
                     @click="industry(items.id, items.name)"
@@ -155,9 +155,9 @@
           <ul class="alreadyselect">
             <!-- <li v-for="(items,index) in selectData" :key="index"><span>{{ items.name }}</span><small @click="selectdelete(items)"><i class="fa fa-times"/></small></li> -->
             <li
-              v-for="(items, index) in selectData.industry"
+              v-for="items in selectData.industry"
               v-show="selectData.industry !== []"
-              :key="index"
+              :key="items.id"
             >
               <span>{{ items.name }}</span>
               <small @click="selectdelete('industry', items)">
@@ -165,9 +165,9 @@
               </small>
             </li>
             <li
-              v-for="(items, index) in selectData.practice"
+              v-for="items in selectData.practice"
               v-show="selectData.practice !== []"
-              :key="index"
+              :key="items.id"
             >
               <span>{{ items.name }}</span>
               <small @click="selectdelete('practice', items)">
@@ -175,9 +175,9 @@
               </small>
             </li>
             <li
-              v-for="(items, index) in selectData.region"
+              v-for="items in selectData.region"
               v-show="selectData.region !== []"
-              :key="index"
+              :key="items.id"
             >
               <span>{{ items.name }}</span>
               <small @click="selectdelete('region', items)">
@@ -185,9 +185,9 @@
               </small>
             </li>
             <li
-              v-for="(items, index) in selectData.lawfirm"
+              v-for="items in selectData.lawfirm"
               v-show="selectData.lawfirm !== []"
-              :key="index"
+              :key="items.id"
             >
               <span>{{ items.name }}</span>
               <small @click="selectdelete('lawfirm', items)">
@@ -195,9 +195,9 @@
               </small>
             </li>
             <li
-              v-for="(items, index) in selectData.lawyerName"
+              v-for="items in selectData.lawyerName"
               v-show="selectData.lawyerName !== []"
-              :key="index"
+              :key="items.id"
             >
               <span>{{ items.name }}</span>
               <small @click="selectdelete('lawyerName', items)">
@@ -618,6 +618,8 @@ export default {
       this.lawyerSearch.lawfirmId = ''
       this.lawyerSearch.regionId = ''
       this.lawyerSearch.industryId = ''
+      this.lawyerSearch.littlePracticeYears = 0
+      this.lawyerSearch.largePracticeYears = 0
       // 重新请求数据
       this.getLawyer()
     },
