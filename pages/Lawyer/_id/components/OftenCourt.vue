@@ -4,7 +4,7 @@
       <h4 class="often-header"><i/>{{ item.name }}</h4>
       <div class="often-main">
         <div v-for="(item,index) in item.courts" :key="index" class="often-card">
-          <p class="often-card-header">{{ item.fullName }}</p>
+          <p class="often-card-header">{{ item.name }}</p>
           <ul>
             <li>地址: {{ item.address }}</li>
             <li>联系方式: {{ item.tel }}</li>

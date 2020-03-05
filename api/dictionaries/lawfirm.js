@@ -4,11 +4,15 @@ import setting from '@/plugins/setting'
 
 /**
  * 律所数据无参数
+ * @param {object} query
  */
-export const get = () => {
+export const get = query => {
   return request({
     url: `${setting.apiPrefix}/lawfirm/list`,
-    method: 'get'
+    method: 'post',
+    data: {
+      query: query
+    }
   })
 }
 
