@@ -48,9 +48,9 @@
           <el-row class="case-title case-content-titleTop">
             <el-col :span="21">
               <p style="float:left"> 筛选条件:</p>
-              <el-tag v-if="selectForm.courtLevelInfo" closable effect="plain" size="small" type="info" @close="handleCourtLevelClose(tag)">{{ selectForm.courtLevelInfo }}</el-tag>
-              <el-tag v-if="selectForm.caseReasonInfo" closable effect="plain" size="small" type="info" @close="handleCaseReasonClose(tag)">{{ selectForm.caseReasonInfo }}</el-tag>
-              <el-tag v-if="selectForm.courtInfo" closable effect="plain" size="small" type="info" @close="handleCourtClose(tag)">{{ selectForm.courtInfo }}</el-tag>
+              <el-tag v-show="selectForm.courtLevelInfo" closable effect="plain" size="small" type="info" @close="handleCourtLevelClose">{{ selectForm.courtLevelInfo }}</el-tag>
+              <el-tag v-show="selectForm.caseReasonInfo" closable effect="plain" size="small" type="info" @close="handleCaseReasonClose">{{ selectForm.caseReasonInfo }}</el-tag>
+              <el-tag v-show="selectForm.courtInfo" closable effect="plain" size="small" type="info" @close="handleCourtClose">{{ selectForm.courtInfo }}</el-tag>
             </el-col>
             <el-col :span="3">
               <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
@@ -79,8 +79,7 @@
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </div>
-                  <div class="case-judgment" v-html="item.highlight.judgmentDocument[0]">{{ item.highlight.judgmentDocument[0] }}
-                  </div>
+                  <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
@@ -301,7 +300,7 @@ export default {
       this.getCaseList()
     },
     // 管辖法院关闭
-    handleCourtClose(tag) {
+    handleCourtClose() {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
       this.getCaseList()
@@ -313,7 +312,7 @@ export default {
       this.getCaseList()
     },
     // 具体案由关闭
-    handleCaseReasonClose(tag) {
+    handleCaseReasonClose() {
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
       this.getCaseList()
@@ -328,7 +327,7 @@ export default {
     },
 
     // 法院等级关闭
-    handleCourtLevelClose(tag) {
+    handleCourtLevelClose() {
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
       this.getRegionTree(this.caseSearch.courtLevel)
