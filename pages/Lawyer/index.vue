@@ -16,7 +16,7 @@
                     @click="practice(items.id, items.name)"
                   >
                     {{ items.name }}
-                  </span>
+</span></li></ul></el-tab-pane></el-tabs></el-col></el-row></el-col></el-row></el-col></el-tabs></el-tab-pane></ul></li></span></template>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
                       <li
@@ -44,7 +44,7 @@
                     @click="practice(items.id, items.name)"
                   >
                     {{ items.name }}
-                  </span>
+                  </template>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
                       <li
@@ -72,7 +72,7 @@
                     @click="industry(items.id, items.name)"
                   >
                     {{ items.name }}
-                  </span>
+                  </template>
                   <el-popover v-else placement="top-start" trigger="hover">
                     <ul class="tabinfo">
                       <li
@@ -126,9 +126,10 @@
           node-key="id"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
+          @node-click="region"
         >
           <div slot-scope="{ node }" class="tree_tools">
-            <span @click="region(node.data)">{{ node.data.name }}</span>
+            <span></span>{{ node.data.name }}</span>
           </div>
         </el-tree>
         <span v-else class="emptyData">暂无数据</span>
