@@ -33,8 +33,9 @@
           </el-row>
         </div>
         <!-- 其他信息 -->
-        <div class="case-content-main">
-          <el-form ref="form" label-width="0">
+        <div id="detail" class="case-content-main">
+          <div class="case-judgment" v-html="caseInfoData.judgmentDocument">{{ caseInfoData.judgmentDocument }}</div>
+          <!-- <el-form ref="form" label-width="0">
             <el-form-item>
               <p id="First" class="case-title"><i class="titleIcon"/> 当事人信息</p>
               <p>
@@ -122,7 +123,7 @@
                 书记员张歌
               </p>
             </el-form-item>
-          </el-form>
+          </el-form> -->
         </div>
       </el-col>
       <!-- /*右边 -->
@@ -168,7 +169,7 @@
           </el-collapse>
         </div>
         <!-- /* 案件认领-->
-        <div class="case-aside-main case-aside-ajrl case-border">
+        <!-- <div class="case-aside-main case-aside-ajrl case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
@@ -206,9 +207,9 @@
             </el-form>
 
           </div>
-        </div>
+        </div> -->
         <!-- /*相关案例 -->
-        <div class="case-aside-main case-aside-xgal case-border">
+        <!-- <div class="case-aside-main case-aside-xgal case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
@@ -225,10 +226,10 @@
               <el-form-item>10 、郑银花与北京市住房和城乡建设委员会及白春生,白志增,郑粟杰,北京万柳置业集团有限公司,梁帅关于房屋登记行为案   </el-form-item>
             </el-form>
           </div>
-        </div>
+        </div> -->
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,download,error,qrcode,totop,share'" :top="100" :left="300" :catalog-data="activities" @download="download" @collection="collectionCase"/>
+    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
   </div>
 </template>
 
@@ -259,31 +260,39 @@ export default {
       caseId: 0,
       isShow: true,
       activeNames: 0,
+      isFollow: false,
       caseInfoData: [],
+      // activities: [{
+      //   id: 'client',
+      //   title: '概要信息'
+      // }, {
+      //   id: 'First',
+      //   title: '当事人信息'
+      // }, {
+      //   id: 'Second',
+      //   title: '审理经过'
+      // }, {
+      //   id: 'After',
+      //   title: '原告辩称'
+      // }, {
+      //   id: 'Third',
+      //   title: '被告辩称'
+      // }, {
+      //   id: 'Fourth',
+      //   title: '本院查明'
+      // }, {
+      //   id: 'Fifth',
+      //   title: '本院认为'
+      // }, {
+      //   id: 'Finally',
+      //   title: '裁判结果'
+      // }],
       activities: [{
         id: 'client',
         title: '概要信息'
       }, {
-        id: 'First',
-        title: '当事人信息'
-      }, {
-        id: 'Second',
-        title: '审理经过'
-      }, {
-        id: 'After',
-        title: '原告辩称'
-      }, {
-        id: 'Third',
-        title: '被告辩称'
-      }, {
-        id: 'Fourth',
-        title: '本院查明'
-      }, {
-        id: 'Fifth',
-        title: '本院认为'
-      }, {
-        id: 'Finally',
-        title: '裁判结果'
+        id: 'detail',
+        title: '详情'
       }]
     }
   },
@@ -292,7 +301,8 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
-      caseInfoData: caseInfoData.data
+      caseInfoData: caseInfoData.data,
+      isFollow: caseInfoData.data.isFollow
     }
   },
   watch: {
@@ -305,7 +315,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('case', ['getCaseInfoData']),
+    ...mapActions('case', ['getCaseInfoData', 'getFollowData', 'getUnfollowData']),
     // 获取案件
     getcaseInfoData(delayTime = 150) {
       this.loading = true
@@ -314,10 +324,36 @@ export default {
     request() {
       this.getCaseInfoData(this.caseId).then(res => {
         this.caseInfoData = res
+        this.isFollow = res.isFollow
         this.loading = false
       })
     },
     handleChange(val) {
+    },
+    // 收藏点击事件
+    collectionCase() {
+      const coll = !this.isFollow
+      const id = this.caseInfoData.id
+      if (coll) { // 收藏
+        this.getFollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+        })
+      } else {
+        // 取消收藏
+        this.getUnfollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+        })
+      }
+    },
+    // 下载事件
+    download() {
+      console.log('下载')
     }
   }
 }
@@ -400,12 +436,16 @@ margin-bottom: 0;
 
 .case-content-main {
     padding: 0 20px 20px 20px;
-    .el-form-item__content{
-      margin: 10px 0;
-}
+//     .el-form-item__content{
+//       margin: 10px 0;
+// }
 
-p {
-    line-height: 36px;
+// p {
+//     line-height: 36px;
+//     color: #333333;
+// }
+.case-judgment{
+   line-height: 36px;
     color: #333333;
 }
   }
@@ -568,6 +608,7 @@ height: 120px;
 
 </style>
 <style lang='scss'>
+
 //办理律师隐藏头部
 .caseInfoClass{
  .lawyer{

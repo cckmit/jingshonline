@@ -183,6 +183,9 @@ export default {
   },
   mounted() {
     console.log(this.lawyerInformation)
+    // this.GetLawyerInfo(10).then(res => {
+    //   console.log(res)
+    // })
   },
   methods: {
   }

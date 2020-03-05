@@ -73,7 +73,7 @@ export const actions = {
     })
   },
   /**
-   * 收藏
+   * 取消收藏
    * @param {commit} commit
    * @param {string} query
    */
