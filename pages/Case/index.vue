@@ -304,35 +304,35 @@ export default {
     handleCourtClose() {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由树点击筛选
     handleCasereasonClick(data) {
       this.selectForm.caseReasonInfo = data.name
       this.caseSearch.caseReasonId = data.id
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由关闭
     handleCaseReasonClose() {
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
 
     // 管辖法院点击
     handleCourtLevelClick(data) {
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
 
     // 法院等级关闭
     handleCourtLevelClose() {
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
     // 清空筛选条件点击事件
     emptyScreen() {
@@ -343,7 +343,7 @@ export default {
       this.caseSearch.caseReasonId = ''
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 排序点击事件
     getSortCaseData(sorting, index) {
