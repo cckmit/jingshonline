@@ -19,7 +19,7 @@
             <el-form ref="form" label-width="100px">
               <el-col :span="11">
                 <el-form-item label="主办律师:"><p> {{ caseInfoData.client }}</p></el-form-item>
-                <el-form-item label="审判机关:"><p> {{ caseInfoData.administrativeOrgan }}</p></el-form-item>
+                <el-form-item label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
                 <el-form-item label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
                 <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
               </el-col>
