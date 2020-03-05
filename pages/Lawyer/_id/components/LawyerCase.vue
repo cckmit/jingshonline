@@ -4,7 +4,7 @@
       <div class="lawyer-case-item">
         <p>管辖法院 :</p>
         <treeselect
-          :options="courtData"
+          :options="courtList"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.courtId"
@@ -14,7 +14,7 @@
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
         <treeselect
-          :options="industryTree"
+          :options="industryDataList"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.industryId"
@@ -24,7 +24,7 @@
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
         <treeselect
-          :options="practiceAreaData"
+          :options="practiceareaDataList"
           :disable-branch-nodes="true"
           :show-count="true"
           v-model="caseListParam.practiceAreaId"
@@ -80,7 +80,24 @@ export default {
     Treeselect
   },
   props: {
-
+    industryDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    practiceareaDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    courtList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {
@@ -124,7 +141,6 @@ export default {
     caseListParam: {
       deep: true,
       handler(val) {
-        console.log('刷新检索条件:', val)
         this.getLawyerCaseList(val)
       }
     }
@@ -142,30 +158,30 @@ export default {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
-          // 处理案例法院数据
-          if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
-            const court = []
-            const industry = []
-            const practice = []
-            this.lawyerCaseList.forEach(item => {
-              court.push({
-                id: item.courtId,
-                label: item.courtName
-              })
+          // 检索条件处理--> 按律师当前案例划分检索数据（备用）
+          // if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
+          //   const court = []
+          //   const industry = []
+          //   const practice = []
+          //   this.lawyerCaseList.forEach(item => {
+          //     court.push({
+          //       id: item.courtId,
+          //       label: item.courtName
+          //     })
 
-              industry.push({
-                id: item.industryId,
-                label: item.industryName
-              })
-              practice.push({
-                id: item.practiceAreaId,
-                label: item.practiceAreaName
-              })
-            })
-            this.courtData = this.unique(court)
-            this.industryTree = this.unique(industry)
-            this.practiceAreaData = this.unique(practice)
-          }
+          //     industry.push({
+          //       id: item.industryId,
+          //       label: item.industryName
+          //     })
+          //     practice.push({
+          //       id: item.practiceAreaId,
+          //       label: item.practiceAreaName
+          //     })
+          //   })
+          //   this.courtData = this.unique(court)
+          //   this.industryTree = this.unique(industry)
+          //   this.practiceAreaData = this.unique(practice)
+          // }
         }
       })
     },

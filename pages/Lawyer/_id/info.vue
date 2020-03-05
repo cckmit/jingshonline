@@ -32,20 +32,25 @@
             <li><span>律师邮箱</span>{{ lawyerInformation.email || '暂无' }}</li>
           </ul>
           <h4>业务专长</h4>
-          <!-- <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
-            <li><a href=":javascript">{{ item }}</a></li> -->
-          <ul class="lawyer-business">
-            <li><a href=":javascript">合同纠纷</a></li>
-            <li><a href=":javascript">土地房产</a></li>
-            <li><a href=":javascript">房产领域纠纷</a></li>
-            <li><a href=":javascript">侵权纠纷与赔偿纠纷</a> </li>
-            <li><a href=":javascript">土地房产</a></li>
-            <li><a href=":javascript">房产领域纠纷</a></li>
-            <li><a href=":javascript">侵权纠纷与赔偿纠纷</a> </li>
-          </ul>
+          <div v-if="lawyerBusiness.length">
+            <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
+              <li><a href=":javascript">{{ item }}</a></li>
+            </ul>
+          </div>
+          <p v-else>暂无数据...</p>
         </div>
       </div>
-      <lawyer-detail :is-follow="lawyerInformation.isFollow" :real-name="lawyerInformation.realName" :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
+      <lawyer-detail
+        :is-follow="lawyerInformation.isFollow"
+        :real-name="lawyerInformation.realName"
+        :resume-data="resumeData"
+        :lawyer-remark="lawyerInformation.remark"
+        :court-data="courtData"
+        :chart-data="chartData"
+        :industry-data-list="industryDataList"
+        :practicearea-data-list="practiceareaDataList"
+        :court-list="courtList"
+      />
     </div>
   </div>
 </template>
@@ -68,12 +73,24 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData, courtListData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }),
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
+      axios.get(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree`,
+        { 'Content-Type': 'application/json' }
+      ),
+      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/list`, {
+        query: {
+          name: '',
+          regionId: '',
+          courtLevel: ''
+        }
+      }, { 'Content-Type': 'application/json' })
     ])
     // 律师基础信息数据容错
     let lawyerInformationData = {}
@@ -109,6 +126,37 @@ export default {
         resumeData.academics = resumeInfo.academics
       }
     }
+    function Recursion(arr) {
+      if (Array.isArray(arr)) {
+        const dataList = []
+        arr.forEach((item, index) => {
+          dataList.push({
+            id: item.id,
+            label: item.name
+          })
+          if (item.children && item.children.length > 0) {
+            dataList[index].children = Recursion(item.children)
+          }
+        })
+        return dataList
+      }
+    }
+    // 案例检索条件-行业树
+    let industryDataList = []
+    if (industryData.data.data) {
+      industryDataList = Recursion(industryData.data.data)
+    }
+    // 案例检索条件-领域树
+    let practiceareaDataList = []
+    if (practiceareaData.data.data) {
+      practiceareaDataList = Recursion(practiceareaData.data.data)
+    }
+    // 案例检索条件-法院
+    let court = []
+
+    if (courtListData.data.data && courtListData.data.data.length > 0) {
+      court = Recursion(courtListData.data.data)
+    }
     // 律师常去法院数据容错
     let courtData = []
     if (CourtData.data.data && CourtData.data.data.length) {
@@ -126,13 +174,16 @@ export default {
       // 律师基本信息
       lawyerInformation: lawyerInformationData,
       // 律师简历数据
-      resumeData: resumeData,
+      resumeData,
       // 律师常去法院数据
-      courtData: courtData,
+      courtData,
       // 律师业务专长
-      lawyerBusiness: lawyerBusiness,
+      lawyerBusiness,
       // 图表数据
-      chartData: chartData
+      chartData,
+      industryDataList,
+      practiceareaDataList,
+      courtList: court
     }
   },
   data() {
@@ -174,7 +225,10 @@ export default {
       courtData: [],
       regionData: [],
       lawyerBusiness: [],
-      chartData: []
+      chartData: [],
+      industryDataList: [],
+      practiceareaDataList: [],
+      courtList: []
     }
   },
   computed: {
@@ -182,7 +236,7 @@ export default {
   watch: {
   },
   mounted() {
-    console.log(this.lawyerInformation)
+    console.log('律师信息:practiceareas', this.lawyerInformation.practiceareas, '律师信息:industries', this.lawyerInformation.industries)
   },
   methods: {
   }

@@ -7,7 +7,11 @@
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label">认证案例<i>|</i></span>
-        <lawyer-case/>
+        <lawyer-case
+          :industry-data-list="industryDataList"
+          :practicearea-data-list="practiceareaDataList"
+          :court-list="courtList"
+        />
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label">专业领域<i>|</i></span>
@@ -79,6 +83,24 @@ export default {
       type: Object,
       default: function() {
         return {}
+      }
+    },
+    industryDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    practiceareaDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    courtList: {
+      type: Array,
+      default: function() {
+        return []
       }
     }
   },
