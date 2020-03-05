@@ -323,12 +323,7 @@ export default {
       .vue-treeselect {
         outline: 0;
       }
-      .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
-        border-color: none;
-        box-shadow: none;
-      }
       .vue-treeselect__control{
-        outline: none;
         padding-left: 5px;
         display: table;
         table-layout: fixed;
@@ -346,11 +341,7 @@ export default {
         -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
         transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
       }
-      .vue-treeselect__input {
-        font-size: 14px;
-      }
       .vue-treeselect__menu-container {
-        font-size: 14px;
         width: 280px;
       }
       .vue-treeselect__placeholder {
@@ -362,11 +353,11 @@ export default {
         left: 5px;
         width: 30px;
         height: 30px;
-        background:#f2f2f2
+        background: #f68020
       }
-      .vue-treeselect--open {
+      .vue-treeselect__control-arrow--rotated{
         .vue-treeselect__control-arrow-container {
-          background: #f68020
+          background: #eee
         }
       }
     }
@@ -482,6 +473,11 @@ export default {
           }
           i {
             display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-image: url("../../../../assets/lawyerinfo/star.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
             margin-right: 6px;
             vertical-align: -1px;
           }

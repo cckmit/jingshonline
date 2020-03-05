@@ -19,8 +19,8 @@
       </el-tab-pane>
     </el-tabs>
     <div class="follow" @click="followHandle">
-      <i :class="!isFollow ? 'follow-icon' : ''"/>
-      <a href="#">{{ !isFollow ? '关注' : '取消关注' }}</a>
+      <i/>
+      <a href="#">关注</a>
     </div>
   </div>
 </template>
@@ -93,6 +93,7 @@ export default {
 
   },
   mounted() {
+
   },
   methods: {
     // 用户关注律师 取消关注
@@ -163,33 +164,31 @@ export default {
     }
   }
   .follow {
-    text-align: center;
     overflow: hidden;
     position: absolute;
-    display: flex;
     top: 13px;
     right: 33px;
-    width: 80px;
-    height: 30px;
+    width: 78px;
     border: 1px solid #d5dce1;
-    line-height: 30px;
+    text-align: left;
+    line-height: 28px;
     font-size: 14px;
     border-radius: 6%;
     cursor: pointer;
-    .follow-icon {
-      display: inline-block;
+    i {
+      float: left;
+      position: absolute;
       width: 14px;
       height: 15px;
       background-image: url("../../../assets/lawyerinfo/lawyerfollow.png");
       background-size: 100% 100%;
-      margin-left: 16px;
-      margin-top:6px;
+      left: 15px;
+      top: 7px;
+      margin-right: 6px;
     }
     a {
-      margin: 0 auto;
-      text-align: center;
-      line-height: 30px;
       color: #737373;
+      margin-left: 34px;
     }
   }
 
