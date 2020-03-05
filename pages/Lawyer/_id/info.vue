@@ -3,7 +3,7 @@
     <div class="lawyer-info-container">
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{path:'/LawyerInfo'}">查找律师</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path:'/Lawyer'}">查找律师</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="lawyer-info-card">
         <div v-if="lawyerInformation.status === 2" class="lawyer-isAuthentication"/>
@@ -12,24 +12,24 @@
             <img :src="lawyerInformation.avatar" alt="律师头像">
           </a>
           <div class="lawyer-info-detail">
-            <p class="lawyer-name">{{ lawyerInformation.realName }}</p>
-            <p class="lawyer-year"><span>{{ lawyerInformation.experienceYear }}年</span><span>{{ lawyerInformation.caseCount }}例</span></p>
-            <p class="lawyer-id"><span>ID: {{ lawyerInformation.id }} 最后更新时间: </span></p>
-            <p class="lawyer-time">{{ lawyerInformation.lastModificationTime }} </p>
+            <p class="lawyer-name">{{ lawyerInformation.realName || '暂无' }}</p>
+            <p class="lawyer-year"><span>{{ lawyerInformation.experienceYear || '0' }}年</span><span>{{ lawyerInformation.caseCount || '0' }}例</span></p>
+            <p class="lawyer-id"><span>ID: {{ lawyerInformation.id || '暂无' }} 最后更新时间: </span></p>
+            <p class="lawyer-time">{{ lawyerInformation.lastModificationTime || '暂无' }} </p>
           </div>
         </div>
         <div class="lawyer-information">
           <h4>基本信息</h4>
           <ul>
-            <li><span>所在律所</span>{{ lawyerInformation.lawfirmName }}</li>
-            <li><span>所在地</span>{{ lawyerInformation.regionName }}</li>
-            <li><span>最高学历</span>{{ lawyerInformation.highestDegree }} </li>
-            <li><span>执业证号</span>{{ lawyerInformation.licenceNo }}</li>
+            <li><span>所在律所</span>{{ lawyerInformation.lawfirmName || '暂无' }}</li>
+            <li><span>所在地</span>{{ lawyerInformation.regionName || '暂无' }}</li>
+            <li><span>最高学历</span>{{ lawyerInformation.highestDegree || '暂无' }} </li>
+            <li><span>执业证号</span>{{ lawyerInformation.licenceNo || '暂无' }}</li>
           </ul>
           <h4>联系方式</h4>
           <ul>
-            <li><span>联系电话</span>{{ lawyerInformation.phone }}</li>
-            <li><span>律师邮箱</span>{{ lawyerInformation.email }}</li>
+            <li><span>联系电话</span>{{ lawyerInformation.phone || '暂无' }}</li>
+            <li><span>律师邮箱</span>{{ lawyerInformation.email || '暂无' }}</li>
           </ul>
           <h4>业务专长</h4>
           <!-- <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
@@ -45,7 +45,7 @@
           </ul>
         </div>
       </div>
-      <lawyer-detail :real-name="lawyerInformation.realName" :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
+      <lawyer-detail :is-follow="lawyerInformation.isFollow" :real-name="lawyerInformation.realName" :resume-data="resumeData" :lawyer-remark="lawyerInformation.remark" :court-data="courtData" :chart-data="chartData"/>
     </div>
   </div>
 </template>
