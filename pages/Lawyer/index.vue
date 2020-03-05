@@ -556,7 +556,7 @@ export default {
     },
     region(data) {
       this.lawyerSearch.regionId = data.id
-      this.multiple('region', { id: data.id, name: '专业领域：' + data.name })
+      this.multiple('region', { id: data.id, name: '所在城市：' + data.name })
     },
     lawfirm(data) {
       this.lawyerSearch.lawfirmId = data.id
