@@ -4,7 +4,7 @@
       <p>{{ lawyerRemark ? lawyerRemark : '暂无该律师简述...' }}</p>
     </div>
     <div class="lawyer-main">
-      <div class="lawyer-work lawyer-wrapper">
+      <div v-if="resumeData.workExperiences.length > 0" class="lawyer-work lawyer-wrapper">
         <p class="lawyer-header"><i/>工作经历</p>
         <div class="card-container">
           <ul v-if="resumeData.workExperiences && resumeData.workExperiences.length" class="work-card type-cards" >
@@ -14,10 +14,9 @@
               <p><span>{{ item.startDate | dateFormat("YYYY.mm") }}</span> - <span>{{ item.endDate | dateFormat("YYYY.mm") }}</span></p>
             </li>
           </ul>
-          <p v-else class="lawyer-info-none">暂无该律师工作经历相关数据...</p>
         </div>
       </div>
-      <div class="lawyer-study lawyer-wrapper">
+      <div v-if="resumeData.educations.length" class="lawyer-study lawyer-wrapper">
         <p class="lawyer-header"><i/>教育经历</p>
         <div class="card-container">
           <ul v-if="resumeData.educations && resumeData.educations.length" class="work-card type-cards">
@@ -27,10 +26,9 @@
               <p><span>{{ item.startDate | dateFormat("YYYY.mm") }}</span> - <span>{{ item.endDate | dateFormat("YYYY.mm") }}</span></p>
             </li>
           </ul>
-          <p v-else class="lawyer-info-none">暂无该律师教育经历相关数据...</p>
         </div>
       </div>
-      <div class="lawyer-learn lawyer-wrapper">
+      <div v-if="resumeData.academics.length > 0" class="lawyer-learn lawyer-wrapper">
         <p class="lawyer-header"><i/>学术成果</p>
         <div class="card-container">
           <ul v-if="resumeData.academics && resumeData.academics.length" class="work-card type-text">
@@ -38,10 +36,9 @@
               {{ item.name }}
             </li>
           </ul>
-          <p v-else class="lawyer-info-none">暂无该律师学术成果相关数据...</p>
         </div>
       </div>
-      <div class="lawyer-industry lawyer-wrapper">
+      <div v-if="resumeData.certificates.length > 0" class="lawyer-industry lawyer-wrapper">
         <p class="lawyer-header"><i/>行业资质</p>
         <div class="card-container">
           <ul v-if="resumeData.certificates && resumeData.certificates.length" class="work-card type-text">
@@ -49,10 +46,9 @@
               {{ item.name }}
             </li>
           </ul>
-          <p v-else class="lawyer-info-none">暂无该律师行业资质相关数据...</p>
         </div>
       </div>
-      <div class="lawyer-society lawyer-wrapper">
+      <div v-if="resumeData.socialPositions.length > 0" class="lawyer-society lawyer-wrapper">
         <p class="lawyer-header"><i/>社会职务</p>
         <div class="card-container">
           <ul v-if="resumeData.socialPositions && resumeData.socialPositions.length" class="work-card type-text">
@@ -60,7 +56,6 @@
               {{ item.name }}
             </li>
           </ul>
-          <p v-else class="lawyer-info-none">暂无该律师社会职务相关数据...</p>
         </div>
       </div>
     </div>
@@ -104,6 +99,7 @@ export default {
 
   watch: {},
   mounted() {
+    console.log(this)
   },
   methods: {
   }
@@ -149,18 +145,12 @@ export default {
     padding-left: 29px;
   }
     .card-container {
-    .lawyer-info-none {
-      font-size: 16px;
-      line-height: 28px;
-      margin-bottom: 20px;
-    }
     padding-left: 36px;
     .type-cards {
       justify-content: flex-start;
       flex-wrap: wrap;
       padding-bottom: 20px;
       li {
-        cursor: pointer;
         width: 295px;
         height: 116px;
         border: 1px solid #f1f1f1;
@@ -176,7 +166,6 @@ export default {
       display: block;
       padding-bottom: 40px;
       li {
-        cursor: pointer;
         line-height: 36px;
       }
     }
