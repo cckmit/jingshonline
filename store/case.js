@@ -39,7 +39,7 @@ export const actions = {
   },
 
   /**
-   * 获取案件详情
+   * 获取律师详情
    * @param {commit} commit
    * @param {number} id
    */

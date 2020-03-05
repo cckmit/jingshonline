@@ -57,6 +57,18 @@ export default {
         return ''
       }
     },
+    realName: {
+      type: String,
+      default: function() {
+        return ''
+      }
+    },
+    isFollow: {
+      type: Boolean,
+      default: function() {
+        return false
+      }
+    },
     courtData: {
       type: Array,
       default: function() {
@@ -64,15 +76,14 @@ export default {
       }
     },
     chartData: {
-      type: Array,
+      type: Object,
       default: function() {
-        return []
+        return {}
       }
     }
   },
   data() {
     return {
-      isFollow: false
     }
   },
   computed: {
@@ -89,9 +100,23 @@ export default {
     ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),
     // 关注按钮操作
     followHandle() {
-      this.UserFollow(this.$route.params.id).then(res => {
-        console.log(res)
-      })
+      if (!this.isFollow) {
+        this.UserFollow(this.$route.params.id).then(res => {
+          this.$notify({
+            message: `关注律师 : ${this.realName}`,
+            duration: 2000
+          })
+          this.isFollow = !this.isFollow
+        })
+      } else {
+        this.UserCancleFollow(this.$route.params.id).then(res => {
+          this.$notify({
+            message: `取消关注律师 : ${this.realName}`,
+            duration: 2000
+          })
+          this.isFollow = !this.isFollow
+        })
+      }
     }
   }
 }

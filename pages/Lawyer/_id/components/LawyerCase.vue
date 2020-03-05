@@ -41,17 +41,26 @@
     <div class="lawyer-case-list">
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link :to="'/case/'+item.id+'/info'">
-          <div class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
+          <div v-if="item.highlight.title" class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
+          <p class="case-item-article" v-html="item.highlight.judgmentDocument ? item.highlight.judgmentDocument[0] : '无该案件详情数据'"/>
+          <div class="case-item-bottom">
+            <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
+            <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
+            <span class="share no-select" @click.prevent="share(item.id)"><i/>分享</span>
+          </div>
+          <i v-if="item.isClassicCase" class="classic"/>
         </nuxt-link>
-        <p class="case-item-article">{{ item.highlight.judgmentDocument[0] }}</p>
-        <div class="case-item-bottom">
-          <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
-          <span class="collect no-select" @click="userCollect(index)"><i :class="item.isCollect ? 'el-icon-star-on' : 'el-icon-star-off'">收藏</i></span>
-          <span class="share no-select" @click="userShare"><i/>分享</span>
-        </div>
-        <i class="classic"/>
       </div>
     </div>
+    <el-dialog :visible.sync="shareVisible" top="35vh" width="400px" title="分享">
+      <div class="share">
+        <el-input v-model="url" size="mini"/>
+        <div>
+          <el-button size="mini" icon="el-icon-share" @click.prevent="copy">分享</el-button>
+        </div>
+        <img :src="qrimg">
+      </div>
+    </el-dialog>
     <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
   </div>
 </template>
@@ -63,6 +72,7 @@ import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 // import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import QRCode from 'qrcode'
 export default {
   name: 'LawyerCase',
   components: {
@@ -88,7 +98,7 @@ export default {
         courtReginId: undefined, // 法院所属区域 nmuber || arr
         courtId: undefined, // 法院Id number
         caseReasonId: undefined, // 案由Id number
-        lawyerId: 37, // 律师Id number
+        lawyerId: this.$route.params.id, // 律师Id number
         industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
@@ -100,7 +110,11 @@ export default {
       // 行业树数据
       industryTree: [],
       // 案件领域数据
-      practiceAreaData: []
+      practiceAreaData: [],
+      // 分享
+      shareVisible: false,
+      url: '',
+      qrimg: ''
     }
   },
   computed: {
@@ -118,8 +132,10 @@ export default {
   created() {
     this.getLawyerCaseList(this.caseListParam)
   },
+  mounted() {
+  },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase']),
+    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
@@ -128,23 +144,44 @@ export default {
           this.lawyerCaseList = res.items
           // 处理案例法院数据
           if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
+            const court = []
+            const industry = []
+            const practice = []
             this.lawyerCaseList.forEach(item => {
-              this.courtData.push({
+              court.push({
                 id: item.courtId,
                 label: item.courtName
               })
-              this.industryTree.push({
+
+              industry.push({
                 id: item.industryId,
                 label: item.industryName
               })
-              this.practiceAreaData.push({
+              practice.push({
                 id: item.practiceAreaId,
                 label: item.practiceAreaName
               })
             })
+            this.courtData = this.unique(court)
+            this.industryTree = this.unique(industry)
+            this.practiceAreaData = this.unique(practice)
           }
         }
       })
+    },
+    // 检索条件去重
+    unique(arr) {
+      const obj = {}
+      return arr.reduce((cur, next) => {
+        obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
+        // 检索条件容错
+        cur.forEach((item, index) => {
+          if (String(item.id) === 'null') {
+            cur.splice(index, 1)
+          }
+        })
+        return cur
+      }, [])
     },
     // 改变排序状态
     filterChange(type) {
@@ -168,13 +205,51 @@ export default {
     },
     // 用户收藏
     userCollect(index) {
-      const caseId = this.lawyerCaseList[index].id
-      this.UserFollowCase(caseId).then(res => {
-        this.lawyerCaseList[index].isCollect = !this.lawyerCaseList[index].isCollect
-      })
+      const caseIndex = this.lawyerCaseList[index]
+      if (caseIndex.isFollow) {
+        this.UserUnFollowCase(caseIndex.id).then(res => {
+          this.$notify({
+            message: `取消收藏案例 : ${this.lawyerCaseList[index].title}`,
+            duration: 2000
+          })
+          this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
+        })
+      } else {
+        this.UserFollowCase(caseIndex.id).then(res => {
+          this.$notify({
+            message: `收藏成功案例 : ${this.lawyerCaseList[index].title}`,
+            duration: 2000
+          })
+          this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
+        })
+      }
     },
     // 用户分享
-    userShare() {
+    share(id) {
+      this.shareVisible = true
+      this.url = window.location.origin + `/case/${id}/info`
+      this.getQrcode()
+    },
+    // 获取二维码
+    getQrcode() {
+      QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
+        this.qrimg = url
+      })
+    },
+    // 复制链接
+    copy() {
+      this.$copyText(this.url).then(e => {
+        this.$notify({
+          message: '链接地址复制成功',
+          type: 'success'
+        })
+      }).catch(error => {
+        this.$notify({
+          message: '复制失败',
+          type: 'error'
+        })
+        console.log(error)
+      })
     }
   }
 }
@@ -197,6 +272,7 @@ export default {
 
 }
 .lawyer-case{
+  padding-bottom: 24px;
   .pagination-container {
     background: #f2f2f2;
   }
@@ -247,7 +323,12 @@ export default {
       .vue-treeselect {
         outline: 0;
       }
+      .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+        border-color: none;
+        box-shadow: none;
+      }
       .vue-treeselect__control{
+        outline: none;
         padding-left: 5px;
         display: table;
         table-layout: fixed;
@@ -265,7 +346,11 @@ export default {
         -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
         transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
       }
+      .vue-treeselect__input {
+        font-size: 14px;
+      }
       .vue-treeselect__menu-container {
+        font-size: 14px;
         width: 280px;
       }
       .vue-treeselect__placeholder {
@@ -277,11 +362,11 @@ export default {
         left: 5px;
         width: 30px;
         height: 30px;
-        background: #f68020
+        background:#f2f2f2
       }
-      .vue-treeselect__control-arrow--rotated{
+      .vue-treeselect--open {
         .vue-treeselect__control-arrow-container {
-          background: #eee
+          background: #f68020
         }
       }
     }
@@ -385,6 +470,8 @@ export default {
           border-radius: 5px;
         }
         .collect {
+          width: 60px;
+          text-align: center;
           user-select: none;
           .el-icon-star-off:before {
             margin-right: 6px;
@@ -395,11 +482,6 @@ export default {
           }
           i {
             display: inline-block;
-            width: 12px;
-            height: 12px;
-            background-image: url("../../../../assets/lawyerinfo/star.png");
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
             margin-right: 6px;
             vertical-align: -1px;
           }
@@ -433,5 +515,16 @@ export default {
       border-color:#eee #eee #eee #f68020;
     }
   }
+    /* 分享 */
+  .share{
+    div{
+      margin-top: 5px;
+      text-align: right;
+    }
+    img{
+      width: 100px;
+    }
+  }
 }
+
 </style>

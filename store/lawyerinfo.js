@@ -108,6 +108,24 @@ export const actions = {
           reject(error)
         })
     })
+  },
+  /**
+ * 用户取消关注律师案例列表案例
+ * @param {number} caseId
+ */
+  UserUnFollowCase({ commit }, caseId) {
+    return new Promise((resolve, reject) => {
+      LawyerInfo.UserUnFollowCase(caseId)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
   }
 }
 
