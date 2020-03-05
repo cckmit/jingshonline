@@ -126,10 +126,9 @@
           node-key="id"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
-          @node-click="region"
         >
           <div slot-scope="{ node }" class="tree_tools">
-            <span>{{ node.data.name }}</span>
+            <span @click="region(node.data)">{{ node.data.name }}</span>
           </div>
         </el-tree>
         <span v-else class="emptyData">暂无数据</span>
@@ -620,6 +619,7 @@ export default {
       this.lawyerSearch.industryId = ''
       this.lawyerSearch.littlePracticeYears = 0
       this.lawyerSearch.largePracticeYears = 0
+      this.lawyerSearch.lawyerName = ''
       // 重新请求数据
       this.getLawyer()
     },
@@ -800,6 +800,7 @@ ul {
       height: 50px;
       border-bottom: 1px solid #ddd;
       font-size: 14px;
+      cursor: pointer;
     }
   }
 }
