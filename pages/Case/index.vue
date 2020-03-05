@@ -69,26 +69,26 @@
         </div>
         <div class="case-content-main">
           <ul v-bind="caseData">
-            <li v-for="item in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
+            <li v-for="(item, index) in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
-                  <p>
+                  <div class="caseCol">
                     <el-col :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
-                  </p>
-                  <p><span>【法院观点】</span> 本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
-                  <p><span>【结果命中】</span>本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋及耕地，严重侵犯其合法权益，请求确认该府强占土地行为违法.......</p>
+                  </div>
+                  <div class="case-judgment" v-html="item.highlight.judgmentDocument[0]">{{ item.highlight.judgmentDocument[0] }}
+                  </div>
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
-                <span class="cursorPointer" @click="collectionCase(item.id, item.isFollow=0)"><i :class="{ hover:isStarHover}" class="el-icon-star-off"/>收藏</span>
+                <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
                 <span>{{ item.judgmentNumber }}</span>
               </div>
-              <img src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+              <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
           </ul>
         </div>
@@ -97,7 +97,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'collection,error,qrcode,totop,share'" :top="100" :left="300" @collection="collectionCase"/>
+    <ExtraWrap :plugins="'error,qrcode,totop,share'" :top="400" :left="100"/>
 
   </div>
 </template>
@@ -108,6 +108,7 @@ import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
+import Bus from '@/utils/bus.js'
 export default {
   layout: 'case',
   head() {
@@ -126,7 +127,7 @@ export default {
     return {
       current: 0,
       loading: '',
-      totalCount: 100,
+      totalCount: 0,
       isStarHover: false, // 是否点击收藏变色
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
@@ -220,6 +221,36 @@ export default {
     this.getCasereasonTree()
     this.getRegionTree(null)
     this.getCaseList()
+    // 监听综合搜索传值
+    Bus.$on('searchKey', (data) => {
+      data = data ? JSON.parse(data) : ''
+      // console.log(data)
+      if (data !== '') {
+        const conditionKey = data.conditionKey
+        switch (conditionKey) {
+          case 1:
+            this.caseSearch.caseReasonId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 2:
+            this.caseSearch.courtId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 3:
+            this.caseSearch.industryId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 4:
+            this.caseSearch.courtReginId = data.id
+            break
+          // eslint-disable-next-line no-duplicate-case
+          case 5:
+            this.caseSearch.practiceAreaId = data.id
+            break
+        }
+      }
+      this.getCaseList()
+    })
   },
   methods: {
     ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData']),
@@ -258,25 +289,16 @@ export default {
     },
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
-      if (node.level === 0) {
-        return resolve([])
-      }
-      if (node.level > 0) {
-        this.getCourtRegionsChildData(node.data.id).then(res => {
-          this.regionChildTreeData = res
-          return resolve([this.regionChildTreeData])
-        })
-      }
-      setTimeout(() => {
-        const data = this.regionChildTreeData
-        resolve(data)
-      }, 500)
+      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id).then(res => {
+        this.regionChildTreeData = res
+        return resolve(res)
+      }) : resolve([])
     },
     // 管辖法院树点击筛选
     handleregionClick(data) {
       this.selectForm.courtInfo = data.name
       data.nodeType === 0 ? this.caseSearch.courtReginId = data.id : this.caseSearch.courtId = data.id // 根据nodeType判断传参
-      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.courtReginId = '' // 根据nodeType判断滞空参数
+      data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.practiceAreaId = '' // 根据nodeType判断滞空参数
       this.getCaseList()
     },
     // 管辖法院关闭
@@ -332,24 +354,25 @@ export default {
       this.getCaseList()
     },
     // 收藏点击事件
-    collectionCase(id, isFollow) {
-      if (isFollow === 0) {
-        this.getFollow(id)
+    collectionCase(id, index) {
+      const coll = !this.caseData[index].isFollow
+      this.$set(this.caseData[index], 'isFollow', coll)
+      if (coll) { // 收藏
+        this.getFollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+        })
       } else {
-        this.getUnfollow(id)
+        // 取消收藏
+        this.getUnfollowData(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+        })
       }
-    },
-    // 收藏
-    getFollow(id) {
-      this.getFollowData(id).then(res => {
-        this.isStarHover = true
-      })
-    },
-    // 取消收藏
-    getUnfollow() {
-      this.getUnfollowData().then(res => {
-        this.isStarHover = false
-      })
     },
     // 分页切换点击事件
     handlePageChange(val) {
@@ -517,10 +540,16 @@ export default {
       font-size: 18px;
     }
 
-    p:nth-child(2) {
+    .caseCol {
       color: #999999;
       font-size: 14px;
-      padding: 0 20px;
+      height: 40px;
+    }
+    .case-judgment{
+      color: #333333;
+      font-size: 14px;
+      line-height: 28px;
+      margin-top: 20px;
     }
       }
     }
