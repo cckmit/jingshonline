@@ -302,7 +302,7 @@ export default {
     ])
     return {
       caseInfoData: caseInfoData.data,
-      isFollow: caseInfoData.data.isFollow
+      isFollow: caseInfoData.data.isFollow || false
     }
   },
   watch: {
@@ -341,6 +341,7 @@ export default {
             type: 'success'
           })
         })
+        this.isFollow = true
       } else {
         // 取消收藏
         this.getUnfollowData(id).then(res => {
@@ -349,6 +350,7 @@ export default {
             type: 'success'
           })
         })
+        this.isFollow = false
       }
     },
     // 下载事件
