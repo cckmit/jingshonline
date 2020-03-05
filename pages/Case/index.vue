@@ -201,14 +201,15 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [CasereasonTreeData, regionTreeData] = await Promise.all([
+    const [CasereasonTreeData, regionTreeData, caseData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
+      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' }),
+      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
-    console.log(CasereasonTreeData)
     return {
       CasereasonTreeData: CasereasonTreeData.data.entity,
-      regionTreeData: regionTreeData.data.entity
+      regionTreeData: regionTreeData.data.entity,
+      caseData: caseData.data.data.items
     }
   },
   computed: {
@@ -223,7 +224,6 @@ export default {
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
       data = data ? JSON.parse(data) : ''
-      // console.log(data)
       if (data !== '') {
         const conditionKey = data.conditionKey
         switch (conditionKey) {
@@ -263,8 +263,8 @@ export default {
     },
     request() {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
-        this.caseData = res.data.items
-        this.totalCount = res.data.totalCount
+        this.caseData = res.items
+        this.totalCount = res.totalCount
         this.loading = false
       })
     },
