@@ -85,13 +85,6 @@ if [[ -z "${container_registry}" ]]; then
     exit 1
 fi
 
-
-
-if [[ ! " ${env_arr[@]} " =~ " ${env} " ]]; then
-   echo "环境变量参数设置错误"
-   exit 1
-fi
-
 echo "指定docker镜像的tag为${image_tag}"
 export TAG=$image_tag
 
