@@ -1,4 +1,4 @@
-import * as LawyerInfo from '@/api/LawyerInfo/index'
+import * as LawyerInfo from '@/api/lawyerinfo/index'
 
 export const actions = {
   /**
