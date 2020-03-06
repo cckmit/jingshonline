@@ -21,7 +21,7 @@ RUN rm -rf node_modules && \
   --non-interactive \
   --production=true
 
-FROM node:alpine
+FROM harbor.jingshonline.net/jingsh/node:alpine
 
 WORKDIR /src
 
