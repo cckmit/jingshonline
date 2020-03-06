@@ -156,7 +156,7 @@
               <div class="case-aside-info">
                 <p>毕业院校：<span>北京大学</span></p>
                 <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无' }}</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
+                <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无' }}</span></p>
                 <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
                 <p>擅长领域：<span v-for="item in caseInfoData.lawyers.practiceareas" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
                 <p>业务专长：<span v-for="item in caseInfoData.lawyers.industries" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
@@ -301,8 +301,8 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
-      caseInfoData: caseInfoData.data,
-      isFollow: caseInfoData.data.isFollow || false
+      caseInfoData: caseInfoData.data.data,
+      isFollow: caseInfoData.data.data ? caseInfoData.data.data.isFollow : false
     }
   },
   watch: {
