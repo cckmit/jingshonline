@@ -203,12 +203,13 @@ export default {
   async asyncData({ params }) {
     const [CasereasonTreeData, regionTreeData, caseData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' }),
+      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
       axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
+    console.log(regionTreeData.data.data)
     return {
-      CasereasonTreeData: CasereasonTreeData.data.entity,
-      regionTreeData: regionTreeData.data.entity,
+      CasereasonTreeData: CasereasonTreeData.data.data,
+      regionTreeData: regionTreeData.data.data,
       caseData: caseData.data.data.items
     }
   },
