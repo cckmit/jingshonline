@@ -14,8 +14,6 @@ Parameters:
     docker 镜像仓库用户
   -p | --docker-pwd )
     docker 镜像仓库密码
-  -e | --env
-    指定的环境: dev stage prod
   -p | --docker-project
      项目名称
   --skip-image-push
