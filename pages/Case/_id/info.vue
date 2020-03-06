@@ -154,7 +154,7 @@
                 <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
+                <p>毕业院校：<span>暂无</span></p>
                 <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无' }}</span></p>
                 <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无' }}</span></p>
                 <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
