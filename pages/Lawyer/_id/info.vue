@@ -12,24 +12,24 @@
             <img :src="lawyerInformation.avatar" alt="律师头像">
           </a>
           <div class="lawyer-info-detail">
-            <p class="lawyer-name">{{ lawyerInformation.realName || '暂无' }}</p>
+            <p class="lawyer-name">{{ lawyerInformation.realName || '暂无数据' }}</p>
             <p class="lawyer-year"><span>{{ lawyerInformation.experienceYear || '0' }}年</span><span>{{ lawyerInformation.caseCount || '0' }}例</span></p>
-            <p class="lawyer-id"><span>ID: {{ lawyerInformation.id || '暂无' }} 最后更新时间: </span></p>
-            <p class="lawyer-time">{{ lawyerInformation.lastModificationTime || '暂无' }} </p>
+            <p class="lawyer-id"><span>ID: {{ lawyerInformation.id || '暂无数据' }} 最后更新时间: </span></p>
+            <p class="lawyer-time">{{ lawyerInformation.lastModificationTime || '暂无数据' }} </p>
           </div>
         </div>
         <div class="lawyer-information">
           <h4>基本信息</h4>
           <ul>
-            <li><span>所在律所</span>{{ lawyerInformation.lawfirmName || '暂无' }}</li>
-            <li><span>所在地</span>{{ lawyerInformation.regionName || '暂无' }}</li>
-            <li><span>最高学历</span>{{ lawyerInformation.highestDegree || '暂无' }} </li>
-            <li><span>执业证号</span>{{ lawyerInformation.licenceNo || '暂无' }}</li>
+            <li><span>所在律所</span>{{ lawyerInformation.lawfirmName || '暂无数据' }}</li>
+            <li><span>所在地</span>{{ lawyerInformation.regionName || '暂无数据' }}</li>
+            <li><span>最高学历</span>{{ lawyerInformation.highestDegree || '暂无数据' }} </li>
+            <li><span>执业证号</span>{{ lawyerInformation.licenceNo || '暂无数据' }}</li>
           </ul>
           <h4>联系方式</h4>
           <ul>
-            <li><span>联系电话</span>{{ lawyerInformation.phone || '暂无' }}</li>
-            <li><span>律师邮箱</span>{{ lawyerInformation.email || '暂无' }}</li>
+            <li><span>联系电话</span>{{ lawyerInformation.phone || '暂无数据' }}</li>
+            <li><span>律师邮箱</span>{{ lawyerInformation.email || '暂无数据' }}</li>
           </ul>
           <h4>业务专长</h4>
           <div v-if="lawyerBusiness.length">
@@ -37,7 +37,7 @@
               <li><a href=":javascript">{{ item }}</a></li>
             </ul>
           </div>
-          <p v-else>暂无数据...</p>
+          <p v-else>暂无数据</p>
         </div>
       </div>
       <lawyer-detail

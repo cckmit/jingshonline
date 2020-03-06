@@ -1,18 +1,23 @@
 <template>
   <div class="often-court">
-    <div v-for="(item,index) in courtData" :key="index" class="often-container">
-      <h4 class="often-header"><i/>{{ item.name }}</h4>
-      <div class="often-main">
-        <div v-for="(item,index) in item.courts" :key="index" class="often-card">
-          <p class="often-card-header">{{ item.name }}</p>
-          <ul>
-            <li>地址: {{ item.address }}</li>
-            <li>联系方式: {{ item.tel }}</li>
-            <li>网址: {{ item.webSite }} </li>
-            <li>案例总数: <span class="high-light">{{ item.caseCount }}</span> </li>
-          </ul>
+    <div v-if="courtData.length">
+      <div v-for="(item,index) in courtData" :key="index" class="often-container">
+        <h4 class="often-header"><i/>{{ item.name }}</h4>
+        <div class="often-main">
+          <div v-for="(item,index) in item.courts" :key="index" class="often-card">
+            <p class="often-card-header">{{ item.name }}</p>
+            <ul>
+              <li>地址: {{ item.address }}</li>
+              <li>联系方式: {{ item.tel }}</li>
+              <li>网址: {{ item.webSite }} </li>
+              <li>案例总数: <span class="high-light">{{ item.caseCount }}</span> </li>
+            </ul>
+          </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      暂无律师常去法院数据
     </div>
   </div>
 </template>

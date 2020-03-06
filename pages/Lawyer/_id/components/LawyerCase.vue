@@ -233,7 +233,7 @@ export default {
       } else {
         this.UserFollowCase(caseIndex.id).then(res => {
           this.$notify({
-            message: `收藏成功案例 : ${this.lawyerCaseList[index].title}`,
+            message: `收藏案例 : ${this.lawyerCaseList[index].title}`,
             duration: 2000
           })
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
