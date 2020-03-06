@@ -58,25 +58,25 @@ echo "#################### 设置资源文件的名称空间 ###################
 grep "{{namespace}}" --include="*.yml" -rl ./ | xargs -r sed -i "s/{{namespace}}/${namespace}/g" || true
 
 echo "#################### 清楚旧的部署和服务 ####################"
-kubectl delete -f jingshonline-dashboard-deployment.yml -f jingshonline-dashboard-service.yml  || true
+kubectl delete -f jingshonline-web-deployment.yml -f jingshonline-web-service.yml  || true
 
 echo "#################### 创建新的部署和服务 ####################"
-kubectl apply -f jingshonline-dashboard-deployment.yml -f jingshonline-dashboard-service.yml
+kubectl apply -f jingshonline-web-deployment.yml -f jingshonline-web-service.yml
 
-image_repository_addr="${container_registry}/${docker_org}/jingshonline-dashboard:${image_tag}"
+image_repository_addr="${container_registry}/${docker_org}/jingshonline-web:${image_tag}"
 echo "更新docker镜像地址,docker镜像为${image_repository_addr}"
-image_repository="jingshonline-dashboard=${image_repository_addr}"
+image_repository="jingshonline-web=${image_repository_addr}"
 
-kubectl set image deployments/jingshonline-dashboard $image_repository -n=${namespace}
-kubectl rollout resume deployments/jingshonline-dashboard -n=${namespace}
+kubectl set image deployments/jingshonline-web $image_repository -n=${namespace}
+kubectl rollout resume deployments/jingshonline-web -n=${namespace}
 
-kubectl scale deploy jingshonline-dashboard --replicas=${replicas_num} -n=${namespace}
+kubectl scale deploy jingshonline-web --replicas=${replicas_num} -n=${namespace}
 
 echo "#################### 创建ingress ####################"
 if [[ "${env}" ]]; then
-  kubectl delete -f jingshonline-dashboard-ingress-${env}.yml || true
-  kubectl apply -f jingshonline-dashboard-ingress-${env}.yml
+  kubectl delete -f jingshonline-web-ingress-${env}.yml || true
+  kubectl apply -f jingshonline-web-ingress-${env}.yml
 else
-  kubectl delete -f jingshonline-dashboard-ingress.yml || true
-  kubectl apply -f jingshonline-dashboard-ingress.yml
+  kubectl delete -f jingshonline-web-ingress.yml || true
+  kubectl apply -f jingshonline-web-ingress.yml
 fi
