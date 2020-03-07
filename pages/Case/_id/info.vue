@@ -19,7 +19,7 @@
             <el-form ref="form" label-width="100px">
               <el-col :span="11">
                 <el-form-item label="主办律师:"><p> {{ caseInfoData.client }}</p></el-form-item>
-                <el-form-item label="审判机关:"><p> {{ caseInfoData.administrativeOrgan }}</p></el-form-item>
+                <el-form-item label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
                 <el-form-item label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
                 <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
               </el-col>
@@ -154,9 +154,9 @@
                 <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
+                <p>毕业院校：<span>暂无</span></p>
                 <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无' }}</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
+                <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无' }}</span></p>
                 <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
                 <p>擅长领域：<span v-for="item in caseInfoData.lawyers.practiceareas" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
                 <p>业务专长：<span v-for="item in caseInfoData.lawyers.industries" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
@@ -301,8 +301,8 @@ export default {
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
-      caseInfoData: caseInfoData.data,
-      isFollow: caseInfoData.data.isFollow
+      caseInfoData: caseInfoData.data.data,
+      isFollow: caseInfoData.data.data ? caseInfoData.data.data.isFollow : false
     }
   },
   watch: {
@@ -341,6 +341,7 @@ export default {
             type: 'success'
           })
         })
+        this.isFollow = true
       } else {
         // 取消收藏
         this.getUnfollowData(id).then(res => {
@@ -349,6 +350,7 @@ export default {
             type: 'success'
           })
         })
+        this.isFollow = false
       }
     },
     // 下载事件

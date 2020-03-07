@@ -48,9 +48,9 @@
           <el-row class="case-title case-content-titleTop">
             <el-col :span="21">
               <p style="float:left"> 筛选条件:</p>
-              <el-tag v-if="selectForm.courtLevelInfo" closable effect="plain" size="small" type="info" @close="handleCourtLevelClose(tag)">{{ selectForm.courtLevelInfo }}</el-tag>
-              <el-tag v-if="selectForm.caseReasonInfo" closable effect="plain" size="small" type="info" @close="handleCaseReasonClose(tag)">{{ selectForm.caseReasonInfo }}</el-tag>
-              <el-tag v-if="selectForm.courtInfo" closable effect="plain" size="small" type="info" @close="handleCourtClose(tag)">{{ selectForm.courtInfo }}</el-tag>
+              <el-tag v-show="selectForm.courtLevelInfo" closable effect="plain" size="small" type="info" @close="handleCourtLevelClose">{{ selectForm.courtLevelInfo }}</el-tag>
+              <el-tag v-show="selectForm.caseReasonInfo" closable effect="plain" size="small" type="info" @close="handleCaseReasonClose">{{ selectForm.caseReasonInfo }}</el-tag>
+              <el-tag v-show="selectForm.courtInfo" closable effect="plain" size="small" type="info" @close="handleCourtClose">{{ selectForm.courtInfo }}</el-tag>
             </el-col>
             <el-col :span="3">
               <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
@@ -79,8 +79,7 @@
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </div>
-                  <div class="case-judgment" v-html="item.highlight.judgmentDocument[0]">{{ item.highlight.judgmentDocument[0] }}
-                  </div>
+                  <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
                 </div>
               </nuxt-link>
               <div class="case-content-bottom">
@@ -202,14 +201,16 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [CasereasonTreeData, regionTreeData] = await Promise.all([
+    const [CasereasonTreeData, regionTreeData, caseData] = await Promise.all([
       axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`, { 'Content-Type': 'application/json' })
+      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
+      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
-    console.log(CasereasonTreeData)
+    console.log(regionTreeData.data.data)
     return {
-      CasereasonTreeData: CasereasonTreeData.data.entity,
-      regionTreeData: regionTreeData.data.entity
+      CasereasonTreeData: CasereasonTreeData.data.data,
+      regionTreeData: regionTreeData.data.data,
+      caseData: caseData.data.data.items
     }
   },
   computed: {
@@ -224,7 +225,6 @@ export default {
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
       data = data ? JSON.parse(data) : ''
-      // console.log(data)
       if (data !== '') {
         const conditionKey = data.conditionKey
         switch (conditionKey) {
@@ -264,8 +264,8 @@ export default {
     },
     request() {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
-        this.caseData = res.data.items
-        this.totalCount = res.data.totalCount
+        this.caseData = res.items
+        this.totalCount = res.totalCount
         this.loading = false
       })
     },
@@ -302,38 +302,38 @@ export default {
       this.getCaseList()
     },
     // 管辖法院关闭
-    handleCourtClose(tag) {
+    handleCourtClose() {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由树点击筛选
     handleCasereasonClick(data) {
       this.selectForm.caseReasonInfo = data.name
       this.caseSearch.caseReasonId = data.id
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 具体案由关闭
-    handleCaseReasonClose(tag) {
+    handleCaseReasonClose() {
       this.selectForm.caseReasonInfo = ''
       this.caseSearch.caseReasonId = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
 
     // 管辖法院点击
     handleCourtLevelClick(data) {
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
 
     // 法院等级关闭
-    handleCourtLevelClose(tag) {
+    handleCourtLevelClose() {
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getRegionTree(this.courtLevel)
-      // this.getCaseList()
+      this.getRegionTree(this.caseSearch.courtLevel)
+      this.getCaseList()
     },
     // 清空筛选条件点击事件
     emptyScreen() {
@@ -344,7 +344,7 @@ export default {
       this.caseSearch.caseReasonId = ''
       this.selectForm.courtLevelInfo = ''
       this.caseSearch.courtLevel = ''
-      // this.getCaseList()
+      this.getCaseList()
     },
     // 排序点击事件
     getSortCaseData(sorting, index) {
