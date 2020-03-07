@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jingshonline
+    component: jingshonline-web
+  name: jingshonline-web
+  namespace: {{namespace}}
+spec:
+  ports:
+  - name: "http-port"
+    port: 80
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: jingshonline
+    component: jingshonline-web
