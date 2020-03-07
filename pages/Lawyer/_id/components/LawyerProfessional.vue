@@ -106,10 +106,8 @@ export default {
   computed: {
   },
   watch: {
-
   },
   created() {
-    console.log(this.chartData)
     if (this.chartData.practicea && this.chartData.practicea.length > 0) {
       this.chartData.practicea.forEach(item => {
         this.practiceaOptions.series[0].data.push({

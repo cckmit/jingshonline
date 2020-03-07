@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: jingshonline
+    component: frontend
+  name: jingshonline-web-ingress
+  namespace: {{namespace}}
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: www.jingshonline.net
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: jingshonline-web
+          servicePort: 80
