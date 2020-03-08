@@ -19,7 +19,7 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#3B8070', height: '2px' },
   /*
   ** Build configuration
   */
@@ -70,6 +70,14 @@ module.exports = {
   server: {
     // port: 9527,
     open: true
+  },
+  // page transition
+  transition: {
+    name: 'layout',
+    mode: 'out-in',
+    beforeEnter (el) {
+      console.log('Before enter...');
+    }
   }
 
 }

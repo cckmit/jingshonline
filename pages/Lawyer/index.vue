@@ -363,6 +363,10 @@ import QRCode from 'qrcode'
 export default {
   layout: 'lawyer',
   name: 'Lawyer',
+  transition: {
+    name: 'test',
+    mode: 'out-in'
+  },
   components: {
     Pagination
   },
