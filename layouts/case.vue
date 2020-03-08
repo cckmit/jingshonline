@@ -29,7 +29,7 @@
             />
           </el-option-group>
         </el-select>
-        <div class="icon" @click="searchChange(searchText)">
+        <div v-loading="searchLoading" class="icon" @click="searchChange(searchText)" >
           <img :src="icon" alt="">
         </div>
       </div>
@@ -62,7 +62,8 @@ export default {
       searchKey: {},
       url: this.$route,
       loading: false,
-      options: []
+      options: [],
+      searchLoading: false
     }
   },
   watch: {
@@ -71,14 +72,22 @@ export default {
       this.url = to
     }
   },
+  mounted() {
+    Bus.$on('searchLoading', (data) => {
+      this.searchLoading = data
+    })
+  },
   methods: {
     ...mapActions('case', ['CaseSearch']),
     search(query) {
+      this.loading = true
       this.CaseSearch(query).then(res => {
         this.options = res
+        this.loading = false
       })
     },
     searchChange(key) {
+      this.searchLoading = true
       Bus.$emit('searchKey', key)
     }
   }
@@ -106,6 +115,7 @@ export default {
       float: right;
       background: rgba($color: #fff, $alpha: 0.8);
       padding-top: 1px;
+      cursor: pointer;
     }
     .el-select  {
       float: left;

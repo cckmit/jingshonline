@@ -224,6 +224,7 @@ export default {
     this.getCaseList()
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
+      Bus.$emit('searchLoading', false)
       data = data ? JSON.parse(data) : ''
       if (data !== '') {
         const conditionKey = data.conditionKey
