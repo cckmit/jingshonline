@@ -12,10 +12,10 @@
             <nuxt-link to="/"><img v-if="url.name==='index'" :src="logo" class="logo" alt="”京师在线" style="border:none;"></nuxt-link>
           </el-menu-item>
           <el-menu-item index="index"><nuxt-link to="/">首页</nuxt-link></el-menu-item>
-          <el-menu-item index="lawyer"><nuxt-link to="/Lawyer">找律师</nuxt-link></el-menu-item>
-          <el-menu-item index="case"><nuxt-link to="/Case">查案例</nuxt-link></el-menu-item>
-          <el-menu-item index="help"><nuxt-link to="/Help">帮助中心</nuxt-link></el-menu-item>
-          <el-menu-item index="about"><nuxt-link to="/About">关于我们</nuxt-link></el-menu-item>
+          <el-menu-item index="lawyer"><nuxt-link to="/lawyer">找律师</nuxt-link></el-menu-item>
+          <el-menu-item index="case"><nuxt-link to="/case">查案例</nuxt-link></el-menu-item>
+          <el-menu-item index="help"><nuxt-link to="/help">帮助中心</nuxt-link></el-menu-item>
+          <el-menu-item index="about"><nuxt-link to="/about">关于我们</nuxt-link></el-menu-item>
           <el-menu-item v-if="hasLogin" index="user">
             <!-- <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link> -->
             <el-dropdown class="user_info">
