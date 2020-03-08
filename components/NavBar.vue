@@ -129,6 +129,7 @@ export default {
     a{
       padding: 0 30px;
       background: none;
+      display: inline-block;
     }
     &:hover{
       a{
