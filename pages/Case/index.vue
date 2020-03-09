@@ -71,7 +71,7 @@
           <ul v-bind="caseData">
             <li v-for="(item, index) in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
-                <div class="case-content-top">
+                <div class="case-content-top" @click="getClick(item.id)">
                   <p> {{ item.title }}</p>
                   <div class="caseCol">
                     <el-col :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
@@ -253,10 +253,15 @@ export default {
     })
   },
   methods: {
-    ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData']),
+    ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData', 'getClickData']),
     ...mapActions('caseReason', ['getCasereasonTreeData']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
 
+    // 增加浏览量
+    getClick(caseId) {
+      this.getClickData(caseId).then(res => {
+      })
+    },
     // 获取案件
     getCaseList(delayTime = 150) {
       this.loading = true
