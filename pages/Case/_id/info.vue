@@ -18,7 +18,7 @@
           <el-row>
             <el-form ref="form" label-width="100px">
               <el-col :span="11">
-                <el-form-item label="主办律师:"><p> {{ caseInfoData.client }}</p></el-form-item>
+                <el-form-item label="主办律师:"><p> {{ caseInfoData.lawyers[0].realName }}</p></el-form-item>
                 <el-form-item v-if="caseInfoData.courtName" label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
                 <el-form-item v-if="caseInfoData.judgmentNumber" label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
                 <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
@@ -154,12 +154,12 @@
                 <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
-                <p>毕业院校：<span>暂无</span></p>
-                <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无' }}</span></p>
-                <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无' }}</span></p>
+                <p>毕业院校：<span>{{ item.licenceNo?item.licenceNo:'暂无数据' }}</span></p>
+                <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无数据' }}</span></p>
+                <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无数据' }}</span></p>
                 <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
-                <p>擅长领域：<span v-for="item in caseInfoData.lawyers.practiceareas" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
-                <p>业务专长：<span v-for="item in caseInfoData.lawyers.industries" :key="item.knowledgeId" >{{ item.name?item.name:'暂无' }}</span>&nbsp;</p>
+                <p>擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
+                <p>业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
                 <p>案例总数：<span>{{ item.caseCount }}</span></p>
                 <p>更新时间：<span>{{ item.updateTime }}</span></p>
                 <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
@@ -541,8 +541,9 @@ height: 120px;
 
 .case-aside-info {
     margin-bottom: 20px;
-    p {
     margin-left: 30px;
+    margin-right: 30px;
+    p {
     color: #999999;
     line-height: 30px;
     span{
@@ -560,6 +561,7 @@ height: 120px;
   margin-bottom: 20px;
     width: 202px;
     height: 202px;
+    overflow: hidden;
     background-color: #e9e9e9;
 }
 }
