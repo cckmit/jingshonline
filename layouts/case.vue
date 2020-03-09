@@ -10,6 +10,7 @@
           :remote-method="search"
           :loading="loading"
           filterable
+          allow-create
           clearable
           remote
           reserve-keyword
@@ -88,6 +89,7 @@ export default {
     },
     searchChange(key) {
       this.searchLoading = true
+      key = key.indexOf('{') !== -1 && key.indexOf('}') !== -1 ? key : JSON.stringify(key)
       Bus.$emit('searchKey', key)
     }
   }

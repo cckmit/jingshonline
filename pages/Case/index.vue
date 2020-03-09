@@ -225,7 +225,7 @@ export default {
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
       Bus.$emit('searchLoading', false)
-      data = data ? JSON.parse(data) : ''
+      data = JSON.parse(data)
       if (data !== '') {
         const conditionKey = data.conditionKey
         switch (conditionKey) {
@@ -247,6 +247,9 @@ export default {
           // eslint-disable-next-line no-duplicate-case
           case 5:
             this.caseSearch.practiceAreaId = data.id
+            break
+          default:
+            this.caseSearch.searchKey = data
             break
         }
       }
