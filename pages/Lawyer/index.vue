@@ -313,7 +313,7 @@
                     <div @click="collection(items)">
                       <img
                         v-if="items.isFollow"
-                        src="../../assets/lawyer/collection.png"
+                        src="../../assets/lawyer/collection_active.png"
                         alt="">
                       <img
                         v-else
@@ -371,13 +371,7 @@ export default {
     Pagination
   },
   async asyncData({ params }) {
-    const [
-      lawyerData,
-      suitsData,
-      NosuitsData,
-      industryData,
-      regionData
-    ] = await Promise.all([
+    const [lawyerData, suitsData, NosuitsData, industryData, regionData, lawfirmData] = await Promise.all([
       axios.get(
         `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`,
         { 'Content-Type': 'application/json' }
@@ -636,8 +630,7 @@ export default {
         this.lawyerSearch.sorting = 'points'
       } else {
         this.sortactive = ''
-        this.caseactive = 'active'
-        this.lawyerSearch.sorting = 'conditioncasecount'
+        this.lawyerSearch.sorting = ''
       }
       // 重新请求数据
       this.getLawyer()
@@ -650,8 +643,7 @@ export default {
         this.lawyerSearch.sorting = 'conditioncasecount'
       } else {
         this.caseactive = ''
-        this.sortactive = 'active'
-        this.lawyerSearch.sorting = 'points'
+        this.lawyerSearch.sorting = ''
       }
       // 重新请求数据
       this.getLawyer()
