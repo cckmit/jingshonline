@@ -59,9 +59,9 @@ export const actions = {
    * @param {commit} commit
    * @param {string} query
    */
-  getFollowData({ commit }, query) {
+  caseFollowClick({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getFollow(query)
+      Case.caseFollow(query)
         .then(response => {
           const {
             data
@@ -79,9 +79,9 @@ export const actions = {
    * @param {commit} commit
    * @param {string} query
    */
-  getUnfollowData({ commit }, query) {
+  caseUnfollowClick({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getUnfollow(query)
+      Case.caseUnfollow(query)
         .then(response => {
           const {
             data
@@ -99,9 +99,9 @@ export const actions = {
    * @param {commit} commit
    * @param {string} query
    */
-  getClickData({ commit }, query) {
+  caseClickCount({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getClick(query)
+      Case.caseClick(query)
         .then(response => {
           const {
             data

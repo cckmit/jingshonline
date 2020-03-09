@@ -19,15 +19,15 @@
             <el-form ref="form" label-width="100px">
               <el-col :span="11">
                 <el-form-item label="主办律师:"><p> {{ caseInfoData.client }}</p></el-form-item>
-                <el-form-item label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
-                <el-form-item label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
+                <el-form-item v-if="caseInfoData.courtName" label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
+                <el-form-item v-if="caseInfoData.judgmentNumber" label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
                 <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
               </el-col>
               <el-col :span="13">
                 <el-form-item label="判决时间:"><p>{{ caseInfoData.endTime }}</p></el-form-item>
-                <el-form-item label="涉案案由:"><p>{{ caseInfoData.caseReasonName }}</p></el-form-item>
+                <el-form-item v-if="caseInfoData.caseReasonName" label="涉案案由:"><p>{{ caseInfoData.caseReasonName }}</p></el-form-item>
                 <el-form-item label="所属领域:"><p>{{ caseInfoData.practiceAreaName }}</p></el-form-item>
-                <el-form-item label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
+                <el-form-item v-if="caseInfoData.industryName" label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
               </el-col>
             </el-form>
           </el-row>
@@ -305,7 +305,19 @@ export default {
       isFollow: caseInfoData.data.data ? caseInfoData.data.data.isFollow : false
     }
   },
-  watch: {
+  beforeRouteEnter(to, from, next) {
+    if (from.path !== '/') {
+      next(vm => {
+        const caseId = vm.$route.params.id
+        vm.caseClickCount(caseId).then(res => {
+          if (res === 'ok') {
+            console.log('+1')
+          }
+        })
+      })
+    } else {
+      next()
+    }
   },
   created() {
     this.caseId = this.$route.params.id
@@ -313,9 +325,8 @@ export default {
   mounted() {
     this.getcaseInfoData()
   },
-
   methods: {
-    ...mapActions('case', ['getCaseInfoData', 'getFollowData', 'getUnfollowData']),
+    ...mapActions('case', ['getCaseInfoData', 'caseFollowClick', 'caseUnfollowClick', 'caseClickCount']),
     // 获取案件
     getcaseInfoData(delayTime = 150) {
       this.loading = true
@@ -335,7 +346,7 @@ export default {
       const coll = !this.isFollow
       const id = this.caseInfoData.id
       if (coll) { // 收藏
-        this.getFollowData(id).then(res => {
+        this.caseFollowClick(id).then(res => {
           this.$notify({
             message: res,
             type: 'success'
@@ -344,7 +355,7 @@ export default {
         this.isFollow = true
       } else {
         // 取消收藏
-        this.getUnfollowData(id).then(res => {
+        this.caseUnfollowClick(id).then(res => {
           this.$notify({
             message: res,
             type: 'success'
@@ -521,6 +532,7 @@ height: 120px;
     position: relative;
     width: 76px;
     height: 76px;
+    overflow: hidden;
     background-color: #dbdbdb;
     margin: 8px 15px;
 }

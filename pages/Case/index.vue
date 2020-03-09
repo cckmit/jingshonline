@@ -71,12 +71,12 @@
           <ul v-bind="caseData">
             <li v-for="(item, index) in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
-                <div class="case-content-top" @click="getClick(item.id)">
+                <div class="case-content-top">
                   <p> {{ item.title }}</p>
                   <div class="caseCol">
-                    <el-col :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
-                    <el-col :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
+                    <el-col v-if="item.courtName" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
+                    <el-col v-if="item.caseReasonName" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
+                    <el-col v-if="item.industryName" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </div>
                   <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
@@ -85,7 +85,7 @@
               <div class="case-content-bottom">
                 <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
-                <span>{{ item.judgmentNumber }}</span>
+                <span v-if="item.judgmentNumber">{{ item.judgmentNumber }}</span>
               </div>
               <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
@@ -190,8 +190,8 @@ export default {
         courtReginId: '', // 法院所属区域
         sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量followercount
         sortType: 1, // 排序[ 0, 1 ]
-        pageCount: 10, // 诉讼领域
-        pageIndex: 1 // 诉讼领域
+        pageCount: 10, //
+        pageIndex: 1 //
       },
       props: {
         label: 'name',
@@ -223,29 +223,30 @@ export default {
     this.getCaseList()
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
+      this.caseSearch.caseReasonId = ''
+      this.caseSearch.courtId = ''
+      this.caseSearch.industryId = ''
+      this.caseSearch.lawfirmId = ''
+      this.caseSearch.practiceAreaId = ''
       Bus.$emit('searchLoading', false)
       data = data ? JSON.parse(data) : ''
       if (data !== '') {
         const conditionKey = data.conditionKey
         switch (conditionKey) {
           case 1:
-            this.caseSearch.caseReasonId = data.id
+            this.caseSearch.caseReasonId = data.id // 案由
             break
-          // eslint-disable-next-line no-duplicate-case
           case 2:
-            this.caseSearch.courtId = data.id
+            this.caseSearch.courtId = data.id // 法院
             break
-          // eslint-disable-next-line no-duplicate-case
           case 3:
-            this.caseSearch.industryId = data.id
+            this.caseSearch.industryId = data.id // 行业
             break
-          // eslint-disable-next-line no-duplicate-case
           case 4:
-            this.caseSearch.courtReginId = data.id
+            this.caseSearch.lawfirmId = data.id // 律所
             break
-          // eslint-disable-next-line no-duplicate-case
           case 5:
-            this.caseSearch.practiceAreaId = data.id
+            this.caseSearch.practiceAreaId = data.id // 领域
             break
         }
       }
@@ -253,15 +254,10 @@ export default {
     })
   },
   methods: {
-    ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData', 'getClickData']),
+    ...mapActions('case', ['getCaseListData', 'caseFollowClick', 'caseUnfollowClick']),
     ...mapActions('caseReason', ['getCasereasonTreeData']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
 
-    // 增加浏览量
-    getClick(caseId) {
-      this.getClickData(caseId).then(res => {
-      })
-    },
     // 获取案件
     getCaseList(delayTime = 150) {
       this.loading = true
@@ -358,7 +354,7 @@ export default {
       const coll = !this.caseData[index].isFollow
       this.$set(this.caseData[index], 'isFollow', coll)
       if (coll) { // 收藏
-        this.getFollowData(id).then(res => {
+        this.caseFollowClick(id).then(res => {
           this.$notify({
             message: res,
             type: 'success'
@@ -366,7 +362,7 @@ export default {
         })
       } else {
         // 取消收藏
-        this.getUnfollowData(id).then(res => {
+        this.caseUnfollowClick(id).then(res => {
           this.$notify({
             message: res,
             type: 'success'
