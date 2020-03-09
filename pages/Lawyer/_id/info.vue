@@ -33,8 +33,8 @@
           </ul>
           <h4>业务专长</h4>
           <div v-if="lawyerBusiness.length">
-            <ul v-for="(item,index) in lawyerBusiness" :key="index" class="lawyer-business">
-              <li><a href=":javascript">{{ item }}</a></li>
+            <ul class="lawyer-business">
+              <li v-for="(item,index) in lawyerBusiness" :key="index"><a href=":javascript">{{ item }}</a></li>
             </ul>
           </div>
           <p v-else>暂无数据</p>
@@ -59,6 +59,7 @@
 import LawyerDetail from './LawyerDetail'
 import axios from 'axios'
 import setting from '@/plugins/setting'
+import { mapActions } from 'vuex'
 export default {
   layout: 'lawyer',
   components: {
@@ -106,6 +107,9 @@ export default {
         return item.name
       }))
     }
+    lawyerBusiness.sort(function(a, b) {
+      return a.length - b.length // 降序排列，return a-b; —>升序排列
+    })
     // 律师简历信息数据容错
     const resumeData = {}
     if (LawyerResumeData.data.data) {
@@ -236,9 +240,23 @@ export default {
   watch: {
   },
   mounted() {
-    console.log('律师信息:practiceareas', this.lawyerInformation.practiceareas, '律师信息:industries', this.lawyerInformation.industries)
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.path !== '/') {
+      next(vm => {
+        const lawyerId = vm.$route.params.id
+        vm.LawyerClickCount(lawyerId).then(res => {
+          if (res === 'ok') {
+            console.log('律师访问+1')
+          }
+        })
+      })
+    } else {
+      next()
+    }
   },
   methods: {
+    ...mapActions('lawyerinfo', ['LawyerClickCount'])
   }
 }
 </script>
@@ -345,7 +363,8 @@ export default {
           border: 1px solid #ddd;
           border-radius: 5%;
           margin: 0 20px 14px 0;
-          padding: 4px 14px;
+          padding: 0 14px;
+          line-height: 26px;
           a {
             text-decoration: none;
             color: #666666;

@@ -87,3 +87,14 @@ export const UserUnFollowCase = caseId => {
     method: 'post'
   })
 }
+/**
+ * 律师浏览量
+ * @param {number} lawyerId
+ */
+
+export const LawyerClickCount = lawyerId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/lawyer/click/${lawyerId}`,
+    method: 'post'
+  })
+}
