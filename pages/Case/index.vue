@@ -229,7 +229,7 @@ export default {
       this.caseSearch.lawfirmId = ''
       this.caseSearch.practiceAreaId = ''
       Bus.$emit('searchLoading', false)
-      data = data ? JSON.parse(data) : ''
+      data = JSON.parse(data)
       if (data !== '') {
         const conditionKey = data.conditionKey
         switch (conditionKey) {
@@ -247,6 +247,9 @@ export default {
             break
           case 5:
             this.caseSearch.practiceAreaId = data.id // 领域
+            break
+          default:
+            this.caseSearch.searchKey = data
             break
         }
       }
