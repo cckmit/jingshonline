@@ -371,7 +371,7 @@ export default {
     Pagination
   },
   async asyncData({ params }) {
-    const [lawyerData, suitsData, NosuitsData, industryData, regionData, lawfirmData] = await Promise.all([
+    const [lawyerData, suitsData, NosuitsData, industryData, regionData] = await Promise.all([
       axios.get(
         `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`,
         { 'Content-Type': 'application/json' }
