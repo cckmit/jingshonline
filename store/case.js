@@ -53,6 +53,7 @@ export const actions = {
       })
     })
   },
+
   /**
    * 收藏
    * @param {commit} commit
@@ -72,6 +73,7 @@ export const actions = {
         })
     })
   },
+
   /**
    * 取消收藏
    * @param {commit} commit
@@ -80,6 +82,26 @@ export const actions = {
   getUnfollowData({ commit }, query) {
     return new Promise((resolve, reject) => {
       Case.getUnfollow(query)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+
+  /**
+   * 收藏
+   * @param {commit} commit
+   * @param {string} query
+   */
+  getClickData({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.getClick(query)
         .then(response => {
           const {
             data

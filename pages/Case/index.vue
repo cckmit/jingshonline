@@ -71,7 +71,7 @@
           <ul v-bind="caseData">
             <li v-for="(item, index) in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
-                <div class="case-content-top">
+                <div class="case-content-top" @click="getClick(item.id)">
                   <p> {{ item.title }}</p>
                   <div class="caseCol">
                     <el-col :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
@@ -160,7 +160,7 @@ export default {
         {
           name: '收藏数量',
           label: '0',
-          displayName: '1',
+          displayName: 'followercount',
           id: 5
         },
         {
@@ -188,7 +188,7 @@ export default {
         caseReasonId: '', // 案由Id
         lawyerId: '', // 律师Id
         courtReginId: '', // 法院所属区域
-        sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量
+        sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量followercount
         sortType: 1, // 排序[ 0, 1 ]
         pageCount: 10, // 诉讼领域
         pageIndex: 1 // 诉讼领域
@@ -206,7 +206,6 @@ export default {
       axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
       axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
-    console.log(regionTreeData.data.data)
     return {
       CasereasonTreeData: CasereasonTreeData.data.data,
       regionTreeData: regionTreeData.data.data,
@@ -257,10 +256,15 @@ export default {
     })
   },
   methods: {
-    ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData']),
+    ...mapActions('case', ['getCaseListData', 'getFollowData', 'getUnfollowData', 'getClickData']),
     ...mapActions('caseReason', ['getCasereasonTreeData']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
 
+    // 增加浏览量
+    getClick(caseId) {
+      this.getClickData(caseId).then(res => {
+      })
+    },
     // 获取案件
     getCaseList(delayTime = 150) {
       this.loading = true
@@ -285,15 +289,9 @@ export default {
         this.regionTreeData = res
       })
     },
-    // 获取管辖法院子节点
-    getRegionChildTree(regionId) {
-      this.getCourtRegionsChildData(regionId).then(res => {
-        this.regionChildTreeData = res
-      })
-    },
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
-      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id).then(res => {
+      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id ? node.data.id : -1).then(res => {
         this.regionChildTreeData = res
         return resolve(res)
       }) : resolve([])
@@ -309,6 +307,7 @@ export default {
     handleCourtClose() {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
+      this.caseSearch.courtReginId = ''
       this.getCaseList()
     },
     // 具体案由树点击筛选
