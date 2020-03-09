@@ -206,7 +206,6 @@ export default {
       axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
       axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
-    console.log(regionTreeData.data.data)
     return {
       CasereasonTreeData: CasereasonTreeData.data.data,
       regionTreeData: regionTreeData.data.data,
@@ -282,15 +281,9 @@ export default {
         this.regionTreeData = res
       })
     },
-    // 获取管辖法院子节点
-    getRegionChildTree(regionId) {
-      this.getCourtRegionsChildData(regionId).then(res => {
-        this.regionChildTreeData = res
-      })
-    },
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
-      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id).then(res => {
+      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id ? node.data.id : -1).then(res => {
         this.regionChildTreeData = res
         return resolve(res)
       }) : resolve([])
@@ -306,6 +299,7 @@ export default {
     handleCourtClose() {
       this.selectForm.courtInfo = ''
       this.caseSearch.courtId = ''
+      this.caseSearch.courtReginId = ''
       this.getCaseList()
     },
     // 具体案由树点击筛选
