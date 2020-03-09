@@ -160,7 +160,7 @@ export default {
         {
           name: '收藏数量',
           label: '0',
-          displayName: '1',
+          displayName: 'followercount',
           id: 5
         },
         {
@@ -188,7 +188,7 @@ export default {
         caseReasonId: '', // 案由Id
         lawyerId: '', // 律师Id
         courtReginId: '', // 法院所属区域
-        sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量
+        sorting: 'casestatus', // 排序 默认排序casestatus、裁判日期endtime、更新时间updatetime、访问人数（关注）clickcount、收藏数量followercount
         sortType: 1, // 排序[ 0, 1 ]
         pageCount: 10, // 诉讼领域
         pageIndex: 1 // 诉讼领域
