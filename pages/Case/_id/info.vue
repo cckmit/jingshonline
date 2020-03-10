@@ -298,7 +298,7 @@ export default {
   },
   async asyncData({ params }) {
     const [caseInfoData] = await Promise.all([
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
     ])
     return {
       caseInfoData: caseInfoData.data.data,
