@@ -17,16 +17,16 @@
           <el-menu-item index="help"><nuxt-link to="/help">帮助中心</nuxt-link></el-menu-item>
           <el-menu-item index="about"><nuxt-link to="/about">关于我们</nuxt-link></el-menu-item>
           <el-menu-item v-if="hasLogin" index="user" class="user">
-            <!-- <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link> -->
-            <el-dropdown class="user_info" placement="bottom-start">
+            <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link>
+            <!-- <el-dropdown class="user_info" placement="bottom-start">
               <span class="el-dropdown-link">
                 <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link>
               </span>
-              <!-- <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter" style="color:#606266;">个人中心</nuxt-link></el-dropdown-item>
                 <el-dropdown-item icon="el-icon-delete" @click.native="handleLogout">登出</el-dropdown-item>
-              </el-dropdown-menu> -->
-            </el-dropdown>
+              </el-dropdown-menu>
+            </el-dropdown> -->
           </el-menu-item>
           <el-menu-item v-else index="login" class="login_btn" @click="loginVisible=true"><span>注册 <b /> 登录</span></el-menu-item>
         </el-menu>
