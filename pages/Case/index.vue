@@ -254,9 +254,7 @@ export default {
     })
   },
   mounted() {
-    this.getCasereasonTree()
     this.getRegionTree(null)
-    this.getCaseList()
   },
   methods: {
     ...mapActions('case', ['getCaseListData', 'caseFollowClick', 'caseUnfollowClick', 'CaseSearch']),

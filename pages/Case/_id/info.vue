@@ -323,7 +323,6 @@ export default {
     this.caseId = this.$route.params.id
   },
   mounted() {
-    this.getcaseInfoData()
   },
   methods: {
     ...mapActions('case', ['getCaseInfoData', 'caseFollowClick', 'caseUnfollowClick', 'caseClickCount']),
