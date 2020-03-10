@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar/>
-    <header v-if="url.name.toLocaleLowerCase()==='case'" :style="{background:`url(${banner}) center no-repeat`}" class="content" >
+    <!-- <header v-if="url.name.toLocaleLowerCase()==='case'" :style="{background:`url(${banner}) center no-repeat`}" class="content" >
       <div class="case_layou_search">
         <div class="prefix">综合搜索</div>
         <el-select
@@ -10,6 +10,7 @@
           :remote-method="search"
           :loading="loading"
           filterable
+          allow-create
           clearable
           remote
           reserve-keyword
@@ -33,7 +34,7 @@
           <img :src="icon" alt="">
         </div>
       </div>
-    </header>
+    </header> -->
     <div class="content">
       <nuxt />
     </div>
@@ -88,6 +89,7 @@ export default {
     },
     searchChange(key) {
       this.searchLoading = true
+      key = key.indexOf('{') !== -1 && key.indexOf('}') !== -1 ? key : JSON.stringify(key)
       Bus.$emit('searchKey', key)
     }
   }

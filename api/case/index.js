@@ -27,6 +27,7 @@ export const getCaseList = query => {
     }
   })
 }
+
 /**
  * 获取案件详情
  * @param {number} caseId
@@ -37,23 +38,36 @@ export const getCaseInfo = caseId => {
     method: 'get'
   })
 }
+
 /**
  * 收藏
  * @param {number} caseId
  */
-export const getFollow = caseId => {
+export const caseFollow = caseId => {
   return request({
     url: `${setting.apiPrefix}/customer/case/follow/${caseId}`,
     method: 'post'
   })
 }
+
 /**
  * 取消收藏
  * @param {number} caseId
  */
-export const getUnfollow = caseId => {
+export const caseUnfollow = caseId => {
   return request({
     url: `${setting.apiPrefix}/customer/case/unfollow/${caseId}`,
+    method: 'post'
+  })
+}
+
+/**
+ * 案例浏览
+ * @param {number} caseId
+ */
+export const caseClick = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/click/${caseId}`,
     method: 'post'
   })
 }

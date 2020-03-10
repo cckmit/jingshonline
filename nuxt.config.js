@@ -65,7 +65,7 @@ module.exports = {
     { src: '~/plugins/vue-clipboard2', ssr: false }
   ],
   env: {
-    baseUrl: 'http://gateway.dev.jingshonline.net'
+    baseUrl: process.env.BASE_URL
   },
   server: {
     // port: 9527,

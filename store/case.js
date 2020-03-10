@@ -53,14 +53,15 @@ export const actions = {
       })
     })
   },
+
   /**
    * 收藏
    * @param {commit} commit
    * @param {string} query
    */
-  getFollowData({ commit }, query) {
+  caseFollowClick({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getFollow(query)
+      Case.caseFollow(query)
         .then(response => {
           const {
             data
@@ -72,14 +73,35 @@ export const actions = {
         })
     })
   },
+
   /**
    * 取消收藏
    * @param {commit} commit
    * @param {string} query
    */
-  getUnfollowData({ commit }, query) {
+  caseUnfollowClick({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.getUnfollow(query)
+      Case.caseUnfollow(query)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+
+  /**
+   * 收藏
+   * @param {commit} commit
+   * @param {string} query
+   */
+  caseClickCount({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.caseClick(query)
         .then(response => {
           const {
             data
