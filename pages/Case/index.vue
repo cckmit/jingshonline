@@ -245,7 +245,8 @@ export default {
     ])
     return {
       CasereasonTreeData: CasereasonTreeData.data.data,
-      caseData: caseData.data.data.items
+      caseData: caseData.data.data.items,
+      totalCount: caseData.data.data.totalCount
     }
   },
   computed: {
@@ -262,14 +263,6 @@ export default {
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
 
     search(query) { // 综合下拉框
-      this.caseSearch.caseReasonId = ''
-      this.caseSearch.courtId = ''
-      this.caseSearch.industryId = ''
-      this.caseSearch.lawfirmId = ''
-      this.caseSearch.practiceAreaId = ''
-      this.selectForm.caseReasonInfo = ''
-      this.selectForm.courtInfo = ''
-      this.selectForm.courtLevelInfo = ''
       this.loading = true
       this.CaseSearch(query).then(res => {
         this.options = res
@@ -277,6 +270,11 @@ export default {
       })
     },
     searchChange(key) { // 综合搜索传值
+      this.caseSearch.caseReasonId = ''
+      this.caseSearch.courtId = ''
+      this.caseSearch.industryId = ''
+      this.caseSearch.lawfirmId = ''
+      this.caseSearch.practiceAreaId = ''
       key = key.indexOf('{') !== -1 && key.indexOf('}') !== -1 ? key : JSON.stringify(key)
       const data = JSON.parse(key)
       if (data !== '') {
@@ -284,11 +282,9 @@ export default {
         switch (conditionKey) {
           case 1:
             this.caseSearch.caseReasonId = data.id // 案由
-            this.selectForm.caseReasonInfo = data.name
             break
           case 2:
             this.caseSearch.courtId = data.id // 法院
-            this.selectForm.courtInfo = data.name
             break
           case 3:
             this.caseSearch.industryId = data.id // 行业
@@ -305,7 +301,6 @@ export default {
         }
       }
       this.getCaseList()
-      this.searchText = ''
     },
     // 获取案件
     getCaseList(delayTime = 150) {
@@ -427,6 +422,7 @@ export default {
     handlePageChange(val) {
       this.caseSearch.pageIndex = val.page
       this.caseSearch.pageCount = val.limit
+      this.getCaseList()
     }
   }
 }
