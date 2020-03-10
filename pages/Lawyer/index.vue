@@ -313,7 +313,7 @@
                     <div @click="collection(items)">
                       <img
                         v-if="items.isFollow"
-                        src="../../assets/lawyer/collection.png"
+                        src="../../assets/lawyer/collection_active.png"
                         alt="">
                       <img
                         v-else
@@ -371,15 +371,10 @@ export default {
     Pagination
   },
   async asyncData({ params }) {
-    const [
-      lawyerData,
-      suitsData,
-      NosuitsData,
-      industryData,
-      regionData
-    ] = await Promise.all([
-      axios.get(
+    const [lawyerData, suitsData, NosuitsData, industryData, regionData, lawfirmData] = await Promise.all([
+      axios.post(
         `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`,
+        { query: { pageCount: 10, pageIndex: 1, lawyerName: '', lawfirmId: '', practiceAreaId: '', industryId: '', sorting: 'points', sortType: 0, regionId: '', littlePracticeYears: 0, largePracticeYears: 0 }},
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
@@ -397,14 +392,20 @@ export default {
       axios.get(
         `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`,
         { 'Content-Type': 'application/json' }
+      ),
+      axios.post(
+        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/lawfirm/list`,
+        { query: {}},
+        { 'Content-Type': 'application/json' }
       )
     ])
     return {
-      lawyerData: lawyerData.data.items,
+      lawyerData: lawyerData.data.data.items,
       suitsData: suitsData.data.data[0].children, // .data[0].children,
       NosuitsData: NosuitsData.data.data[0].children, // .data[0].children,
       industryData: industryData.data.data,
-      regionData: regionData.data.data
+      regionData: regionData.data.data,
+      lawfirmData: lawfirmData.data.data
     }
   },
   props: {
@@ -446,7 +447,6 @@ export default {
         lawfirm: [],
         lawyerName: []
       }, // 筛选条件数据
-      addData: false, // 是否已筛选
       suitsData: [], // 诉讼领域数据
       NosuitsData: [], // 非诉领域数据
       industryData: [], // 行业数据
@@ -477,8 +477,8 @@ export default {
 
   watch: {},
   mounted() {
-    this.getLawyer()
-    this.getLawfirmData()
+    // this.getLawyer()
+    // this.getLawfirmData()
   },
 
   methods: {
@@ -636,8 +636,7 @@ export default {
         this.lawyerSearch.sorting = 'points'
       } else {
         this.sortactive = ''
-        this.caseactive = 'active'
-        this.lawyerSearch.sorting = 'conditioncasecount'
+        this.lawyerSearch.sorting = ''
       }
       // 重新请求数据
       this.getLawyer()
@@ -650,8 +649,7 @@ export default {
         this.lawyerSearch.sorting = 'conditioncasecount'
       } else {
         this.caseactive = ''
-        this.sortactive = 'active'
-        this.lawyerSearch.sorting = 'points'
+        this.lawyerSearch.sorting = ''
       }
       // 重新请求数据
       this.getLawyer()

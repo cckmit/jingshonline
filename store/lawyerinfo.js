@@ -126,6 +126,24 @@ export const actions = {
           reject(error)
         })
     })
+  },
+  /**
+ * 律师访问数量
+ * @param {number} lawyerId
+ */
+  LawyerClickCount({ commit }, lawyerId) {
+    return new Promise((resolve, reject) => {
+      LawyerInfo.LawyerClickCount(lawyerId)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
   }
 }
 
