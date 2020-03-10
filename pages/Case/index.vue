@@ -108,9 +108,9 @@
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
                   <div class="caseCol">
-                    <el-col v-if="item.courtName" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
-                    <el-col v-if="item.caseReasonName" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
-                    <el-col v-if="item.industryName" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
+                    <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
+                    <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
+                    <el-col v-if="item.caseType===2" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </div>
                   <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
@@ -119,7 +119,7 @@
               <div class="case-content-bottom">
                 <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
-                <span v-if="item.judgmentNumber">{{ item.judgmentNumber }}</span>
+                <span v-if="item.caseType===1">{{ item.judgmentNumber }}</span>
               </div>
               <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>

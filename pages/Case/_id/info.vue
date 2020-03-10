@@ -19,15 +19,27 @@
             <el-form ref="form" label-width="100px">
               <el-col :span="11">
                 <el-form-item label="主办律师:"><p> {{ caseInfoData.lawyers[0].realName }}</p></el-form-item>
-                <el-form-item v-if="caseInfoData.courtName" label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
-                <el-form-item v-if="caseInfoData.judgmentNumber" label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="判决时间:"><p>{{ caseInfoData.endTime }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===1" label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===1" label="涉案案由:"><p>{{ caseInfoData.caseReasonName }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===1" label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="所属领域:"><p>{{ caseInfoData.practiceAreaName }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
                 <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
               </el-col>
-              <el-col :span="13">
-                <el-form-item label="判决时间:"><p>{{ caseInfoData.endTime }}</p></el-form-item>
-                <el-form-item v-if="caseInfoData.caseReasonName" label="涉案案由:"><p>{{ caseInfoData.caseReasonName }}</p></el-form-item>
-                <el-form-item label="所属领域:"><p>{{ caseInfoData.practiceAreaName }}</p></el-form-item>
-                <el-form-item v-if="caseInfoData.industryName" label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===2" label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
               </el-col>
             </el-form>
           </el-row>
