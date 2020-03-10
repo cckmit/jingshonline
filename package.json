@@ -5,10 +5,10 @@
   "author": "郑岩 <zhengyan@jingshonline.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env nuxt",
-    "serve": "cross-env nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt",
+    "serve": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt",
+    "build": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt build",
+    "start": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"

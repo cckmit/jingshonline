@@ -202,9 +202,9 @@ export default {
   },
   async asyncData({ params }) {
     const [CasereasonTreeData, regionTreeData, caseData] = await Promise.all([
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
-      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
+      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
+      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
     return {
       CasereasonTreeData: CasereasonTreeData.data.data,
@@ -218,9 +218,9 @@ export default {
     })
   },
   mounted() {
-    this.getCasereasonTree()
-    this.getRegionTree(null)
-    this.getCaseList()
+    // this.getCasereasonTree()
+    // this.getRegionTree(null)
+    // this.getCaseList()
     // 监听综合搜索传值
     Bus.$on('searchKey', (data) => {
       this.caseSearch.caseReasonId = ''
