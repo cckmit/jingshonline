@@ -240,8 +240,8 @@ export default {
   },
   async asyncData({ params }) {
     const [CasereasonTreeData, caseData] = await Promise.all([
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
+      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
     return {
       CasereasonTreeData: CasereasonTreeData.data.data,
@@ -279,7 +279,6 @@ export default {
       })
     },
     searchChange(key) { // 综合搜索传值
-      // this.searchLoading = true
       key = key.indexOf('{') !== -1 && key.indexOf('}') !== -1 ? key : JSON.stringify(key)
       const data = JSON.parse(key)
       if (data !== '') {
@@ -336,10 +335,14 @@ export default {
     },
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
-      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id ? node.data.id : undefined).then(res => {
-        this.regionChildTreeData = res
-        return resolve(res)
-      }) : resolve([])
+      if (node.data.id) {
+        node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id).then(res => {
+          this.regionChildTreeData = res
+          return resolve(res)
+        }) : resolve([])
+      } else {
+        return
+      }
     },
     // 管辖法院树点击筛选
     handleregionClick(data) {

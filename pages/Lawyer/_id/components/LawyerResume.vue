@@ -122,6 +122,7 @@ export default {
     border-right: 1px solid #eee;
     font-size: 14px;
     line-height: 24px;
+    text-indent: 2em;
   }
   .lawyer-header {
     margin-bottom: 26px;
@@ -169,7 +170,12 @@ export default {
         padding-left: 28px;
         padding-top: 17px;
         box-sizing: border-box;
-        margin: 0 18px 18px 0
+        margin: 0 18px 18px 0;
+       p {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+       }
       }
     }
     .type-text {

@@ -120,6 +120,7 @@ export default {
               message: '账号登录成功'
             })
             this.GetLoginUserInfo()
+            this.$emit('login')
             this.formVisible = false
           })
         }

@@ -16,24 +16,24 @@
           <el-menu-item index="case"><nuxt-link to="/case">查案例</nuxt-link></el-menu-item>
           <el-menu-item index="help"><nuxt-link to="/help">帮助中心</nuxt-link></el-menu-item>
           <el-menu-item index="about"><nuxt-link to="/about">关于我们</nuxt-link></el-menu-item>
-          <el-menu-item v-if="hasLogin" index="user">
-            <!-- <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link> -->
-            <el-dropdown class="user_info">
+          <el-menu-item v-if="hasLogin" index="user" class="user">
+            <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link>
+            <!-- <el-dropdown class="user_info" placement="bottom-start">
               <span class="el-dropdown-link">
                 <nuxt-link to="/UserCenter"><el-image :src="account.avatar"/><span>{{ account.name }}</span></nuxt-link>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter" style="color:#606266;">个人中心</nuxt-link></el-dropdown-item>
-                <el-dropdown-item divided icon="el-icon-delete" @click.native="handleLogout">登出</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-delete" @click.native="handleLogout">登出</el-dropdown-item>
               </el-dropdown-menu>
-            </el-dropdown>
+            </el-dropdown> -->
           </el-menu-item>
-          <el-menu-item v-else index="login" @click="loginVisible=true"><span>注册 | 登录</span></el-menu-item>
+          <el-menu-item v-else index="login" class="login_btn" @click="loginVisible=true"><span>注册 <b /> 登录</span></el-menu-item>
         </el-menu>
       </div>
       <img v-if="url.name!=='index'" :src="telephone" class="telephone" style="height:32px;float:right;margin:17px 30px 17px 0;position:absolute;top:0;right:0;" alt="telephont">
     </div>
-    <login :visible="loginVisible" @close="close" />
+    <login :visible="loginVisible" @close="close" @login="login" />
   </div>
 </template>
 
@@ -74,17 +74,21 @@ export default {
     }
   },
   watch: {
+
   },
 
   mounted() {
     this.selectActiveNav()
-    this.getUserInfo()
+    this.hasLogin ? this.getUserInfo() : ''
   },
 
   methods: {
     ...mapActions('account', ['Logout', 'GetLoginUserInfo']),
     selectActiveNav() {
       this.activeNav = this.$route ? this.$route.name.toLocaleLowerCase() : 'index'
+    },
+    login() {
+      this.hasLogin = this.$cookie.get('token')
     },
     close() {
       this.loginVisible = false
@@ -136,30 +140,60 @@ export default {
         color: #000;
       }
     }
-    &:first-child:hover,&:last-child:hover{
+    &:first-child:hover{
       background: none;
     }
-    &:last-child.is-active{
+    // &:last-child.is-active{
+    //   color: #fff !important;
+    //   background: none;
+    // }
+    // &:last-child{
+    //   float: right;
+    //   span{
+    //     padding: 0 10px;
+    //     &:first-child{
+    //       border-right: 1px solid rgba(255,255,255,.3);
+    //     }
+    //   }
+    //   .el-image{
+    //     width:50px;
+    //     height: 50px;
+    //   }
+    // }
+    // &:last-child:hover{
+    //   a{
+    //     color: #fff;
+    //   }
+    // }
+
+  }
+  .user:hover,.login_btn:hover{
+    background: none;
+  }
+  .login_btn{
+    float: right;
+    &.is-active{
       color: #fff !important;
       background: none;
     }
-    &:last-child{
-      float: right;
-      span{
-        padding: 0 10px;
-        &:first-child{
-          border-right: 1px solid rgba(255,255,255,.3);
-        }
-      }
-      .el-image{
-        width:50px;
-        height: 50px;
+    b{
+      display: inline-block;
+      border-right: 2px solid rgba(255,255,255,.3);
+      height: 16px;
+      margin: 0 20px;
+    }
+  }
+  .user{
+    float: right;
+    span{
+      padding: 0 10px;
+      &:first-child{
+        border-right: 1px solid rgba(255,255,255,.3);
       }
     }
-    &:last-child:hover{
-      a{
-        color: #fff;
-      }
+    .el-image{
+      width:50px;
+      height: 50px;
     }
     .user_info{
       >span{
