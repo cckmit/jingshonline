@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar/>
-    <header v-if="url.name.toLocaleLowerCase()==='case'" :style="{background:`url(${banner}) center no-repeat`}" class="content" >
+    <!-- <header v-if="url.name.toLocaleLowerCase()==='case'" :style="{background:`url(${banner}) center no-repeat`}" class="content" >
       <div class="case_layou_search">
         <div class="prefix">综合搜索</div>
         <el-select
@@ -34,7 +34,7 @@
           <img :src="icon" alt="">
         </div>
       </div>
-    </header>
+    </header> -->
     <div class="content">
       <nuxt />
     </div>
