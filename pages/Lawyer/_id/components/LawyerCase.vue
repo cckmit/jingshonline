@@ -309,6 +309,7 @@ export default {
 }
 .lawyer-case{
   padding-bottom: 24px;
+  min-height: 412px;
   .pagination-container {
     background: #f2f2f2;
   }
@@ -403,6 +404,11 @@ export default {
         width: 30px;
         height: 30px;
         background:#f2f2f2
+      }
+      .vue-treeselect__menu{
+        height: 300px;
+        position: relative;
+        z-index: 9999;
       }
       .vue-treeselect--open {
         .vue-treeselect__control-arrow-container {
