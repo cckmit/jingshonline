@@ -6,6 +6,40 @@
         <el-breadcrumb-item >查找案例</el-breadcrumb-item>
       </el-breadcrumb>
       <el-col class="case-aside">
+        <!-- 综合筛选 -->
+        <div class="case-aside case-border">
+          <div class="case-aside-title case-title">综合筛选</div>
+          <div class="case-aside-main case-main case_search">
+            <el-select
+              v-model="searchText"
+              :remote-method="search"
+              :loading="loading"
+              filterable
+              allow-create
+              clearable
+              remote
+              reserve-keyword
+              placeholder="请输入案由、关键词、法院、当事人、律师"
+              @change="searchChange"
+              @keydown.13.native="search()"
+            >
+              <el-option-group
+                v-for="(group, index) in options"
+                :key="index"
+                :label="group.describe">
+                <el-option
+                  v-for="(item,indexs) in group.conditions"
+                  :key="indexs"
+                  :label="item.name"
+                  :value="JSON.stringify(item)"
+                />
+              </el-option-group>
+            </el-select>
+            <div v-loading="searchLoading" class="searchIcon" @click="searchChange(searchText)" >
+              <img :src="icon"> <span>搜索</span>
+            </div>
+          </div>
+        </div>
         <!-- 具体案由 -->
         <div class="case-aside case-border">
           <div class="case-aside-title case-title">具体案由</div>
@@ -74,9 +108,9 @@
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
                   <div class="caseCol">
-                    <el-col v-if="item.courtName" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
-                    <el-col v-if="item.caseReasonName" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
-                    <el-col v-if="item.industryName" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
+                    <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
+                    <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
+                    <el-col v-if="item.caseType===2" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
                     <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
                   </div>
                   <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
@@ -85,7 +119,7 @@
               <div class="case-content-bottom">
                 <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
                 <span><i class="el-icon-time"/>{{ item.endTime }}</span>
-                <span v-if="item.judgmentNumber">{{ item.judgmentNumber }}</span>
+                <span v-if="item.caseType===1">{{ item.judgmentNumber }}</span>
               </div>
               <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
@@ -107,7 +141,7 @@ import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
-import Bus from '@/utils/bus.js'
+import icon from '@/assets/case/case_search.png'
 export default {
   layout: 'case',
   head() {
@@ -124,6 +158,10 @@ export default {
   },
   data() {
     return {
+      icon: icon,
+      searchLoading: false,
+      options: [],
+      searchText: '',
       current: 0,
       loading: '',
       totalCount: 0,
@@ -174,12 +212,12 @@ export default {
         children: 'children',
         label: 'name'
       },
-      selectForm: {
+      selectForm: { // 筛选展示
         courtLevelInfo: '', // 法院等级
         caseReasonInfo: '', // 具体案由
         courtInfo: '' // 管辖法院
       },
-      caseSearch: {//
+      caseSearch: { // 搜索条件
         practiceAreaId: '', // 诉讼领域
         searchKey: '', // 搜索关键字: 支持(裁判文书正文,裁判文书标题)
         courtLevel: '', // 法院等级 0-6
@@ -201,15 +239,14 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [CasereasonTreeData, regionTreeData, caseData] = await Promise.all([
+    const [CasereasonTreeData, caseData] = await Promise.all([
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/court/regions`, { input: { courtLevel: undefined }}, { 'Content-Type': 'application/json' }),
       axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
     return {
       CasereasonTreeData: CasereasonTreeData.data.data,
-      regionTreeData: regionTreeData.data.data,
-      caseData: caseData.data.data.items
+      caseData: caseData.data.data.items,
+      totalCount: caseData.data.data.totalCount
     }
   },
   computed: {
@@ -218,18 +255,28 @@ export default {
     })
   },
   mounted() {
-    // this.getCasereasonTree()
-    // this.getRegionTree(null)
-    // this.getCaseList()
-    // 监听综合搜索传值
-    Bus.$on('searchKey', (data) => {
+    this.getRegionTree(null)
+  },
+  methods: {
+    ...mapActions('case', ['getCaseListData', 'caseFollowClick', 'caseUnfollowClick', 'CaseSearch']),
+    ...mapActions('caseReason', ['getCasereasonTreeData']),
+    ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
+
+    search(query) { // 综合下拉框
+      this.loading = true
+      this.CaseSearch(query).then(res => {
+        this.options = res
+        this.loading = false
+      })
+    },
+    searchChange(key) { // 综合搜索传值
       this.caseSearch.caseReasonId = ''
       this.caseSearch.courtId = ''
       this.caseSearch.industryId = ''
       this.caseSearch.lawfirmId = ''
       this.caseSearch.practiceAreaId = ''
-      Bus.$emit('searchLoading', false)
-      data = JSON.parse(data)
+      key = key.indexOf('{') !== -1 && key.indexOf('}') !== -1 ? key : JSON.stringify(key)
+      const data = JSON.parse(key)
       if (data !== '') {
         const conditionKey = data.conditionKey
         switch (conditionKey) {
@@ -254,13 +301,7 @@ export default {
         }
       }
       this.getCaseList()
-    })
-  },
-  methods: {
-    ...mapActions('case', ['getCaseListData', 'caseFollowClick', 'caseUnfollowClick']),
-    ...mapActions('caseReason', ['getCasereasonTreeData']),
-    ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
-
+    },
     // 获取案件
     getCaseList(delayTime = 150) {
       this.loading = true
@@ -287,10 +328,14 @@ export default {
     },
     // 管辖法院二级懒加载
     loadNode(node, resolve) {
-      node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id ? node.data.id : -1).then(res => {
-        this.regionChildTreeData = res
-        return resolve(res)
-      }) : resolve([])
+      if (node.data.id) {
+        node.data && !node.data.leaf ? this.getCourtRegionsChildData(node.data.id).then(res => {
+          this.regionChildTreeData = res
+          return resolve(res)
+        }) : resolve([])
+      } else {
+        return
+      }
     },
     // 管辖法院树点击筛选
     handleregionClick(data) {
@@ -377,6 +422,7 @@ export default {
     handlePageChange(val) {
       this.caseSearch.pageIndex = val.page
       this.caseSearch.pageCount = val.limit
+      this.getCaseList()
     }
   }
 }
@@ -436,6 +482,32 @@ export default {
 }
 
 //******************************* ***************************************************************/
+ .case_search{
+    .el-select{
+      width: 280px !important;
+      height: 42px;
+      // border: solid 1px #000000;
+      font-size: 14px;
+      color: #666;
+    }
+    .searchIcon{
+      margin-top: 15px;
+      color: white;
+      font-size: 14px;
+      text-align: center;
+      width: 280px;
+      height: 36px;
+      line-height: 36px;
+      background: #f68020;
+      overflow: hidden;
+      cursor: pointer;
+      img{
+        width: 32px;
+        height: 32px;
+        vertical-align:middle
+      }
+    }
+  }
 // 左侧树
 .case-aside {
 	width: 320px;
