@@ -380,28 +380,28 @@ export default {
   async asyncData({ params }) {
     const [lawyerData, suitsData, NosuitsData, industryData, regionData, lawfirmData] = await Promise.all([
       axios.post(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/query`,
         { query: { pageCount: 10, pageIndex: 1, lawyerName: '', lawfirmId: '', practiceAreaId: '', industryId: '', sorting: 'points', sortType: 0, regionId: '', littlePracticeYears: 0, largePracticeYears: 0 }},
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/1`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree/1`,
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/2`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree/2`,
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`,
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/region/tree`,
         { 'Content-Type': 'application/json' }
       ),
       axios.post(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/lawfirm/list`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/lawfirm/list`,
         { query: {}},
         { 'Content-Type': 'application/json' }
       )
