@@ -5,11 +5,11 @@
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item >查找案例</el-breadcrumb-item>
       </el-breadcrumb>
-      <el-col class="case-aside">
+      <el-col class="case-aside case-aside-css">
         <!-- 综合筛选 -->
         <div class="case-aside case-border">
           <div class="case-aside-title case-title">综合筛选</div>
-          <div class="case-aside-main case-main case_search">
+          <div class="case-aside-main case-main case-search">
             <el-select
               v-model="searchText"
               :remote-method="search"
@@ -40,8 +40,44 @@
             </div>
           </div>
         </div>
+        <el-collapse v-model="activeName">
+          <el-collapse-item title="具体案由" name="1">
+            <div class="case-aside-main case-main">
+              <el-tree
+                :data="CasereasonTreeData"
+                :props="defaultProps"
+                node-key="id"
+                @node-click="handleCasereasonClick"/>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+        <el-collapse v-model="activeName">
+          <el-collapse-item title="法院等级" name="1">
+            <div class="case-aside-main case-main">
+              <el-tree
+                :data="courtLevelTreeData"
+                :props="defaultProps"
+                node-key="id"
+                @node-click="handleCourtLevelClick"/>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+        <el-collapse>
+          <el-collapse-item title="管辖法院">
+            <div class="case-aside-main case-main">
+              <el-tree
+                :data="regionTreeData"
+                :props="defaultProps"
+                :expand-on-click-node="false"
+                :load="loadNode"
+                node-key="index"
+                lazy
+                @node-click="handleregionClick"/>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
         <!-- 具体案由 -->
-        <div class="case-aside case-border">
+        <!-- <div class="case-aside case-border">
           <div class="case-aside-title case-title">具体案由</div>
           <div class="case-aside-main case-main">
             <el-tree
@@ -50,9 +86,9 @@
               node-key="id"
               @node-click="handleCasereasonClick"/>
           </div>
-        </div>
+        </div> -->
         <!-- 法院等级 -->
-        <div class="case-aside case-border">
+        <!-- <div class="case-aside case-border">
           <div class="case-aside-title case-title">法院等级</div>
           <div class="case-aside-main case-main">
             <el-tree
@@ -61,9 +97,9 @@
               node-key="id"
               @node-click="handleCourtLevelClick"/>
           </div>
-        </div>
+        </div> -->
         <!-- 管辖法院 -->
-        <div class="case-aside case-border">
+        <!-- <div class="case-aside case-border">
           <div class="case-aside-title case-title">管辖法院</div>
           <div class="case-aside-main case-main">
             <el-tree
@@ -75,7 +111,7 @@
               lazy
               @node-click="handleregionClick"/>
           </div>
-        </div>
+        </div> -->
       </el-col>
       <el-col class="case-content">
         <div class="case-content-title case-border">
@@ -162,7 +198,8 @@ export default {
       searchLoading: false,
       options: [],
       searchText: '',
-      current: 0,
+      activeName: '1',
+      current: 1,
       loading: '',
       totalCount: 0,
       isStarHover: false, // 是否点击收藏变色
@@ -170,44 +207,6 @@ export default {
       regionTreeData: [], // 管辖法院树木
       regionChildTreeData: [],
       caseData: [], // 案例
-      sortData: [
-        {
-          name: '默认排序',
-          label: '0',
-          displayName: 'casestatus',
-          id: 1
-        },
-        {
-          name: '裁判日期',
-          label: '0',
-          displayName: 'endtime',
-          id: 2
-        },
-        {
-          name: '更新时间',
-          label: '0',
-          displayName: 'updatetime',
-          id: 3
-        },
-        {
-          name: '访问人数',
-          label: '0',
-          displayName: 'clickcount',
-          id: 4
-        },
-        {
-          name: '收藏数量',
-          label: '0',
-          displayName: 'followercount',
-          id: 5
-        },
-        {
-          name: '裁判日期',
-          label: '0',
-          displayName: 'endtime',
-          id: 6
-        }
-      ],
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -252,6 +251,9 @@ export default {
   computed: {
     ...mapState({
       courtLevelTreeData: state => state.court.courtLevel
+    }),
+    ...mapState({
+      sortData: state => state.case.sortData
     })
   },
   mounted() {
@@ -437,8 +439,9 @@ export default {
 }
 // 左边标题
 .case-title {
-	line-height: 65px;
-	border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
+  height: 60px;
+	line-height: 60px;
+	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
 	font-size: 16px;
 	color: #333333;
 }
@@ -482,7 +485,7 @@ export default {
 }
 
 //******************************* ***************************************************************/
- .case_search{
+ .case-search{
     .el-select{
       width: 280px !important;
       height: 42px;
@@ -501,6 +504,8 @@ export default {
       background: #f68020;
       overflow: hidden;
       cursor: pointer;
+      letter-spacing:5px;
+      box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
       img{
         width: 32px;
         height: 32px;
@@ -536,6 +541,7 @@ export default {
   margin-bottom: 20px;
 	.case-aside-title{
     padding-left: 10px;
+    margin-bottom: 20px;
 }
 .case-aside-main {
 	padding: 5px 0;
@@ -646,4 +652,26 @@ export default {
 }
 
 }
+</style>
+<style lang='scss'>
+.case-aside-css {
+  .el-collapse{
+    background-color: #fff;
+    padding:0 15px;
+    margin-bottom:20px;
+   .el-collapse-item__wrap{
+      border-bottom: none;
+    }
+ .el-collapse-item__header{
+   height: 60px;
+	line-height: 60px;
+	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
+	font-size: 16px;
+	color: #333333;
+ }
+ .el-collapse-item__content{
+  padding-top:10px;
+ }
+}
+  }
 </style>
