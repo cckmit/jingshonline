@@ -44,18 +44,18 @@
           <div v-if="item.highlight.title" class="case-item-title">{{ item.highlight.title[0] }}</div>
           <div class="case-info">
             <div>
-              <p><span><i class="el-icon-caret-right"/>管辖法院 : {{ item.courtName ? item.courtName :'暂无数据' }}</span></p>
-              <p><span><i class="el-icon-caret-right"/>所属行业 : {{ item.industryName?item.industryName:'暂无数据' }}</span></p>
+              <p v-if="item.caseType !== 2"><span><i class="el-icon-caret-right"/>管辖法院 : {{ item.courtName ? item.courtName :'暂无数据' }}</span></p>
+              <p v-if="item.caseType !== 1"><span><i class="el-icon-caret-right"/>所属行业 : {{ item.industryName?item.industryName:'暂无数据' }}</span></p>
             </div>
             <div>
-              <p><span><i class="el-icon-caret-right"/>所属案由 : {{ item.caseReasonName?item.caseReasonName:'暂无数据' }}</span></p>
+              <p v-if="item.caseType !== 2"><span><i class="el-icon-caret-right"/>所属案由 : {{ item.caseReasonName?item.caseReasonName:'暂无数据' }}</span></p>
               <p><span><i class="el-icon-caret-right"/>所属领域 : {{ item.practiceAreaName?item.practiceAreaName:'暂无数据' }}</span></p>
             </div>
           </div>
           <div class="case-item-article">
             <div>
               <p class="title">【法院观点】</p>
-              <span class="text" v-html="item.highlight.judgmentDocument ? item.highlight.judgmentDocument[0] : '暂无数据'"/>
+              <span class="text" v-html="'暂无数据'"/>
             </div>
             <div>
               <p class="title">【结果命中】</p>
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="case-item-bottom">
-            <span v-if="item.judgmentNumber" class="judgement-number">{{ item.judgmentNumber	}}</span>
+            <span v-if="item.judgmentNumber && item.caseType !== 2" class="judgement-number">{{ item.judgmentNumber	}}</span>
             <span class="case-time"><i class="el-icon-time"/>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span>
             <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
             <!-- <span class="share no-select" @click.prevent="share(item.id)"><i/>分享</span> -->
