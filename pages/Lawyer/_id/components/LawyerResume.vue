@@ -122,7 +122,6 @@ export default {
     border-right: 1px solid #eee;
     font-size: 14px;
     line-height: 24px;
-    text-indent: 2em;
   }
   .lawyer-header {
     margin-bottom: 26px;

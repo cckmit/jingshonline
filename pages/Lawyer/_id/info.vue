@@ -75,23 +75,14 @@ export default {
   },
   async asyncData({ params }) {
     const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData, courtListData] = await Promise.all([
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }),
-      axios.get(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree`,
-        { 'Content-Type': 'application/json' }
-      ),
-      axios.post(`http://gateway.dev.jingshonline.net/${setting.apiPrefix}/court/list`, {
-        query: {
-          name: '',
-          regionId: '',
-          courtLevel: ''
-        }
-      }, { 'Content-Type': 'application/json' })
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' }),
+      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/court/list`, { query: { name: '', regionId: '', courtLevel: '' }}, { 'Content-Type': 'application/json' })
     ])
     // 律师基础信息数据容错
     let lawyerInformationData = {}
