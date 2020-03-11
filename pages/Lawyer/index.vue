@@ -224,7 +224,7 @@
                 v-model="lawyerSearch.littlePracticeYears"
                 size="small"
                 @input="selectlittleyears"
-              />&nbsp;&nbsp;--&nbsp;
+              />&nbsp;&nbsp;-&nbsp;
               <el-input
                 v-model="lawyerSearch.largePracticeYears"
                 size="small"
@@ -310,7 +310,7 @@
                     <span>{{ items.followerCount }}</span>
                   </p>
                   <div>
-                    <div @click="collection(items)">
+                    <!-- <div @click="collection(items)">
                       <img
                         v-if="items.isFollow"
                         src="../../assets/lawyer/collection_active.png"
@@ -319,7 +319,14 @@
                         v-else
                         src="../../assets/lawyer/collection.png"
                         alt="">
-                      {{ !items.isFollow ? '收藏' : '取消收藏' }}
+                      {{ !items.isFollow ? '收藏' : '已收藏' }}
+                    </div> -->
+                    <div :class="!items.isFollow ?'':'active'" @click="collection(items)">
+                      <img
+                        v-if="!items.isFollow"
+                        src="../../assets/lawyer/collection.png"
+                        alt="">
+                      {{ !items.isFollow ? '收藏' : '已收藏' }}
                     </div>
                     <div @click="share(items.id)">
                       <img
@@ -433,8 +440,8 @@ export default {
         sorting: 'points', // 排序
         sortType: 0,
         regionId: '', // 律师所属地区
-        littlePracticeYears: 0, // 执业年限小值
-        largePracticeYears: 0 // 执业年限大值
+        littlePracticeYears: '', // 执业年限小值
+        largePracticeYears: '' // 执业年限大值
       },
       yearstart: '', // 年限开始时间
       yearend: '', // 年限结束时间
@@ -1022,6 +1029,10 @@ ul {
                 img {
                   margin-right: 5px;
                 }
+              }
+              .active{
+                background: #f68020;
+                color:#fff;
               }
             }
           }

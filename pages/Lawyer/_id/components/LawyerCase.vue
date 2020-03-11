@@ -41,18 +41,38 @@
     <div class="lawyer-case-list">
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link :to="'/case/'+item.id+'/info'">
-          <div v-if="item.highlight.title" class="case-item-title">{{ item.highlight.title[0] }}<span>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span></div>
-          <p class="case-item-article" v-html="item.highlight.judgmentDocument ? item.highlight.judgmentDocument[0] : '无该案件详情数据'"/>
+          <div v-if="item.highlight.title" class="case-item-title">{{ item.highlight.title[0] }}</div>
+          <div class="case-info">
+            <div>
+              <p><span><i class="el-icon-caret-right"/>管辖法院 : {{ item.courtName ? item.courtName :'暂无数据' }}</span></p>
+              <p><span><i class="el-icon-caret-right"/>所属行业 : {{ item.industryName?item.industryName:'暂无数据' }}</span></p>
+            </div>
+            <div>
+              <p><span><i class="el-icon-caret-right"/>所属案由 : {{ item.caseReasonName?item.caseReasonName:'暂无数据' }}</span></p>
+              <p><span><i class="el-icon-caret-right"/>所属领域 : {{ item.practiceAreaName?item.practiceAreaName:'暂无数据' }}</span></p>
+            </div>
+          </div>
+          <div class="case-item-article">
+            <div>
+              <p class="title">【法院观点】</p>
+              <span class="text" v-html="item.highlight.judgmentDocument ? item.highlight.judgmentDocument[0] : '暂无数据'"/>
+            </div>
+            <div>
+              <p class="title">【结果命中】</p>
+              <span class="text" v-html="item.highlight.judgmentDocument ? item.highlight.judgmentDocument[0] : '暂无数据'"/>
+            </div>
+          </div>
           <div class="case-item-bottom">
-            <span :class="item.caseStatus === 2 ? 'check-active':'check'" class="no-select" v-text="item.caseStatus === 2 ? '已审核': '未审核'" />
+            <span v-if="item.judgmentNumber" class="judgement-number">{{ item.judgmentNumber	}}</span>
+            <span class="case-time"><i class="el-icon-time"/>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span>
             <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
-            <span class="share no-select" @click.prevent="share(item.id)"><i/>分享</span>
+            <!-- <span class="share no-select" @click.prevent="share(item.id)"><i/>分享</span> -->
           </div>
           <i v-if="item.isClassicCase" class="classic"/>
         </nuxt-link>
       </div>
     </div>
-    <el-dialog :visible.sync="shareVisible" top="35vh" width="400px" title="分享">
+    <!-- <el-dialog :visible.sync="shareVisible" top="35vh" width="400px" title="分享">
       <div class="share">
         <el-input v-model="url" size="mini"/>
         <div>
@@ -60,7 +80,7 @@
         </div>
         <img :src="qrimg">
       </div>
-    </el-dialog>
+    </el-dialog> -->
     <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
   </div>
 </template>
@@ -72,7 +92,7 @@ import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 // import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import QRCode from 'qrcode'
+// import QRCode from 'qrcode'
 export default {
   name: 'LawyerCase',
   components: {
@@ -239,34 +259,34 @@ export default {
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       }
-    },
-    // 用户分享
-    share(id) {
-      this.shareVisible = true
-      this.url = window.location.origin + `/case/${id}/info`
-      this.getQrcode()
-    },
-    // 获取二维码
-    getQrcode() {
-      QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
-        this.qrimg = url
-      })
-    },
-    // 复制链接
-    copy() {
-      this.$copyText(this.url).then(e => {
-        this.$notify({
-          message: '链接地址复制成功',
-          type: 'success'
-        })
-      }).catch(error => {
-        this.$notify({
-          message: '复制失败',
-          type: 'error'
-        })
-        console.log(error)
-      })
     }
+    // // 用户分享
+    // share(id) {
+    //   this.shareVisible = true
+    //   this.url = window.location.origin + `/case/${id}/info`
+    //   this.getQrcode()
+    // },
+    // // 获取二维码
+    // getQrcode() {
+    //   QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
+    //     this.qrimg = url
+    //   })
+    // },
+    // // 复制链接
+    // copy() {
+    //   this.$copyText(this.url).then(e => {
+    //     this.$notify({
+    //       message: '链接地址复制成功',
+    //       type: 'success'
+    //     })
+    //   }).catch(error => {
+    //     this.$notify({
+    //       message: '复制失败',
+    //       type: 'error'
+    //     })
+    //     console.log(error)
+    //   })
+    // }
   }
 }
 </script>
@@ -369,6 +389,10 @@ export default {
         font-size: 14px;
         width: 280px;
       }
+      .vue-treeselect__single-value {
+        font-size: 14px;
+        line-height: 30px;
+      }
       .vue-treeselect__placeholder {
         font-size: 14px;
         line-height: 30px
@@ -428,9 +452,8 @@ export default {
         padding-right: 28px;
         font-size: 16px;
         color: #333333;
-        line-height: 16px;
-        margin-top: 19px;
-        margin-bottom: 19px;
+        line-height: 28px;
+        margin-top: 30px;
         position: relative;
         overflow: hidden;
         span{
@@ -438,18 +461,48 @@ export default {
           right: 28px;
         }
       }
+      .case-info {
+        margin-top: 7px;
+        color:#737373;
+        font-size: 14px;
+        padding-left: 48px;
+        box-sizing: border-box;
+        display: flex;
+        div {
+          margin-right: 60px;
+        }
+        .el-icon-caret-right{
+          color: #999999;
+        }
+        p {
+          line-height: 28px;
+        }
+      }
       .case-item-article {
         padding-left: 24px;
         padding-right: 28px;
         font-size: 14px;
         line-height: 24px;
-        color: #999999;
+        color: #333;
         margin-bottom: 10px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        .title{
+          margin-top: 2px;
+          margin-bottom: 7px;
+        }
+        .text{
+          overflow: hidden;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          box-orient: vertical;
+          display: -webkit-box;
+          margin-bottom: 11px;
+        }
       }
       .case-item-bottom {
         left: 2px;
@@ -462,33 +515,26 @@ export default {
         align-items: center;
         span {
           line-height: 29px;
-          margin-right: 17px;
           font-size: 12px;
           color: #333333;
           cursor: pointer;
         }
-        .check {
-          width: 46px;
-          height: 20px;
-          line-height: 20px;
-          text-align: center;
-          background: #c5c5c5;
-          color: #ffffff;
-          border-radius: 5px;
+        .judgement-number {
+          color: #949494;
+          margin-right: 28px;
         }
-        .check-active {
-          background: #f68020;
-          color: #ffffff;
-          text-align: center;
-          width: 46px;
-          height: 20px;
-          line-height: 20px;
-          border-radius: 5px;
+        .case-time {
+          margin-right: 15px;
+          .el-icon-time{
+            color: #828282;
+            margin-right: 5px;
+          }
         }
         .collect {
           width: 60px;
           text-align: center;
           user-select: none;
+          margin-right: 25px;
           .el-icon-star-off:before {
             margin-right: 6px;
           }
