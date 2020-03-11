@@ -13,7 +13,9 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'jingshonline-web;京师在线官网' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href:'//at.alicdn.com/t/font_1685422_wcss7jnfelr.css'}, // 项目生产环境图标库链接 每天晚上固定改动
+      { rel: 'stylesheet', href:'//at.alicdn.com/t/font_1685305_15tnujvdvl2.css'} // 项目开发版图标库链接 随时改动
     ]
   },
   /*
