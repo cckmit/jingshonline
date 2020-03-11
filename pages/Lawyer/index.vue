@@ -275,7 +275,7 @@
                   </el-col>
                   <el-col :span="8" class="other">
                     <el-form label-position="top" class="time">
-                      <el-form-item label="更新时间:">{{ dayjs(items.updateTime).format('YYYY-MM-DD') }}</el-form-item>
+                      <el-form-item label="更新时间:">{{ items.updateTime }}</el-form-item>
                     </el-form>
                     <el-form>
                       <el-form-item :label="`浏览：${items.clickCount}`"/>
