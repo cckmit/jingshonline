@@ -40,7 +40,7 @@
             </div>
           </div>
         </div>
-        <el-collapse v-model="activeName">
+        <el-collapse v-model="activeNameCasereason">
           <el-collapse-item title="具体案由" name="1">
             <div class="case-aside-main case-main">
               <el-tree
@@ -51,7 +51,7 @@
             </div>
           </el-collapse-item>
         </el-collapse>
-        <el-collapse v-model="activeName">
+        <el-collapse v-model="activeNamecourtLevel">
           <el-collapse-item title="法院等级" name="1">
             <div class="case-aside-main case-main">
               <el-tree
@@ -198,7 +198,8 @@ export default {
       searchLoading: false,
       options: [],
       searchText: '',
-      activeName: '1',
+      activeNameCasereason: '1',
+      activeNamecourtLevel: '1',
       current: 1,
       loading: '',
       totalCount: 0,
