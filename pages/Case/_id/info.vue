@@ -362,8 +362,8 @@ export default {
             message: res,
             type: 'success'
           })
+          this.isFollow = true
         })
-        this.isFollow = true
       } else {
         // 取消收藏
         this.caseUnfollowClick(id).then(res => {
@@ -371,8 +371,8 @@ export default {
             message: res,
             type: 'success'
           })
+          this.isFollow = false
         })
-        this.isFollow = false
       }
     },
     // 下载事件
