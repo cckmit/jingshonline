@@ -247,7 +247,7 @@
                 <div>
                   <div>
                     <img :src="items.avatar" alt="" >
-                    <span>部门主任</span>
+                    <span v-show="items.isDirector">部门主任</span>
                   </div>
                 </div>
               </div>
