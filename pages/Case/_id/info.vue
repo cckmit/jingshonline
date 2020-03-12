@@ -170,8 +170,10 @@
                 <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无数据' }}</span></p>
                 <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无数据' }}</span></p>
                 <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
-                <p>擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
-                <p>业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
+                <p v-if="item.practiceareas.length!==0">擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
+                <p v-if="item.practiceareas.length===0">擅长领域：<span>暂无数据</span></p>
+                <p v-if="item.industries.length===0">业务专长：<span>暂无数据</span></p>
+                <p v-if="item.industries.length!==0">业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
                 <p>案例总数：<span>{{ item.caseCount }}</span></p>
                 <p>更新时间：<span>{{ item.updateTime }}</span></p>
                 <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
@@ -181,13 +183,12 @@
           </el-collapse>
         </div>
         <!-- /* 案件认领-->
-        <!-- <div class="case-aside-main case-aside-ajrl case-border">
+        <div class="case-aside-main case-aside-ajrl case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
           <div >
             <el-form ref="form" label-width="0">
-
               <el-form-item>
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
@@ -217,11 +218,10 @@
                 </div>
               </el-form-item>
             </el-form>
-
           </div>
-        </div> -->
+        </div>
         <!-- /*相关案例 -->
-        <!-- <div class="case-aside-main case-aside-xgal case-border">
+        <div class="case-aside-main case-aside-xgal case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
@@ -238,7 +238,7 @@
               <el-form-item>10 、郑银花与北京市住房和城乡建设委员会及白春生,白志增,郑粟杰,北京万柳置业集团有限公司,梁帅关于房屋登记行为案   </el-form-item>
             </el-form>
           </div>
-        </div> -->
+        </div>
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
