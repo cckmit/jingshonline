@@ -1,5 +1,46 @@
 import * as Case from '@/api/case/index'
 
+export const state = () => ({
+  sortData: [
+    {
+      name: '默认排序',
+      label: '0',
+      displayName: 'casestatus',
+      id: 1
+    },
+    {
+      name: '裁判日期',
+      label: '0',
+      displayName: 'endtime',
+      id: 2
+    },
+    {
+      name: '更新时间',
+      label: '0',
+      displayName: 'updatetime',
+      id: 3
+    },
+    {
+      name: '访问人数',
+      label: '0',
+      displayName: 'clickcount',
+      id: 4
+    },
+    {
+      name: '收藏数量',
+      label: '0',
+      displayName: 'followercount',
+      id: 5
+    },
+    {
+      name: '裁判日期',
+      label: '0',
+      displayName: 'endtime',
+      id: 6
+    }
+  ]
+})
+
 export const actions = {
 
   /**
