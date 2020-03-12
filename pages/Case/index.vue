@@ -159,6 +159,7 @@
               </div>
               <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
             </li>
+            <li v-if="caseData.length===0" style="height:200px;line-height:200px;text-align:center">暂无相关数据！</li>
           </ul>
         </div>
         <div style="text-align:center;margin-top:20px">
@@ -314,6 +315,7 @@ export default {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
         this.caseData = res.items
         this.totalCount = res.totalCount
+        this.caseSearch.pageIndex = 1
         this.loading = false
       })
     },
