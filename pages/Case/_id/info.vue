@@ -170,8 +170,10 @@
                 <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无数据' }}</span></p>
                 <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无数据' }}</span></p>
                 <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
-                <p>擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
-                <p>业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
+                <p v-if="item.practiceareas.length!==0">擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
+                <p v-if="item.practiceareas.length===0">擅长领域：<span>暂无数据</span></p>
+                <p v-if="item.industries.length===0">业务专长：<span>暂无数据</span></p>
+                <p v-if="item.industries.length!==0">业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
                 <p>案例总数：<span>{{ item.caseCount }}</span></p>
                 <p>更新时间：<span>{{ item.updateTime }}</span></p>
                 <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
