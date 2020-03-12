@@ -183,13 +183,12 @@
           </el-collapse>
         </div>
         <!-- /* 案件认领-->
-        <!-- <div class="case-aside-main case-aside-ajrl case-border">
+        <div class="case-aside-main case-aside-ajrl case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
           <div >
             <el-form ref="form" label-width="0">
-
               <el-form-item>
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
@@ -219,11 +218,10 @@
                 </div>
               </el-form-item>
             </el-form>
-
           </div>
-        </div> -->
+        </div>
         <!-- /*相关案例 -->
-        <!-- <div class="case-aside-main case-aside-xgal case-border">
+        <div class="case-aside-main case-aside-xgal case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
@@ -240,7 +238,7 @@
               <el-form-item>10 、郑银花与北京市住房和城乡建设委员会及白春生,白志增,郑粟杰,北京万柳置业集团有限公司,梁帅关于房屋登记行为案   </el-form-item>
             </el-form>
           </div>
-        </div> -->
+        </div>
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
