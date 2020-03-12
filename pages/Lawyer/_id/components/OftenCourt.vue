@@ -5,12 +5,12 @@
         <h4 class="often-header"><i/>{{ item.name }}</h4>
         <div class="often-main">
           <div v-for="(item,index) in item.courts" :key="index" class="often-card">
-            <p class="often-card-header">{{ item.name }}</p>
+            <p class="often-card-header">{{ item.name ? item.name : '暂无数据' }}</p>
             <ul>
-              <li>地址: {{ item.address }}</li>
-              <li>联系方式: {{ item.tel }}</li>
-              <li>网址: {{ item.webSite }} </li>
-              <li>案例总数: <span class="high-light">{{ item.caseCount }}</span> </li>
+              <li>地址: {{ item.address ? item.address : '暂无数据' }}</li>
+              <li>联系方式: {{ item.tel ? item.tel : '暂无数据' }}</li>
+              <li>网址: {{ item.webSite ? item.webSite : '暂无数据' }} </li>
+              <li>案例总数: <span class="high-light">{{ item.caseCount ? item.caseCount : '暂无数据' }}</span> </li>
             </ul>
           </div>
         </div>

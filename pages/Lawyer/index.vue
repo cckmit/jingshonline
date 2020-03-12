@@ -242,100 +242,54 @@
       <ul class="lawyerlist">
         <li v-for="(items,index) in lawyerData" :key="index">
           <nuxt-link :to="'/lawyer/'+items.id+'/info'">
-            <img v-show="items.isRecommend" src="../../assets/lawyer/lawyer_auth.png" alt="">
-            <div class="lawyerlist_lf">
-              <img
-                v-if="items.avatar === ''"
-                src="../../assets/lawyer/avatar.png"
-                alt=""
-              >
-              <img v-else :src="items.avatar" alt="" >
-              <span v-show="items.isDirector">部门主任</span>
-            </div>
-            <div class="lawyerlist_rt">
-              <b>
-                <span>{{ items.name }}</span
-              >律师</b
-              >
-              <div>
+            <div :style="items.isRecommend ? `background:url(${authIcon}) top right no-repeat` : ''" class="lawyer">
+              <div class="avatar">
                 <div>
-                  <p>
-                    <img src="../../assets/lawyer/arrow.png" alt="" >
-                    <b>基础信息&nbsp;●&nbsp;</b>
-                    <span>INFORMATION</span>
-                  </p>
-                  <ul>
-                    <li>
-                      <span>执业年限</span>
-                      <b>{{ items.practiceYears }}年</b>
-                    </li>
-                    <li>
-                      <span>案例总数</span>
-                      <b>{{ items.caseCount }}例</b>
-                    </li>
-                    <li>
-                      <span>所在律所</span>
-                      <b>{{ items.lawfirmName }}</b>
-                    </li>
-                    <li>
-                      <span>所在地址</span>
-                      <b>{{ items.regionName }}</b>
-                    </li>
-                  </ul>
-                </div>
-                <div class="lawyerlist_mid">
-                  <p>
-                    <img src="../../assets/lawyer/arrow.png" alt="" >
-                    <b>专业领域&nbsp;●&nbsp;</b>
-                    <span>EXPERTISE</span>
-                  </p>
-                  <ul>
-                    <li
-                      v-for="item in items.skilfulPracticeAreas"
-                      :key="item.id"
-                    >
-                      {{ item.name }}
-                    </li>
-                  </ul>
-                </div>
-                <div class="lawyerlist_action">
-                  <span>更新时间：</span>
-                  <b>{{ items.updateTime }}</b>
-                  <p>
-                    浏览：
-                    <span>{{ items.clickCount }}</span>
-                  </p>
-                  <p>
-                    关注：
-                    <span>{{ items.followerCount }}</span>
-                  </p>
                   <div>
-                    <!-- <div @click="collection(items)">
-                      <img
-                        v-if="items.isFollow"
-                        src="../../assets/lawyer/collection_active.png"
-                        alt="">
-                      <img
-                        v-else
-                        src="../../assets/lawyer/collection.png"
-                        alt="">
-                      {{ !items.isFollow ? '收藏' : '已收藏' }}
-                    </div> -->
-                    <div :class="!items.isFollow ?'':'active'" @click="collection(items)">
-                      <img
-                        v-if="!items.isFollow"
-                        src="../../assets/lawyer/collection.png"
-                        alt="">
+                    <img :src="items.avatar" alt="" >
+                    <span v-show="items.isDirector">部门主任</span>
+                  </div>
+                </div>
+              </div>
+              <div class="info">
+                <div class="name">
+                  {{ items.name }}<small>律师</small>
+                </div>
+                <el-row>
+                  <el-col :span="8" class="base">
+                    <div><i class="iconfont icontriangle-arrow-r"/>基础信息&nbsp;<i class="iconfont icondian1" />&nbsp;<span>INFORMATION</span></div>
+                    <el-form label-width="80px" label-position="right">
+                      <el-form-item label="执业年限">{{ items.practiceYears }}年</el-form-item>
+                      <el-form-item label="案例总数">{{ items.caseCount }}例</el-form-item>
+                      <el-form-item label="所在律所">{{ items.lawfirmName }}</el-form-item>
+                      <el-form-item label="所在地址">{{ items.regionName }}</el-form-item>
+                    </el-form>
+                  </el-col>
+                  <el-col :span="8" class="practice">
+                    <div><i class="iconfont icontriangle-arrow-r"/>专业领域&nbsp;<i class="iconfont icondian1" />&nbsp;<span>EXPERTISE</span></div>
+                    <el-form>
+                      <el-form-item v-for="item in items.skilfulPracticeAreas" :key="item.id">
+                        {{ item.name }}
+                      </el-form-item>
+                    </el-form>
+                  </el-col>
+                  <el-col :span="8" class="other">
+                    <el-form label-position="top" class="time">
+                      <el-form-item label="更新时间:">{{ items.updateTime }}</el-form-item>
+                    </el-form>
+                    <el-form>
+                      <el-form-item :label="`浏览：${items.clickCount}`"/>
+                      <el-form-item :label="`关注：${items.followerCount}`"/>
+                    </el-form>
+                    <div :style="items.isFollow ? 'background:#f68020;color:#fff;' : ''" @click="collection(items)">
+                      <img v-if="!items.isFollow" :src="collectionIcon" alt="">
                       {{ !items.isFollow ? '收藏' : '已收藏' }}
                     </div>
                     <div @click="share(items.id)">
-                      <img
-                        src="../../assets/lawyer/share.png"
-                        alt=""
-                      >分享
+                      <img :src="shareIcon" alt=""> 分享
                     </div>
-                  </div>
-                </div>
+                  </el-col>
+                </el-row>
               </div>
             </div>
           </nuxt-link>
@@ -362,6 +316,9 @@
 </template>
 
 <script>
+import authIcon from '@/assets/lawyer/lawyer_auth.png'
+import shareIcon from '@/assets/lawyer/share.png'
+import collectionIcon from '@/assets/lawyer/collection.png'
 import Pagination from '../../components/Pagination/index'
 import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
@@ -380,28 +337,28 @@ export default {
   async asyncData({ params }) {
     const [lawyerData, suitsData, NosuitsData, industryData, regionData, lawfirmData] = await Promise.all([
       axios.post(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/customer/lawyer/query`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/query`,
         { query: { pageCount: 10, pageIndex: 1, lawyerName: '', lawfirmId: '', practiceAreaId: '', industryId: '', sorting: 'points', sortType: 0, regionId: '', littlePracticeYears: 0, largePracticeYears: 0 }},
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/1`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree/1`,
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/practicearea/tree/2`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree/2`,
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/industry/tree`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`,
         { 'Content-Type': 'application/json' }
       ),
       axios.get(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/region/tree`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/region/tree`,
         { 'Content-Type': 'application/json' }
       ),
       axios.post(
-        `http://gateway.dev.jingshonline.net/${setting.apiPrefix}/lawfirm/list`,
+        `${process.env.baseUrl}/${setting.apiPrefix}/lawfirm/list`,
         { query: {}},
         { 'Content-Type': 'application/json' }
       )
@@ -427,6 +384,9 @@ export default {
   },
   data() {
     return {
+      authIcon,
+      shareIcon,
+      collectionIcon,
       loading: false,
       activeName: 'first',
       tabsearchData: [],
@@ -908,134 +868,93 @@ ul {
       overflow: hidden;
       text-decoration: none;
       position: relative;
-      > img {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-      }
-      > .lawyerlist_lf {
-        width: 25%;
-        float: left;
-        position: relative;
-        > img {
-          width: 100%;
-          min-height: 251px;
+    }
+  }
+  .lawyer{
+    padding: 3px;
+    position: relative;
+    height: auto;
+    .avatar{
+      width: 240px;
+      position: absolute;
+      height: calc(100% - 6px);
+      display: table;
+      >div{
+        display: table-cell;
+        vertical-align: middle;
+        div{
+          position: relative;
+          span{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 5px 15px;
+            color: #fff;
+            background: rgba(0,0,0,.7);
+          }
         }
-        > span {
-          background: #000;
-          opacity: 0.7;
-          position: absolute;
-          bottom: 4px;
-          right: 0px;
-          display: inline-block;
-          padding: 5px 15px;
-          color: #fff;
-        }
       }
-      .lawyerlist_rt {
-        float: left;
-        width: 74%;
-        padding: 30px 0px;
+      img{
+        width: 240px;
+        height: 240px;
+        display: block;
+      }
+    }
+    .info{
+      margin-left: 270px;
+      .name{
+        height: 24px;
+        line-height: 24px;
+        font-size: 24px;
+        margin: 25px 0 15px 0;
         color: #333;
-        > b {
-          font-size: 15px;
-          font-weight: 400;
-          padding-left: 20px;
-          > span {
-            font-size: 24px;
-            display: inline-block;
-            padding-right: 10px;
+        small{
+          font-size: 14px;
+          margin-left: 10px;
+        }
+      }
+      .el-col-8{
+        padding: 10px  25px 0 30px;
+        border-right: 1px dashed rgba(0,0,0,0.1);
+        min-height: 166px;
+        margin-bottom: 10px;
+        display: table-cell;
+        &:first-child{
+          padding-left: 0;
+        }
+        &:last-child{
+          padding-right: 0;
+          border-right: none;
+        }
+        >div{
+          color: #f68020;
+          margin-bottom: 15px;
+          span{
+            color: #999;
           }
         }
-        > div {
-          width: 100%;
-          overflow: hidden;
-          > div {
-            width: 40%;
-            float: left;
-            padding: 0px 10px;
-            p {
-              padding-top: 30px;
-              font-size: 16px;
-              margin-bottom: 10px;
-              img {
-                margin-right: 5px;
-              }
-              b {
-                color: #f68020;
-                font-weight: 400;
-              }
-              span {
-                color: #999;
-              }
-            }
-            ul {
-              padding: 0px 15px;
-              li {
-                margin: 10px 0px;
-                font-size: 16px;
-                span {
-                  color: #999;
-                }
-                b {
-                  margin-left: 15px;
-                  font-weight: 400;
-                }
-              }
-            }
-          }
-          .lawyerlist_mid {
-            width: 30%;
-            border-left: 1px dotted #ddd;
-            border-right: 1px dotted #ddd;
-            min-height: 185px;
-            ul {
-              padding: 0px 20px;
-            }
-          }
-          .lawyerlist_action {
-            padding: 0px 30px;
-            width: 30%;
-            min-height: 185px;
-            float: left;
-            > span {
-              display: block;
-              padding-top: 30px;
-              color: #999;
-            }
-            > b {
-              display: block;
-              color: #f68020;
-              font-size: 16px;
-              padding: 5px 0px;
-              font-weight: 400;
-            }
-            p {
-              margin: 0px;
-              padding: 5px 0px;
-              color: #999;
-              font-size: 14px;
-            }
-            > div {
-              display: block;
-              padding: 5px 0px;
-              div {
-                display: inline-block;
-                border: 1px solid #ddd;
-                border-radius: 3px;
-                padding: 0px 8px;
-                font-size: 14px;
-                color: #999;
-                img {
-                  margin-right: 5px;
-                }
-              }
-              .active{
-                background: #f68020;
-                color:#fff;
-              }
-            }
-          }
+      }
+      .el-form{
+        .el-form-item{
+          margin-bottom: 10px;
+        }
+      }
+      .practice{
+        .el-form-item{
+          display: inline-block;
+          margin-right: 20px;
+        }
+      }
+      .other{
+        >div{
+          padding: 3px 9px;
+          float: left;
+          margin-right: 10px;
+          color: #666;
+          border: 1px solid #ddd;
+          border-radius: 3px;
+          font-size: 12px;
+          cursor: pointer;
         }
       }
     }
@@ -1043,6 +962,24 @@ ul {
 }
 </style>
 <style lang="scss">
+.lawyerlist{
+  .el-form{
+    .el-form-item__label,.el-form-item__content{
+      line-height: 20px;
+    }
+    .el-form-item__label{
+      color: #999;
+    }
+    .el-form-item__content{
+      color: #333;
+    }
+  }
+  .time{
+    .el-form-item__content{
+      color: #f68020;
+    }
+  }
+}
 .tabselect {
   .el-tabs__item {
     padding: 10px 35px;
