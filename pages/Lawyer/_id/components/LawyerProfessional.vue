@@ -34,9 +34,7 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          left: 'left',
-          top: 'middle',
-          width: 200
+          left: 'left'
         },
         toolbox: {
           show: true,
@@ -79,8 +77,7 @@ export default {
         },
         legend: {
           orient: 'vertical',
-          left: 'left',
-          top: 'middle'
+          left: 'left'
         },
         series: [
           {
