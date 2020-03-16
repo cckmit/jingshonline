@@ -6,11 +6,11 @@
         <el-step title="提供证据"/>
         <el-step title="提交认领"/>
       </el-steps>
-      <el-form ref="form" label-width="0" class="lawyerSelect">
+      <el-form v-show="isStep===0" ref="form" label-width="0" class="lawyerSelect">
         <el-form-item v-for="(item,index) in sourceData" :key="index" :name="index">
           <div class="case-aside-li" style="cursor: pointer;">
             <el-col :span="2" class="case-aside-checkbox">
-              <el-checkbox v-model="selectForm.checked" @change="checkChanged(item.id,index)"/>
+              <el-checkbox v-model="item.checked" @change="checkChanged(item.lawyerId,index)"/>
             </el-col>
             <el-col :span="8" class="case-aside-imgBox">
               <div class="case-aside-img">
@@ -24,25 +24,27 @@
           </div>
         </el-form-item>
       </el-form>
-      <el-form ref="userForm" :model="selectForm" label-position="left" label-width="100px" style=" margin:20px 40px 0 40px;">
+      <el-form v-show="isStep===1" ref="userForm" :model="selectForm" label-position="left" label-width="100px" style=" margin:20px 40px 0 40px;">
         <el-form-item label="头像" prop="avatar">
           <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" />
         </el-form-item>
       </el-form>
-      <el-form :rules="rules" :model="selectForm" label-position="left" label-width="100px">
-        <el-form-item label="联系方式" prop="phone">
+      <el-form ref="selectPhoneForm" :rules="rules" :model="selectForm" label-position="left" label-width="100px">
+        <el-form-item v-show="isStep!==1" label="联系方式" prop="phone">
           <el-input v-model="selectForm.phone" maxlength="11" size="small" clearable placeholder="请输入您的联系方式" />
         </el-form-item>
-        <el-form-item label="上传证件" prop="license">
+      </el-form>
+      <el-form ref="selectLicenseForm" :rules="rules" :model="selectForm" label-position="left" label-width="100px">
+        <el-form-item v-show="isStep!==0" label="上传证件" prop="license">
           <el-input v-model="selectForm.license" size="small" clearable placeholder="律师执业证件照仅支持jpg，png格式" />
           <!-- <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" /> -->
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="backClick">上一步</el-button>
-        <el-button type="primary" @click="nextClick">下一步</el-button>
-        <el-button @click="reviseClick">修改信息</el-button>
-        <el-button type="primary" @click="submit">提交认领</el-button>
+        <el-button v-show="isStep===1" @click="backClick">上一步</el-button>
+        <el-button v-show="isStep!==2" type="primary" @click="nextClick">下一步</el-button>
+        <el-button v-show="isStep===2" @click="reviseClick">修改信息</el-button>
+        <el-button v-show="isStep===2" type="primary" @click="submit">提交认领</el-button>
       </div>
     </div>
   </el-dialog>
@@ -87,7 +89,7 @@ export default {
         checked: ''
       },
       visible: false,
-      isStep: 1,
+      isStep: 0,
       ossOptionForAvatar: {
         fileList: [], // 已上传文件列表  格式 {name:sdf,url:src,fileId:123,uid:1345,status:'success'}
         fileCategory: 3 // 文件类型【0 :JudgmentDocument 裁判文书,1：AgentWord 代理词，2：OtherCaseFile 案件其他材料,3：Avatar 头像,4：LawyerLicence 律师执业证,】
@@ -100,17 +102,39 @@ export default {
     }
   },
   methods: {
-    nextClick() {},
-    backClick() {},
-    reviseClick() {},
-    submit() {},
-    checkChanged(id, index) {
+    nextClick() {
+      if (this.isStep === 0) {
+        this.$refs.selectPhoneForm.validate(valid => {
+          if (valid) {
+            if (this.selectForm.checked === '') {
+              this.$notify({
+                message: '请选择律师',
+                type: 'error'
+              })
+            } else {
+              this.isStep = 1
+            }
+          }
+        })
+      } else if (this.isStep === 1) {
+        this.isStep = 2
+      }
+    },
+    backClick() {
+      this.isStep = 0
+    },
+    reviseClick() {
+      this.isStep = 0
+    },
+    submit() {
+    },
+    checkChanged(lawyerId, index) {
       this.sourceData.forEach(item => {
-        if (item.id !== id) {
+        if (item.lawyerId !== lawyerId) {
           item.checked = false
+          this.selectForm.checked = lawyerId
         }
       })
-      console.log(id)
     },
     close() {
       this.visible = false
