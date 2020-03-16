@@ -55,7 +55,7 @@
           <div class="case-item-article">
             <div>
               <p class="title">【法院观点】</p>
-              <span class="text" v-html="'暂无数据'"/>
+              <span class="text" v-text="'暂无数据'"/>
             </div>
             <div>
               <p class="title">【结果命中】</p>
@@ -178,30 +178,6 @@ export default {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
-          // 检索条件处理--> 按律师当前案例划分检索数据（备用）
-          // if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
-          //   const court = []
-          //   const industry = []
-          //   const practice = []
-          //   this.lawyerCaseList.forEach(item => {
-          //     court.push({
-          //       id: item.courtId,
-          //       label: item.courtName
-          //     })
-
-          //     industry.push({
-          //       id: item.industryId,
-          //       label: item.industryName
-          //     })
-          //     practice.push({
-          //       id: item.practiceAreaId,
-          //       label: item.practiceAreaName
-          //     })
-          //   })
-          //   this.courtData = this.unique(court)
-          //   this.industryTree = this.unique(industry)
-          //   this.practiceAreaData = this.unique(practice)
-          // }
         }
       })
     },
