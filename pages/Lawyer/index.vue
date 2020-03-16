@@ -398,15 +398,15 @@ export default {
         lawfirmId: '', // 所属律所
         practiceAreaId: '', // 擅长领域
         industryId: '', // 擅长行业
-        sorting: 'points', // 排序
-        sortType: 0,
+        sorting: '', // 排序
+        sortType: null,
         regionId: '', // 律师所属地区
         littlePracticeYears: '', // 执业年限小值
         largePracticeYears: '' // 执业年限大值
       },
       yearstart: '', // 年限开始时间
       yearend: '', // 年限结束时间
-      sortactive: 'active', // 默认排序class
+      sortactive: '', // 默认排序class
       caseactive: '', // 案例总数排序class
       selectData: {
         industry: [],
@@ -438,7 +438,9 @@ export default {
       largesettime: '',
       visible: false, // 分享弹框
       url: '', // 分享链接
-      qrimg: '' // 二维码
+      qrimg: '', // 二维码
+      pointsnum: 1, // 排序计次
+      conditioncasecountnum: 0
     }
   },
   computed: {},
@@ -598,26 +600,34 @@ export default {
     },
     sortselect() {
       // 默认排序
-      if (this.sortactive === '') {
+      this.pointsnum += 1
+      if (this.pointsnum % 2 === 0) {
         this.sortactive = 'active'
         this.caseactive = ''
         this.lawyerSearch.sorting = 'points'
+        this.lawyerSearch.sortType = 1
       } else {
-        this.sortactive = ''
-        this.lawyerSearch.sorting = ''
+        this.sortactive = 'active'
+        this.caseactive = ''
+        this.lawyerSearch.sorting = 'points'
+        this.lawyerSearch.sortType = 0
       }
       // 重新请求数据
       this.getLawyer()
     },
     caseselect() {
       // 按照案例数排序
-      if (this.caseactive === '') {
-        this.caseactive = 'active'
+      this.conditioncasecountnum += 1
+      if (this.conditioncasecountnum % 2 === 0) {
         this.sortactive = ''
+        this.caseactive = 'active'
         this.lawyerSearch.sorting = 'conditioncasecount'
+        this.lawyerSearch.sortType = 1
       } else {
-        this.caseactive = ''
-        this.lawyerSearch.sorting = ''
+        this.sortactive = ''
+        this.caseactive = 'active'
+        this.lawyerSearch.sorting = 'conditioncasecount'
+        this.lawyerSearch.sortType = 0
       }
       // 重新请求数据
       this.getLawyer()
