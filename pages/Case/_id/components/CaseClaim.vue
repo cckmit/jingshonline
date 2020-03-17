@@ -6,53 +6,55 @@
         <el-step title="提供证据"/>
         <el-step title="提交认领"/>
       </el-steps>
-      <el-form v-show="isStep===0" ref="form" label-width="0" class="lawyerSelect">
-        <el-form-item v-for="(item,index) in sourceData" :key="index" :name="index">
-          <div class="case-aside-li" style="cursor: pointer;">
-            <el-col :span="2" class="case-aside-checkbox">
-              <el-checkbox v-model="item.checked" @change="checkChanged(item.lawyerId,index)"/>
-            </el-col>
-            <el-col :span="8" class="case-aside-imgBox">
-              <div class="case-aside-img">
-                <img src="@/assets/case/case-avatar.png" alt="">
-              </div>
-            </el-col>
-            <el-col :span="14" class="case-aside-p">
-              <p>{{ item.realName }}</p>
-              <p>{{ item.lawfirmName }}</p>
-            </el-col>
+      <el-form ref="selectForm" :rules="rules" :model="selectForm" label-position="left" label-width="100px" style=" margin:20px 40px 0 40px;">
+        <el-form-item v-if="isStep===0" class="case-lawyerSelect">
+          <div v-for="(item,index) in sourceData" :key="index" :name="index" class="case-select">
+            <div class="case-aside-li" style="cursor: pointer;">
+              <el-col :span="2" class="case-aside-checkbox">
+                <el-checkbox v-model="item.checked" @change="checkChanged(item.lawyerId,index)"/>
+              </el-col>
+              <el-col :span="8" class="case-aside-imgBox">
+                <div class="case-aside-img">
+                  <img src="@/assets/case/case-avatar.png" alt="">
+                </div>
+              </el-col>
+              <el-col :span="14" class="case-aside-p">
+                <p>{{ item.realName }}</p>
+                <p>{{ item.lawfirmName }}</p>
+              </el-col>
+            </div>
           </div>
         </el-form-item>
       </el-form>
-      <el-form v-show="isStep===1" ref="userForm" :model="selectForm" label-position="left" label-width="100px" style=" margin:20px 40px 0 40px;">
-        <el-form-item label="头像" prop="avatar">
+      <el-form ref="selectForm" :rules="rules" :model="selectForm" label-position="left" label-width="100px" style=" margin:20px 40px 0 40px;">
+        <el-form-item v-show="isStep===1" label="头像" prop="avatar" class="claim-avatar">
           <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" />
         </el-form-item>
-      </el-form>
-      <el-form ref="selectPhoneForm" :rules="rules" :model="selectForm" label-position="left" label-width="100px">
-        <el-form-item v-show="isStep!==1" label="联系方式" prop="phone">
+        <el-form-item v-if="isStep!==1" label="联系方式" prop="phone">
           <el-input v-model="selectForm.phone" maxlength="11" size="small" clearable placeholder="请输入您的联系方式" />
         </el-form-item>
-      </el-form>
-      <el-form ref="selectLicenseForm" :rules="rules" :model="selectForm" label-position="left" label-width="100px">
-        <el-form-item v-show="isStep!==0" label="上传证件" prop="license">
-          <el-input v-model="selectForm.license" size="small" clearable placeholder="律师执业证件照仅支持jpg，png格式" />
-          <!-- <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" /> -->
+        <el-form-item v-show="isStep!==0" label="上传证件" prop="license" class="claim-license">
+          <el-input v-if="selectForm.license" size="small" clearable placeholder="律师执业证件照仅支持jpg，png格式" />
+          <el-button v-show="isStep!==0" size="small" type="primary" @click="isLicense=true">点击上传</el-button>
+          <AliYunOss v-if="isLicense" :option="ossOptionForLicence" @change="ossUploadChangeForLicence" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button v-show="isStep===1" @click="backClick">上一步</el-button>
-        <el-button v-show="isStep!==2" type="primary" @click="nextClick">下一步</el-button>
-        <el-button v-show="isStep===2" @click="reviseClick">修改信息</el-button>
-        <el-button v-show="isStep===2" type="primary" @click="submit">提交认领</el-button>
+        <el-button v-if="isStep===1" @click="backClick">上一步</el-button>
+        <el-button v-if="isStep!==2" type="primary" @click="nextClick">下一步</el-button>
+        <el-button v-if="isStep===2" @click="reviseClick">修改信息</el-button>
+        <el-button v-if="isStep===2" type="primary" @click="submit">提交认领</el-button>
       </div>
     </div>
   </el-dialog>
 </template>
 <script>
-// import AliYunOss from '@/components/Oss'
+import AliYunOss from '@/components/Oss'
 export default {
   name: 'CaseClaim',
+  components: {
+    AliYunOss
+  },
   props: {
     sourceVisible: {
       type: Boolean,
@@ -61,7 +63,7 @@ export default {
     sourceData: {
       type: Array,
       default: function() {
-        return []
+        return [{}]
       }
     }
   },
@@ -79,20 +81,26 @@ export default {
         phone: [
           { required: true, trigger: 'blur', message: '联系电话不可为空' },
           { validator: checkTel, trigger: 'blur' }
-        ],
-        license: [
-          { required: true, trigger: 'blur', message: '律师执业证件照不可为空' }
         ]
       },
       selectForm: {
         phone: '',
-        checked: ''
+        checked: '',
+        avatar: '',
+        avatarPathId: '',
+        licenceId: '',
+        licence: ''
       },
       visible: false,
       isStep: 0,
+      isLicense: false,
       ossOptionForAvatar: {
         fileList: [], // 已上传文件列表  格式 {name:sdf,url:src,fileId:123,uid:1345,status:'success'}
         fileCategory: 3 // 文件类型【0 :JudgmentDocument 裁判文书,1：AgentWord 代理词，2：OtherCaseFile 案件其他材料,3：Avatar 头像,4：LawyerLicence 律师执业证,】
+      },
+      ossOptionForLicence: {
+        fileList: [], // 已上传文件列表  格式 {name:sdf,url:src,fileId:123,uid:1345,status:'success'}
+        fileCategory: 4 // 文件类型【0 :JudgmentDocument 裁判文书,1：AgentWord 代理词，2：OtherCaseFile 案件其他材料,3：Avatar 头像,4：LawyerLicence 律师执业证,】
       }
     }
   },
@@ -104,7 +112,8 @@ export default {
   methods: {
     nextClick() {
       if (this.isStep === 0) {
-        this.$refs.selectPhoneForm.validate(valid => {
+        this.selectForm.licence = '1'
+        this.$refs.selectForm.validate(valid => {
           if (valid) {
             if (this.selectForm.checked === '') {
               this.$notify({
@@ -117,7 +126,18 @@ export default {
           }
         })
       } else if (this.isStep === 1) {
-        this.isStep = 2
+        this.$refs.selectForm.validate(valid => {
+          if (valid) {
+            if (this.selectForm.avatar === '') {
+              this.$notify({
+                message: '请上传头像',
+                type: 'error'
+              })
+            } else {
+              this.isStep = 2
+            }
+          }
+        })
       }
     },
     backClick() {
@@ -141,8 +161,13 @@ export default {
       this.$emit('operate', this.visible)
     },
     ossUploadChangeForAvatar(val) {
-      // this.userForm.avatar = val.length >= 1 ?  val[0].url : ''
-      // this.userForm.avatarPathId = val.length >= 1 ?  val[0].fileId : ''
+      console.log(val)
+      this.selectForm.avatar = val.length >= 1 ? val[0].url : ''
+      this.selectForm.avatarPathId = val.length >= 1 ? val[0].fileId : ''
+    },
+    ossUploadChangeForLicence(val) {
+      this.selectForm.licence = val.length >= 1 ? val[0].url : ''
+      this.selectForm.licenceId = val.length >= 1 ? val[0].fileId : ''
     }
   }
 }
@@ -173,9 +198,15 @@ img{
 }
 }
 // 案件认领
-.lawyerSelect{
+.case-lawyerSelect{
   margin:30px 0;
   width: 100%;
+  .el-form--label-left{
+    margin-left: 0 !important;
+  }
+  .el-form-item__content{
+    margin-left: 0 !important;
+  }
     .case-aside-imgBox{
 .case-aside-claim{
   position: absolute;
@@ -220,7 +251,7 @@ img{
 
 }
 
-.el-form-item
+.case-select
 {
     margin-bottom: 0;
     border: solid 1px rgba(217, 217, 217, 0.3);

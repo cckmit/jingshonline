@@ -260,7 +260,7 @@ export default {
       isFollow: false,
       caseInfoData: [],
       claimsVisible: false, // 弹框
-      claim: {}, // 认领案例
+      claim: [], // 认领案例
       // activities: [{
       //   id: 'client',
       //   title: '概要信息'
