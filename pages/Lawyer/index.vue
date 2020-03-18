@@ -398,15 +398,15 @@ export default {
         lawfirmId: '', // 所属律所
         practiceAreaId: '', // 擅长领域
         industryId: '', // 擅长行业
-        sorting: '', // 排序
-        sortType: null,
+        sorting: 'points', // 排序
+        sortType: 0,
         regionId: '', // 律师所属地区
         littlePracticeYears: '', // 执业年限小值
         largePracticeYears: '' // 执业年限大值
       },
       yearstart: '', // 年限开始时间
       yearend: '', // 年限结束时间
-      sortactive: '', // 默认排序class
+      sortactive: 'active', // 默认排序class
       caseactive: '', // 案例总数排序class
       selectData: {
         industry: [],
@@ -824,6 +824,7 @@ ul {
       cursor: pointer;
       span {
         color: #666;
+        text-decoration: underline;
       }
     }
   }
@@ -1020,6 +1021,9 @@ ul {
           font-weight: 400;
           padding: 10px 15px;
         }
+        .el-button:focus,.el-button:hover{
+          background: none;
+        }
       }
     }
   }
@@ -1048,7 +1052,7 @@ ul {
     li {
       .el-input {
         display: inline-block;
-        width: 50px;
+        width: 40px;
       }
       .el-input--small .el-input__inner {
         height: 20px;
