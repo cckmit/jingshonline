@@ -236,11 +236,7 @@ export default {
     if (from.path !== '/') {
       next(vm => {
         const lawyerId = vm.$route.params.id
-        vm.LawyerClickCount(lawyerId).then(res => {
-          if (res === 'ok') {
-            console.log('律师访问+1')
-          }
-        })
+        vm.LawyerClickCount(lawyerId).then(res => {})
       })
     } else {
       next()
