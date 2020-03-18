@@ -100,10 +100,6 @@ export default {
 
     }
   },
-  computed: {
-  },
-  watch: {
-  },
   created() {
     if (this.chartData.practicea && this.chartData.practicea.length > 0) {
       this.chartData.practicea.forEach(item => {

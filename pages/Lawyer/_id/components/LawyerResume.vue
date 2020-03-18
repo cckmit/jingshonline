@@ -96,16 +96,6 @@ export default {
         return ''
       }
     }
-  },
-  data() {
-    return {
-    }
-  },
-
-  watch: {},
-  mounted() {
-  },
-  methods: {
   }
 }
 </script>
