@@ -369,7 +369,8 @@ export default {
       NosuitsData: NosuitsData.data.data[0].children, // .data[0].children,
       industryData: industryData.data.data,
       regionData: regionData.data.data,
-      lawfirmData: lawfirmData.data.data
+      lawfirmData: lawfirmData.data.data,
+      totalCount: lawyerData.data.data.totalCount
     }
   },
   props: {
