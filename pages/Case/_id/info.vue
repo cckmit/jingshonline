@@ -207,7 +207,7 @@
           </div>
         </div>
         <!-- /*相关案例 -->
-        <!-- <div class="case-aside-main case-aside-xgal case-border">
+        <div class="case-aside-main case-aside-xgal case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
@@ -220,7 +220,7 @@
               </li>
             </ul>
           </div>
-        </div> -->
+        </div>
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
