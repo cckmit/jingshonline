@@ -29,8 +29,9 @@
       </el-form>
       <!-- 上传头像 -->
       <el-form ref="uploadAvatarForm" :rules="uploadAvatarRules" :model="uploadAvatarForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep===1" label="头像" prop="avatar" class="claim-avatar">
+        <el-form-item v-show="isStep===1" prop="avatar" class="claim-avatar">
           <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" />
+          <p style="color: #d84714;">温馨提示:请上传个人真实头像.</p>
         </el-form-item>
       </el-form>
       <!-- 展示头像，律师 -->
@@ -39,7 +40,7 @@
           <div v-for="(item,index) in sourceData" v-show="item.checked" :key="index" :name="index" class="case-select" >
             <div class="case-aside-li" style="cursor: pointer;">
               <el-col :span="2" class="case-aside-checkbox">
-                <el-checkbox v-model="item.checked" @change="checkChanged(item.lawyerId,index)"/>
+                <el-checkbox v-model="item.checked" disabled @change="checkChanged(item.lawyerId,index)"/>
               </el-col>
               <el-col :span="8" class="case-aside-imgBox">
                 <div class="case-aside-img">
@@ -53,23 +54,27 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item v-show="isStep===2" label="头像" prop="avatar" class="claim-avatar">
-          <img :src="caseClaimForm.avatar" alt="">
+        <el-form-item v-show="isStep===2" prop="avatar" class="claim-avatar">
+          <el-row>
+            <el-col :span="6" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:150px;height:150px"><p>150*150</p></el-col>
+            <el-col :span="6" :offset="5" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:78px;height:78px;margin-top:70px"><p>78*78</p></el-col>
+            <el-col :span="3" :offset="3" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:48px;height:48px;margin-top:90px"><p>48*48</p></el-col>
+          </el-row>
         </el-form-item>
       </el-form>
       <!-- 公用联系方式 -->
       <el-form ref="phoneSelectForm" :rules="phoneSelectRules" :model="phoneSelectForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep!==1" label="联系方式" prop="phone">
+        <el-form-item v-show="isStep!==1" label="联系方式" prop="phone" style="margin-left:10px">
           <el-input v-model="phoneSelectForm.phone" :disabled="isStep===2" maxlength="11" size="small" clearable placeholder="请输入您的联系方式" />
         </el-form-item>
       </el-form>
       <!-- 公用证件 -->
       <el-form ref="uploadLicenceForm" :rules="uploadLicenceRules" :model="uploadLicenceForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep!==0" label="上传证件" prop="license" class="claim-license">
-          <el-row :gutter="20">
-            <el-col :span="20"> <el-input v-model="uploadLicenceForm.licenseName" :disabled="isStep===2" size="small" clearable placeholder="律师执业证件照仅支持jpg，png格式" />
+        <el-form-item v-show="isStep!==0" label="上传证件" prop="licenseName" class="claim-license" style="margin-left:10px">
+          <el-row>
+            <el-col :span="20"> <el-input v-model="uploadLicenceForm.licenseName" :disabled="isStep===2" size="small" placeholder="律师执业证件照仅支持jpg，png格式" />
             </el-col>
-            <el-col :span="2"><el-button v-show="isStep===1" size="small" type="primary" @click="isLicense=true">点击上传</el-button>
+            <el-col :span="2" :offset="1"><el-button v-show="isStep===1" size="small" type="primary" @click="isLicense=true">点击上传</el-button>
             </el-col>
           </el-row>
           <AliYunOss v-if="isLicense" :option="ossOptionForLicence" @change="ossUploadChangeForLicence" />
@@ -120,9 +125,9 @@ export default {
         ]
       },
       uploadLicenceRules: {
-        // license: [
-        //   { required: true, trigger: 'blur', message: '不可为空' }
-        // ]
+        licenseName: [
+          { required: true, message: '不可为空' }
+        ]
       },
       lawyerSelectRules: {
         lawyerSelect: [
@@ -130,9 +135,9 @@ export default {
         ]
       },
       uploadAvatarRules: {
-        // avatar: [
-        //   { required: true, trigger: 'blur', message: '不可为空' }
-        // ]
+        avatar: [
+          { required: true, trigger: 'blur', message: '不可为空' }
+        ]
       },
       lawyerSelectForm: {
         lawyerSelect: ''
@@ -166,6 +171,7 @@ export default {
         fileCategory: 3 // 文件类型【0 :JudgmentDocument 裁判文书,1：AgentWord 代理词，2：OtherCaseFile 案件其他材料,3：Avatar 头像,4：LawyerLicence 律师执业证,】
       },
       ossOptionForLicence: {
+        type: 'primary', // 文件上传样式类型（非el-upload所需）
         fileList: [], // 已上传文件列表  格式 {name:sdf,url:src,fileId:123,uid:1345,status:'success'}
         fileCategory: 4 // 文件类型【0 :JudgmentDocument 裁判文书,1：AgentWord 代理词，2：OtherCaseFile 案件其他材料,3：Avatar 头像,4：LawyerLicence 律师执业证,】
       }
@@ -196,6 +202,7 @@ export default {
             this.$refs.uploadLicenceForm.validate(valid => {
               if (valid) {
                 this.isStep = 2
+                this.isLicense = false
                 this.caseClaimForm.avatar = this.uploadAvatarForm.avatar
                 this.caseClaimForm.avatarPathId = this.uploadAvatarForm.avatarPathId
                 this.caseClaimForm.licenseName = this.uploadLicenceForm.licenseName
@@ -214,6 +221,8 @@ export default {
       this.isStep = 0
     },
     submit() {
+      console.log(this.caseClaimForm)
+      this.visible = false
     },
     checkChanged(lawyerId, index) {
       this.sourceData.forEach(item => {
@@ -228,18 +237,17 @@ export default {
       this.$emit('operate', this.visible)
     },
     ossUploadChangeForAvatar(val) {
-      console.log(val)
-      this.uploadAvatarForm.avatar = val.length >= 1 ? val[0].path : ''
-      this.caseClaimForm.avatar = val.length >= 1 ? val[0].path : ''
+      this.uploadAvatarForm.avatar = val.length >= 1 ? val[0].url : ''
+      this.caseClaimForm.avatar = val.length >= 1 ? val[0].url : ''
       this.uploadAvatarForm.avatarPathId = val.length >= 1 ? val[0].fileId : ''
       this.caseClaimForm.avatarPathId = val.length >= 1 ? val[0].fileId : ''
     },
     ossUploadChangeForLicence(val) {
-      console.log(val)
-      this.uploadLicenceForm.licenseName = this.ossOptionForLicence.fileList[0].name
-      this.uploadLicenceForm.licence = val.length >= 1 ? val[0].path : ''
-      this.caseClaimForm.licence = val.length >= 1 ? val[0].path : ''
-      this.caseClaimForm.licenseName = val.length >= 1 ? val[0].path : ''
+      this.isLicense = false
+      this.uploadLicenceForm.licenseName = val.length >= 1 ? val[0].name : ''
+      this.uploadLicenceForm.licence = val.length >= 1 ? val[0].url : ''
+      this.caseClaimForm.licence = val.length >= 1 ? val[0].url : ''
+      this.caseClaimForm.licenseName = val.length >= 1 ? val[0].name : ''
       this.uploadLicenceForm.licenceId = val.length >= 1 ? val[0].fileId : ''
       this.caseClaimForm.licenceId = val.length >= 1 ? val[0].fileId : ''
       this.caseClaimForm.licenseName = val.length >= 1 ? val[0].fileId : ''
@@ -248,6 +256,7 @@ export default {
 }
 </script>
 <style lang='scss'>
+
 // 案件认领
 .case-lawyerSelect{
   .el-form--label-left{
@@ -267,6 +276,11 @@ export default {
     border-color:#f68020 !important;
   }
 
+}
+.case-claim{
+  .el-input--suffix{
+  width:280px !important;
+}
 }
 </style>
 <style lang='scss' scoped>
