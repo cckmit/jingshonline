@@ -110,15 +110,6 @@ export default {
       follow: this.isFollow
     }
   },
-  computed: {
-
-  },
-  watch: {
-
-  },
-  mounted() {
-
-  },
   methods: {
     // 用户关注律师 取消关注
     ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),

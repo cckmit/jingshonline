@@ -34,7 +34,7 @@
           <h4>业务专长</h4>
           <div v-if="lawyerBusiness.length">
             <ul class="lawyer-business">
-              <li v-for="(item,index) in lawyerBusiness" :key="index"><a href=":javascript">{{ item }}</a></li>
+              <li v-for="(item,index) in lawyerBusiness" :key="index"><a href="javascript:void(0);">{{ item }}</a></li>
             </ul>
           </div>
           <p v-else>暂无数据</p>
@@ -236,11 +236,7 @@ export default {
     if (from.path !== '/') {
       next(vm => {
         const lawyerId = vm.$route.params.id
-        vm.LawyerClickCount(lawyerId).then(res => {
-          if (res === 'ok') {
-            console.log('律师访问+1')
-          }
-        })
+        vm.LawyerClickCount(lawyerId).then(res => {})
       })
     } else {
       next()

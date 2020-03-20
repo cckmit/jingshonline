@@ -369,7 +369,8 @@ export default {
       NosuitsData: NosuitsData.data.data[0].children, // .data[0].children,
       industryData: industryData.data.data,
       regionData: regionData.data.data,
-      lawfirmData: lawfirmData.data.data
+      lawfirmData: lawfirmData.data.data,
+      totalCount: lawyerData.data.data.totalCount
     }
   },
   props: {
@@ -437,7 +438,9 @@ export default {
       largesettime: '',
       visible: false, // 分享弹框
       url: '', // 分享链接
-      qrimg: '' // 二维码
+      qrimg: '', // 二维码
+      pointsnum: 1, // 排序计次
+      conditioncasecountnum: 0
     }
   },
   computed: {},
@@ -597,26 +600,34 @@ export default {
     },
     sortselect() {
       // 默认排序
-      if (this.sortactive === '') {
+      this.pointsnum += 1
+      if (this.pointsnum % 2 === 0) {
         this.sortactive = 'active'
         this.caseactive = ''
         this.lawyerSearch.sorting = 'points'
+        this.lawyerSearch.sortType = 1
       } else {
-        this.sortactive = ''
-        this.lawyerSearch.sorting = ''
+        this.sortactive = 'active'
+        this.caseactive = ''
+        this.lawyerSearch.sorting = 'points'
+        this.lawyerSearch.sortType = 0
       }
       // 重新请求数据
       this.getLawyer()
     },
     caseselect() {
       // 按照案例数排序
-      if (this.caseactive === '') {
-        this.caseactive = 'active'
+      this.conditioncasecountnum += 1
+      if (this.conditioncasecountnum % 2 === 0) {
         this.sortactive = ''
+        this.caseactive = 'active'
         this.lawyerSearch.sorting = 'conditioncasecount'
+        this.lawyerSearch.sortType = 1
       } else {
-        this.caseactive = ''
-        this.lawyerSearch.sorting = ''
+        this.sortactive = ''
+        this.caseactive = 'active'
+        this.lawyerSearch.sorting = 'conditioncasecount'
+        this.lawyerSearch.sortType = 0
       }
       // 重新请求数据
       this.getLawyer()
@@ -813,6 +824,7 @@ ul {
       cursor: pointer;
       span {
         color: #666;
+        text-decoration: underline;
       }
     }
   }
@@ -1009,6 +1021,9 @@ ul {
           font-weight: 400;
           padding: 10px 15px;
         }
+        .el-button:focus,.el-button:hover{
+          background: none;
+        }
       }
     }
   }
@@ -1037,7 +1052,7 @@ ul {
     li {
       .el-input {
         display: inline-block;
-        width: 50px;
+        width: 40px;
       }
       .el-input--small .el-input__inner {
         height: 20px;
