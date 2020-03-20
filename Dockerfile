@@ -2,7 +2,6 @@ FROM node:12.13.0 as build
 LABEL maintainer="jingshonline@jingshonline.com"
 
 WORKDIR /src
-
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org 
 
 COPY . .
@@ -30,4 +29,5 @@ COPY --from=build /src  .
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "npm","run" ]
+CMD [ "start"]
