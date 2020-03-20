@@ -1,6 +1,18 @@
 <template>
   <div>
-    UserCenter caselist
+    <el-row>
+      <el-col :span="6" style="background:#fff;height:540px;">
+        条件筛选
+      </el-col>
+      <el-col :span="18">
+        <div style="background:#fff;height:70px;margin-bottom:20px;margin-left:24px;">
+          排序
+        </div>
+        <div style="background:#fff;height:1200px;margin-left:24px;">
+          案件列表
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
