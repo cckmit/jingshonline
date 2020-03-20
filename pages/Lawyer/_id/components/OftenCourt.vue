@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="no-data">
       暂无律师常去法院数据
     </div>
   </div>
@@ -106,6 +106,12 @@ export default {
         }
       }
     }
+  }
+  .no-data{
+    margin-top: 100px;
+    text-align: center;
+    font-size: 32px;
+    color: #ccc;
   }
 }
 </style>
