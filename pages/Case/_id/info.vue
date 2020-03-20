@@ -187,33 +187,19 @@
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
-          <div >
+          <div @click="claimsVisible=true,claim=caseInfoData.lawyers">
             <el-form ref="form" label-width="0">
-              <el-form-item>
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
+              <el-form-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
+                <div class="case-aside-li" style="cursor: pointer;">
+                  <el-col :span="8" class="case-aside-imgBox">
                     <div class="case-aside-img">
                       <img src="@/assets/case/case-avatar.png" alt="">
                       <div class="case-aside-claim">我要认领</div>
                     </div>
                   </el-col>
                   <el-col :span="15" class="case-aside-p">
-                    <p>朱晓彬</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </el-form-item>
-              <el-form-item>
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-claim">我要认领</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>朱晓彬</p>
-                    <p>北京市京师律师事务所</p>
+                    <p>{{ item.realName }}</p>
+                    <p>{{ item.lawfirmName }}</p>
                   </el-col>
                 </div>
               </el-form-item>
@@ -226,22 +212,19 @@
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
           <div class="case-aside-desc">
-            <el-form ref="form" label-width="0">
-              <el-form-item class="case-font-hover">1 、 叶#胜等人不服“某甲县政府"行政强制拆除（房屋）财产纠纷关于行政诉讼案 </el-form-item>
-              <el-form-item> 2 、 遵义市红花岗区某甲局与遵义市某丙工程有限责任公司关于土地行政管理行政登记案 </el-form-item>
-              <el-form-item> 3 、 遵义市红花岗区某甲局与遵义市某乙局及遵义市某丙工程有限公司，遵义某丁实业有限公司关于行政诉讼案</el-form-item>
-              <el-form-item>5 、 齐保良与北京市住房和城乡建设委员会关于房屋行政登记案 </el-form-item>
-              <el-form-item> 6 、 陈光勇与贵阳市南明区城市综合执法局城建关于行政管理行政处罚一案</el-form-item>
-              <el-form-item> 7 、 张爱梅与漯河市召陵区城市管理委员会办公室关于不服强制拆除房屋行政行为案   </el-form-item>
-              <el-form-item> 8 、 奉节县万富建材厂与奉节县人民政府及奉节县西部新区管理委员会,奉节县国土资源和房屋管理局,奉节县规划局,奉节县朱衣镇人民政府关于确认行政行为违法案   </el-form-item>
-              <el-form-item> 9 、 刘梅瑞,蒋金瑞,赵顺法,马增荣,马文其与杭州市国土资源局及杭州市拱墅区京杭运河综合整治与保护开发指挥部关于拆迁行政许可案   </el-form-item>
-              <el-form-item>10 、郑银花与北京市住房和城乡建设委员会及白春生,白志增,郑粟杰,北京万柳置业集团有限公司,梁帅关于房屋登记行为案   </el-form-item>
-            </el-form>
+            <ul>
+              <li v-for="(item, index) in caseInfoData.lawyers" :key="index">
+                <nuxt-link :to="`/case/${item.id}/info`">
+                  <p> {{ index+1 }}.{{ item.lawfirmName }}</p>
+                </nuxt-link>
+              </li>
+            </ul>
           </div>
         </div>
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
+    <case-claim :source-data="claim" :source-visible="claimsVisible" @operate="claims" />
   </div>
 </template>
 
@@ -251,6 +234,7 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 import errorImg from '@/assets/case/case-avatar.png'
+import CaseClaim from './components/CaseClaim'
 export default {
   layout: 'case',
   head() {
@@ -262,7 +246,8 @@ export default {
     }
   },
   components: {
-    ExtraWrap
+    ExtraWrap,
+    CaseClaim
   },
 
   data() {
@@ -274,6 +259,8 @@ export default {
       activeNames: 0,
       isFollow: false,
       caseInfoData: [],
+      claimsVisible: false, // 弹框
+      claim: [], // 认领案例
       // activities: [{
       //   id: 'client',
       //   title: '概要信息'
@@ -378,6 +365,10 @@ export default {
     // 下载事件
     download() {
       console.log('下载')
+    },
+    claims() {
+      this.claimsVisible = false
+      // this.getcaseInfoData()
     }
   }
 }
@@ -488,10 +479,13 @@ margin-bottom: 0;
   border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
 }
 .case-aside-desc{
-  padding: 15px;
-  line-height: 30px;
+  margin:10px 0;
+  p{
+    padding:5px 15px;
 	letter-spacing: 0px;
 	color: #666666;
+  }
+  p:hover{ color:#f68020;}
 }
 
 // 相关案例
