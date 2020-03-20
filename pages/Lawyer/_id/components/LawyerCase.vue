@@ -38,7 +38,7 @@
       <span :class="activeIndex === 3 ? 'filter-active' : ''" @click="filterChange('followerCount')">收藏数量</span>
       <i/>
     </div>
-    <div class="lawyer-case-list">
+    <div v-if="lawyerCaseList.length" class="lawyer-case-list">
       <div v-for="(item,index) in lawyerCaseList" :key="index" class="lawyer-case-list-item">
         <nuxt-link :to="'/case/'+item.id+'/info'">
           <div v-if="item.highlight.title" class="case-item-title">{{ item.highlight.title[0] }}</div>
@@ -55,7 +55,7 @@
           <div class="case-item-article">
             <div>
               <p class="title">【法院观点】</p>
-              <span class="text" v-html="'暂无数据'"/>
+              <span class="text" v-text="'暂无数据'"/>
             </div>
             <div>
               <p class="title">【结果命中】</p>
@@ -71,6 +71,9 @@
           <i v-if="item.isClassicCase" class="classic"/>
         </nuxt-link>
       </div>
+    </div>
+    <div v-else class="no-data">
+      暂无相关案例
     </div>
     <!-- <el-dialog :visible.sync="shareVisible" top="35vh" width="400px" title="分享">
       <div class="share">
@@ -88,11 +91,8 @@
 <script>
 import Pagination from '@/components/Pagination/index'
 import { mapActions } from 'vuex'
-// import the component
 import Treeselect from '@riophae/vue-treeselect'
-// import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-// import QRCode from 'qrcode'
 export default {
   name: 'LawyerCase',
   components: {
@@ -127,7 +127,7 @@ export default {
       activeIndex: 1,
       // 分页器
       totalCount: 10,
-      // 获取认证案例所需参数 必传
+      // 获取认证案例所需参数
       caseListParam: {
         practiceAreaId: undefined, // 领域Id number 【诉讼领域,非诉讼领域】
         searchKey: '', // 搜索关键字: 支持(当事人、律师、专业领域、案由、法院、律所、裁判文书关键字) string
@@ -178,30 +178,6 @@ export default {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
-          // 检索条件处理--> 按律师当前案例划分检索数据（备用）
-          // if (this.courtData.length === 0 && this.industryTree.length === 0 && this.practiceAreaData.length === 0) {
-          //   const court = []
-          //   const industry = []
-          //   const practice = []
-          //   this.lawyerCaseList.forEach(item => {
-          //     court.push({
-          //       id: item.courtId,
-          //       label: item.courtName
-          //     })
-
-          //     industry.push({
-          //       id: item.industryId,
-          //       label: item.industryName
-          //     })
-          //     practice.push({
-          //       id: item.practiceAreaId,
-          //       label: item.practiceAreaName
-          //     })
-          //   })
-          //   this.courtData = this.unique(court)
-          //   this.industryTree = this.unique(industry)
-          //   this.practiceAreaData = this.unique(practice)
-          // }
         }
       })
     },
@@ -293,19 +269,12 @@ export default {
 
 <style lang="scss">
 .no-select{
-
   -webkit-touch-callout: none; /* iOS Safari */
-
   -webkit-user-select: none; /* Chrome/Safari/Opera */
-
   -khtml-user-select: none; /* Konqueror */
-
   -moz-user-select: none; /* Firefox */
-
   -ms-user-select: none; /* Internet Explorer/Edge */
-
   user-select: none; /* Non-prefixed version, currently not supported by any browser */
-
 }
 .lawyer-case{
   padding-bottom: 24px;
@@ -592,6 +561,11 @@ export default {
     img{
       width: 100px;
     }
+  }
+  .no-data{
+    margin-top: 100px;
+    text-align: center;
+    font-size: 32px;
   }
 }
 
