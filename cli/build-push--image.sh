@@ -35,7 +35,7 @@ clear_images=''
 image_tag='latest'
 docker_user=''
 docker_pwd=''
-env='prod'
+deploy_env='prod'
 workdir=$(
     cd $(dirname $0)
     pwd
@@ -58,7 +58,7 @@ while [[ $# -gt 0 ]]; do
         docker_pwd="$2" shift 2
         ;;
     -e | --env)
-        env="$2" shift 2
+        deploy_env="$2" shift 2
         ;;        
     -pr | --docker-project )
        docker_project="$2" shift 2
@@ -89,7 +89,8 @@ if [[ -z "${container_registry}" ]]; then
 fi
 
 echo "#################### 设置打包的环境 ####################"
-grep "{{env}}" --include="docker-compose.yml" -rl ../ | xargs -r sed -i "s/{{env}}/${env}/g" || true
+echo "指定的部署环境为${deploy_env}"
+grep "{{env}}" --include="docker-compose.yml" -rl ../ | xargs -r sed -i "s/{{env}}/${deploy_env}/g" || true
 
 
 echo "指定docker镜像的tag为${image_tag}"
