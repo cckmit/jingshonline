@@ -40,7 +40,7 @@
           <div v-for="(item,index) in sourceData" v-show="item.checked" :key="index" :name="index" class="case-select" >
             <div class="case-aside-li" style="cursor: pointer;">
               <el-col :span="2" class="case-aside-checkbox">
-                <el-checkbox v-model="item.checked" disabled @change="checkChanged(item.lawyerId,index)"/>
+                <el-checkbox v-model="item.checked" disabled/>
               </el-col>
               <el-col :span="8" class="case-aside-imgBox">
                 <div class="case-aside-img">
@@ -54,7 +54,7 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item v-show="isStep===2" prop="avatar" class="claim-avatar">
+        <el-form-item v-show="isStep===2" class="claim-avatar">
           <el-row>
             <el-col :span="6" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:150px;height:150px"><p>150*150</p></el-col>
             <el-col :span="6" :offset="5" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:78px;height:78px;margin-top:70px"><p>78*78</p></el-col>
@@ -225,12 +225,16 @@ export default {
       this.visible = false
     },
     checkChanged(lawyerId, index) {
-      this.sourceData.forEach(item => {
-        if (item.lawyerId !== lawyerId) {
-          item.checked = false
-          this.lawyerSelectForm.lawyerSelect = lawyerId
-        }
-      })
+      if (this.sourceData.length > 1) {
+        this.sourceData.forEach(item => {
+          if (item.lawyerId !== lawyerId) {
+            item.checked = false
+            this.lawyerSelectForm.lawyerSelect = lawyerId
+          }
+        })
+      } else if (this.sourceData.length === 1) {
+        this.lawyerSelectForm.lawyerSelect = lawyerId
+      }
     },
     close() {
       this.visible = false
