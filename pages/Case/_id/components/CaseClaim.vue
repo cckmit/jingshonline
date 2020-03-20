@@ -126,35 +126,35 @@ export default {
       },
       uploadLicenceRules: {
         licenseName: [
-          { required: true, message: '不可为空' }
+          { required: true, message: '律师执业证件照不可为空' }
         ]
       },
       lawyerSelectRules: {
         lawyerSelect: [
-          { required: true, trigger: 'blur', message: '不可为空' }
+          { required: true, trigger: 'blur', message: '此选项不可为空' }
         ]
       },
       uploadAvatarRules: {
         avatar: [
-          { required: true, trigger: 'blur', message: '不可为空' }
+          { required: true, trigger: 'blur', message: '头像不可为空' }
         ]
       },
-      lawyerSelectForm: {
+      lawyerSelectForm: { // 律师
         lawyerSelect: ''
       },
-      uploadAvatarForm: {
+      uploadAvatarForm: { // 头像
         avatar: '',
         avatarPathId: ''
       },
-      phoneSelectForm: {
+      phoneSelectForm: { // 手机
         phone: ''
       },
-      uploadLicenceForm: {
+      uploadLicenceForm: { // 律师执业证件照
         licenseName: '',
         licenceId: '',
         licence: ''
       },
-      caseClaimForm: {
+      caseClaimForm: { // 总字段
         avatar: '',
         avatarPathId: '',
         lawyerSelect: '',
@@ -183,7 +183,7 @@ export default {
     }
   },
   methods: {
-    nextClick() {
+    nextClick() { // 下一步
       if (this.isStep === 0) {
         this.$refs.lawyerSelectForm.validate(valid => {
           if (valid) {
@@ -214,17 +214,17 @@ export default {
         })
       }
     },
-    backClick() {
+    backClick() { // 上一步
       this.isStep = 0
     },
-    reviseClick() {
+    reviseClick() { // 修改
       this.isStep = 0
     },
-    submit() {
+    submit() { // 提交
       console.log(this.caseClaimForm)
       this.visible = false
     },
-    checkChanged(lawyerId, index) {
+    checkChanged(lawyerId, index) { // checkBox点击事件
       if (this.sourceData.length > 1) {
         this.sourceData.forEach(item => {
           if (item.lawyerId !== lawyerId) {
@@ -236,7 +236,7 @@ export default {
         this.lawyerSelectForm.lawyerSelect = lawyerId
       }
     },
-    close() {
+    close() { // 关闭
       this.visible = false
       this.$emit('operate', this.visible)
     },
