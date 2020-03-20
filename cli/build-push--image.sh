@@ -89,7 +89,7 @@ if [[ -z "${container_registry}" ]]; then
 fi
 
 echo "#################### 设置打包的环境 ####################"
-grep "{{env}}" --include="*.yml" -rl ./ | xargs -r sed -i "s/{{env}}/${env}/g" || true
+grep "{{env}}" --include="docker-compose.yml" -rl ../ | xargs -r sed -i "s/{{env}}/${env}/g" || true
 
 
 echo "指定docker镜像的tag为${image_tag}"
