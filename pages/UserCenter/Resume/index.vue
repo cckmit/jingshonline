@@ -23,7 +23,7 @@
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
-  // middleware: 'auth',
+  middleware: 'auth',
   head() {
     return {
       title: '用户中心-律师简介',

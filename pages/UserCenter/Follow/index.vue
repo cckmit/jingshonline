@@ -7,7 +7,7 @@
 export default {
   layout: 'userCenter',
   name: 'UserCenterFollow',
-  // middleware: 'auth',
+  middleware: 'auth',
   head() {
     return {
       title: '用户中心-关注律师',

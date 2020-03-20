@@ -1,6 +1,6 @@
 <template>
   <div>
-    UserInfo
+    UserCenter Auth
   </div>
 </template>
 <script>
@@ -10,7 +10,7 @@ export default {
   middleware: 'auth',
   head() {
     return {
-      title: '用户中心',
+      title: '用户中心-律师审核',
       meta: [
         { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]

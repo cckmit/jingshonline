@@ -27,7 +27,7 @@
 export default {
   layout: 'userCenter',
   name: 'UserCenterSetting',
-  // middleware: 'auth',
+  middleware: 'auth',
   head() {
     return {
       title: '用户中心-个人设置',

@@ -33,7 +33,7 @@
 export default {
   layout: 'userCenter',
   name: 'UserCenterCaseStatistical',
-  // middleware: 'auth',
+  middleware: 'auth',
   head() {
     return {
       title: '用户中心-案件统计',
