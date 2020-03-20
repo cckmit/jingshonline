@@ -52,16 +52,20 @@ while [[ $# -gt 0 ]]; do
         shift 2
         ;;
     -u | --docker-user)
-        docker_user="$2" shift 2
+        docker_user="$2"
+        shift 2
         ;;
     -p | --docker-pwd)
-        docker_pwd="$2" shift 2
+        docker_pwd="$2"
+        shift 2
         ;;
     -e | --env)
-        deploy_env="$2" shift 2
+        deploy_env="$2" 
+        shift 2
         ;;        
     -pr | --docker-project )
-       docker_project="$2" shift 2
+       docker_project="$2" 
+       shift 2
        ;;        
     --skip-image-push)
         push_image=''
