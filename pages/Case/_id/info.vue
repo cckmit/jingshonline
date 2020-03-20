@@ -183,14 +183,14 @@
           </el-collapse>
         </div>
         <!-- /* 案件认领-->
-        <!-- <div class="case-aside-main case-aside-ajrl case-border">
+        <div class="case-aside-main case-aside-ajrl case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
-          <div >
+          <div @click="claimsVisible=true,claim=caseInfoData.lawyers">
             <el-form ref="form" label-width="0">
               <el-form-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
-                <div class="case-aside-li">
+                <div class="case-aside-li" style="cursor: pointer;">
                   <el-col :span="8" class="case-aside-imgBox">
                     <div class="case-aside-img">
                       <img src="@/assets/case/case-avatar.png" alt="">
@@ -205,9 +205,9 @@
               </el-form-item>
             </el-form>
           </div>
-        </div> -->
+        </div>
         <!-- /*相关案例 -->
-        <!-- <div class="case-aside-main case-aside-xgal case-border">
+        <div class="case-aside-main case-aside-xgal case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
@@ -220,10 +220,11 @@
               </li>
             </ul>
           </div>
-        </div> -->
+        </div>
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
+    <case-claim :source-data="claim" :source-visible="claimsVisible" @operate="claims" />
   </div>
 </template>
 
@@ -233,6 +234,7 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 import errorImg from '@/assets/case/case-avatar.png'
+import CaseClaim from './components/CaseClaim'
 export default {
   layout: 'case',
   head() {
@@ -244,7 +246,8 @@ export default {
     }
   },
   components: {
-    ExtraWrap
+    ExtraWrap,
+    CaseClaim
   },
 
   data() {
@@ -256,6 +259,8 @@ export default {
       activeNames: 0,
       isFollow: false,
       caseInfoData: [],
+      claimsVisible: false, // 弹框
+      claim: [], // 认领案例
       // activities: [{
       //   id: 'client',
       //   title: '概要信息'
@@ -360,6 +365,10 @@ export default {
     // 下载事件
     download() {
       console.log('下载')
+    },
+    claims() {
+      this.claimsVisible = false
+      // this.getcaseInfoData()
     }
   }
 }

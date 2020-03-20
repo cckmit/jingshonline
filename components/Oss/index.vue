@@ -172,7 +172,7 @@ export default {
     // 文件上传成功
     uploadSuccess(response, file, filelist) {
       this.$notify.success(`提示：${this.optionData.messageSuccess}`)
-      this.optionData.fileList.push({ name: file.file.name, url: response.data.entity.path, fileId: response.data.entity.fileId })
+      this.optionData.fileList.push({ name: file.file.name, url: response.data.data.path, fileId: response.data.data.fileId })
       this.$emit('change', this.optionData.fileList)
     },
     // 文件上传失败

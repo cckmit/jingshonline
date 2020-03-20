@@ -315,7 +315,6 @@ export default {
       this.getCaseListData({ ...this.caseSearch }).then(res => {
         this.caseData = res.items
         this.totalCount = res.totalCount
-        this.caseSearch.pageIndex = 1
         this.loading = false
       })
     },
@@ -344,6 +343,7 @@ export default {
     },
     // 管辖法院树点击筛选
     handleregionClick(data) {
+      this.caseSearch.pageIndex = 1
       this.selectForm.courtInfo = data.name
       data.nodeType === 0 ? this.caseSearch.courtReginId = data.id : this.caseSearch.courtId = data.id // 根据nodeType判断传参
       data.nodeType === 0 ? this.caseSearch.courtId = '' : this.caseSearch.practiceAreaId = '' // 根据nodeType判断滞空参数
@@ -358,6 +358,7 @@ export default {
     },
     // 具体案由树点击筛选
     handleCasereasonClick(data) {
+      this.caseSearch.pageIndex = 1
       this.selectForm.caseReasonInfo = data.name
       this.caseSearch.caseReasonId = data.id
       this.getCaseList()
@@ -371,6 +372,7 @@ export default {
 
     // 管辖法院点击
     handleCourtLevelClick(data) {
+      this.caseSearch.pageIndex = 1
       this.selectForm.courtLevelInfo = data.name
       this.caseSearch.courtLevel = data.id
       this.getRegionTree(this.caseSearch.courtLevel)
@@ -629,7 +631,7 @@ export default {
       color: #333333;
       font-size: 14px;
       line-height: 28px;
-      margin-top: 20px;
+      margin: 20px 0;
     }
       }
     }
@@ -640,7 +642,11 @@ export default {
   }
 
   .case-content-bottom {
+    position:absolute;
+    bottom:0;
+    left:0;
     height: 29px;
+    width: 1041px;
     line-height: 29px;
     background-color: #fbfbfb;
     box-shadow: 0px -1px 0px 0px
