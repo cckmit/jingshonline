@@ -14,7 +14,7 @@ export default {
       meta: [
         { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]
-    } 
+    }
   },
   components: {
   },
@@ -31,4 +31,5 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+
 </style>
