@@ -1,17 +1,16 @@
 <template>
   <div>
-    UserCenter
+    UserCenter caselist
   </div>
 </template>
-
 <script>
 export default {
   layout: 'userCenter',
-  name: 'UserCenterIndex',
+  name: 'UserCenterCase',
   // middleware: 'auth',
   head() {
     return {
-      title: '用户中心',
+      title: '用户中心-案件管理',
       meta: [
         { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]
@@ -19,25 +18,17 @@ export default {
   },
   components: {
   },
-
   data() {
     return {
-
     }
   },
-
   watch: {
   },
-
   mounted() {
   },
-
   methods: {
-
   }
 }
 </script>
-
 <style lang='scss' scoped>
-
 </style>

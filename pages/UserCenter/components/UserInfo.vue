@@ -1,9 +1,8 @@
 <template>
   <div>
-    UserCenter
+    UserInfo
   </div>
 </template>
-
 <script>
 export default {
   layout: 'userCenter',
@@ -19,25 +18,17 @@ export default {
   },
   components: {
   },
-
   data() {
     return {
-
     }
   },
-
   watch: {
   },
-
   mounted() {
   },
-
   methods: {
-
   }
 }
 </script>
-
 <style lang='scss' scoped>
-
 </style>

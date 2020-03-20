@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import NavBar from '@/components/NavBar'
+import NavBar from '@/components/UserCenterNavBar'
 import Footer from '@/components/Footer'
 import banner from '@/assets/lawyer/lawyer_banner.png'
 export default {
