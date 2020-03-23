@@ -76,42 +76,6 @@
             </div>
           </el-collapse-item>
         </el-collapse>
-        <!-- 具体案由 -->
-        <!-- <div class="case-aside case-border">
-          <div class="case-aside-title case-title">具体案由</div>
-          <div class="case-aside-main case-main">
-            <el-tree
-              :data="CasereasonTreeData"
-              :props="defaultProps"
-              node-key="id"
-              @node-click="handleCasereasonClick"/>
-          </div>
-        </div> -->
-        <!-- 法院等级 -->
-        <!-- <div class="case-aside case-border">
-          <div class="case-aside-title case-title">法院等级</div>
-          <div class="case-aside-main case-main">
-            <el-tree
-              :data="courtLevelTreeData"
-              :props="defaultProps"
-              node-key="id"
-              @node-click="handleCourtLevelClick"/>
-          </div>
-        </div> -->
-        <!-- 管辖法院 -->
-        <!-- <div class="case-aside case-border">
-          <div class="case-aside-title case-title">管辖法院</div>
-          <div class="case-aside-main case-main">
-            <el-tree
-              :data="regionTreeData"
-              :props="defaultProps"
-              :expand-on-click-node="false"
-              :load="loadNode"
-              node-key="index"
-              lazy
-              @node-click="handleregionClick"/>
-          </div>
-        </div> -->
       </el-col>
       <el-col class="case-content">
         <div class="case-content-title case-border">
