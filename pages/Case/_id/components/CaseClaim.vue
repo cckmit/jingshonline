@@ -40,7 +40,7 @@
           <div v-for="(item,index) in sourceData" v-show="item.checked" :key="index" :name="index" class="case-select" >
             <div class="case-aside-li" style="cursor: pointer;">
               <el-col :span="2" class="case-aside-checkbox">
-                <el-checkbox v-model="item.checked" disabled @change="checkChanged(item.lawyerId,index)"/>
+                <el-checkbox v-model="item.checked" disabled/>
               </el-col>
               <el-col :span="8" class="case-aside-imgBox">
                 <div class="case-aside-img">
@@ -54,7 +54,7 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item v-show="isStep===2" prop="avatar" class="claim-avatar">
+        <el-form-item v-show="isStep===2" class="claim-avatar">
           <el-row>
             <el-col :span="6" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:150px;height:150px"><p>150*150</p></el-col>
             <el-col :span="6" :offset="5" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:78px;height:78px;margin-top:70px"><p>78*78</p></el-col>
@@ -126,35 +126,35 @@ export default {
       },
       uploadLicenceRules: {
         licenseName: [
-          { required: true, message: '不可为空' }
+          { required: true, message: '律师执业证件照不可为空' }
         ]
       },
       lawyerSelectRules: {
         lawyerSelect: [
-          { required: true, trigger: 'blur', message: '不可为空' }
+          { required: true, trigger: 'blur', message: '此选项不可为空' }
         ]
       },
       uploadAvatarRules: {
         avatar: [
-          { required: true, trigger: 'blur', message: '不可为空' }
+          { required: true, trigger: 'blur', message: '头像不可为空' }
         ]
       },
-      lawyerSelectForm: {
+      lawyerSelectForm: { // 律师
         lawyerSelect: ''
       },
-      uploadAvatarForm: {
+      uploadAvatarForm: { // 头像
         avatar: '',
         avatarPathId: ''
       },
-      phoneSelectForm: {
+      phoneSelectForm: { // 手机
         phone: ''
       },
-      uploadLicenceForm: {
+      uploadLicenceForm: { // 律师执业证件照
         licenseName: '',
         licenceId: '',
         licence: ''
       },
-      caseClaimForm: {
+      caseClaimForm: { // 总字段
         avatar: '',
         avatarPathId: '',
         lawyerSelect: '',
@@ -183,7 +183,7 @@ export default {
     }
   },
   methods: {
-    nextClick() {
+    nextClick() { // 下一步
       if (this.isStep === 0) {
         this.$refs.lawyerSelectForm.validate(valid => {
           if (valid) {
@@ -214,25 +214,29 @@ export default {
         })
       }
     },
-    backClick() {
+    backClick() { // 上一步
       this.isStep = 0
     },
-    reviseClick() {
+    reviseClick() { // 修改
       this.isStep = 0
     },
-    submit() {
+    submit() { // 提交
       console.log(this.caseClaimForm)
       this.visible = false
     },
-    checkChanged(lawyerId, index) {
-      this.sourceData.forEach(item => {
-        if (item.lawyerId !== lawyerId) {
-          item.checked = false
-          this.lawyerSelectForm.lawyerSelect = lawyerId
-        }
-      })
+    checkChanged(lawyerId, index) { // checkBox点击事件
+      if (this.sourceData.length > 1) {
+        this.sourceData.forEach(item => {
+          if (item.lawyerId !== lawyerId) {
+            item.checked = false
+            this.lawyerSelectForm.lawyerSelect = lawyerId
+          }
+        })
+      } else if (this.sourceData.length === 1) {
+        this.lawyerSelectForm.lawyerSelect = lawyerId
+      }
     },
-    close() {
+    close() { // 关闭
       this.visible = false
       this.$emit('operate', this.visible)
     },
