@@ -35,7 +35,7 @@ clear_images=''
 image_tag='latest'
 docker_user=''
 docker_pwd=''
-
+deploy_env='prod'
 workdir=$(
     cd $(dirname $0)
     pwd
@@ -52,13 +52,20 @@ while [[ $# -gt 0 ]]; do
         shift 2
         ;;
     -u | --docker-user)
-        docker_user="$2" shift 2
+        docker_user="$2"
+        shift 2
         ;;
     -p | --docker-pwd)
-        docker_pwd="$2" shift 2
+        docker_pwd="$2"
+        shift 2
         ;;
+    -e | --env)
+        deploy_env="$2" 
+        shift 2
+        ;;        
     -pr | --docker-project )
-       docker_project="$2" shift 2
+       docker_project="$2" 
+       shift 2
        ;;        
     --skip-image-push)
         push_image=''
@@ -84,6 +91,11 @@ if [[ -z "${container_registry}" ]]; then
     echo "必须先指定docker镜像仓库"
     exit 1
 fi
+
+echo "#################### 设置打包的环境 ####################"
+echo "指定的部署环境为${deploy_env}"
+grep "{{env}}" --include="docker-compose.yml" -rl ../ | xargs -r sed -i "s/{{env}}/${deploy_env}/g" || true
+
 
 echo "指定docker镜像的tag为${image_tag}"
 export TAG=$image_tag

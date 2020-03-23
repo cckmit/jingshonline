@@ -2,6 +2,7 @@ FROM node:12.13.0 as build
 LABEL maintainer="jingshonline@jingshonline.com"
 
 WORKDIR /src
+ARG ENV=pord
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org 
 
 COPY . .
@@ -11,7 +12,7 @@ RUN cnpm install \
   --non-interactive \
   --production=false
 
-RUN cnpm run build
+RUN cnpm run build:${ENV}
 
 RUN rm -rf node_modules && \
   NODE_ENV=production cnpm install \
@@ -29,5 +30,4 @@ COPY --from=build /src  .
 ENV HOST 0.0.0.0
 EXPOSE 3000
 
-ENTRYPOINT [ "npm","run" ]
-CMD [ "start"]
+CMD [ "npm", "start" ]
