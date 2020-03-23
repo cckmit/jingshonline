@@ -12,6 +12,8 @@
 import NavBar from '@/components/UserCenterNavBar'
 import Footer from '@/components/Footer'
 import banner from '@/assets/lawyer/lawyer_banner.png'
+import cookie from '@/plugins/cookie'
+import { mapMutations } from 'vuex'
 export default {
   name: 'UserCenterLayout',
 
@@ -30,6 +32,14 @@ export default {
       console.log(to)
       this.url = to
     }
+  },
+  mounted() {
+    this.$store.commit('SET_TOKEN', cookie.get('token'))
+  },
+  methods: {
+    ...mapMutations([
+      'SET_TOKEN'
+    ])
   }
 }
 </script>

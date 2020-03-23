@@ -10,6 +10,7 @@ export const state = () => ({
 })
 export const mutations = {
   SET_TOKEN: (state, token) => {
+    debugger
     state.token = token
   },
 
