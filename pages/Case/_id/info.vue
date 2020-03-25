@@ -212,13 +212,7 @@
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
           <div class="case-aside-desc">
-            <ul>
-              <li v-for="(item, index) in caseInfoData.lawyers" :key="index">
-                <nuxt-link :to="`/case/${item.id}/info`">
-                  <p> {{ index+1 }}.{{ item.lawfirmName }}</p>
-                </nuxt-link>
-              </li>
-            </ul>
+            <case-related :source-data="caseInfoData" />
           </div>
         </div>
       </el-col>
@@ -235,6 +229,7 @@ import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 import errorImg from '@/assets/case/case-avatar.png'
 import CaseClaim from './components/CaseClaim'
+import CaseRelated from './components/CaseRelated'
 export default {
   layout: 'case',
   head() {
@@ -247,7 +242,8 @@ export default {
   },
   components: {
     ExtraWrap,
-    CaseClaim
+    CaseClaim,
+    CaseRelated
   },
 
   data() {
@@ -451,14 +447,6 @@ margin-bottom: 0;
 
 .case-content-main {
     padding: 0 20px 20px 20px;
-//     .el-form-item__content{
-//       margin: 10px 0;
-// }
-
-// p {
-//     line-height: 36px;
-//     color: #333333;
-// }
 .case-judgment{
    line-height: 36px;
     color: #333333;
