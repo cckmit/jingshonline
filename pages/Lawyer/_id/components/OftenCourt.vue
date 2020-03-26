@@ -50,7 +50,8 @@ export default {
 <style lang="scss" scoped>
 .often-court {
   border-top: 1px dashed #eaeaea;
-  margin-bottom: 188px;
+  padding-bottom: 188px;
+  background: #fff;
   .often-container {
     background: #fff;
     .often-header {
@@ -108,7 +109,7 @@ export default {
     }
   }
   .no-data{
-    margin-top: 100px;
+    margin-top: 188px;
     text-align: center;
     font-size: 32px;
     color: #ccc;
