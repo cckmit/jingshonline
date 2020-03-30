@@ -1,0 +1,151 @@
+<template>
+  <div :source-data="sourceData" class="case-lawyers">
+    <el-collapse v-model="activeNames" accordion class="lawyer">
+      <el-collapse-item v-for="(item,index) in sourceData.lawyers" :key="index" :name="index">
+        <template v-if="isShow" slot="title">
+          <div class="case-aside-li">
+            <el-col :span="9" class="case-aside-imgBox">
+              <div class="case-aside-img">
+                <img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt="">
+                <div class="case-aside-name">{{ item.realName }}</div>
+              </div>
+            </el-col>
+            <el-col :span="15" class="case-aside-p">
+              <p>{{ item.realName }}</p>
+              <p>{{ item.lawfirmName }}</p>
+            </el-col>
+          </div>
+        </template>
+        <div class="case-aside-photo">
+          <div class="case-aside-img"><img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt=""></div>
+          <div>{{ item.realName }} 律师</div>
+        </div>
+        <div class="case-aside-info">
+          <p>毕业院校：<span>{{ item.licenceNo?item.licenceNo:'暂无数据' }}</span></p>
+          <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无数据' }}</span></p>
+          <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无数据' }}</span></p>
+          <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
+          <p v-if="item.practiceareas.length!==0">擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
+          <p v-if="item.practiceareas.length===0">擅长领域：<span>暂无数据</span></p>
+          <p v-if="item.industries.length===0">业务专长：<span>暂无数据</span></p>
+          <p v-if="item.industries.length!==0">业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
+          <p>案例总数：<span>{{ item.caseCount }}</span></p>
+          <p>更新时间：<span>{{ item.updateTime }}</span></p>
+          <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
+          <p>关注人数：<span class="case-font-hover">{{ item.followerCount }}</span></p>
+        </div>
+      </el-collapse-item>
+    </el-collapse>
+  </div>
+</template>
+<script>
+export default {
+  name: 'CaseLawyers',
+  props: {
+    sourceData: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      activeNames: 0,
+      isShow: true
+    }
+  },
+  watch: {
+  },
+  methods: {}
+}
+</script>
+<style lang='scss' scoped>
+.case-lawyers{
+  .el-collapse-item__header{
+height: 120px;
+}
+
+.case-aside-li {
+    width: 100%;
+    height: 102px;
+    padding: 5px 0px 5px 10px;
+    .case-aside-p p{
+    color: #333333;
+}
+
+.case-aside-p p:nth-child(1) {
+    font-size: 16px;
+}
+
+.case-aside-imgBox {
+    .case-aside-name{
+  position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 76px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background-color: #000000;
+    opacity: 0.6;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.case-aside-img {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    overflow: hidden;
+    background-color: #dbdbdb;
+    margin: 8px 15px;
+}
+}
+ }
+
+.case-aside-info {
+    margin-bottom: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    p {
+    color: #999999;
+    line-height: 30px;
+    span{
+      color: #333333;
+}
+  }
+}
+
+.case-aside-photo {
+    margin: auto;
+    text-align: center;
+    margin-bottom: 20px;
+    margin: 30px 70px;
+    .case-aside-img{
+  margin-bottom: 20px;
+    width: 202px;
+    height: 202px;
+    overflow: hidden;
+    background-color: #e9e9e9;
+}
+}
+}
+</style>
+<style lang='scss'>
+
+//办理律师隐藏头部
+.caseInfoClass{
+ .lawyer{
+ .el-collapse-item.is-active{
+   >div:first-child{
+     display: none;
+   }
+ }
+  .el-collapse-item__header{
+height: auto;
+}
+ }
+ }
+</style>
+

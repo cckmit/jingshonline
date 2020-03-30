@@ -22,6 +22,7 @@
               placeholder="请输入案由、关键词、法院、当事人、律师"
               @change="searchChange"
               @keydown.13.native="search()"
+              @clear="clearChange"
             >
               <el-option-group
                 v-for="(group, index) in options"
@@ -268,6 +269,10 @@ export default {
             break
         }
       }
+      this.getCaseList()
+    },
+    clearChange(key) {
+      this.caseSearch.searchKey = ''
       this.getCaseList()
     },
     // 获取案件
