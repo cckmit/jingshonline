@@ -25,7 +25,7 @@
 
 import CaseClaimDialog from './CaseClaimDialog'
 export default {
-  name: 'CaseRelated',
+  name: 'CaseClaim',
   components: {
     CaseClaimDialog
   },

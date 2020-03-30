@@ -92,7 +92,7 @@
 <script>
 import AliYunOss from '@/components/Oss'
 export default {
-  name: 'CaseClaim',
+  name: 'CaseClaimDialog',
   components: {
     AliYunOss
   },

@@ -40,7 +40,7 @@
 </template>
 <script>
 export default {
-  name: 'CaseRelated',
+  name: 'CaseLawyers',
   props: {
     sourceData: {
       type: Object,
