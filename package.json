@@ -7,12 +7,10 @@
   "scripts": {
     "dev": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt",
     "serve": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt",
-    "build": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt build",
+    "build:dev": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt build",
     "build:test": "cross-env BASE_URL=http://gateway.test.node1.jingshonline.net nuxt build",
-    "build:prod": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt build",
-    "start": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt start",
-    "start:test": "cross-env BASE_URL=http://gateway.test.node1.jingshonline.net nuxt start",
-    "start:prod": "cross-env BASE_URL=http://gateway.dev.jingshonline.net nuxt start",
+    "build:prod": "cross-env BASE_URL=http://gateway.jingshonline.com nuxt build",
+    "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
