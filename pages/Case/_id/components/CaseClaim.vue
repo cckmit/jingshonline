@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="visible" title="认领案例" @close="close">
+  <el-dialog :visible.sync="visible" title="认领案例" class="caseClaim-dialog" @close="close">
     <div ref="userForm" :source-data="sourceData" class="case-claim">
       <el-steps :active="isStep" align-center style="margin-bottom:20px">
         <el-step title="选取信息"/>
@@ -270,6 +270,11 @@ export default {
     margin-left: 0 !important;
   }
 }
+.caseClaim-dialog{
+  .el-dialog{
+ width: 670px;
+  }
+}
 .el-dialog__header {
     text-align: center;
 }
@@ -285,6 +290,9 @@ export default {
   .el-input--suffix{
   width:280px !important;
 }
+.el-form--label-left{
+padding: 0px 110px !important;
+}
 }
 </style>
 <style lang='scss' scoped>
@@ -292,8 +300,6 @@ img{
   width: 100%
 }
 .el-dialog{
-	width: 670px;
-  padding: 0 125px;
 	background-color: #ffffff;
 	border-radius: 3px;
 .dialog-footer{
