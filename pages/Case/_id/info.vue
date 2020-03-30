@@ -129,23 +129,8 @@
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
-          <div @click="claimsVisible=true,claim=caseInfoData.lawyers">
-            <el-form ref="form" label-width="0">
-              <el-form-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
-                <div class="case-aside-li" style="cursor: pointer;">
-                  <el-col :span="8" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-claim">我要认领</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>{{ item.realName }}</p>
-                    <p>{{ item.lawfirmName }}</p>
-                  </el-col>
-                </div>
-              </el-form-item>
-            </el-form>
+          <div>
+            <case-claim :source-data="caseInfoData" />
           </div>
         </div>
         <!-- /*相关案例 -->
@@ -160,7 +145,6 @@
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
-    <case-claim :source-data="claim" :source-visible="claimsVisible" @operate="claims" />
   </div>
 </template>
 
@@ -197,8 +181,6 @@ export default {
       activeNames: 0,
       isFollow: false,
       caseInfoData: [],
-      claimsVisible: false, // 弹框
-      claim: [], // 认领案例
       // activities: [{
       //   id: 'client',
       //   title: '概要信息'
@@ -303,10 +285,6 @@ export default {
     // 下载事件
     download() {
       console.log('下载')
-    },
-    claims() {
-      this.claimsVisible = false
-      // this.getcaseInfoData()
     }
   }
 }
@@ -506,53 +484,6 @@ height: 120px;
 .case-aside-ajrl
 {
    background:white;
-    .case-aside-imgBox{
-.case-aside-claim{
-  position: absolute;
-    left: 0;
-    bottom: 25px;
-    width: 76px;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
-    font-size: 12px;
-    color: #333333;
-}
-
-.case-aside-img
-{
-    position: relative;
-    width: 76px;
-    height: 76px;
-    background-color: #dbdbdb;
-    margin: 8px 15px;
-}
-}
-
-.case-aside-li
-{
-    opacity: 0.9;
-    background-color: #e5e5e5;
-    height: 102px;
-    padding: 5px 0px 5px 10px;
-    .case-aside-p p{
-    color: #333333;
-}
-
-.case-aside-p p:nth-child(1)
-{
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-}
-
-.el-form-item
-{
-    margin-bottom: 0;
-    padding: 10px;
-    border-bottom: solid 1px rgba(217, 217, 217, 0.3);
-}
 }
 }
  }
