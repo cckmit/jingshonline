@@ -10,7 +10,7 @@ export default function({ route, req, res, redirect, error }) {
   }
   // 在客户端判读是否需要登陆
   if (isClient) {
-    token = utils.getcookiesInClient('token')
+    token = utils.getcookiesInClient('JingShOnline-token')
   }
   if (!token) {
     error({
