@@ -27,7 +27,6 @@ export default {
   },
   watch: {
     '$route'(to) {
-      console.log(to)
       this.url = to
     }
   }

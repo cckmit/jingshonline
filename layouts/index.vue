@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     search() {
-      console.log(this.activeSearchTabs, this.searchText)
     }
   }
 }

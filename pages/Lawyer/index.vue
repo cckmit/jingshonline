@@ -478,7 +478,6 @@ export default {
       // 获取行业
       this.getIndustryTreeData().then(res => {
         this.industryData = res
-        console.log(this.industryData)
       })
     },
     getLawfirmData() {
@@ -665,7 +664,6 @@ export default {
     collection(data) { // 收藏
       // 判断是否登录
       event.preventDefault()
-      console.log(data.id)
       if (!data.isFollow) {
         this.LawyerCollecte(data.id).then(res => {
           this.$notify({
@@ -692,7 +690,6 @@ export default {
       this.getQrcode()
     },
     getQrcode() {
-      console.log(this.url)
       QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
         this.qrimg = url
       })
@@ -703,7 +700,6 @@ export default {
           message: this.copySuccessMessage,
           type: 'success'
         })
-        console.log(e)
       }).catch(error => {
         this.$notify({
           message: this.copyErrorMessage,

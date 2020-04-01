@@ -221,7 +221,6 @@ export default {
       this.isStep = 0
     },
     submit() { // 提交
-      console.log(this.caseClaimForm)
       this.visible = false
     },
     checkChanged(lawyerId, index) { // checkBox点击事件
