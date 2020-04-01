@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jingshonline-web
+  namespace: {{namespace}}
+spec:
+  paused: true
+  template:
+    metadata:
+      labels:
+        app: jingshonline
+        component: jingshonline-web
+    spec:
+      imagePullSecrets:
+      - name: registry-key
+      containers:
+      - name: jingshonline-web
+        image: jingsh/jingshonline-web
+        imagePullPolicy: Always
+        ports:                   
+        - containerPort: 3000
+          name: http-port   
+

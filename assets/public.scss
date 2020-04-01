@@ -45,3 +45,11 @@ ul li,ol li{
   width: 1380px;
   }
 }
+
+/** 过渡效果 **/
+.layout-enter-active, .layout-leave-active {
+  transition: opacity .3s
+}
+.layout-enter, .layout-leave-active {
+  opacity: 0
+}

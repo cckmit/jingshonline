@@ -11,6 +11,16 @@ export const login = ({ account, password }) => {
   })
 }
 
+export const register = data => {
+  return request({
+    url: `${setting.apiPrefix}/account/register`,
+    method: 'post',
+    data: {
+      input: data
+    }
+  })
+}
+
 export const getLoginUserInfo = () => {
   return request({
     url: `${setting.apiPrefix}/account/get/userinfo`,

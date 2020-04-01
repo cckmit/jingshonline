@@ -1,37 +1,55 @@
 <template>
-  <div style="width:1380px;margin:auto;min-height:1000px;margin-top:30px">
-    <el-row class="case-id">
+  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:120px">
+    <el-row class="case-id caseInfoClass">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
+        <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path:'/case'}" >查找案例</el-breadcrumb-item>
+        <el-breadcrumb-item >案例详情</el-breadcrumb-item>
+      </el-breadcrumb>
       <!-- 左边 -->
-      <el-col :span="17" class="case-content case-border">
+      <el-col v-bind="caseInfoData" class="case-content case-border">
         <!-- 概要信息 -->
         <div class="case-content-title">
-          <span class="case-title"><i class="titleIcon"/> 概要信息</span>
-          <p style="float:right">更新时间：<span class="case-font-hover"> 2016/7/25 13:29:27</span></p>
+          <span id="client" class="case-title"><i class="titleIcon"/> 概要信息</span>
+          <p style="float:right">更新时间：<span class="case-font-hover"> {{ caseInfoData.updateTime }}</span></p>
         </div>
         <!-- 案件信息 -->
         <div class="case-content-desc">
           <el-row>
-            <el-form ref="form" :model="form" label-width="100px">
+            <el-form ref="form" label-width="100px">
               <el-col :span="11">
-                <el-form-item label="主办律师:"><p>朱晓彬</p></el-form-item>
-                <el-form-item label="审判机关:"><p>重庆市江北区人民法院</p></el-form-item>
-                <el-form-item label="文书号码:"><p>（2015）江法行初字第00199号</p></el-form-item>
-                <el-form-item label="主办律师:"><p class="case-font-hover">10</p></el-form-item>
+                <el-form-item label="主办律师:"><p> {{ caseInfoData.lawyers[0].realName }}</p></el-form-item>
               </el-col>
-              <el-col :span="13">
-                <el-form-item label="判决时间:"><p>1900/1/1 0:00:00</p></el-form-item>
-                <el-form-item label="涉案案由:"><p>行政案由 - 城乡建设行政管理 - 城市规划管理(规划) - 行政受理</p></el-form-item>
-                <el-form-item label="所属领域:"><p>诉讼领域-行政案件-城乡建设</p></el-form-item>
-                <el-form-item label="所属行业:"><p>无所属行业</p></el-form-item>
+              <el-col :span="11">
+                <el-form-item label="判决时间:"><p>{{ caseInfoData.endTime }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===1" label="所属法院:"><p> {{ caseInfoData.courtName }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===1" label="涉案案由:"><p>{{ caseInfoData.caseReasonName }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===1" label="文书号码:"><p> {{ caseInfoData.judgmentNumber }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="所属领域:"><p>{{ caseInfoData.practiceAreaName }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
+              </el-col>
+              <el-col :span="11">
+                <el-form-item v-if="caseInfoData.caseType===2" label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
               </el-col>
             </el-form>
           </el-row>
         </div>
         <!-- 其他信息 -->
-        <div class="case-content-main">
-          <el-form ref="form" :model="form" label-width="0">
+        <div id="detail" class="case-content-main">
+          <div class="case-judgment" v-html="caseInfoData.judgmentDocument">{{ caseInfoData.judgmentDocument }}</div>
+          <!-- <el-form ref="form" label-width="0">
             <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 当事人信息</p>
+              <p id="First" class="case-title"><i class="titleIcon"/> 当事人信息</p>
               <p>
                 原告毕某某，男，汉族，42岁。
                 原告张某甲，男，汉族，49岁。
@@ -50,7 +68,7 @@
               </p>
             </el-form-item>
             <el-form-item>
-              <p class="case-title"><i class="titleIcon"/>审理经过</p>
+              <p id="Second" class="case-title"><i class="titleIcon"/>审理经过</p>
               <p>
                 审理经过
                 原告毕某某、张某甲、张某乙不服被告漯河市环境保护局（以下简称市环保局）作出的环境管理行政审批具体行政行为一案，于2015年2月16日向本院提起行政诉讼。因漯河华泰置业集团有限公司（以下简称漯河华泰公司）、河南蓝森环保科技有限公司（以下简称河南蓝森公司）与被诉具体行政行为有法律上的利害关系，根据《中华人民共和国行政诉讼法》第二十九条之规定，本院依法通知上述两单位作为本案第三人参加诉讼。本院依法组成合议庭，公开开庭进行了审理。原告毕某某、张某甲、张某乙及其委托代理人谢鹏辉、朱晓彬，被告市环保局的委托代理人郭剑锋，第三人漯河华泰公司的委托代理人梁某某，第三人河南蓝森公司的委托代理人钟某某、薛某某到庭参加诉讼。本案现已审理终结。
@@ -103,7 +121,7 @@
               </p>
             </el-form-item>
             <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 裁判结果</p>
+              <p id="Finally" class="case-title"><i class="titleIcon"/> 裁判结果</p>
               <p>
                 被告漯河市环境保护局于2013年7月15日作出的关于《漯河华泰置业集团有限公司新建华泰龙庭首府项目环境影响报告书》的审批意见程序轻微违法，但不予撤销该行政行为。
                 如不服本判决，可在判决书送达之日起十五日内，向本院递交上诉状，并按对方当事人或代表人的人数提出副本，上诉于河南省漯河市中级人民法院。
@@ -117,144 +135,49 @@
                 书记员张歌
               </p>
             </el-form-item>
-          </el-form>
+          </el-form> -->
         </div>
       </el-col>
       <!-- /*右边 -->
-      <el-col :span="6" :offset="1" class="case-aside">
+      <el-col class="case-aside">
         <!-- 办理律师 -->
-        <div class="case-aside-main case-aside-blls case-border">
+        <div v-bind="caseInfoData.lawyers" class="case-aside-main case-aside-blls case-border">
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>办理律师</span>
           </div>
           <el-collapse v-model="activeNames" accordion class="lawyer" @change="handleChange">
-            <el-collapse-item name="1">
+            <el-collapse-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
               <template v-if="isShow" slot="title">
                 <div class="case-aside-li">
                   <el-col :span="9" class="case-aside-imgBox">
                     <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
+                      <img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt="">
+                      <div class="case-aside-name">{{ item.realName }}</div>
                     </div>
                   </el-col>
                   <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
+                    <p>{{ item.realName }}</p>
+                    <p>{{ item.lawfirmName }}</p>
                   </el-col>
                 </div>
               </template>
               <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬 律师</div>
+                <div class="case-aside-img"><img :src="item.avatar" onerror="@/assets/case/case-avatar.png" alt=""></div>
+                <div>{{ item.realName }} 律师</div>
               </div>
               <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p> 最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item name="2">
-              <template slot="title">
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </template>
-              <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬5 律师</div>
-              </div>
-              <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p> 最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item name="3">
-              <template slot="title">
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
-                    </div>
-
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </template>
-              <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬 律师</div>
-              </div>
-              <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p> 最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
-              </div>
-            </el-collapse-item>
-            <el-collapse-item name="4">
-              <template slot="title">
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-name">李晓明</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>李晓明</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </template>
-              <div class="case-aside-photo">
-                <div class="case-aside-img"><img src="@/assets/case/case-avatar.png" alt=""></div>
-                <div>朱晓彬 律师</div>
-              </div>
-              <div class="case-aside-info">
-                <p>毕业院校：<span>北京大学</span></p>
-                <p>最高学历：<span>本科</span></p>
-                <p>执业地点：<span>北京市 - 朝阳区</span></p>
-                <p>所属律所：<span>北京市京师律师事务所</span></p>
-                <p>擅长领域：<span>资源、城乡建设、政府</span></p>
-                <p>业务专长：<span>无所属行业</span></p>
-                <p>案例总数：<span>67</span></p>
-                <p>更新时间：<span>2016/5/3 18:09:16</span></p>
-                <p>浏览次数：<span class="case-font-hover">93</span></p>
-                <p>关注人数：<span class="case-font-hover">153</span></p>
+                <p>毕业院校：<span>{{ item.licenceNo?item.licenceNo:'暂无数据' }}</span></p>
+                <p>最高学历：<span>{{ item.highestDegree?item.highestDegree:'暂无数据' }}</span></p>
+                <p>执业地点：<span>{{ item.regionName?item.regionName:'暂无数据' }}</span></p>
+                <p>所属律所：<span>{{ item.lawfirmName }}</span></p>
+                <p v-if="item.practiceareas.length!==0">擅长领域：<span v-for="practice in item.practiceareas" :key="practice.knowledgeId" style="margin-right:10px">{{ practice.name }}</span></p>
+                <p v-if="item.practiceareas.length===0">擅长领域：<span>暂无数据</span></p>
+                <p v-if="item.industries.length===0">业务专长：<span>暂无数据</span></p>
+                <p v-if="item.industries.length!==0">业务专长：<span v-for="industry in item.industries" :key="industry.knowledgeId" style="margin-right:10px">{{ industry.name }}</span></p>
+                <p>案例总数：<span>{{ item.caseCount }}</span></p>
+                <p>更新时间：<span>{{ item.updateTime }}</span></p>
+                <p>浏览次数：<span class="case-font-hover">{{ item.clickCount ?item.clickCount:'0' }}</span></p>
+                <p>关注人数：<span class="case-font-hover">{{ item.followerCount }}</span></p>
               </div>
             </el-collapse-item>
           </el-collapse>
@@ -264,39 +187,23 @@
           <div class="case-aside-title case-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
-          <div >
-            <el-form ref="form" :model="form" label-width="0">
-
-              <el-form-item>
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
+          <div @click="claimsVisible=true,claim=caseInfoData.lawyers">
+            <el-form ref="form" label-width="0">
+              <el-form-item v-for="(item,index) in caseInfoData.lawyers" :key="index" :name="index">
+                <div class="case-aside-li" style="cursor: pointer;">
+                  <el-col :span="8" class="case-aside-imgBox">
                     <div class="case-aside-img">
                       <img src="@/assets/case/case-avatar.png" alt="">
                       <div class="case-aside-claim">我要认领</div>
                     </div>
                   </el-col>
                   <el-col :span="15" class="case-aside-p">
-                    <p>朱晓彬</p>
-                    <p>北京市京师律师事务所</p>
-                  </el-col>
-                </div>
-              </el-form-item>
-              <el-form-item>
-                <div class="case-aside-li">
-                  <el-col :span="9" class="case-aside-imgBox">
-                    <div class="case-aside-img">
-                      <img src="@/assets/case/case-avatar.png" alt="">
-                      <div class="case-aside-claim">我要认领</div>
-                    </div>
-                  </el-col>
-                  <el-col :span="15" class="case-aside-p">
-                    <p>朱晓彬</p>
-                    <p>北京市京师律师事务所</p>
+                    <p>{{ item.realName }}</p>
+                    <p>{{ item.lawfirmName }}</p>
                   </el-col>
                 </div>
               </el-form-item>
             </el-form>
-
           </div>
         </div>
         <!-- /*相关案例 -->
@@ -305,274 +212,435 @@
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
           <div class="case-aside-desc">
-            <el-form ref="form" :model="form" label-width="0">
-              <el-form-item class="case-font-hover">1 、 叶#胜等人不服“某甲县政府"行政强制拆除（房屋）财产纠纷关于行政诉讼案 </el-form-item>
-              <el-form-item> 2 、 遵义市红花岗区某甲局与遵义市某丙工程有限责任公司关于土地行政管理行政登记案 </el-form-item>
-              <el-form-item> 3 、 遵义市红花岗区某甲局与遵义市某乙局及遵义市某丙工程有限公司，遵义某丁实业有限公司关于行政诉讼案</el-form-item>
-              <el-form-item>5 、 齐保良与北京市住房和城乡建设委员会关于房屋行政登记案 </el-form-item>
-              <el-form-item> 6 、 陈光勇与贵阳市南明区城市综合执法局城建关于行政管理行政处罚一案</el-form-item>
-              <el-form-item> 7 、 张爱梅与漯河市召陵区城市管理委员会办公室关于不服强制拆除房屋行政行为案   </el-form-item>
-              <el-form-item> 8 、 奉节县万富建材厂与奉节县人民政府及奉节县西部新区管理委员会,奉节县国土资源和房屋管理局,奉节县规划局,奉节县朱衣镇人民政府关于确认行政行为违法案   </el-form-item>
-              <el-form-item> 9 、 刘梅瑞,蒋金瑞,赵顺法,马增荣,马文其与杭州市国土资源局及杭州市拱墅区京杭运河综合整治与保护开发指挥部关于拆迁行政许可案   </el-form-item>
-              <el-form-item>10 、郑银花与北京市住房和城乡建设委员会及白春生,白志增,郑粟杰,北京万柳置业集团有限公司,梁帅关于房屋登记行为案   </el-form-item>
-            </el-form>
+            <ul>
+              <li v-for="(item, index) in caseInfoData.lawyers" :key="index">
+                <nuxt-link :to="`/case/${item.id}/info`">
+                  <p> {{ index+1 }}.{{ item.lawfirmName }}</p>
+                </nuxt-link>
+              </li>
+            </ul>
           </div>
         </div>
       </el-col>
     </el-row>
+    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
+    <case-claim :source-data="claim" :source-visible="claimsVisible" @operate="claims" />
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import setting from '@/plugins/setting'
+import axios from 'axios'
+import ExtraWrap from '@/components/ExtraWrap'
+import errorImg from '@/assets/case/case-avatar.png'
+import CaseClaim from './components/CaseClaim'
 export default {
-  name: '',
-
+  layout: 'case',
+  head() {
+    return {
+      title: '案例详情',
+      meta: [
+        { hid: 'description', name: 'description', content: '京师在线案例详情；jingshonline' }
+      ]
+    }
+  },
   components: {
+    ExtraWrap,
+    CaseClaim
   },
 
   data() {
     return {
-      id: this.$route.query.id,
+      errorImg: errorImg,
+      loading: false,
+      caseId: 0,
       isShow: true,
-      activeNames: ['1']
+      activeNames: 0,
+      isFollow: false,
+      caseInfoData: [],
+      claimsVisible: false, // 弹框
+      claim: [], // 认领案例
+      // activities: [{
+      //   id: 'client',
+      //   title: '概要信息'
+      // }, {
+      //   id: 'First',
+      //   title: '当事人信息'
+      // }, {
+      //   id: 'Second',
+      //   title: '审理经过'
+      // }, {
+      //   id: 'After',
+      //   title: '原告辩称'
+      // }, {
+      //   id: 'Third',
+      //   title: '被告辩称'
+      // }, {
+      //   id: 'Fourth',
+      //   title: '本院查明'
+      // }, {
+      //   id: 'Fifth',
+      //   title: '本院认为'
+      // }, {
+      //   id: 'Finally',
+      //   title: '裁判结果'
+      // }],
+      activities: [{
+        id: 'client',
+        title: '概要信息'
+      }, {
+        id: 'detail',
+        title: '详情'
+      }]
     }
   },
-
-  watch: {
+  async asyncData({ params }) {
+    const [caseInfoData] = await Promise.all([
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/get/${params.id}`, { 'Content-Type': 'application/json' })
+    ])
+    return {
+      caseInfoData: caseInfoData.data.data,
+      isFollow: caseInfoData.data.data ? caseInfoData.data.data.isFollow : false
+    }
   },
-
+  beforeRouteEnter(to, from, next) {
+    if (from.path !== '/') {
+      next(vm => {
+        const caseId = vm.$route.params.id
+        vm.caseClickCount(caseId).then(res => {
+          if (res === 'ok') {
+            console.log('+1')
+          }
+        })
+      })
+    } else {
+      next()
+    }
+  },
+  created() {
+    this.caseId = this.$route.params.id
+  },
   mounted() {
   },
-
   methods: {
+    ...mapActions('case', ['getCaseInfoData', 'caseFollowClick', 'caseUnfollowClick', 'caseClickCount']),
+    // 获取案件
+    getcaseInfoData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.request, delayTime)
+    },
+    request() {
+      this.getCaseInfoData(this.caseId).then(res => {
+        this.caseInfoData = res
+        this.isFollow = res.isFollow
+        this.loading = false
+      })
+    },
     handleChange(val) {
+    },
+    // 收藏点击事件
+    collectionCase() {
+      const coll = !this.isFollow
+      const id = this.caseInfoData.id
+      if (coll) { // 收藏
+        this.caseFollowClick(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+          this.isFollow = true
+        })
+      } else {
+        // 取消收藏
+        this.caseUnfollowClick(id).then(res => {
+          this.$notify({
+            message: res,
+            type: 'success'
+          })
+          this.isFollow = false
+        })
+      }
+    },
+    // 下载事件
+    download() {
+      console.log('下载')
+    },
+    claims() {
+      this.claimsVisible = false
+      // this.getcaseInfoData()
     }
   }
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 //本页面公共样式
-.case-id{
-  padding:60px 0;
+.caseInfoClass{
   font-family: MicrosoftYaHei;
   font-size: 14px;
 
 // 左边标题
-   .case-title{
-	font-size: 16px;
-	color: #333333;
+.case-title {
+    font-size: 16px;
+    color: #333333;
+}
 
-   }
-   img{
-     width: 100%;
-   }
+img {
+    width: 100%;
+}
    //边框
-   .case-border{
-     border: solid 1px #d9d9d9;
-   }
+.case-border {
+    border: solid 1px rgba(229, 229, 229, 0.3);
+}
   //  已选择
-.case-font-hover{
-  color: #f68020 !important;
+.case-font-hover {
+    color: #f68020 !important;
 }
-.case-content-hover{
-border-bottom: 4px solid #f68020
+
+.case-content-hover {
+    border-bottom: 4px solid #f68020
 }
-ul li{
-   display: block;
-    list-style-type:none;
-    width:auto;
-    margin:0 auto;
+ul li {
+    display: block;
+    list-style-type: none;
+    width: auto;
+    margin: 0 auto;
 }
 // 标题图标
 .titleIcon {
-display: inline-block;
-	width: 4px;
-	height: 12px;
-	background-color: #f68020;
-	border-radius: 2px;
-  margin-right: 5px;
+    display: inline-block;
+    width: 4px;
+    height: 12px;
+    background-color: #f68020;
+    border-radius: 2px;
+    margin-right: 5px;
 }
-.case-content{
-  // 概要信息
+.case-content {
+  width: 1004px;
+  background:white;
+    // 概要信息
   .el-form-item{
-margin-bottom:0;
-	line-height: 30px;
-  }
-  .el-form-item__label{
+margin-bottom: 0;
+    line-height: 30px;
+}
+
+.el-form-item__label {
     font-size: 14px;
-	color: #999999;
-  }
-  .case-content-title{
+    color: #999999;
+}
+
+.case-content-title {
     display: block;
     height: 50px;
     line-height: 50px;
-    border-bottom:  solid 1px #d9d9d9;
+    border-bottom: solid 1px rgba(217, 217, 217, 0.3);
     padding: 0 20px;
-  }
-  .case-content-desc{
+}
+
+.case-content-desc {
     padding: 20px;
-	line-height: 30px;
-	color: #999999;
-  .el-row{
+    line-height: 30px;
+    color: #999999;
+    .el-row{
     padding-bottom: 20px;
- border-bottom:1px dotted #d9d9d9;
-  }
+    border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
+}
 
   }
-  .case-content-main{
-     padding: 0 20px 20px 20px;
-    .el-form-item__content{
-      margin: 10px 0;
-    }
-    p{
-      line-height: 36px;
-      color: #333333;
-    }
+
+.case-content-main {
+    padding: 0 20px 20px 20px;
+//     .el-form-item__content{
+//       margin: 10px 0;
+// }
+
+// p {
+//     line-height: 36px;
+//     color: #333333;
+// }
+.case-judgment{
+   line-height: 36px;
+    color: #333333;
+}
   }
 }
 // 右边
 .case-aside{
+  width:360px;
+  margin-left: 16px;
   .case-aside-main{
-    // height: 200px;
     margin-bottom: 20px;
   }
   .case-aside-title{
 	height: 49px;
   line-height: 49px;
   padding-left: 20px;
-  border-bottom: 1px dotted #d9d9d9;
+  border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
 }
 .case-aside-desc{
-  padding: 15px;
-  line-height: 30px;
+  margin:10px 0;
+  p{
+    padding:5px 15px;
 	letter-spacing: 0px;
 	color: #666666;
+  }
+  p:hover{ color:#f68020;}
 }
 
 // 相关案例
-.case-aside-xgal{
-  .el-form-item{
+.case-aside-xgal {
+   background:white;
+    .el-form-item{
     margin-bottom: 5px;
-  }
-.el-form-item__content{
-  line-height: 26px;
+}
+
+.el-form-item__content {
+    line-height: 30px;
 }
 }
 // 办理律师
-.case-aside-blls{
+.case-aside-blls {
+  background:white;
     .el-collapse-item__header{
 height: 120px;
-  }
-  .case-aside-li{
-  width: 100%;
-  height: 102px;
-  padding: 5px 0px 5px 10px ;
-  .case-aside-p p{
-    color: #333333;
-  }
-  .case-aside-p p:nth-child(1){
-    font-size: 16px;
-  }
-  .case-aside-imgBox{
-.case-aside-name{
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 76px;
-	height: 22px;
-  line-height: 22px;
-  text-align: center;
-	background-color: #000000;
-	opacity: 0.6;
-	font-size: 12px;
-	color: #ffffff;
 }
-  .case-aside-img{
+
+.case-aside-li {
+    width: 100%;
+    height: 102px;
+    padding: 5px 0px 5px 10px;
+    .case-aside-p p{
+    color: #333333;
+}
+
+.case-aside-p p:nth-child(1) {
+    font-size: 16px;
+}
+
+.case-aside-imgBox {
+    .case-aside-name{
+  position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 76px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background-color: #000000;
+    opacity: 0.6;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.case-aside-img {
     position: relative;
-  width: 76px;
-	height: 76px;
-  background-color: #dbdbdb;
-  margin: 8px 15px;
-  }
+    width: 76px;
+    height: 76px;
+    overflow: hidden;
+    background-color: #dbdbdb;
+    margin: 8px 15px;
+}
 }
  }
-   .case-aside-info{
-     margin-bottom: 20px;
-  p {
-    margin-left: 15px;
+
+.case-aside-info {
+    margin-bottom: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    p {
     color: #999999;
     line-height: 30px;
     span{
       color: #333333;
-  }
+}
   }
 }
-.case-aside-photo{
-   margin: auto;
-   text-align: center;
- margin-bottom: 20px;
- margin: 30px 70px;
-.case-aside-img{
+
+.case-aside-photo {
+    margin: auto;
+    text-align: center;
+    margin-bottom: 20px;
+    margin: 30px 70px;
+    .case-aside-img{
   margin-bottom: 20px;
-  width: 202px;
-	height: 202px;
-  background-color: #e9e9e9;
+    width: 202px;
+    height: 202px;
+    overflow: hidden;
+    background-color: #e9e9e9;
 }
 }
 }
+
+// 案件认领
+.case-aside-ajrl
+{
+   background:white;
+    .case-aside-imgBox{
+.case-aside-claim{
+  position: absolute;
+    left: 0;
+    bottom: 25px;
+    width: 76px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    font-size: 12px;
+    color: #333333;
+}
+
+.case-aside-img
+{
+    position: relative;
+    width: 76px;
+    height: 76px;
+    background-color: #dbdbdb;
+    margin: 8px 15px;
+}
+}
+
+.case-aside-li
+{
+    opacity: 0.9;
+    background-color: #e5e5e5;
+    height: 102px;
+    padding: 5px 0px 5px 10px;
+    .case-aside-p p{
+    color: #333333;
+}
+
+.case-aside-p p:nth-child(1)
+{
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+}
+
+.el-form-item
+{
+    margin-bottom: 0;
+    padding: 10px;
+    border-bottom: solid 1px rgba(217, 217, 217, 0.3);
+}
+}
+}
+ }
+
+</style>
+<style lang='scss'>
+
 //办理律师隐藏头部
+.caseInfoClass{
  .lawyer{
  .el-collapse-item.is-active{
    >div:first-child{
      display: none;
    }
  }
-
- }
- // 案件认领
-.case-aside-ajrl{
-    .case-aside-imgBox{
-.case-aside-claim{
-  position: absolute;
-  left: 0;
-  bottom: 25px;
-  width: 76px;
-	height: 22px;
-  line-height: 22px;
-  text-align: center;
-	font-size: 12px;
-	color: #333333;
-}
-  .case-aside-img{
-  position: relative;
-  width: 76px;
-	height: 76px;
-  background-color: #dbdbdb;
-  margin: 8px 15px;
-  }
-}
-.case-aside-li{
-  opacity: 0.9;
-  background-color: #e5e5e5;
-  height: 102px;
-  padding: 5px 0px 5px 10px ;
-  .case-aside-p p{
-    color: #333333;
-  }
-  .case-aside-p p:nth-child(1){
-    font-size: 16px;
-    margin-top:10px;
-  }
-
-}
-.el-form-item{
-  margin-bottom: 0;
-  padding: 10px;
-   border-bottom:  solid 1px #d9d9d9;
-}
-}
+  .el-collapse-item__header{
+height: auto;
 }
  }
-
+ }
 </style>

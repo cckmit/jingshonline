@@ -1,26 +1,31 @@
 <template>
   <div class="lawyer-detail">
-    <el-tabs v-model="activeName" @tab-click="handleClick" >
-      <el-tab-pane name="first">
+    <el-tabs>
+      <el-tab-pane>
         <span slot="label">律师简历<i>|</i></span>
-        <lawyer-resume/>
+        <lawyer-resume :resume-data="resumeData" :lawyer-remark="lawyerRemark"/>
       </el-tab-pane>
-      <el-tab-pane name="second">
+      <el-tab-pane>
         <span slot="label">认证案例<i>|</i></span>
-        <lawyer-case/>
+        <lawyer-case
+          :industry-data-list="industryDataList"
+          :practicearea-data-list="practiceareaDataList"
+          :court-list="courtList"
+        />
       </el-tab-pane>
-      <el-tab-pane name="third">
+      <el-tab-pane>
         <span slot="label">专业领域<i>|</i></span>
-        <lawyer-professional/>
+        <lawyer-professional :chart-data="chartData"/>
       </el-tab-pane>
-      <el-tab-pane name="fourth">
+      <el-tab-pane>
         <span slot="label">常去法院</span>
-        <often-court/>
+        <often-court :court-data="courtData" />
       </el-tab-pane>
     </el-tabs>
     <div class="follow" @click="followHandle">
-      <i/>
-      <a href="#">关注</a>
+      <i :class="!follow ? 'follow-icon' : ''"/>
+      <a href="#">{{ !follow ? '关注' : '取消关注' }}</a>
+
     </div>
   </div>
 </template>
@@ -39,29 +44,94 @@ export default {
     OftenCourt
   },
   props: {
-
+    resumeData: {
+      type: Object,
+      default: function() {
+        return {
+          workExperiences: [],
+          socialPositions: [],
+          educations: [],
+          certificates: [],
+          academics: []
+        }
+      }
+    },
+    lawyerRemark: {
+      type: String,
+      default: function() {
+        return ''
+      }
+    },
+    realName: {
+      type: String,
+      default: function() {
+        return ''
+      }
+    },
+    isFollow: {
+      type: Boolean,
+      default: function() {
+        return false
+      }
+    },
+    courtData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    chartData: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    },
+    industryDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    practiceareaDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    courtList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {
-      activeName: 'first'
+      follow: this.isFollow
     }
-  },
-  computed: {
-
-  },
-  watch: {
-
   },
   methods: {
     // 用户关注律师 取消关注
     ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),
-    // tab 切换律师信息
-    handleClick(tab, event) {
-      console.log(this.activeName)
-    },
     // 关注按钮操作
     followHandle() {
-
+      if (!this.follow) {
+        this.UserFollow(this.$route.params.id).then(res => {
+          this.$notify({
+            message: `关注律师 : ${this.realName}`,
+            duration: 2000
+          })
+          this.follow = !this.follow
+        })
+      } else {
+        this.UserCancleFollow(this.$route.params.id).then(res => {
+          this.$notify({
+            message: `取消关注律师 : ${this.realName}`,
+            duration: 2000
+          })
+          this.follow = !this.follow
+        })
+      }
     }
   }
 }
@@ -109,31 +179,33 @@ export default {
     }
   }
   .follow {
+    text-align: center;
     overflow: hidden;
     position: absolute;
+    display: flex;
     top: 13px;
     right: 33px;
-    width: 78px;
+    width: 80px;
+    height: 30px;
     border: 1px solid #d5dce1;
-    text-align: left;
-    line-height: 28px;
+    line-height: 30px;
     font-size: 14px;
     border-radius: 6%;
     cursor: pointer;
-    i {
-      float: left;
-      position: absolute;
+    .follow-icon {
+      display: inline-block;
       width: 14px;
       height: 15px;
       background-image: url("../../../assets/lawyerinfo/lawyerfollow.png");
       background-size: 100% 100%;
-      left: 15px;
-      top: 7px;
-      margin-right: 6px;
+      margin-left: 16px;
+      margin-top:6px;
     }
     a {
+      margin: 0 auto;
+      text-align: center;
+      line-height: 30px;
       color: #737373;
-      margin-left: 34px;
     }
   }
 

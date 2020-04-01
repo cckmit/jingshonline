@@ -21,11 +21,8 @@ export const GetLawyerCaseList = query => {
  */
 export const UserFollow = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/follow`,
-    method: 'post',
-    data: {
-      lawyerId: lawyerId
-    }
+    url: `${setting.apiPrefix}/customer/lawyer/follow/${lawyerId}`,
+    method: 'post'
   })
 }
 
@@ -36,26 +33,20 @@ export const UserFollow = lawyerId => {
 
 export const UserCancleFollow = lawyerId => {
   return request({
-    url: `${setting.apiPrefix}/customer/lawyer/follow/cancel`,
-    method: 'delete',
-    data: {
-      lawyerId: lawyerId
-    }
+    url: `${setting.apiPrefix}/customer/lawyer/unfollow/${lawyerId}`,
+    method: 'delete'
   })
 }
 
 /**
- * 律师常去法院
+ * 律师基础信息
  * @param {number} lawyerId
  */
 
-export const LawyerOftenCourt = lawyerId => {
+export const GetLawyerInfo = lawyerId => {
   return request({
     url: `${setting.apiPrefix}/customer/lawyer/get/${lawyerId}`,
-    method: 'get',
-    data: {
-      lawyerId: lawyerId
-    }
+    method: 'get'
   })
 }
 
@@ -71,5 +62,39 @@ export const GetLawyerResume = lawyerId => {
     data: {
       lawyerId: lawyerId
     }
+  })
+}
+
+/**
+ * 用户收藏律师案例列表案例
+ * @param {number} caseId
+ */
+
+export const UserFollowCase = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/follow/${caseId}`,
+    method: 'post'
+  })
+}
+/**
+ * 用户取消收藏律师案例列表案例
+ * @param {number} caseId
+ */
+
+export const UserUnFollowCase = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/case/unfollow/${caseId}`,
+    method: 'post'
+  })
+}
+/**
+ * 律师浏览量
+ * @param {number} lawyerId
+ */
+
+export const LawyerClickCount = lawyerId => {
+  return request({
+    url: `${setting.apiPrefix}/customer/lawyer/click/${lawyerId}`,
+    method: 'post'
   })
 }

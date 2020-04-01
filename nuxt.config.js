@@ -13,13 +13,15 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'jingshonline-web;京师在线官网' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href:'//at.alicdn.com/t/font_1685422_wcss7jnfelr.css'}, // 项目生产环境图标库链接 每天晚上固定改动
+      { rel: 'stylesheet', href:'//at.alicdn.com/t/font_1685305_15tnujvdvl2.css'} // 项目开发版图标库链接 随时改动
     ]
   },
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#3B8070' },
+  loading: { color: '#3B8070', height: '2px' },
   /*
   ** Build configuration
   */
@@ -56,17 +58,28 @@ module.exports = {
   plugins: [
     { src: '~/plugins/element-ui', ssr: true },
     { src: '~/plugins/cookie', ssr: true },
-    { src: '~/plugins/route', ssr: true },
     { src: '~/plugins/custom', ssr: true },
     { src: '~/plugins/el-tree-select', ssr: false },
-    { src: '~plugins/echarts', ssr: false }
+    { src: '~plugins/echarts', ssr: false },
+    { src: '~plugins/filters', ssr: true },
+    { src: '~utils/validate', ssr: false },
+    { src: '~utils/index', ssr: false },
+    { src: '~/plugins/vue-clipboard2', ssr: false }
   ],
   env: {
-    baseUrl: 'http://gateway.dev.jingshonline.net'
+    baseUrl: process.env.BASE_URL
   },
   server: {
     // port: 9527,
     open: true
+  },
+  // page transition
+  transition: {
+    name: 'layout',
+    mode: 'out-in',
+    beforeEnter (el) {
+      console.log('Before enter...');
+    }
   }
 
 }

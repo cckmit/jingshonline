@@ -1,175 +1,48 @@
 <template>
   <div class="often-court">
-    <div class="often-container">
-      <h4 class="often-header"><i/>北、上、广、深</h4>
-      <div class="often-main">
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
+    <div v-if="courtData.length">
+      <div v-for="(item,index) in courtData" :key="index" class="often-container">
+        <h4 class="often-header"><i/>{{ item.name }}</h4>
+        <div class="often-main">
+          <div v-for="(item,index) in item.courts" :key="index" class="often-card">
+            <p class="often-card-header">{{ item.name ? item.name : '暂无数据' }}</p>
+            <ul>
+              <li>地址: {{ item.address ? item.address : '暂无数据' }}</li>
+              <li>联系方式: {{ item.tel ? item.tel : '暂无数据' }}</li>
+              <li>网址: {{ item.webSite ? item.webSite : '暂无数据' }} </li>
+              <li>案例总数: <span class="high-light">{{ item.caseCount ? item.caseCount : '暂无数据' }}</span> </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-    <div class="often-container">
-      <h4 class="often-header"><i/>华北</h4>
-      <div class="often-main">
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="often-container">
-      <h4 class="often-header"><i/>华东</h4>
-      <div class="often-main">
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-        <div class="often-card">
-          <p class="often-card-header">北京市第一中级人民法院</p>
-          <ul>
-            <li>地址: 北京市石景山区石景山路16号</li>
-            <li>联系方式: 010-68639038</li>
-            <li>网址: https://www.jingshonline.com </li>
-            <li>案例总数: <span class="high-light">58</span> </li>
-          </ul>
-        </div>
-      </div>
+    <div v-else class="no-data">
+      暂无律师常去法院数据
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 export default {
   name: 'OftenCourt',
   components: {
-
   },
   props: {
-
+    courtData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {
-      lawyerId: 0
     }
   },
   watch: {},
+  mounted() {
+  },
   methods: {
-    ...mapActions('lawyerinfo', ['LawyerOftenCourt']),
-    LawyerOftenCourt(id) {
-      this.LawyerOftenCourt(id).then(res => {
-        if (res.isSucceed) {
-          console.log('律师常去法院')
-        }
-      })
-    }
   }
 }
 </script>
@@ -221,7 +94,7 @@ export default {
         }
         ul {
           margin-left: 20px;
-         li {
+          li {
           list-style-image: url("../../../../assets/lawyerinfo/dot.png");
           font-size: 12px;
           line-height: 30px;
@@ -233,6 +106,12 @@ export default {
         }
       }
     }
+  }
+  .no-data{
+    margin-top: 100px;
+    text-align: center;
+    font-size: 32px;
+    color: #ccc;
   }
 }
 </style>

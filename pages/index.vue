@@ -35,7 +35,7 @@
         </el-row>
       </div>
     </div>
-    <div :style="{background:`url(${bjcenter}) no-repeat`}" class="content center">
+    <div :style="{background:`url(${bjcenter}) center no-repeat`}" class="content center">
       <div>
         <div>
           <h2>案源合作APP</h2>
@@ -73,8 +73,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
-import AppLogo from '~/components/AppLogo.vue'
-import bj_center from '@/assets/index_center.png'
+import bj_center from '@/assets/index/index_center.png'
 export default {
   layout: 'index',
   head() {
@@ -86,7 +85,6 @@ export default {
     }
   },
   components: {
-    AppLogo,
     CountTo
   },
   data() {
@@ -131,6 +129,9 @@ export default {
     p{
       font-size: 14px;
       color: #999;
+    }
+    &:last-child{
+      border-right: none;
     }
   }
 }
