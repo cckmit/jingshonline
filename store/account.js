@@ -10,7 +10,6 @@ export const state = () => ({
 })
 export const mutations = {
   SET_TOKEN: (state, token) => {
-    debugger
     state.token = token
   },
 
@@ -82,6 +81,7 @@ export const actions = {
             reject('获取登录用户信息失败,请重新登录')
           }
           const { userName, realName, avatar } = data
+          commit('SET_TOKEN', cookie.get('token'))
           commit('SET_NAME', userName)
           commit('SET_REAL_NAME', realName)
           commit('SET_AVATAR', avatar)

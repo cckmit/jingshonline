@@ -1,6 +1,6 @@
-import cookie from '@/plugins/cookie'
 export default function({ store, error }) {
-  if (cookie.get('token')) {
+  console.log(store.state.account.token)
+  if (store.state.account.token === undefined) {
     error({
       message: 'You are not connected',
       statusCode: 403
