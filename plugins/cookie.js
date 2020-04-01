@@ -34,6 +34,18 @@ const cookies = {
    */
   remove: name => {
     return Cookies.remove(`${setting.cookiePrefix}-${name}`)
+  },
+  /**
+   * 获取服务端cookie
+   * @param {*} req
+   */
+  getcookiesInServer: function(req) {
+    const service_cookie = {}
+    req && req.headers.cookie && req.headers.cookie.split(';').forEach(function(val) {
+      const parts = val.split('=')
+      service_cookie[parts[0].trim()] = (parts[1] || '').trim()
+    })
+    return service_cookie
   }
 }
 

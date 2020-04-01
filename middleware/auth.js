@@ -1,17 +1,8 @@
-import utils from '../utils/index'
-export default function({ route, req, res, redirect, error }) {
-  const isClient = process.client
-  const isServer = process.server
-  let token = ''
-  // 在服务端
-  if (isServer) {
-    const cookies = utils.getcookiesInServer(req)
-    token = cookies['JingShOnline-token'] ? cookies['JingShOnline-token'] : ''
-  }
-  // 在客户端判读是否需要登陆
-  if (isClient) {
-    token = utils.getcookiesInClient('JingShOnline-token')
-  }
+import cookie from '@/plugins/cookie'
+import setting from '@/plugins/setting'
+export default function({ req, error }) {
+  const cookies = cookie.getcookiesInServer(req)
+  const token = cookies[`${setting.cookiePrefix}-token`] || cookie.get('token')
   if (!token) {
     error({
       message: 'You are not connected',
