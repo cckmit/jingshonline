@@ -42,7 +42,7 @@
 
 import AliYunOss from '../../components/Oss/index'
 export default {
-  layout: 'lawyer',
+  layout: 'web',
   name: 'Help',
   components: {
     AliYunOss

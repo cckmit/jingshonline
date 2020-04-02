@@ -47,7 +47,7 @@
           <div class="case-info">
             <div>
               <p v-if="item.caseType !== 2"><span><i class="el-icon-caret-right"/>管辖法院 : {{ item.courtName ? item.courtName :'暂无数据' }}</span></p>
-              <p v-if="item.caseType !== 1"><span><i class="el-icon-caret-right"/>所属行业 : {{ item.industryName?item.industryName:'暂无数据' }}</span></p>
+              <p v-if="item.caseType !== 1"><span><i class="el-icon-caret-right"/>所属行业 : {{ item.industryName ? item.industryName:'暂无数据' }}</span></p>
             </div>
             <div>
               <p v-if="item.caseType !== 2"><span><i class="el-icon-caret-right"/>所属案由 : {{ item.caseReasonName?item.caseReasonName:'暂无数据' }}</span></p>
@@ -129,7 +129,7 @@ export default {
       // 筛选条件高亮
       activeIndex: 1,
       // 分页器
-      totalCount: 10,
+      totalCount: 0,
       // 获取认证案例所需参数
       caseListParam: {
         practiceAreaId: undefined, // 领域Id number 【诉讼领域,非诉讼领域】
@@ -159,8 +159,6 @@ export default {
       called: false
     }
   },
-  computed: {
-  },
   watch: {
     // 监听检索条件
     caseListParam: {
@@ -173,8 +171,6 @@ export default {
   created() {
     console.log(LOAD_ROOT_OPTIONS)
     this.getLawyerCaseList(this.caseListParam)
-  },
-  mounted() {
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),

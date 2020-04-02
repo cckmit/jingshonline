@@ -56,12 +56,12 @@
 </template>
 
 <script>
-import LawyerDetail from './LawyerDetail'
+import LawyerDetail from './components/LawyerDetail'
 import axios from 'axios'
 import setting from '@/plugins/setting'
 import { mapActions } from 'vuex'
 export default {
-  layout: 'lawyer',
+  layout: 'web',
   components: {
     LawyerDetail
   },
@@ -77,7 +77,7 @@ export default {
     const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData, courtListData] = await Promise.all([
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, {}, { 'Content-Type': 'application/json' }),
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
@@ -98,8 +98,9 @@ export default {
         return item.name
       }))
     }
+    // 律师业务专长排序
     lawyerBusiness.sort(function(a, b) {
-      return a.length - b.length // 降序排列，return a-b; —>升序排列
+      return a.length - b.length
     })
     // 律师简历信息数据容错
     const resumeData = {}
@@ -121,6 +122,7 @@ export default {
         resumeData.academics = resumeInfo.academics
       }
     }
+    // 案例检索条件预处理
     function Recursion(arr) {
       if (Array.isArray(arr)) {
         const dataList = []
@@ -148,7 +150,6 @@ export default {
     }
     // 案例检索条件-法院
     let court = []
-
     if (courtListData.data.data && courtListData.data.data.length > 0) {
       court = Recursion(courtListData.data.data)
     }
@@ -157,7 +158,7 @@ export default {
     if (CourtData.data.data && CourtData.data.data.length) {
       courtData = CourtData.data.data
     }
-    // 图标数据容错
+    // 图表数据容错
     const chartData = {}
     if (PracticData.data.data) {
       chartData.practicea = PracticData.data.data
@@ -176,8 +177,11 @@ export default {
       lawyerBusiness,
       // 图表数据
       chartData,
+      // 行业
       industryDataList,
+      // 领域
       practiceareaDataList,
+      // 法院
       courtList: court
     }
   },
@@ -209,7 +213,7 @@ export default {
         isDirector: true, // 是否为主任律师
         regionName: '', // 地区 天津-和平区
         highestDegree: '', // 最高学位
-        status: 0, // 律师目前状态 0-未审核  1 审核通过 2 审核未通过   3 已冻结
+        status: 0, // 律师是否审核
         followerCount: 0, // 关注人数（关注度）
         clickCount: 0, // 律师浏览量
         caseCount: 0, // 案例总数
@@ -225,12 +229,6 @@ export default {
       practiceareaDataList: [],
       courtList: []
     }
-  },
-  computed: {
-  },
-  watch: {
-  },
-  mounted() {
   },
   beforeRouteEnter(to, from, next) {
     if (from.path !== '/') {

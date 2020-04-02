@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="24">
-      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>查找律师</el-breadcrumb-item>
       </el-breadcrumb>
@@ -325,7 +325,7 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import QRCode from 'qrcode'
 export default {
-  layout: 'lawyer',
+  layout: 'web',
   name: 'Lawyer',
   transition: {
     name: 'test',
@@ -478,7 +478,6 @@ export default {
       // 获取行业
       this.getIndustryTreeData().then(res => {
         this.industryData = res
-        console.log(this.industryData)
       })
     },
     getLawfirmData() {
@@ -665,7 +664,6 @@ export default {
     collection(data) { // 收藏
       // 判断是否登录
       event.preventDefault()
-      console.log(data.id)
       if (!data.isFollow) {
         this.LawyerCollecte(data.id).then(res => {
           this.$notify({
@@ -692,7 +690,6 @@ export default {
       this.getQrcode()
     },
     getQrcode() {
-      console.log(this.url)
       QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
         this.qrimg = url
       })
@@ -703,7 +700,6 @@ export default {
           message: this.copySuccessMessage,
           type: 'success'
         })
-        console.log(e)
       }).catch(error => {
         this.$notify({
           message: this.copyErrorMessage,

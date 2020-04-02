@@ -169,7 +169,6 @@ export default {
           message: this.copySuccessMessage,
           type: 'success'
         })
-        console.log(e)
       }).catch(error => {
         this.$notify({
           message: this.copyErrorMessage,

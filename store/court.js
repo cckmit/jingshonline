@@ -1,35 +1,13 @@
 import * as Court from '@/api/dictionaries/court'
 export const state = () => ({
-  courtLevel: [{
-    id: 0,
-    name: '最高级人民法院'
-  },
-  {
-    id: 1,
-    name: '高级人民法院'
-  },
-  {
-    id: 2,
-    name: '中级人民法院'
-  },
-  {
-    id: 3,
-    name: '基层人民法院'
-  },
-  {
-    id: 4,
-    name: '专门法院'
-  },
-  {
-    id: 5,
-    name: '仲裁委员会'
-  },
-  {
-    id: 6,
-    name: '其他所'
-  }]
+  courtLevel: []
 })
 
+export const mutations = {
+  SET_COURT_LEVEL: (state, data) => {
+    state.courtLevel = data
+  }
+}
 export const actions = {
   /**
    * 获取法院数据无参数查询
@@ -76,6 +54,21 @@ export const actions = {
         .catch(error => {
           reject(error)
         })
+    })
+  },
+  /**
+   * 获取法院级别
+   * @param {commit} param0
+   */
+  getCourtLevel({ commit }) {
+    return new Promise((resolve, reject) => {
+      Court.courtLevel().then(response => {
+        const { data } = response
+        commit('SET_COURT_LEVEL', data)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
     })
   }
 }

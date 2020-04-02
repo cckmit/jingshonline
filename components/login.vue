@@ -111,7 +111,6 @@ export default {
     },
     submitLogin() {
       this.$refs.loginForm.validate(valid => {
-        console.log(valid)
         if (valid) {
           this.Login(this.loginForm).then(res => {
             this.$notify({
@@ -128,7 +127,6 @@ export default {
     },
     submitRegister() {
       this.$refs.registerForm.validate(valid => {
-        console.log(valid)
         if (valid) {
           this.Register(this.registerForm).then(res => {
 

@@ -1,3 +1,4 @@
+<!--弃用-->
 <template>
   <div>
     <NavBar/>
@@ -69,7 +70,6 @@ export default {
   },
   watch: {
     '$route'(to) {
-      console.log(to)
       this.url = to
     }
   },
@@ -77,6 +77,7 @@ export default {
     Bus.$on('searchLoading', (data) => {
       this.searchLoading = data
     })
+    this.$store.dispatch('court/getCourtLevel')
   },
   methods: {
     ...mapActions('case', ['CaseSearch']),

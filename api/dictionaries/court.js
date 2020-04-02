@@ -39,3 +39,13 @@ export const getInfo = id => {
     }
   })
 }
+
+/**
+ * 获取法院级别
+ */
+export const courtLevel = () => {
+  return request({
+    url: `${setting.apiPrefix}/court/level`,
+    method: 'get'
+  })
+}
