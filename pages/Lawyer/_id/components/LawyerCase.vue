@@ -188,7 +188,6 @@ export default {
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
-        console.log(res)
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
