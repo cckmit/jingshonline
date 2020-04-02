@@ -6,11 +6,11 @@
         <treeselect
           :options="courtDataList"
           :disable-branch-nodes="true"
-          :load-options="loadOptions"
           :auto-load-root-options="false"
-          :show-count="true"
-          v-model="caseListParam.courtId"
+          :load-options="loadOptions"
           placeholder="请选择管辖法院"
+          @select="HandleCourtSelect"
+          @input="CourtdeChangeSelect"
         />
       </div>
       <div class="lawyer-case-item">
@@ -95,7 +95,7 @@ import Pagination from '@/components/Pagination/index'
 import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { LOAD_ROOT_OPTIONS } from '@riophae/vue-treeselect'
+import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 export default {
   name: 'LawyerCase',
   components: {
@@ -155,8 +155,9 @@ export default {
       shareVisible: false,
       url: '',
       qrimg: '',
-      courtDataList: this.courtList,
-      called: false
+      courtDataList: [],
+      called: false,
+      courts: null
     }
   },
   watch: {
@@ -169,14 +170,25 @@ export default {
     }
   },
   created() {
-    console.log(LOAD_ROOT_OPTIONS)
+    this.getCourtRegionsData(null).then(res => {
+      this.courtDataList = res.map(item => {
+        return {
+          id: item.name,
+          label: item.name,
+          nodeId: item.id,
+          children: null
+        }
+      })
+    })
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
+    ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
+        console.log(res)
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
@@ -265,23 +277,43 @@ export default {
     //     console.log(error)
     //   })
     // }
-    sleep(d) { return new Promise(r => setTimeout(r, d)) },
-    async loadOptions({ action/*, callback*/ }) {
-      console.log(action)
-      if (action === LOAD_ROOT_OPTIONS) {
-        if (!this.called) {
-          // First try: simulate an exception.
-          await this.sleep(2000) // Simulate an async operation.
-          this.called = true
-          throw new Error('Failed to load options: test.')
-        } else {
-          // Second try: simulate a successful loading.
-          await this.sleep(2000)
-          this.courtDataList = this.courtDataList.map(item => ({
-            id: item.id,
-            label: item.label
-          }))
-        }
+    // 法院选中-改变检索条件
+    HandleCourtSelect(node) {
+      this.caseListParam.courtId = node.nodeId
+    },
+    // 切换选项判断是否需改变检索条件
+    CourtdeChangeSelect(value) {
+      if (!value) {
+        this.caseListParam.courtId = undefined
+      }
+    },
+    // 延迟加载
+    simulateAsyncOperation(fn) {
+      setTimeout(fn, 600)
+    },
+    loadOptions({ action, parentNode, callback }) {
+      if (action === LOAD_CHILDREN_OPTIONS && parentNode.nodeId) {
+        this.simulateAsyncOperation(() => {
+          this.getCourtRegionsChildData(parentNode.nodeId).then(res => {
+            parentNode.children = res.map(item => {
+              if (item.nodeType === 1) {
+                return {
+                  id: item.name,
+                  label: item.name,
+                  nodeId: item.id
+                }
+              } else {
+                return {
+                  id: item.name,
+                  label: item.name,
+                  nodeId: item.id,
+                  children: null
+                }
+              }
+            })
+            callback()
+          })
+        })
       }
     }
   }
