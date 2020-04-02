@@ -1,6 +1,6 @@
 <template>
-  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:120px">
-    <el-row class="case-id caseInfoClass">
+  <div class="case-info">
+    <el-row>
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item :to="{path:'/case'}" >查找案例</el-breadcrumb-item>
@@ -11,7 +11,7 @@
         <!-- 概要信息 -->
         <div class="case-content-title">
           <span id="client" class="case-title"><i class="titleIcon"/> 概要信息</span>
-          <p style="float:right">更新时间：<span class="case-font-hover"> {{ caseInfoData.updateTime }}</span></p>
+          <p style="float:right">更新时间：<span class="case-hover"> {{ caseInfoData.updateTime }}</span></p>
         </div>
         <!-- 案件信息 -->
         <div class="case-content-desc">
@@ -36,7 +36,7 @@
                 <el-form-item label="所属领域:"><p>{{ caseInfoData.practiceAreaName }}</p></el-form-item>
               </el-col>
               <el-col :span="11">
-                <el-form-item label="浏览次数:"><p class="case-font-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
+                <el-form-item label="浏览次数:"><p class="case-hover"> {{ caseInfoData.clickCount }}</p></el-form-item>
               </el-col>
               <el-col :span="11">
                 <el-form-item v-if="caseInfoData.caseType===2" label="所属行业:"><p>{{ caseInfoData.industryName }}</p></el-form-item>
@@ -47,44 +47,13 @@
         <!-- 其他信息 -->
         <div id="detail" class="case-content-main">
           <div class="case-judgment" v-html="caseInfoData.judgmentDocument">{{ caseInfoData.judgmentDocument }}</div>
-          <!-- <el-form ref="form" label-width="0">
-            <el-form-item>
-              <p id="First" class="case-title"><i class="titleIcon"/> 当事人信息</p>
-              <p></p>
-            </el-form-item>
-            <el-form-item>
-              <p id="Second" class="case-title"><i class="titleIcon"/>审理经过</p>
-              <p></p>
-            </el-form-item>
-            <el-form-item>
-              <p class="case-title"><i class="titleIcon"/>原告诉称</p>
-              <p></p>
-            </el-form-item>
-            <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 被告辩称 </p>
-              <p></p>
-            </el-form-item>
-            <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 本院查明</p>
-              <p></p>
-            </el-form-item>
-            <el-form-item>
-              <p class="case-title"><i class="titleIcon"/> 本院认为 </p>
-              <p></p>
-            </el-form-item>
-            <el-form-item>
-              <p id="Finally" class="case-title"><i class="titleIcon"/> 裁判结果</p>
-              <p>
-              </p>
-            </el-form-item>
-          </el-form> -->
         </div>
       </el-col>
       <!-- /*右边 -->
       <el-col class="case-aside">
         <!-- 办理律师 -->
         <div class="case-aside-main case-aside-blls case-border">
-          <div class="case-aside-title case-title">
+          <div class="case-aside-title">
             <span class="case-title"><i class="titleIcon"/>办理律师</span>
           </div>
           <div>
@@ -93,7 +62,7 @@
         </div>
         <!-- /* 案件认领-->
         <div class="case-aside-main case-aside-ajrl case-border">
-          <div class="case-aside-title case-title">
+          <div class="case-aside-title">
             <span class="case-title"><i class="titleIcon"/>案件认领</span>
           </div>
           <div>
@@ -102,7 +71,7 @@
         </div>
         <!-- /*相关案例 -->
         <div class="case-aside-main case-aside-xgal case-border">
-          <div class="case-aside-title case-title">
+          <div class="case-aside-title">
             <span class="case-title"><i class="titleIcon"/>相关案例</span>
           </div>
           <div class="case-aside-desc">
@@ -148,31 +117,6 @@ export default {
       caseId: 0,
       isFollow: false,
       caseInfoData: [],
-      // activities: [{
-      //   id: 'client',
-      //   title: '概要信息'
-      // }, {
-      //   id: 'First',
-      //   title: '当事人信息'
-      // }, {
-      //   id: 'Second',
-      //   title: '审理经过'
-      // }, {
-      //   id: 'After',
-      //   title: '原告辩称'
-      // }, {
-      //   id: 'Third',
-      //   title: '被告辩称'
-      // }, {
-      //   id: 'Fourth',
-      //   title: '本院查明'
-      // }, {
-      //   id: 'Fifth',
-      //   title: '本院认为'
-      // }, {
-      //   id: 'Finally',
-      //   title: '裁判结果'
-      // }],
       activities: [{
         id: 'client',
         title: '概要信息'
@@ -256,37 +200,16 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-//本页面公共样式
-.caseInfoClass{
-  font-family: MicrosoftYaHei;
+.case-info{
   font-size: 14px;
-
-// 左边标题
-.case-title {
-    font-size: 16px;
-    color: #333333;
-}
-
-img {
+  margin-bottom: 30px;
+  img {
     width: 100%;
 }
-   //边框
-.case-border {
-    border: solid 1px rgba(229, 229, 229, 0.3);
-}
-  //  已选择
-.case-font-hover {
-    color: #f68020 !important;
-}
-
-.case-content-hover {
-    border-bottom: 4px solid #f68020
-}
-ul li {
-    display: block;
-    list-style-type: none;
-    width: auto;
-    margin: 0 auto;
+   // 标题
+  .case-title {
+    font-size: 16px;
+    color: #333333;
 }
 // 标题图标
 .titleIcon {
@@ -297,28 +220,38 @@ ul li {
     border-radius: 2px;
     margin-right: 5px;
 }
+   //边框
+.case-border {
+    border: solid 1px rgba(229, 229, 229, 0.3);
+}
+  //  已选择
+.case-hover {
+    color: #f68020 !important;
+}
+
+// 左边
 .case-content {
   width: 1004px;
   background:white;
     // 概要信息
   .el-form-item{
-margin-bottom: 0;
+    margin-bottom: 0;
     line-height: 30px;
-}
+  }
 
 .el-form-item__label {
     font-size: 14px;
     color: #999999;
-}
-
+ }
+// 概要信息标题
 .case-content-title {
     display: block;
     height: 50px;
     line-height: 50px;
     border-bottom: solid 1px rgba(217, 217, 217, 0.3);
     padding: 0 20px;
-}
-
+ }
+// 概要信息内容
 .case-content-desc {
     padding: 20px;
     line-height: 30px;
@@ -326,16 +259,15 @@ margin-bottom: 0;
     .el-row{
     padding-bottom: 20px;
     border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
-}
-
+    }
   }
-
+// 其他信息
 .case-content-main {
     padding: 0 20px 20px 20px;
-.case-judgment{
-   line-height: 36px;
+   .case-judgment{
+    line-height: 36px;
     color: #333333;
-}
+   }
   }
 }
 // 右边
@@ -346,11 +278,11 @@ margin-bottom: 0;
     margin-bottom: 20px;
   }
   .case-aside-title{
-	height: 49px;
-  line-height: 49px;
-  padding-left: 20px;
-  border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
-}
+    height: 49px;
+    line-height: 49px;
+    padding-left: 20px;
+    border-bottom: 1px dotted rgba(217, 217, 217, 0.3);
+  }
 .case-aside-desc{
   margin:10px 0;
   p{
@@ -366,24 +298,21 @@ margin-bottom: 0;
    background:white;
     .el-form-item{
     margin-bottom: 5px;
-}
-
-.el-form-item__content {
+   }
+  .el-form-item__content {
     line-height: 30px;
-}
+  }
 }
 // 办理律师
 .case-aside-blls {
   background:white;
 }
-
 // 案件认领
-.case-aside-ajrl
-{
+.case-aside-ajrl{
    background:white;
-}
-}
+  }
  }
+}
 
 </style>
 
