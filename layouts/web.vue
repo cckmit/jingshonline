@@ -1,8 +1,10 @@
-<!--弃用-->
 <template>
   <div>
     <NavBar/>
-    <div v-if="url.name.toLocaleLowerCase()==='lawyer'" :style="{background:`url(${banner}) center no-repeat`}" style="height:200px;"/>
+    <div v-if="url.name.toLocaleLowerCase()==='lawyer'" >
+      <div :style="{background:`url(${banner}) center no-repeat`}" style="height:200px;"/>
+    </div>
+    <div v-if="url.name.toLocaleLowerCase()==='case'"/>
     <div class="content">
       <nuxt/>
     </div>
@@ -14,8 +16,7 @@ import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import banner from '@/assets/lawyer/lawyer_banner.png'
 export default {
-  name: 'LawyerLayout',
-
+  name: 'WebLayout',
   components: {
     NavBar,
     Footer
@@ -30,6 +31,9 @@ export default {
     '$route'(to) {
       this.url = to
     }
+  },
+  created() {
+    this.$store.dispatch('court/getCourtLevel')
   }
 }
 </script>

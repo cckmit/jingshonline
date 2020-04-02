@@ -236,7 +236,7 @@ import ExtraWrap from '@/components/ExtraWrap'
 import errorImg from '@/assets/case/case-avatar.png'
 import CaseClaim from './components/CaseClaim'
 export default {
-  layout: 'case',
+  layout: 'web',
   head() {
     return {
       title: '案例详情',

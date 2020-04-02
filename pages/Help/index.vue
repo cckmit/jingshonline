@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  layout: 'lawyer',
+  layout: 'web',
   name: 'HelpIndex',
   data() {
     return {

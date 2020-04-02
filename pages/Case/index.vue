@@ -144,7 +144,7 @@ import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 import icon from '@/assets/case/case_search.png'
 export default {
-  layout: 'case',
+  layout: 'web',
   head() {
     return {
       title: '案例列表',

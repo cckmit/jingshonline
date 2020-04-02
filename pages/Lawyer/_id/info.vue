@@ -61,7 +61,7 @@ import axios from 'axios'
 import setting from '@/plugins/setting'
 import { mapActions } from 'vuex'
 export default {
-  layout: 'lawyer',
+  layout: 'web',
   components: {
     LawyerDetail
   },

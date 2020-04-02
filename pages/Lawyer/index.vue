@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="24">
-      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb title">
+      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>查找律师</el-breadcrumb-item>
       </el-breadcrumb>
@@ -325,7 +325,7 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import QRCode from 'qrcode'
 export default {
-  layout: 'lawyer',
+  layout: 'web',
   name: 'Lawyer',
   transition: {
     name: 'test',
