@@ -30,10 +30,10 @@
   </div>
 </template>
 <script>
-import LawyerResume from './components/LawyerResume'
-import LawyerCase from './components/LawyerCase'
-import LawyerProfessional from './components/LawyerProfessional'
-import OftenCourt from './components/OftenCourt'
+import LawyerResume from './LawyerResume'
+import LawyerCase from './LawyerCase'
+import LawyerProfessional from './LawyerProfessional'
+import OftenCourt from './OftenCourt'
 import { mapActions } from 'vuex'
 export default {
   name: 'LawyerDetail',
@@ -196,7 +196,7 @@ export default {
       display: inline-block;
       width: 14px;
       height: 15px;
-      background-image: url("../../../assets/lawyerinfo/lawyerfollow.png");
+      background-image: url("../../../../assets/lawyerinfo/lawyerfollow.png");
       background-size: 100% 100%;
       margin-left: 16px;
       margin-top:6px;

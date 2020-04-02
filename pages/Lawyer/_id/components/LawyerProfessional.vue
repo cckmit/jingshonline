@@ -8,8 +8,6 @@
 <script>
 export default {
   name: 'LawyerProfessional',
-  components: {
-  },
   props: {
     chartData: {
       type: Object,
