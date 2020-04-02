@@ -4,8 +4,10 @@
       <div class="lawyer-case-item">
         <p>管辖法院 :</p>
         <treeselect
-          :options="courtList"
+          :options="courtDataList"
           :disable-branch-nodes="true"
+          :load-options="loadOptions"
+          :auto-load-root-options="false"
           :show-count="true"
           v-model="caseListParam.courtId"
           placeholder="请选择管辖法院"
@@ -93,6 +95,7 @@ import Pagination from '@/components/Pagination/index'
 import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import { LOAD_ROOT_OPTIONS } from '@riophae/vue-treeselect'
 export default {
   name: 'LawyerCase',
   components: {
@@ -151,7 +154,9 @@ export default {
       // 分享
       shareVisible: false,
       url: '',
-      qrimg: ''
+      qrimg: '',
+      courtDataList: this.courtList,
+      called: false
     }
   },
   computed: {
@@ -166,6 +171,7 @@ export default {
     }
   },
   created() {
+    console.log(LOAD_ROOT_OPTIONS)
     this.getLawyerCaseList(this.caseListParam)
   },
   mounted() {
@@ -235,7 +241,7 @@ export default {
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       }
-    }
+    },
     // // 用户分享
     // share(id) {
     //   this.shareVisible = true
@@ -263,6 +269,25 @@ export default {
     //     console.log(error)
     //   })
     // }
+    sleep(d) { return new Promise(r => setTimeout(r, d)) },
+    async loadOptions({ action/*, callback*/ }) {
+      console.log(action)
+      if (action === LOAD_ROOT_OPTIONS) {
+        if (!this.called) {
+          // First try: simulate an exception.
+          await this.sleep(2000) // Simulate an async operation.
+          this.called = true
+          throw new Error('Failed to load options: test.')
+        } else {
+          // Second try: simulate a successful loading.
+          await this.sleep(2000)
+          this.courtDataList = this.courtDataList.map(item => ({
+            id: item.id,
+            label: item.label
+          }))
+        }
+      }
+    }
   }
 }
 </script>
