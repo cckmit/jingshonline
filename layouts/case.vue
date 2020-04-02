@@ -76,6 +76,7 @@ export default {
     Bus.$on('searchLoading', (data) => {
       this.searchLoading = data
     })
+    this.$store.dispatch('court/getCourtLevel')
   },
   methods: {
     ...mapActions('case', ['CaseSearch']),
