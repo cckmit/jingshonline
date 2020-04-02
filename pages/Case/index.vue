@@ -1,15 +1,16 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 <template>
-  <div style="width:1380px;min-width:1380px;margin:auto;min-height:1000px;margin-bottom:75px">
-    <el-row class="case caseClass">
+  <div class="case-index">
+    <el-row>
       <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >首页</el-breadcrumb-item>
         <el-breadcrumb-item >查找案例</el-breadcrumb-item>
       </el-breadcrumb>
-      <el-col class="case-aside case-aside-css">
+      <el-col class="case-aside">
         <!-- 综合筛选 -->
-        <div class="case-aside case-border">
-          <div class="case-aside-title case-title">综合筛选</div>
-          <div class="case-aside-main case-main case-search">
+        <div class="case-aside-screens case-border">
+          <div class="case-screens-title">综合筛选</div>
+          <div class="case-screens-main">
             <el-select
               v-model="searchText"
               :remote-method="search"
@@ -22,6 +23,7 @@
               placeholder="请输入案由、关键词、法院、当事人、律师"
               @change="searchChange"
               @keydown.13.native="search()"
+              @clear="clearChange"
             >
               <el-option-group
                 v-for="(group, index) in options"
@@ -40,46 +42,43 @@
             </div>
           </div>
         </div>
+        <!-- 具体案由 -->
         <el-collapse v-model="activeNameCasereason">
           <el-collapse-item title="具体案由" name="1">
-            <div class="case-aside-main case-main">
-              <el-tree
-                :data="CasereasonTreeData"
-                :props="defaultProps"
-                node-key="id"
-                @node-click="handleCasereasonClick"/>
-            </div>
+            <el-tree
+              :data="CasereasonTreeData"
+              :props="defaultProps"
+              node-key="id"
+              @node-click="handleCasereasonClick"/>
           </el-collapse-item>
         </el-collapse>
+        <!-- 法院等级 -->
         <el-collapse v-model="activeNamecourtLevel">
           <el-collapse-item title="法院等级" name="1">
-            <div class="case-aside-main case-main">
-              <el-tree
-                :data="courtLevelTreeData"
-                :props="courtLevelTreeProps"
-                node-key="id"
-                @node-click="handleCourtLevelClick"/>
-            </div>
+            <el-tree
+              :data="courtLevelTreeData"
+              :props="courtLevelTreeProps"
+              node-key="id"
+              @node-click="handleCourtLevelClick"/>
           </el-collapse-item>
         </el-collapse>
+        <!-- 管辖法院 -->
         <el-collapse>
           <el-collapse-item title="管辖法院">
-            <div class="case-aside-main case-main">
-              <el-tree
-                :data="regionTreeData"
-                :props="defaultProps"
-                :expand-on-click-node="false"
-                :load="loadNode"
-                node-key="index"
-                lazy
-                @node-click="handleregionClick"/>
-            </div>
+            <el-tree
+              :data="regionTreeData"
+              :props="defaultProps"
+              :expand-on-click-node="false"
+              :load="loadNode"
+              node-key="index"
+              lazy
+              @node-click="handleregionClick"/>
           </el-collapse-item>
         </el-collapse>
       </el-col>
       <el-col class="case-content">
         <div class="case-content-title case-border">
-          <el-row class="case-title case-content-titleTop">
+          <el-row class="case-content-titleTop">
             <el-col :span="21">
               <p style="float:left"> 筛选条件:</p>
               <el-tag v-show="selectForm.courtLevelInfo" closable effect="plain" size="small" type="info" @close="handleCourtLevelClose">{{ selectForm.courtLevelInfo }}</el-tag>
@@ -87,7 +86,7 @@
               <el-tag v-show="selectForm.courtInfo" closable effect="plain" size="small" type="info" @close="handleCourtClose">{{ selectForm.courtInfo }}</el-tag>
             </el-col>
             <el-col :span="3">
-              <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete"/>清空筛选条件</p>
+              <p class="cursorPointer" style="float:right;text-decoration:underline" @click="emptyScreen()" > <i class="el-icon-delete hover"/>清空筛选条件</p>
             </el-col>
           </el-row>
           <el-row class="case-content-titleBot">
@@ -97,17 +96,17 @@
               </ul>
             </el-col>
             <el-col :span="6">
-              <p style="float:right">当前条件共找到 <i class="case-font-hover">{{ totalCount }}</i>个结果</p>
+              <p style="float:right">当前条件共找到 <i class="case-hover">{{ totalCount }}</i>个结果</p>
             </el-col>
           </el-row>
         </div>
         <div class="case-content-main">
           <ul v-bind="caseData">
-            <li v-for="(item, index) in caseData" :key="item.id" class="case-border case-content-hover" style="position:relative">
+            <li v-for="(item, index) in caseData" :key="item.id" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
                   <p> {{ item.title }}</p>
-                  <div class="caseCol">
+                  <div class="case-content-col">
                     <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
                     <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
                     <el-col v-if="item.caseType===2" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
@@ -132,7 +131,6 @@
       </el-col>
     </el-row>
     <ExtraWrap :plugins="'error,qrcode,totop,share'" :top="400" :left="100"/>
-
   </div>
 </template>
 
@@ -160,15 +158,14 @@ export default {
   data() {
     return {
       icon: icon,
-      searchLoading: false,
-      options: [],
+      loading: '',
       searchText: '',
       activeNameCasereason: '1',
       activeNamecourtLevel: '1',
       current: 1,
-      loading: '',
       totalCount: 0,
-      isStarHover: false, // 是否点击收藏变色
+      searchLoading: false,
+      options: [],
       CasereasonTreeData: [], // 案由树
       regionTreeData: [], // 管辖法院树木
       regionChildTreeData: [],
@@ -270,6 +267,10 @@ export default {
             break
         }
       }
+      this.getCaseList()
+    },
+    clearChange(key) {
+      this.caseSearch.searchKey = ''
       this.getCaseList()
     },
     // 获取案件
@@ -402,62 +403,70 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-//*******************************本页面公共样式*******************************
-.caseClass {
-	font-family: MicrosoftYaHei;
-	i{
+.case-index {
+i{
   font-style: normal
 }
-// 左边标题
-.case-title {
-  height: 60px;
-	line-height: 60px;
-	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
-	font-size: 16px;
-	color: #333333;
-}
-  //变小手
-.cursorPointer {
+ //变小手
+ .cursorPointer {
 	cursor: pointer;
 }
-// 标题图标
-.titleIcon {
-	display: inline-block;
-	width: 4px;
-	height: 12px;
-	background-color: #f68020;
-	border-radius: 2px;
-	margin-right: 5px;
-}
-   //边框
+ //边框
 .case-border {
-	border: solid 1px rgba(229, 229, 229, 0.3);
-}
-  //  已选择文字颜色
-.case-font-hover,.hover {
+   border: solid 1px rgba(229, 229, 229, 0.3);
+  }
+ //  已选择文字颜色
+.case-hover,.hover {
 	color: #f68020;
-}
-//  已选择下方边框变色
-.case-content-hover {
-	border-bottom: 4px solid #f68020
-}
-//橘色字体图标
-.el-icon-circle-plus,.el-icon-remove,.el-icon-delete {
-	color: #f68020;
-	margin-right: 5px;
 }
 //左边距字体图标
-.el-icon-error,.el-icon-sort {
+.el-icon-sort {
 	margin-left: 5px;
 }
 //右边距字体图标
-.el-icon-star-off,.el-icon-time,.el-icon-menu {
+.el-icon-star-off,.el-icon-time ，.el-icon-delete{
 	margin-right: 5px;
 }
 
-//******************************* ***************************************************************/
- .case-search{
-    .el-select{
+// -------------左侧树
+.case-aside {
+	width: 320px;
+	.el-tree-node__label{
+  font-size: 14px;
+  color:#666666;
+}
+.el-tree-node__content {
+	height: 30px;
+}
+.el-tree-node__children {
+	.el-tree-node__label{
+  font-size: 14px;
+  }
+.el-tree-node__children {
+	.el-tree-node__content{
+   .el-tree-node__label{
+     font-size: 14px;
+   }
+  }
+ }
+}
+//综合筛选
+.case-aside-screens {
+	background-color: #fff;
+	padding: 0 20px 20px 20px;
+  margin-bottom: 20px;
+	.case-screens-title{
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
+    font-size: 16px;
+    color: #333333;
+    padding-left: 10px;
+    margin-bottom: 20px;
+  }
+.case-screens-main {
+  padding: 5px 0;
+   .el-select{
       width: 280px !important;
       height: 42px;
       // border: solid 1px #000000;
@@ -484,49 +493,19 @@ export default {
       }
     }
   }
-// 左侧树
-.case-aside {
-	width: 320px;
-	.el-tree-node__label{
-  font-size: 14px;
-  color:#666666;
+ }
 }
-.el-tree-node__content {
-	height: 30px;
-}
-.el-tree-node__children {
-	.el-tree-node__label{
-  font-size: 14px;
-}
-.el-tree-node__children {
-	.el-tree-node__content{
-  .el-tree-node__label{
-  font-size: 14px;
-}
-}
-}
-}
-.case-aside {
-	background-color: #fff;
-	padding: 0 20px 20px 20px;
-  margin-bottom: 20px;
-	.case-aside-title{
-    padding-left: 10px;
-    margin-bottom: 20px;
-}
-.case-aside-main {
-	padding: 5px 0;
-}
-  }
-}
+
 //右侧
 .case-content {
 	margin-left: 16px;
-	width: 1043px;
+  width: 1043px;
+  // 筛选展示
 	.case-content-title{
   background-color: #fff;
 	padding: 0 20px;
 	.case-content-titleTop{
+	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
     color: #999999;
     letter-spacing: 1px;
     height: 50px;
@@ -538,11 +517,10 @@ export default {
       margin-left: 10px;
       font-size: 14px;
     }
-      .el-tag--plain{
+    .el-tag--plain{
         border:none  !important;
-      }
+    }
   }
-
   .case-content-titleBot {
     color: #666666;
     line-height: 50px;
@@ -556,8 +534,9 @@ export default {
       border-right: 1px solid #ccc;
     }
   }
-  }
+ }
 
+// 案例列表
 .case-content-main {
 	margin-top: 16px;
 	ul {
@@ -588,7 +567,7 @@ export default {
       font-size: 18px;
     }
 
-    .caseCol {
+    .case-content-col {
       color: #999999;
       font-size: 14px;
       height: 40px;
@@ -603,7 +582,7 @@ export default {
     }
     /*鼠标移入样式改变*/
     li:hover {
-      border-bottom: 4px solid #f68020
+      border-bottom-color: #f68020;
     }
   }
 
@@ -629,7 +608,7 @@ export default {
 }
 </style>
 <style lang='scss'>
-.case-aside-css {
+.case-aside {
   .el-collapse{
     background-color: #fff;
     padding:0 15px;

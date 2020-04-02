@@ -39,33 +39,6 @@ export const UserCancleFollow = lawyerId => {
 }
 
 /**
- * 律师基础信息
- * @param {number} lawyerId
- */
-
-export const GetLawyerInfo = lawyerId => {
-  return request({
-    url: `${setting.apiPrefix}/customer/lawyer/get/${lawyerId}`,
-    method: 'get'
-  })
-}
-
-/**
- * 获取律师简历信息
- * @param {number} lawyerId
- */
-
-export const GetLawyerResume = lawyerId => {
-  return request({
-    url: `${setting.apiPrefix}/customer/lawyer/resume/get`,
-    method: 'get',
-    data: {
-      lawyerId: lawyerId
-    }
-  })
-}
-
-/**
  * 用户收藏律师案例列表案例
  * @param {number} caseId
  */

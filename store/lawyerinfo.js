@@ -56,42 +56,6 @@ export const actions = {
     })
   },
   /**
- * 律师常去法院
- * @param {number} lawyerId
- */
-  GetLawyerInfo({ commit }, lawyerId) {
-    return new Promise((resolve, reject) => {
-      LawyerInfo.GetLawyerInfo(lawyerId)
-        .then(response => {
-          const {
-            data
-          } = response
-          resolve(data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
-  },
-  /**
- * 获取律师简历信息
- * @param {number} lawyerId
- */
-  GetLawyerResume({ commit }, lawyerId) {
-    return new Promise((resolve, reject) => {
-      LawyerInfo.GetLawyerResume(lawyerId)
-        .then(response => {
-          const {
-            data
-          } = response
-          resolve(data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
-  },
-  /**
  * 用户关注律师案例列表案例
  * @param {number} caseId
  */
