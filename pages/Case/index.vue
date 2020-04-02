@@ -56,7 +56,7 @@
             <div class="case-aside-main case-main">
               <el-tree
                 :data="courtLevelTreeData"
-                :props="defaultProps"
+                :props="courtLevelTreeProps"
                 node-key="id"
                 @node-click="handleCourtLevelClick"/>
             </div>
@@ -173,6 +173,10 @@ export default {
       regionTreeData: [], // 管辖法院树木
       regionChildTreeData: [],
       caseData: [], // 案例
+      courtLevelTreeProps: {
+        children: 'children',
+        label: 'description'
+      },
       defaultProps: {
         children: 'children',
         label: 'name'
@@ -216,9 +220,7 @@ export default {
   },
   computed: {
     ...mapState({
-      courtLevelTreeData: state => state.court.courtLevel
-    }),
-    ...mapState({
+      courtLevelTreeData: state => state.court.courtLevel,
       sortData: state => state.case.sortData
     })
   },
@@ -337,7 +339,7 @@ export default {
     // 管辖法院点击
     handleCourtLevelClick(data) {
       this.caseSearch.pageIndex = 1
-      this.selectForm.courtLevelInfo = data.name
+      this.selectForm.courtLevelInfo = data.description
       this.caseSearch.courtLevel = data.id
       this.getRegionTree(this.caseSearch.courtLevel)
       this.getCaseList()
