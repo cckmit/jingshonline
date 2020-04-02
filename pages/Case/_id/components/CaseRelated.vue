@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="case-related">
     <ul :source-data="sourceData">
       <li v-for="(item, index) in sourceData.lawyers" :key="index">
         <!-- <nuxt-link :to="`/case/${item.lawyerId}/info`"> -->
@@ -30,11 +30,13 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-    p{
+.case-related{
+  p{
     padding:5px 15px;
 	letter-spacing: 0px;
 	color: #666666;
   }
   p:hover{ color:#f68020;}
+}
 </style>
 

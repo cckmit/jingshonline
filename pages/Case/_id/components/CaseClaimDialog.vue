@@ -1,93 +1,95 @@
 <template>
-  <el-dialog :visible.sync="visible" title="认领案例" class="caseClaim-dialog" @close="close">
-    <div ref="userForm" :source-data="sourceData" class="case-claim">
-      <el-steps :active="isStep" align-center style="margin-bottom:20px">
-        <el-step title="选取信息"/>
-        <el-step title="提供证据"/>
-        <el-step title="提交认领"/>
-      </el-steps>
-      <!-- 选择律师 -->
-      <el-form ref="lawyerSelectForm" :rules="lawyerSelectRules" :model="lawyerSelectForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep===0" class="case-lawyerSelect" prop="lawyerSelect">
-          <div v-for="(item,index) in sourceData" :key="index" :name="index" class="case-select">
-            <div class="case-aside-li" style="cursor: pointer;">
-              <el-col :span="2" class="case-aside-checkbox">
-                <el-checkbox v-model="item.checked" @change="checkChanged(item.lawyerId,index)"/>
-              </el-col>
-              <el-col :span="8" class="case-aside-imgBox">
-                <div class="case-aside-img">
-                  <img src="@/assets/case/case-avatar.png" alt="">
-                </div>
-              </el-col>
-              <el-col :span="14" class="case-aside-p">
-                <p>{{ item.realName }}</p>
-                <p>{{ item.lawfirmName }}</p>
-              </el-col>
+  <div class="caseClaim-dialog">
+    <el-dialog :visible.sync="visible" title="认领案例" @close="close">
+      <div ref="userForm" :source-data="sourceData" class="case-claim">
+        <el-steps :active="isStep" align-center style="margin-bottom:20px">
+          <el-step title="选取信息"/>
+          <el-step title="提供证据"/>
+          <el-step title="提交认领"/>
+        </el-steps>
+        <!-- 选择律师 -->
+        <el-form ref="lawyerSelectForm" :rules="lawyerSelectRules" :model="lawyerSelectForm" label-position="left" label-width="100px" style="padding:0 140px">
+          <el-form-item v-show="isStep===0" class="caseClaim-lawyerSelect" prop="lawyerSelect">
+            <div v-for="(item,index) in sourceData" :key="index" :name="index" class="caseClaim-select">
+              <div class="caseClaim-dialog-li" style="cursor: pointer;">
+                <el-col :span="2" class="caseClaim-dialog-checkbox">
+                  <el-checkbox v-model="item.checked" @change="checkChanged(item.lawyerId,index)"/>
+                </el-col>
+                <el-col :span="8" class="caseClaim-dialog-imgBox">
+                  <div class="caseClaim-dialog-img">
+                    <img src="@/assets/case/case-avatar.png" alt="">
+                  </div>
+                </el-col>
+                <el-col :span="14" class="caseClaim-dialog-p">
+                  <p>{{ item.realName }}</p>
+                  <p>{{ item.lawfirmName }}</p>
+                </el-col>
+              </div>
             </div>
-          </div>
-        </el-form-item>
-      </el-form>
-      <!-- 上传头像 -->
-      <el-form ref="uploadAvatarForm" :rules="uploadAvatarRules" :model="uploadAvatarForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep===1" prop="avatar" class="claim-avatar">
-          <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" />
-          <p style="color: #d84714;">温馨提示:请上传个人真实头像.</p>
-        </el-form-item>
-      </el-form>
-      <!-- 展示头像，律师 -->
-      <el-form v-show="isStep===2" ref="caseClaimForm" :model="caseClaimForm" style="padding:0 140px">
-        <el-form-item class="case-lawyerSelect" prop="lawyerSelect">
-          <div v-for="(item,index) in sourceData" v-show="item.checked" :key="index" :name="index" class="case-select" >
-            <div class="case-aside-li" style="cursor: pointer;">
-              <el-col :span="2" class="case-aside-checkbox">
-                <el-checkbox v-model="item.checked" disabled/>
-              </el-col>
-              <el-col :span="8" class="case-aside-imgBox">
-                <div class="case-aside-img">
-                  <img src="@/assets/case/case-avatar.png" alt="">
-                </div>
-              </el-col>
-              <el-col :span="14" class="case-aside-p">
-                <p>{{ item.realName }}</p>
-                <p>{{ item.lawfirmName }}</p>
-              </el-col>
+          </el-form-item>
+        </el-form>
+        <!-- 上传头像 -->
+        <el-form ref="uploadAvatarForm" :rules="uploadAvatarRules" :model="uploadAvatarForm" label-position="left" label-width="100px" style="padding:0 140px">
+          <el-form-item v-show="isStep===1" prop="avatar" class="claim-avatar">
+            <AliYunOss :option="ossOptionForAvatar" @change="ossUploadChangeForAvatar" />
+            <p style="color: #d84714;">温馨提示:请上传个人真实头像.</p>
+          </el-form-item>
+        </el-form>
+        <!-- 展示头像，律师 -->
+        <el-form v-show="isStep===2" ref="caseClaimForm" :model="caseClaimForm" style="padding:0 140px">
+          <el-form-item class="caseClaim-lawyerSelect" prop="lawyerSelect">
+            <div v-for="(item,index) in sourceData" v-show="item.checked" :key="index" :name="index" class="caseClaim-select" >
+              <div class="caseClaim-dialog-li" style="cursor: pointer;">
+                <el-col :span="2" class="caseClaim-dialog-checkbox">
+                  <el-checkbox v-model="item.checked" disabled/>
+                </el-col>
+                <el-col :span="8" class="caseClaim-dialog-imgBox">
+                  <div class="caseClaim-dialog-img">
+                    <img src="@/assets/case/case-avatar.png" alt="">
+                  </div>
+                </el-col>
+                <el-col :span="14" class="caseClaim-dialog-p">
+                  <p>{{ item.realName }}</p>
+                  <p>{{ item.lawfirmName }}</p>
+                </el-col>
+              </div>
             </div>
-          </div>
-        </el-form-item>
-        <el-form-item v-show="isStep===2" class="claim-avatar">
-          <el-row>
-            <el-col :span="6" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:150px;height:150px"><p>150*150</p></el-col>
-            <el-col :span="6" :offset="5" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:78px;height:78px;margin-top:70px"><p>78*78</p></el-col>
-            <el-col :span="3" :offset="3" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:48px;height:48px;margin-top:90px"><p>48*48</p></el-col>
-          </el-row>
-        </el-form-item>
-      </el-form>
-      <!-- 公用联系方式 -->
-      <el-form ref="phoneSelectForm" :rules="phoneSelectRules" :model="phoneSelectForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep!==1" label="联系方式" prop="phone" style="margin-left:10px">
-          <el-input v-model="phoneSelectForm.phone" :disabled="isStep===2" maxlength="11" size="small" clearable placeholder="请输入您的联系方式" />
-        </el-form-item>
-      </el-form>
-      <!-- 公用证件 -->
-      <el-form ref="uploadLicenceForm" :rules="uploadLicenceRules" :model="uploadLicenceForm" label-position="left" label-width="100px" style="padding:0 140px">
-        <el-form-item v-show="isStep!==0" label="上传证件" prop="licenseName" class="claim-license" style="margin-left:10px">
-          <el-row>
-            <el-col :span="20"> <el-input v-model="uploadLicenceForm.licenseName" :disabled="isStep===2" :style="{width:(isStep===2?'120%':'100%')}" size="small" placeholder="律师执业证件照仅支持jpg，png格式" />
-            </el-col>
-            <el-col :span="2" :offset="1"><el-button v-show="isStep===1" size="small" type="primary" @click="isLicense=true">点击上传</el-button>
-            </el-col>
-          </el-row>
-          <AliYunOss v-if="isLicense" :option="ossOptionForLicence" @change="ossUploadChangeForLicence" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button v-if="isStep===1" @click="backClick">上一步</el-button>
-        <el-button v-if="isStep!==2" type="primary" @click="nextClick">下一步</el-button>
-        <el-button v-if="isStep===2" @click="reviseClick">修改信息</el-button>
-        <el-button v-if="isStep===2" type="primary" @click="submit">提交认领</el-button>
+          </el-form-item>
+          <el-form-item v-show="isStep===2" class="claim-avatar">
+            <el-row>
+              <el-col :span="6" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:150px;height:150px"><p>150*150</p></el-col>
+              <el-col :span="6" :offset="5" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:78px;height:78px;margin-top:70px"><p>78*78</p></el-col>
+              <el-col :span="3" :offset="3" style="text-align:center"><img :src="caseClaimForm.avatar" alt="" style="width:48px;height:48px;margin-top:90px"><p>48*48</p></el-col>
+            </el-row>
+          </el-form-item>
+        </el-form>
+        <!-- 公用联系方式 -->
+        <el-form ref="phoneSelectForm" :rules="phoneSelectRules" :model="phoneSelectForm" label-position="left" label-width="100px" style="padding:0 140px">
+          <el-form-item v-show="isStep!==1" label="联系方式" prop="phone" style="margin-left:10px">
+            <el-input v-model="phoneSelectForm.phone" :disabled="isStep===2" maxlength="11" size="small" clearable placeholder="请输入您的联系方式" />
+          </el-form-item>
+        </el-form>
+        <!-- 公用证件 -->
+        <el-form ref="uploadLicenceForm" :rules="uploadLicenceRules" :model="uploadLicenceForm" label-position="left" label-width="100px" style="padding:0 140px">
+          <el-form-item v-show="isStep!==0" label="上传证件" prop="licenseName" class="claim-license" style="margin-left:10px">
+            <el-row>
+              <el-col :span="20"> <el-input v-model="uploadLicenceForm.licenseName" :disabled="isStep===2" :style="{width:(isStep===2?'120%':'100%')}" size="small" placeholder="律师执业证件照仅支持jpg，png格式" />
+              </el-col>
+              <el-col :span="2" :offset="1"><el-button v-show="isStep===1" size="small" type="primary" @click="isLicense=true">点击上传</el-button>
+              </el-col>
+            </el-row>
+            <AliYunOss v-if="isLicense" :option="ossOptionForLicence" @change="ossUploadChangeForLicence" />
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button v-if="isStep===1" @click="backClick">上一步</el-button>
+          <el-button v-if="isStep!==2" type="primary" @click="nextClick">下一步</el-button>
+          <el-button v-if="isStep===2" @click="reviseClick">修改信息</el-button>
+          <el-button v-if="isStep===2" type="primary" @click="submit">提交认领</el-button>
+        </div>
       </div>
-    </div>
-  </el-dialog>
+    </el-dialog>
+  </div>
 </template>
 <script>
 import AliYunOss from '@/components/Oss'
@@ -260,9 +262,12 @@ export default {
 }
 </script>
 <style lang='scss'>
-
+.caseClaim-dialog{
+ .el-dialog{
+ width: 670px;
+  }
 // 案件认领
-.case-lawyerSelect{
+.caseClaim-lawyerSelect{
   .el-form--label-left{
     margin-left: 0 !important;
   }
@@ -270,11 +275,7 @@ export default {
     margin-left: 0 !important;
   }
 }
-.caseClaim-dialog{
-  .el-dialog{
- width: 670px;
-  }
-}
+
 .el-dialog__header {
     text-align: center;
 }
@@ -284,21 +285,20 @@ export default {
     color: #f68020 !important;
     border-color:#f68020 !important;
   }
-
 }
 .case-claim{
-  .el-input--suffix{
-  // width:280px !important;
-}
-.el-form--label-left{
-padding: 0px 110px !important;
-}
+    .el-form--label-left{
+    padding: 0px 110px !important;
+    }
+  }
 }
 </style>
 <style lang='scss' scoped>
-img{
-  width: 100%
-}
+.caseClaim-dialog{
+
+  img{
+    width: 100%
+  }
 .el-dialog{
 	background-color: #ffffff;
 	border-radius: 3px;
@@ -308,63 +308,64 @@ img{
 }
 
 // 案件认领
-.case-lawyerSelect{
+.caseClaim-lawyerSelect{
   .el-form--label-left{
     margin-left: 0 !important;
   }
   .el-form-item__content{
     margin-left: 0 !important;
   }
-    .case-aside-imgBox{
-.case-aside-claim{
-  position: absolute;
-    left: 0;
-    bottom: 25px;
-    width: 76px;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
-    font-size: 12px;
-    color: #333333;
+    .caseClaim-dialog-imgBox{
+      .caseClaim-dialog-claim{
+        position: absolute;
+          left: 0;
+          bottom: 25px;
+          width: 76px;
+          height: 22px;
+          line-height: 22px;
+          text-align: center;
+          font-size: 12px;
+          color: #333333;
+      }
+
+    .caseClaim-dialog-img
+    {
+        position: relative;
+        width: 76px;
+        height: 76px;
+        background-color: #dbdbdb;
+        margin: 8px 15px;
+    }
+
+  }
+  .caseClaim-dialog-checkbox{
+    line-height: 80px !important;
+    padding-left: 10px !important;
+  }
+  .caseClaim-dialog-li
+  {
+      opacity: 0.9;
+      padding: 10px;
+      .caseClaim-dialog-p p{
+      color: #333333;
+  }
+
+  .caseClaim-dialog-p p:nth-child(1)
+  {
+      font-size: 16px;
+      margin-top: 10px;
+  }
+
 }
 
-.case-aside-img
-{
-    position: relative;
-    width: 76px;
-    height: 76px;
-    background-color: #dbdbdb;
-    margin: 8px 15px;
-}
-
-}
-.case-aside-checkbox{
-  line-height: 80px !important;
-  padding-left: 10px !important;
-}
-.case-aside-li
-{
-    opacity: 0.9;
-    padding: 10px;
-    .case-aside-p p{
-    color: #333333;
-}
-
-.case-aside-p p:nth-child(1)
-{
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-}
-
-.case-select
-{
-    margin-bottom: 0;
-    border: solid 1px rgba(217, 217, 217, 0.3);
-    margin:10px 0;
-    height: 116px;
-    width: 420px;
+  .caseClaim-select
+  {
+      margin-bottom: 0;
+      border: solid 1px rgba(217, 217, 217, 0.3);
+      margin:10px 0;
+      height: 116px;
+      width: 420px;
+  }
 }
 }
 }
