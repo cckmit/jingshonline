@@ -1,5 +1,14 @@
 import * as Casereason from '@/api/dictionaries/casereason'
 
+export const state = () => ({
+  casereasonTreeData: []
+})
+export const mutations = {
+  SET_CASE_REASION_TREE_DATA: (state, data) => {
+    state.casereasonTreeData = data
+  }
+}
+
 export const actions = {
   /**
    * 获取案由数据
@@ -10,6 +19,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       Casereason.getTree(query).then(response => {
         const { data } = response
+        commit('SET_CASE_REASION_TREE_DATA', data)
         resolve(data)
       })
         .catch(error => {

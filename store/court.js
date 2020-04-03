@@ -1,22 +1,27 @@
 import * as Court from '@/api/dictionaries/court'
 export const state = () => ({
+  courtData: [],
   courtLevel: []
 })
 
 export const mutations = {
   SET_COURT_LEVEL: (state, data) => {
     state.courtLevel = data
+  },
+  SET_COURT_DATA: (state, data) => {
+    state.courtData = data
   }
 }
 export const actions = {
   /**
-   * 获取法院数据无参数查询
+   * 获取法院数据无参数查询 获取全部法院
    * @param {commit} param0
    */
   getCourt({ commit }) {
     return new Promise((resolve, reject) => {
-      Court.get().then(response => {
+      Court.get({}).then(response => {
         const { data } = response
+        commit('SET_COURT_DATA', data)
         resolve(data)
       })
         .catch(error => {

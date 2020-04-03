@@ -65,7 +65,8 @@ module.exports = {
     { src: '~plugins/filters', ssr: true },
     { src: '~utils/validate', ssr: false },
     { src: '~utils/index', ssr: false },
-    { src: '~/plugins/vue-clipboard2', ssr: false }
+    { src: '~/plugins/vue-clipboard2', ssr: false },
+    { src: '~/plugins/moment', ssr: true }
   ],
   env: {
     baseUrl: process.env.BASE_URL
