@@ -1,7 +1,9 @@
 <template>
   <div class="lawyer-professional">
     <div v-if="chartData.practicea && chartData.practicea.length" id="Litigation" ref="Litigation" style="width:550px;height:450px;"/>
+    <div v-else class="no-data">暂无诉讼领域案例数据</div>
     <div v-if="chartData.noPracticea && chartData.noPracticea.length" id="LitigationTwo" ref="LitigationTwo" style="width:550px;height:450px;"/>
+    <div v-else class="no-data">暂无非诉讼领域案例数据</div>
   </div>
 </template>
 
@@ -144,6 +146,12 @@ export default {
   border-right:  1px solid #eee;
   #Litigation{
     margin-bottom: 46px;
+  }
+  .no-data{
+    margin: 40px 0 100px 0;
+    font-size: 32px;
+    color: #ccc;
+    text-align: left;
   }
 }
 

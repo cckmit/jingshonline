@@ -6,11 +6,12 @@
         <treeselect
           :options="courtDataList"
           :disable-branch-nodes="true"
-          :load-options="loadOptions"
           :auto-load-root-options="false"
-          :show-count="true"
-          v-model="caseListParam.courtId"
+          :load-options="loadOptions"
+          clear-value-text="清除所选项"
           placeholder="请选择管辖法院"
+          @select="HandleCourtSelect"
+          @input="CourtdeChangeSelect"
         />
       </div>
       <div class="lawyer-case-item">
@@ -18,8 +19,9 @@
         <treeselect
           :options="industryDataList"
           :disable-branch-nodes="true"
-          :show-count="true"
           v-model="caseListParam.industryId"
+          :normalizer="industryNormalizer"
+          clear-value-text="清除所选项"
           placeholder="请选择所属行业"
         />
       </div>
@@ -28,8 +30,9 @@
         <treeselect
           :options="practiceareaDataList"
           :disable-branch-nodes="true"
-          :show-count="true"
           v-model="caseListParam.practiceAreaId"
+          :normalizer="practiceareaNormalizer"
+          clear-value-text="清除所选项"
           placeholder="请选择所属领域"
         />
       </div>
@@ -77,15 +80,6 @@
     <div v-else class="no-data">
       暂无相关案例
     </div>
-    <!-- <el-dialog :visible.sync="shareVisible" top="35vh" width="400px" title="分享">
-      <div class="share">
-        <el-input v-model="url" size="mini"/>
-        <div>
-          <el-button size="mini" icon="el-icon-share" @click.prevent="copy">分享</el-button>
-        </div>
-        <img :src="qrimg">
-      </div>
-    </el-dialog> -->
     <Pagination v-show="totalCount>0" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
   </div>
 </template>
@@ -95,7 +89,7 @@ import Pagination from '@/components/Pagination/index'
 import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { LOAD_ROOT_OPTIONS } from '@riophae/vue-treeselect'
+import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 export default {
   name: 'LawyerCase',
   components: {
@@ -110,12 +104,6 @@ export default {
       }
     },
     practiceareaDataList: {
-      type: Array,
-      default: function() {
-        return []
-      }
-    },
-    courtList: {
       type: Array,
       default: function() {
         return []
@@ -146,17 +134,11 @@ export default {
         pageIndex: 1// 页码 number
       },
       // 法院数据
-      courtData: [],
+      courtDataList: [],
       // 行业树数据
       industryTree: [],
       // 案件领域数据
-      practiceAreaData: [],
-      // 分享
-      shareVisible: false,
-      url: '',
-      qrimg: '',
-      courtDataList: this.courtList,
-      called: false
+      practiceAreaData: []
     }
   },
   watch: {
@@ -169,11 +151,13 @@ export default {
     }
   },
   created() {
-    console.log(LOAD_ROOT_OPTIONS)
+    console.log(this.industryDataList)
+    this.getCourtRegion(null)
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
+    ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
@@ -183,19 +167,61 @@ export default {
         }
       })
     },
-    // 检索条件去重
-    unique(arr) {
-      const obj = {}
-      return arr.reduce((cur, next) => {
-        obj[next.id] ? '' : obj[next.id] = true && cur.push(next)
-        // 检索条件容错
-        cur.forEach((item, index) => {
-          if (String(item.id) === 'null') {
-            cur.splice(index, 1)
-          }
+    // 获取地区信息-法院
+    getCourtRegion(query) {
+      this.getCourtRegionsData(query).then(res => {
+        this.courtDataList = res.map(item => {
+          return { id: item.name, label: item.name, nodeId: item.id, children: item.nodeType === 1 ? '' : null }
         })
-        return cur
-      }, [])
+      })
+    },
+    // 领域数据二次处理
+    practiceareaNormalizer(node) {
+      return {
+        id: node.id,
+        label: node.name,
+        children: node.children && node.children.length ? node.children : ''
+      }
+    },
+    // 行业数据二次处理
+    industryNormalizer(node) {
+      return {
+        id: node.id,
+        label: node.name,
+        children: node.children && node.children.length ? node.children : ''
+      }
+    },
+    // 法院选中-改变检索条件
+    HandleCourtSelect(node) {
+      this.caseListParam.courtId = node.nodeId
+    },
+    // 法院-选项改变
+    CourtdeChangeSelect(value) {
+      if (!value) {
+        this.caseListParam.courtId = undefined
+      }
+    },
+    // 法院-延迟加载
+    simulateAsyncOperation(fn) {
+      setTimeout(fn, 600)
+    },
+    // 法院-延迟加载
+    loadOptions({ action, parentNode, callback }) {
+      if (action === LOAD_CHILDREN_OPTIONS && parentNode.nodeId) {
+        this.simulateAsyncOperation(() => {
+          this.getCourtRegionsChildData(parentNode.nodeId).then(res => {
+            parentNode.children = res.map(item => {
+              return {
+                id: item.name,
+                label: item.name,
+                nodeId: item.id,
+                children: item.nodeType === 1 ? '' : null
+              }
+            })
+            callback()
+          })
+        })
+      }
     },
     // 改变排序状态
     filterChange(type) {
@@ -236,52 +262,6 @@ export default {
           })
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
-      }
-    },
-    // // 用户分享
-    // share(id) {
-    //   this.shareVisible = true
-    //   this.url = window.location.origin + `/case/${id}/info`
-    //   this.getQrcode()
-    // },
-    // // 获取二维码
-    // getQrcode() {
-    //   QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
-    //     this.qrimg = url
-    //   })
-    // },
-    // // 复制链接
-    // copy() {
-    //   this.$copyText(this.url).then(e => {
-    //     this.$notify({
-    //       message: '链接地址复制成功',
-    //       type: 'success'
-    //     })
-    //   }).catch(error => {
-    //     this.$notify({
-    //       message: '复制失败',
-    //       type: 'error'
-    //     })
-    //     console.log(error)
-    //   })
-    // }
-    sleep(d) { return new Promise(r => setTimeout(r, d)) },
-    async loadOptions({ action/*, callback*/ }) {
-      console.log(action)
-      if (action === LOAD_ROOT_OPTIONS) {
-        if (!this.called) {
-          // First try: simulate an exception.
-          await this.sleep(2000) // Simulate an async operation.
-          this.called = true
-          throw new Error('Failed to load options: test.')
-        } else {
-          // Second try: simulate a successful loading.
-          await this.sleep(2000)
-          this.courtDataList = this.courtDataList.map(item => ({
-            id: item.id,
-            label: item.label
-          }))
-        }
       }
     }
   }
