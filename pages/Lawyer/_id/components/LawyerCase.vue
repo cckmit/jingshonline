@@ -151,7 +151,6 @@ export default {
     }
   },
   created() {
-    console.log(this.industryDataList)
     this.getCourtRegion(null)
     this.getLawyerCaseList(this.caseListParam)
   },
