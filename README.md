@@ -25,3 +25,15 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 
 ![image](https://code.jingshonline.net/jingshonline/frontend/jingshonline-web/raw/master/code.jpg)
 
+## 更新远程分支
+
+
+
+
+
+
+```bash
+#获取代码或切换分支出现问题时，请尝试更新远程分支
+git remote update origin --prune
+```
+
