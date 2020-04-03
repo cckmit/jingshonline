@@ -49,7 +49,6 @@
         :chart-data="chartData"
         :industry-data-list="industryDataList"
         :practicearea-data-list="practiceareaDataList"
-        :court-list="courtList"
       />
     </div>
   </div>
@@ -74,15 +73,14 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData, courtListData] = await Promise.all([
+    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData] = await Promise.all([
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }),
       axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' }),
-      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/court/list`, { query: { name: '', regionId: '', courtLevel: '' }}, { 'Content-Type': 'application/json' })
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' })
     ])
     // 律师基础信息数据容错
     let lawyerInformationData = {}
@@ -122,37 +120,6 @@ export default {
         resumeData.academics = resumeInfo.academics
       }
     }
-    // 案例检索条件预处理
-    function Recursion(arr) {
-      if (Array.isArray(arr)) {
-        const dataList = []
-        arr.forEach((item, index) => {
-          dataList.push({
-            id: item.id,
-            label: item.name
-          })
-          if (item.children && item.children.length > 0) {
-            dataList[index].children = Recursion(item.children)
-          }
-        })
-        return dataList
-      }
-    }
-    // 案例检索条件-行业树
-    let industryDataList = []
-    if (industryData.data.data) {
-      industryDataList = Recursion(industryData.data.data)
-    }
-    // 案例检索条件-领域树
-    let practiceareaDataList = []
-    if (practiceareaData.data.data) {
-      practiceareaDataList = Recursion(practiceareaData.data.data)
-    }
-    // 案例检索条件-法院
-    let court = []
-    if (courtListData.data.data && courtListData.data.data.length > 0) {
-      court = Recursion(courtListData.data.data)
-    }
     // 律师常去法院数据容错
     let courtData = []
     if (CourtData.data.data && CourtData.data.data.length) {
@@ -178,11 +145,9 @@ export default {
       // 图表数据
       chartData,
       // 行业
-      industryDataList,
+      industryDataList: industryData.data.data,
       // 领域
-      practiceareaDataList,
-      // 法院
-      courtList: court
+      practiceareaDataList: practiceareaData.data.data
     }
   },
   data() {

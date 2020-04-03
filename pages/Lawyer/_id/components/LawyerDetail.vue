@@ -10,7 +10,6 @@
         <lawyer-case
           :industry-data-list="industryDataList"
           :practicearea-data-list="practiceareaDataList"
-          :court-list="courtList"
         />
       </el-tab-pane>
       <el-tab-pane>
