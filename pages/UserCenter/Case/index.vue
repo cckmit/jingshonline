@@ -16,6 +16,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterCase',
@@ -34,11 +35,17 @@ export default {
     return {
     }
   },
+  computed: {
+    ...mapState({
+      casereasonTreeData: state => state.caseReason.casereasonTreeData
+    })
+  },
   watch: {
   },
   mounted() {
   },
   methods: {
+
   }
 }
 </script>

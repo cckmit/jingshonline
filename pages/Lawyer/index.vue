@@ -455,8 +455,7 @@ export default {
     ...mapActions('lawyer', ['GetLawyerList', 'LawyerCollecte', 'LawyerUnCollecte']),
     ...mapActions('practice', [
       'getPracticeTreeData',
-      'getPracticesuitsData',
-      'getPracticeNosuitsData'
+      'getPracticeTreeDataOfType'
     ]),
     ...mapActions('industry', ['getIndustryTreeData']),
     ...mapActions('lawfirm', ['getLawfirm']),
@@ -467,10 +466,10 @@ export default {
       //   this.suitsData = res[0].children
       //   this.NosuitsData = res[1].children
       // })
-      this.getPracticesuitsData().then(res => {
+      this.getPracticeTreeDataOfType(1).then(res => {
         this.suitsData = res[0].children
       })
-      this.getPracticeNosuitsData().then(res => {
+      this.getPracticeTreeDataOfType(2).then(res => {
         this.NosuitsData = res[0].children
       })
     },

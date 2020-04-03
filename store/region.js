@@ -6,7 +6,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  regionData(state, value) {
+  REGION_DATA(state, value) {
     state.regionTreeData = value
   }
 }
@@ -21,7 +21,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       Region.getTree(query).then(response => {
         const { data } = response
-        commit('regionData', data)
+        commit('REGION_DATA', data)
         resolve(data)
       }).catch(error => {
         reject(error)

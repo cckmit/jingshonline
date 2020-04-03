@@ -1,4 +1,12 @@
 import * as Industry from '@/api/dictionaries/industry'
+export const state = () => ({
+  industryData: []
+})
+export const mutations = {
+  SET_INDUSTRY_DATA: (state, data) => {
+    state.industryData = data
+  }
+}
 
 export const actions = {
   /**
@@ -10,6 +18,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       Industry.getTree(query).then(response => {
         const { data } = response
+        commit('SET_INDUSTRY_DATA', data)
         resolve(data)
       })
         .catch(error => {

@@ -5,10 +5,13 @@ import setting from '@/plugins/setting'
 /**
  * 法院数据无参数
  */
-export const get = () => {
+export const get = (query) => {
   return request({
     url: `${setting.apiPrefix}/court/list`,
-    method: 'get'
+    method: 'post',
+    data: {
+      query: query
+    }
   })
 }
 

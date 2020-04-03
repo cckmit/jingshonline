@@ -12,8 +12,6 @@
 import NavBar from '@/components/UserCenterNavBar'
 import Footer from '@/components/Footer'
 import banner from '@/assets/lawyer/lawyer_banner.png'
-import cookie from '@/plugins/cookie'
-import { mapMutations } from 'vuex'
 export default {
   name: 'UserCenterLayout',
 
@@ -32,13 +30,19 @@ export default {
       this.url = to
     }
   },
+  beforeCreate() {
+    this.$store.dispatch('caseReason/getCasereasonTreeData') // 案由
+    this.$store.dispatch('court/getCourt')// 法院
+    this.$store.dispatch('industry/getIndustryTreeData')// 行业
+    this.$store.dispatch('lawfirm/getLawfirmAllData')// 律所
+    this.$store.dispatch('practice/getPracticeTreeData')// 领域
+    this.$store.dispatch('practice/getPracticeTreeDataOfType', 1)// 诉讼领域
+    this.$store.dispatch('practice/getPracticeTreeDataOfType', 2)// 非诉领域
+    this.$store.dispatch('region/getRegionTreeData')// 地区
+  },
   mounted() {
-    this.$store.commit('SET_TOKEN', cookie.get('token'))
   },
   methods: {
-    ...mapMutations([
-      'SET_TOKEN'
-    ])
   }
 }
 </script>
