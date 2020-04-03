@@ -7,11 +7,30 @@
           :options="courtDataList"
           :auto-load-root-options="false"
           :load-options="loadOptions"
-          clear-value-text="清除所选项"
           placeholder="请选择管辖法院"
           @select="HandleCourtSelect"
           @input="CourtdeChangeSelect"
         />
+        <!-- <client-only>
+          <el-select
+            v-el-select-loadmore="loadmore"
+            v-model="courtSelectVal"
+            :filter-method="filterMethod"
+            :loading="loading"
+            placeholder="请选择"
+            filterable
+            clearable
+            @visible-change="courtBlur"
+            @change="courtChange"
+          >
+            <el-option
+              v-for="item in courtData"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </template>
+        </client-only> -->
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
@@ -19,7 +38,6 @@
           :options="industryDataList"
           v-model="caseListParam.industryId"
           :normalizer="industryNormalizer"
-          clear-value-text="清除所选项"
           placeholder="请选择所属行业"
         />
       </div>
@@ -29,7 +47,6 @@
           :options="practiceareaDataList"
           v-model="caseListParam.practiceAreaId"
           :normalizer="practiceareaNormalizer"
-          clear-value-text="清除所选项"
           placeholder="请选择所属领域"
         />
       </div>
@@ -93,6 +110,21 @@ export default {
     Pagination,
     Treeselect
   },
+  // 法院指令
+  directives: {
+    'el-select-loadmore': {
+      bind(el, binding) {
+        // 获取element-ui定义好的scroll盒子
+        const SELECTWRAP_DOM = el.querySelector('.el-select-dropdown .el-select-dropdown__wrap')
+        SELECTWRAP_DOM.addEventListener('scroll', function() {
+          const condition = this.scrollHeight - this.scrollTop <= this.clientHeight
+          if (condition) {
+            binding.value()
+          }
+        })
+      }
+    }
+  },
   props: {
     industryDataList: {
       type: Array,
@@ -135,7 +167,19 @@ export default {
       // 行业树数据
       industryTree: [],
       // 案件领域数据
-      practiceAreaData: []
+      practiceAreaData: [],
+      // 法院数据 后期更改
+      courtParams: {
+        name: '',
+        regionId: undefined,
+        courtLevel: undefined,
+        pageCount: 10,
+        pageIndex: 1
+      },
+      courtData: [],
+      courtSelectVal: '',
+      courtTotalCount: 0,
+      loading: false
     }
   },
   watch: {
@@ -154,6 +198,7 @@ export default {
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
+    ...mapActions('court', ['getCourtData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
@@ -259,6 +304,46 @@ export default {
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       }
+    },
+    // 法院单条 后期变更
+    getCourt(query, type) {
+      this.getCourtData(query).then(res => {
+        this.courtTotalCount = res.totalCount
+        if (type === 'filter') {
+          this.courtData = res.items
+        } else {
+          this.courtData = [...this.courtData, ...res.items]
+        }
+      })
+    },
+    loadmore() {
+      this.courtParams.pageIndex++
+      if (this.courtParams.pageIndex <= Math.ceil(this.courtTotalCount / this.courtParams.pageCount)) {
+        this.getCourt(this.courtParams)
+      }
+      console.log('加载更多', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
+    },
+    courtChange() {
+      this.caseListParam.courtId = this.courtSelectVal
+    },
+    courtBlur() {
+      if (this.courtSelectVal === '') {
+        this.courtParams.name = ''
+        this.courtParams.pageIndex = 1
+        this.courtData = []
+        this.getCourt(this.courtParams)
+      }
+      console.log('离开', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
+    },
+    filterMethod(query) {
+      this.courtParams.pageIndex = 1
+      this.loading = true
+      setTimeout(() => {
+        this.courtParams.name = query
+        this.loading = false
+        this.getCourt(this.courtParams, 'filter')
+        console.log('检索', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
+      }, 600)
     }
   }
 }
@@ -304,24 +389,15 @@ export default {
         border-radius: 0;
         overflow: hidden;
       }
-      .el-icon-arrow-up:before {
-        position: relative;
-        top: -6px;
-      }
       .el-input__icon {
-        color: #fff;
-        background: #cccccc;
+        // color: #fff;
         position: absolute;
         right: -5px;
         top: 0.5px;
         transition: none;
         width:30px;
         height:30px;
-        background:rgba(204,204,204,1);
-        border:1px solid rgba(230, 236, 240, 0.8);
-      }
-      .is-reverse {
-        background: #f68020;
+        line-height:30px;
       }
       .vue-treeselect {
         outline: 0;
