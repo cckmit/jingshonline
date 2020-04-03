@@ -5,7 +5,6 @@
         <p>管辖法院 :</p>
         <treeselect
           :options="courtDataList"
-          :disable-branch-nodes="true"
           :auto-load-root-options="false"
           :load-options="loadOptions"
           clear-value-text="清除所选项"
@@ -18,7 +17,6 @@
         <p>所属行业 :</p>
         <treeselect
           :options="industryDataList"
-          :disable-branch-nodes="true"
           v-model="caseListParam.industryId"
           :normalizer="industryNormalizer"
           clear-value-text="清除所选项"
@@ -29,7 +27,6 @@
         <p>所属领域 :</p>
         <treeselect
           :options="practiceareaDataList"
-          :disable-branch-nodes="true"
           v-model="caseListParam.practiceAreaId"
           :normalizer="practiceareaNormalizer"
           clear-value-text="清除所选项"
