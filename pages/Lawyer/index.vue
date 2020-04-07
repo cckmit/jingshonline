@@ -140,6 +140,10 @@
       </div>
       <div class="bgf tree_left">
         <p>律所</p>
+        <el-input
+          v-model="lawyerfilterText"
+          clearable
+          placeholder="输入关键字进行过滤"/>
         <ul v-if="lawfirmData.length!==0">
           <li
             v-for="(items, index) in lawfirmData"
@@ -374,6 +378,7 @@ export default {
       industryData: industryData.data.data,
       regionData: regionData.data.data,
       lawfirmData: lawfirmData.data.data,
+      lawfirmDatabackups: lawfirmData.data.data, // 律所备份数据
       totalCount: lawyerData.data.data.totalCount
     }
   },
@@ -423,6 +428,7 @@ export default {
       NosuitsData: [], // 非诉领域数据
       industryData: [], // 行业数据
       lawfirmData: [], // 律所数据
+      lawfirmDatabackups: [], // 律所数据备份
       regionData: [], // 地区数据
       lawyerData: [],
       totalCount: 1,
@@ -445,7 +451,8 @@ export default {
       qrimg: '', // 二维码
       pointsnum: 1, // 排序计次
       conditioncasecountnum: 0,
-      filterText: '' // 城市数据过滤
+      filterText: '', // 城市数据过滤
+      lawyerfilterText: ''// 律所数据过滤
     }
   },
   computed: {},
@@ -453,6 +460,19 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree2.filter(val)
+    },
+    lawyerfilterText(val) {
+      if (val === '') {
+        this.lawfirmData = this.lawfirmDatabackups
+      } else {
+        const arr = []
+        for (var i = 0; i < this.lawfirmData.length; i++) {
+          if (this.lawfirmData[i].name.indexOf(val) !== -1) {
+            arr.push(this.lawfirmData[i])
+          }
+        }
+        this.lawfirmData = arr
+      }
     }
   },
   mounted() {
@@ -494,6 +514,7 @@ export default {
         ...this.lawfirmsearch
       }).then(res => {
         this.lawfirmData = res
+        this.lawfirmDatabackups = res// 备份数据
       })
     },
     getRegion() {
@@ -780,20 +801,20 @@ ul {
     padding: 10px;
   }
   .el-input{
-    margin-top: 10px;
+    margin: 10px 0px;
   }
   .el-tree{
     border-top: 1px dotted #ddd;
     height: 520px;
     overflow: auto;
-    margin-top: 10px;
   }
   ul {
-    padding: 10px;
+    border-top: 1px dotted #ddd;
     height:520px;
     overflow: auto;
     li {
       line-height: 50px;
+      padding: 0px 10px;
       height: 50px;
       border-bottom: 1px solid #ddd;
       font-size: 14px;
