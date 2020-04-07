@@ -1,3 +1,171 @@
+//
+// 变量
+// --------------------------------------------------
+
+//== 颜色
+//
+//##
+
+$color-base: #f68020; // 主题色
+// $color-main: #444; // 主要文字文本
+// $color-dark: #2c3e50; // 导航背景色
+// $color-light: #ccc; // 浅色文本
+// $color-bg: #eee; // 背景色
+// $color-wh: #fff; // 白色色
+// $color-placeholder: #dadada; // placeholder
+
+//== 字体
+//
+//##
+
+//** 字体类型
+// $font-family-eDai: 'PingFangSC-Regular';
+// $font-family-sans-serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+// $font-family-serif: Georgia, 'Times New Roman', Times, serif;
+// $font-family-base: $font-family-eDai;
+
+//** 大小
+// $font-size-smaller:         0.44rem;  // 底部图标文字
+// $font-size-small:           0.48rem;  // 小按钮
+// $font-size-base: 14px; // 表单文字
+// $font-size-default:         0.64rem;  // 正常文字
+// $font-size-large:           0.72rem;  // 大按钮
+// $font-size-larger:          0.76rem;  // 一级标题
+
+
+//
+// css重置样式
+// --------------------------------------------------
+
+/* 
+  * reset 的目的不是让默认样式在所有浏览器下一致，而是减少默认样式有可能带来的问题。
+  * The purpose of reset is not to allow default styles to be consistent across all browsers, but to reduce the potential problems of default styles.
+  * create by jsliang
+*/
+
+// * {
+//   -webkit-box-sizing: border-box;
+//   -moz-box-sizing: border-box;
+//   box-sizing: border-box;
+// }
+
+// html,
+// body {
+//   height: 100%;
+// }
+
+// body {
+//   min-width: 944px;
+//   // -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+//   // color: $color-main;
+//   // font-size: $font-size-base;
+//   // font-family: $font-family-base;
+//   // background: $color-bg;
+// }
+
+// /** 清除内外边距 - clearance of inner and outer margins **/
+// body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,/* 结构元素 - structural elements */dl,dt,dd,ul,ol,li,/* 列表元素 - list elements */pre,/* 文本格式元素 - text formatting elements */form,fieldset,legend,button,input,textarea,/* 表单元素 - from elements */th,td
+// /* 表格元素 - table elements */
+//  {
+//   margin: 0;
+//   padding: 0;
+//   border: none;
+// }
+
+// /** 设置默认字体 - setting the default font **/
+// body,
+// button,
+// input,
+// select,
+// textarea {
+//   font: Helvetica, Arial, sans-serif, 'Hiragino Sans GB', 'Microsoft Yahei', 'WenQuanYi Micro Hei', 'SimSun', Tahoma, 'STHeiti', '黑体';
+// }
+
+// /** 重置列表元素 - reset the list element **/
+// ul,
+// ol,
+// li {
+//   list-style: none;
+// }
+
+// /** 重置文本格式元素 - reset the text format element **/
+// a,
+// a:hover {
+//   text-decoration: none;
+// }
+
+// /** 重置表单元素 - reset the form element **/
+// button {
+//   cursor: pointer;
+// }
+
+// input {
+//   outline: none;
+// }
+
+// /** 重置表格元素 - reset the table element **/
+// table {
+//   border-collapse: collapse;
+//   border-spacing: 0;
+// }
+
+// /*
+//   * 图片自适应 - image responsize 
+//   * 1. 清空浏览器对图片的设置
+//   * 2. <div>图片</div> 的情况下，图片会撑高 div，这么设置可以清除该影响
+// */
+// img {
+//   border: 0;
+//   display: inline-block;
+//   /*width: 100%;*/
+//   max-width: 100%;
+//   height: auto;
+//   vertical-align: middle;
+// }
+
+// /* 
+//   * 默认box-sizing是content-box，该属性导致padding会撑大div，使用border-box可以解决该问题
+//   * set border-box for box-sizing when you use div, it solve the problem when you add padding and don't want to make the div width bigger
+// */
+// div,
+// input {
+//   box-sizing: border-box;
+// }
+
+// /** 清除浮动 - clear float **/
+// .clear:after {
+//   content: '\20';
+//   display: block;
+//   height: 0;
+//   clear: both;
+// }
+
+// .clear {
+//   *zoom: 1;
+//   /* IE */
+// }
+
+// /** 设置input的placeholder - set input placeholder **/
+// input::-webkit-input-placeholder {
+//   color: #919191;
+//   font-size: 0.32rem;
+// }
+
+// /* Webkit browsers */
+// input::-moz-placeholder {
+//   color: #919191;
+//   font-size: 0.32rem;
+// }
+
+// /* Mozilla Firefox */
+// input::-ms-input-placeholder {
+//   color: #919191;
+//   font-size: 0.32rem;
+// }
+
+// /* Internet Explorer */
+
+
 html {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
@@ -24,6 +192,50 @@ ul,ol{
 ul li,ol li{
   list-style: none;
 }
+
+//
+// 滚动条样式覆盖
+// -------------------------------------------------- Start
+
+/* 这是针对缺省样式 (必须的) */
+::-webkit-scrollbar {
+  width: 0.2rem;
+  height: 0.2rem;
+  background: hsla(0, 0%, 100%, 0.6);
+}
+
+/* 滚动条的滑轨背景颜色 */
+::-webkit-scrollbar-track {
+  border-radius: 0;
+}
+
+/* 滑块颜色 */
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background-color: rgba(246, 128, 32, 0.4);
+  transition: all 0.2s;
+  border-radius: 0.2rem;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $color-base;
+  }
+}
+
+/* 滑轨两头的监听按钮颜色 */
+// ::-webkit-scrollbar-button {
+//   background-color: #7c2929;
+// }
+
+/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+// ::-webkit-scrollbar-corner {
+//   background-color: black;
+// }
+
+//
+// 滚动条样式覆盖
+// -------------------------------------------------- End
+
 /** 面包屑导航 **/
 .breadcrumb {
   margin: 30px 0 20px 0;
@@ -36,6 +248,8 @@ ul li,ol li{
     color: #666;
   }
 }
+
+
 /** 主体内容 **/
 .content{
   display:flex;
