@@ -11,7 +11,7 @@
           @select="HandleCourtSelect"
           @input="CourtdeChangeSelect"
         />
-        <client-only>
+        <!-- <client-only>
           <el-select
             v-el-select-loadmore="loadmore"
             v-model="courtSelectVal"
@@ -29,8 +29,8 @@
               :label="item.name"
               :value="item.id"
             />
-          </el-select>
-        </client-only>
+          </template>
+        </client-only> -->
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
@@ -49,7 +49,7 @@
           :normalizer="practiceareaNormalizer"
           placeholder="请选择所属领域"
         />
-        <el-tree-select
+        <!-- <el-tree-select
           :props="props"
           :options="practiceareaDataList"
           :value="caseListParam.practiceAreaId"
@@ -57,7 +57,7 @@
           :accordion="true"
           height="200"
           @getValue="getValue($event)"
-        />
+        /> -->
       </div>
     </div>
     <div class="lawyer-case-filter">
