@@ -115,6 +115,10 @@
       </div>
       <div class="bgf tree_left">
         <p>城市</p>
+        <el-input
+          v-model="filterText"
+          clearable
+          placeholder="输入关键字进行过滤"/>
         <el-tree
           v-if="regionData.length!==0"
           ref="tree2"
@@ -136,6 +140,10 @@
       </div>
       <div class="bgf tree_left">
         <p>律所</p>
+        <el-input
+          v-model="lawyerfilterText"
+          clearable
+          placeholder="输入关键字进行过滤"/>
         <ul v-if="lawfirmData.length!==0">
           <li
             v-for="(items, index) in lawfirmData"
@@ -370,6 +378,7 @@ export default {
       industryData: industryData.data.data,
       regionData: regionData.data.data,
       lawfirmData: lawfirmData.data.data,
+      lawfirmDatabackups: lawfirmData.data.data, // 律所备份数据
       totalCount: lawyerData.data.data.totalCount
     }
   },
@@ -419,6 +428,7 @@ export default {
       NosuitsData: [], // 非诉领域数据
       industryData: [], // 行业数据
       lawfirmData: [], // 律所数据
+      lawfirmDatabackups: [], // 律所数据备份
       regionData: [], // 地区数据
       lawyerData: [],
       totalCount: 1,
@@ -440,12 +450,31 @@ export default {
       url: '', // 分享链接
       qrimg: '', // 二维码
       pointsnum: 1, // 排序计次
-      conditioncasecountnum: 0
+      conditioncasecountnum: 0,
+      filterText: '', // 城市数据过滤
+      lawyerfilterText: ''// 律所数据过滤
     }
   },
   computed: {},
 
-  watch: {},
+  watch: {
+    filterText(val) {
+      this.$refs.tree2.filter(val)
+    },
+    lawyerfilterText(val) {
+      if (val === '') {
+        this.lawfirmData = this.lawfirmDatabackups
+      } else {
+        const arr = []
+        for (var i = 0; i < this.lawfirmData.length; i++) {
+          if (this.lawfirmData[i].name.indexOf(val) !== -1) {
+            arr.push(this.lawfirmData[i])
+          }
+        }
+        this.lawfirmData = arr
+      }
+    }
+  },
   mounted() {
     // this.getLawyer()
     // this.getLawfirmData()
@@ -485,6 +514,7 @@ export default {
         ...this.lawfirmsearch
       }).then(res => {
         this.lawfirmData = res
+        this.lawfirmDatabackups = res// 备份数据
       })
     },
     getRegion() {
@@ -712,6 +742,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .title {
   height: 60px;
   font-size: 14px;
@@ -769,10 +800,21 @@ ul {
     font-size: 18px;
     padding: 10px;
   }
+  .el-input{
+    margin: 10px 0px;
+  }
+  .el-tree{
+    border-top: 1px dotted #ddd;
+    height: 520px;
+    overflow: auto;
+  }
   ul {
-    padding: 10px;
+    border-top: 1px dotted #ddd;
+    height:520px;
+    overflow: auto;
     li {
       line-height: 50px;
+      padding: 0px 10px;
       height: 50px;
       border-bottom: 1px solid #ddd;
       font-size: 14px;
@@ -969,6 +1011,9 @@ ul {
 }
 </style>
 <style lang="scss">
+.el-popover{
+  max-width:800px;
+}
 .lawyerlist{
   .el-form{
     .el-form-item__label,.el-form-item__content{
