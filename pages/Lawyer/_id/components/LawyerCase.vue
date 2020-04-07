@@ -49,6 +49,15 @@
           :normalizer="practiceareaNormalizer"
           placeholder="请选择所属领域"
         />
+        <!-- <el-tree-select
+          :props="props"
+          :options="practiceareaDataList"
+          :value="caseListParam.practiceAreaId"
+          :clearable="true"
+          :accordion="true"
+          height="200"
+          @getValue="getValue($event)"
+        /> -->
       </div>
     </div>
     <div class="lawyer-case-filter">
@@ -104,11 +113,13 @@ import { mapActions } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
+import ElTreeSelect from '@/components/ElTree/Eltree'
 export default {
   name: 'LawyerCase',
   components: {
     Pagination,
-    Treeselect
+    Treeselect,
+    ElTreeSelect
   },
   // 法院指令
   directives: {
@@ -141,6 +152,13 @@ export default {
   },
   data() {
     return {
+      props: {
+        // 配置项（必选）
+        value: 'id',
+        label: 'name',
+        children: 'children'
+        // disabled:true
+      },
       // 认证案例列表
       lawyerCaseList: [],
       // 筛选条件高亮
@@ -192,6 +210,7 @@ export default {
     }
   },
   created() {
+    console.log(this.practiceareaDataList)
     this.getCourtRegion(null)
     this.getLawyerCaseList(this.caseListParam)
   },
@@ -344,6 +363,9 @@ export default {
         this.getCourt(this.courtParams, 'filter')
         console.log('检索', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
       }, 600)
+    },
+    getValue(val) {
+      this.caseListParam.practiceAreaId = val
     }
   }
 }
@@ -388,16 +410,25 @@ export default {
         border: 1px solid #e7edf1;
         border-radius: 0;
         overflow: hidden;
+        text-overflow: ellipsis;
       }
       .el-input__icon {
         // color: #fff;
         position: absolute;
         right: -5px;
-        top: 0.5px;
         transition: none;
         width:30px;
         height:30px;
         line-height:30px;
+        background:rgba(204,204,204,1);
+      }
+      .el-icon-arrow-up:before{
+        color: #fff;
+        font-size: 16px;
+      }
+      .el-icon-circle-close{
+        font-size: 16px;
+        color: #fff;
       }
       .vue-treeselect {
         outline: 0;
