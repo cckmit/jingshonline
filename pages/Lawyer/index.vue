@@ -115,6 +115,9 @@
       </div>
       <div class="bgf tree_left">
         <p>城市</p>
+        <el-input
+          v-model="filterText"
+          placeholder="输入关键字进行过滤"/>
         <el-tree
           v-if="regionData.length!==0"
           ref="tree2"
@@ -440,12 +443,17 @@ export default {
       url: '', // 分享链接
       qrimg: '', // 二维码
       pointsnum: 1, // 排序计次
-      conditioncasecountnum: 0
+      conditioncasecountnum: 0,
+      filterText: '' // 城市数据过滤
     }
   },
   computed: {},
 
-  watch: {},
+  watch: {
+    filterText(val) {
+      this.$refs.tree2.filter(val)
+    }
+  },
   mounted() {
     // this.getLawyer()
     // this.getLawfirmData()
@@ -712,6 +720,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .title {
   height: 60px;
   font-size: 14px;
@@ -769,8 +778,17 @@ ul {
     font-size: 18px;
     padding: 10px;
   }
+  .el-input{
+    margin-top: 10px;
+  }
+  .el-tree{
+    height: 520px;
+    overflow: auto;
+  }
   ul {
     padding: 10px;
+    height:520px;
+    overflow: auto;
     li {
       line-height: 50px;
       height: 50px;
@@ -969,6 +987,9 @@ ul {
 }
 </style>
 <style lang="scss">
+.el-popover{
+  max-width:800px;
+}
 .lawyerlist{
   .el-form{
     .el-form-item__label,.el-form-item__content{
