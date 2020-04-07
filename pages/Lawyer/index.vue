@@ -117,6 +117,7 @@
         <p>城市</p>
         <el-input
           v-model="filterText"
+          clearable
           placeholder="输入关键字进行过滤"/>
         <el-tree
           v-if="regionData.length!==0"
@@ -782,8 +783,10 @@ ul {
     margin-top: 10px;
   }
   .el-tree{
+    border-top: 1px dotted #ddd;
     height: 520px;
     overflow: auto;
+    margin-top: 10px;
   }
   ul {
     padding: 10px;
