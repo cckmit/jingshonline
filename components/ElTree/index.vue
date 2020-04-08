@@ -5,13 +5,14 @@
     :filterable="TreeSelectOptions.filterable"
     :filter-method="filterQuery"
     @clear="clearHandle"
+    @visible-change="selectBlur"
   >
     <el-option :value="TreeSelectData.valueTitle" :label="TreeSelectData.valueTitle" class="options">
       <el-tree
         id="tree-option"
         ref="selectTree"
         :accordion="TreeSelectOptions.accordion"
-        :data="TreeSelectOptions.options"
+        :data="TreeSelectData.TreeData"
         :props="TreeSelectOptions.props"
         :node-key="TreeSelectOptions.props.value"
         :filter-node-method="filterNode"
@@ -73,7 +74,8 @@ export default {
     return {
       TreeSelectData: {
         valueId: null, // 初始值
-        valueTitle: ''
+        valueTitle: '',
+        TreeData: this.TreeSelectOptions.options
       },
       TreeSelectfilterText: ''
     }
@@ -101,10 +103,17 @@ export default {
     },
     // 清除选中
     clearHandle() {
+      this.TreeSelectfilterText = ''
       this.TreeSelectData.valueTitle = ''
       this.TreeSelectData.valueId = null
       this.clearSelected()
       this.$emit('getValue', null)
+    },
+    // 未选择任何条件
+    selectBlur() {
+      if (!this.TreeSelectData.valueId) {
+        this.TreeSelectfilterText = ''
+      }
     },
     /* 清空选中样式 */
     clearSelected() {
@@ -122,7 +131,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .el-scrollbar .el-scrollbar__view .el-select-dropdown__item{
     height: auto;
@@ -142,7 +150,7 @@ export default {
     font-weight: normal;
   }
   .el-tree >>>.is-current .el-tree-node__label{
-    color: #409EFF;
+    color: #F68020;
     font-weight: 700;
   }
   .el-tree >>>.is-current .el-tree-node__children .el-tree-node__label{

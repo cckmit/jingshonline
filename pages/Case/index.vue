@@ -56,9 +56,10 @@
               :props="defaultProps"
               :filter-node-method="casereasonNode"
               node-key="id"
+              icon-class="el-icon-arrow-right"
               @node-click="handleCasereasonClick">
-              <span slot-scope="{ node }" class="span-ellipsis">
-                <span :title="node.label">{{ node.label }}</span>
+              <span slot-scope="{ data }" class="span-ellipsis">
+                <span :title="data.name">{{ data.name }}</span>
               </span>
             </el-tree>
           </el-collapse-item>
@@ -78,12 +79,17 @@
           <el-collapse-item title="管辖法院">
             <el-tree
               :data="regionTreeData"
-              :props="defaultProps"
+              :props="lazyTreeProps"
               :expand-on-click-node="false"
               :load="loadNode"
+              icon-class="el-icon-arrow-right"
               node-key="index"
               lazy
-              @node-click="handleregionClick"/>
+              @node-click="handleregionClick">
+              <span slot-scope="{ data }" class="span-ellipsis">
+                <span :title="data.name">{{ data.name }}</span>
+              </span>
+            </el-tree>
           </el-collapse-item>
         </el-collapse>
       </el-col>
@@ -211,7 +217,7 @@ export default {
         pageCount: 10, //
         pageIndex: 1 //
       },
-      props: {
+      lazyTreeProps: {
         label: 'name',
         children: 'zones',
         isLeaf: 'leaf'
@@ -629,8 +635,8 @@ i{
 <style lang='scss'>
 .case-aside {
   .el-tree-node__content {
-	height: 35px;
-}
+    height: 35px;
+  }
   .el-collapse{
     background-color: #fff;
     padding:0 28px;
@@ -640,23 +646,26 @@ i{
       max-height:500px;
       overflow:scroll;
     }
- .el-collapse-item__header{
-   height: 60px;
-	line-height: 60px;
-	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
-	font-size: 16px;
-	color: #333333;
- }
- .el-collapse-item__content{
-  padding-top:10px;
- }
-}
-.span-ellipsis {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: block;
-}
+    .el-collapse-item__header{
+      height: 60px;
+      line-height: 60px;
+      border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
+      font-size: 16px;
+      color: #333333;
+    }
+    .el-collapse-item__content{
+      padding-top:10px;
+    }
   }
+  .span-ellipsis {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  // .el-icon-caret-right:before{
+  //   content: "\e6e0";
+  // }
+}
 </style>

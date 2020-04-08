@@ -3,52 +3,38 @@
     <div class="lawyer-case-select">
       <div class="lawyer-case-item">
         <p>管辖法院 :</p>
-        <treeselect
-          :options="courtDataList"
-          :auto-load-root-options="false"
-          :load-options="loadOptions"
-          placeholder="请选择管辖法院"
-          @select="HandleCourtSelect"
-          @input="CourtdeChangeSelect"
-        />
-        <client-only>
-          <el-select
-            v-el-select-loadmore="loadmore"
-            v-model="courtSelectVal"
-            :filter-method="filterMethod"
-            :loading="loading"
-            placeholder="请选择"
-            filterable
-            clearable
-            @visible-change="courtBlur"
-            @change="courtChange"
-          >
-            <el-option
-              v-for="item in courtData"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </client-only>
+        <el-select
+          v-model="caseListParam.courtId"
+          placeholder="请选择"
+          filterable
+          clearable
+        >
+          <el-option
+            v-for="item in courtListData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
-        <treeselect
-          :options="industryDataList"
+        <el-select
           v-model="caseListParam.industryId"
-          :normalizer="industryNormalizer"
-          placeholder="请选择所属行业"
-        />
+          placeholder="请选择"
+          filterable
+          clearable
+        >
+          <el-option
+            v-for="item in industryDataList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </div>
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
-        <treeselect
-          :options="practiceareaDataList"
-          v-model="caseListParam.practiceAreaId"
-          :normalizer="practiceareaNormalizer"
-          placeholder="请选择所属领域"
-        />
         <el-tree-select
           :tree-select-options="TreeselectData"
           @getValue="getValue($event)"
@@ -105,31 +91,12 @@
 <script>
 import Pagination from '@/components/Pagination/index'
 import { mapActions } from 'vuex'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
-import ElTreeSelect from '@/components/ElTree/Eltree'
+import ElTreeSelect from '@/components/ElTree/index'
 export default {
   name: 'LawyerCase',
   components: {
     Pagination,
-    Treeselect,
     ElTreeSelect
-  },
-  // 法院指令
-  directives: {
-    'el-select-loadmore': {
-      bind(el, binding) {
-        // 获取element-ui定义好的scroll盒子
-        const SELECTWRAP_DOM = el.querySelector('.el-select-dropdown .el-select-dropdown__wrap')
-        SELECTWRAP_DOM.addEventListener('scroll', function() {
-          const condition = Math.floor(this.scrollHeight - this.scrollTop) <= this.clientHeight
-          if (condition) {
-            binding.value()
-          }
-        })
-      }
-    }
   },
   props: {
     industryDataList: {
@@ -139,6 +106,12 @@ export default {
       }
     },
     practiceareaDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    courtListData: {
       type: Array,
       default: function() {
         return []
@@ -165,27 +138,10 @@ export default {
         industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
-        pageCount: 10, // 页目条数 number
+        pageCount: 5, // 页目条数 number
         pageIndex: 1// 页码 number
       },
-      // 法院数据
-      courtDataList: [],
-      // 行业树数据
-      industryTree: [],
-      // 案件领域数据
-      practiceAreaData: [],
-      // 法院数据 后期更改
-      courtParams: {
-        name: '',
-        regionId: undefined,
-        courtLevel: undefined,
-        pageCount: 10,
-        pageIndex: 1
-      },
-      courtData: [],
-      courtSelectVal: '',
-      courtTotalCount: 0,
-      loading: false,
+      // 组件参数
       TreeselectData: {
         props: {
         // 配置项（必选）
@@ -194,9 +150,13 @@ export default {
           children: 'children'
         // disabled:true
         },
+        // 数据
         options: this.practiceareaDataList,
+        // 可否清除
         clearable: true,
+        // 每次加载一项tree
         accordion: true,
+        // 是否搜索
         filterable: true
       }
     }
@@ -210,15 +170,12 @@ export default {
       }
     }
   },
-  created() {
-    console.log(this.practiceareaDataList)
-    this.getCourtRegion(null)
+  mounted() {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
-    ...mapActions('court', ['getCourtData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
@@ -227,62 +184,6 @@ export default {
           this.lawyerCaseList = res.items
         }
       })
-    },
-    // 获取地区信息-法院
-    getCourtRegion(query) {
-      this.getCourtRegionsData(query).then(res => {
-        this.courtDataList = res.map(item => {
-          return { id: item.name, label: item.name, nodeId: item.id, children: item.nodeType === 1 ? '' : null }
-        })
-      })
-    },
-    // 领域数据二次处理
-    practiceareaNormalizer(node) {
-      return {
-        id: node.id,
-        label: node.name,
-        children: node.children && node.children.length ? node.children : ''
-      }
-    },
-    // 行业数据二次处理
-    industryNormalizer(node) {
-      return {
-        id: node.id,
-        label: node.name,
-        children: node.children && node.children.length ? node.children : ''
-      }
-    },
-    // 法院选中-改变检索条件
-    HandleCourtSelect(node) {
-      this.caseListParam.courtId = node.nodeId
-    },
-    // 法院-选项改变
-    CourtdeChangeSelect(value) {
-      if (!value) {
-        this.caseListParam.courtId = undefined
-      }
-    },
-    // 法院-延迟加载
-    simulateAsyncOperation(fn) {
-      setTimeout(fn, 600)
-    },
-    // 法院-延迟加载
-    loadOptions({ action, parentNode, callback }) {
-      if (action === LOAD_CHILDREN_OPTIONS && parentNode.nodeId) {
-        this.simulateAsyncOperation(() => {
-          this.getCourtRegionsChildData(parentNode.nodeId).then(res => {
-            parentNode.children = res.map(item => {
-              return {
-                id: item.name,
-                label: item.name,
-                nodeId: item.id,
-                children: item.nodeType === 1 ? '' : null
-              }
-            })
-            callback()
-          })
-        })
-      }
     },
     // 改变排序状态
     filterChange(type) {
@@ -325,46 +226,7 @@ export default {
         })
       }
     },
-    // 法院单条 后期变更
-    getCourt(query, type) {
-      this.getCourtData(query).then(res => {
-        this.courtTotalCount = res.totalCount
-        if (type === 'filter') {
-          this.courtData = res.items
-        } else {
-          this.courtData = [...this.courtData, ...res.items]
-        }
-      })
-    },
-    loadmore() {
-      this.courtParams.pageIndex++
-      if (this.courtParams.pageIndex <= Math.ceil(this.courtTotalCount / this.courtParams.pageCount)) {
-        this.getCourt(this.courtParams)
-      }
-      console.log('加载更多', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
-    },
-    courtChange() {
-      this.caseListParam.courtId = this.courtSelectVal
-    },
-    courtBlur() {
-      if (this.courtSelectVal === '') {
-        this.courtParams.name = ''
-        this.courtParams.pageIndex = 1
-        this.courtData = []
-        this.getCourt(this.courtParams)
-      }
-      console.log('离开', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
-    },
-    filterMethod(query) {
-      this.courtParams.pageIndex = 1
-      this.loading = true
-      setTimeout(() => {
-        this.courtParams.name = query
-        this.loading = false
-        this.getCourt(this.courtParams, 'filter')
-        console.log('检索', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
-      }, 600)
-    },
+    // 检索条件领域
     getValue(val) {
       this.caseListParam.practiceAreaId = val
     }
@@ -417,6 +279,7 @@ export default {
         // color: #fff;
         position: absolute;
         right: -5px;
+        top: 1.2px;
         transition: none;
         width:30px;
         height:30px;
@@ -430,64 +293,6 @@ export default {
       .el-icon-circle-close{
         font-size: 16px;
         color: #fff;
-      }
-      .vue-treeselect {
-        outline: 0;
-      }
-      .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
-        border-color: none;
-        box-shadow: none;
-      }
-      .vue-treeselect__control{
-        outline: none;
-        padding-left: 5px;
-        display: table;
-        table-layout: fixed;
-        width: 100%;
-        width: 280px;
-        height: 30px;
-        line-height: 30px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        background: #fff;
-        -webkit-transition-duration: 200ms;
-        transition-duration: 200ms;
-        -webkit-transition-property: border-color, box-shadow, width, height, background-color, opacity;
-        transition-property: border-color, box-shadow, width, height, background-color, opacity;
-        -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1)
-      }
-      .vue-treeselect__input {
-        font-size: 14px;
-      }
-      .vue-treeselect__menu-container {
-        font-size: 14px;
-        width: 280px;
-      }
-      .vue-treeselect__single-value {
-        font-size: 14px;
-        line-height: 30px;
-      }
-      .vue-treeselect__placeholder {
-        font-size: 14px;
-        line-height: 30px
-      }
-      .vue-treeselect__control-arrow-container {
-        position: relative;
-        left: 5px;
-        width: 30px;
-        height: 30px;
-        background:#f2f2f2
-      }
-      .vue-treeselect__menu{
-        height: 300px;
-        position: relative;
-        z-index: 9999;
-      }
-      .vue-treeselect--open {
-        .vue-treeselect__control-arrow-container {
-          background: #f68020
-        }
       }
     }
   }
