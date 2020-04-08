@@ -3,34 +3,28 @@
     <div class="lawyer-case-select">
       <div class="lawyer-case-item">
         <p>管辖法院 :</p>
-        <treeselect
+        <!-- <treeselect
           :options="courtDataList"
           :auto-load-root-options="false"
           :load-options="loadOptions"
           placeholder="请选择管辖法院"
           @select="HandleCourtSelect"
           @input="CourtdeChangeSelect"
-        />
-        <!-- <client-only>
-          <el-select
-            v-el-select-loadmore="loadmore"
-            v-model="courtSelectVal"
-            :filter-method="filterMethod"
-            :loading="loading"
-            placeholder="请选择"
-            filterable
-            clearable
-            @visible-change="courtBlur"
-            @change="courtChange"
-          >
-            <el-option
-              v-for="item in courtData"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </template>
-        </client-only> -->
+        /> -->
+        <el-select
+          v-model="caseListParam.courtId"
+          :loading="loading"
+          placeholder="请选择"
+          filterable
+          clearable
+        >
+          <el-option
+            v-for="item in courtListData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
+        </el-select>
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
@@ -121,21 +115,6 @@ export default {
     Treeselect,
     ElTreeSelect
   },
-  // 法院指令
-  directives: {
-    'el-select-loadmore': {
-      bind(el, binding) {
-        // 获取element-ui定义好的scroll盒子
-        const SELECTWRAP_DOM = el.querySelector('.el-select-dropdown .el-select-dropdown__wrap')
-        SELECTWRAP_DOM.addEventListener('scroll', function() {
-          const condition = this.scrollHeight - this.scrollTop <= this.clientHeight
-          if (condition) {
-            binding.value()
-          }
-        })
-      }
-    }
-  },
   props: {
     industryDataList: {
       type: Array,
@@ -144,6 +123,12 @@ export default {
       }
     },
     practiceareaDataList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    courtListData: {
       type: Array,
       default: function() {
         return []
@@ -177,7 +162,7 @@ export default {
         industryId: null, // 行业id 暂无检索条件
         sorting: '', // 排序
         sortType: 0, // 排序类型
-        pageCount: 10, // 页目条数 number
+        pageCount: 5, // 页目条数 number
         pageIndex: 1// 页码 number
       },
       // 法院数据
@@ -209,15 +194,12 @@ export default {
       }
     }
   },
-  created() {
-    console.log(this.practiceareaDataList)
-    this.getCourtRegion(null)
+  mounted() {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
     ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
-    ...mapActions('court', ['getCourtData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
       this.GetLawyerCaseList(query).then(res => {
@@ -225,14 +207,6 @@ export default {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
         }
-      })
-    },
-    // 获取地区信息-法院
-    getCourtRegion(query) {
-      this.getCourtRegionsData(query).then(res => {
-        this.courtDataList = res.map(item => {
-          return { id: item.name, label: item.name, nodeId: item.id, children: item.nodeType === 1 ? '' : null }
-        })
       })
     },
     // 领域数据二次处理
@@ -354,16 +328,7 @@ export default {
       }
       console.log('离开', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
     },
-    filterMethod(query) {
-      this.courtParams.pageIndex = 1
-      this.loading = true
-      setTimeout(() => {
-        this.courtParams.name = query
-        this.loading = false
-        this.getCourt(this.courtParams, 'filter')
-        console.log('检索', 'index:', this.courtParams.pageIndex, 'totalCount:', this.courtTotalCount)
-      }, 600)
-    },
+
     getValue(val) {
       this.caseListParam.practiceAreaId = val
     }

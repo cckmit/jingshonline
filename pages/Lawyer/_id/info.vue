@@ -46,6 +46,7 @@
         :resume-data="resumeData"
         :lawyer-remark="lawyerInformation.remark"
         :court-data="courtData"
+        :court-list-data="courtListData"
         :chart-data="chartData"
         :industry-data-list="industryDataList"
         :practicearea-data-list="practiceareaDataList"
@@ -73,14 +74,15 @@ export default {
     }
   },
   async asyncData({ params }) {
-    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData] = await Promise.all([
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }),
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' })
+    const [LawyerResumeData, LawyerInformation, CourtData, PracticData, NoPracticData, industryData, practiceareaData, courtListData] = await Promise.all([
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/resume/get`, { params: { lawyerId: params.id }}, { 'Content-Type': 'application/json' }), // 简历
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/lawyer/get/${params.id}`, { 'Content-Type': 'application/json' }), // 律师详情
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/region/court/${params.id}`, { 'Content-Type': 'application/json' }), // 常去法院
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 1 }}, { 'Content-Type': 'application/json' }), // 诉讼领域
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/frequent/chart/practicearea/${params.id}`, { params: { caseType: 2 }}, { 'Content-Type': 'application/json' }), // 非诉领域
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/industry/tree`, { 'Content-Type': 'application/json' }), // 行业
+      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/practicearea/tree`, { 'Content-Type': 'application/json' }), // 领域
+      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/court/list`, { query: {}}, { 'Content-Type': 'application/json' }) // 法院
     ])
     // 律师基础信息数据容错
     let lawyerInformationData = {}
@@ -134,10 +136,10 @@ export default {
       chartData.noPracticea = NoPracticData.data.data
     }
     return {
-      // 律师基本信息
-      lawyerInformation: lawyerInformationData,
       // 律师简历数据
       resumeData,
+      // 律师基本信息
+      lawyerInformation: lawyerInformationData,
       // 律师常去法院数据
       courtData,
       // 律师业务专长
@@ -147,7 +149,9 @@ export default {
       // 行业
       industryDataList: industryData.data.data,
       // 领域
-      practiceareaDataList: practiceareaData.data.data
+      practiceareaDataList: practiceareaData.data.data,
+      // 法院数据
+      courtListData: courtListData.data.data
     }
   },
   data() {
