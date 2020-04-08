@@ -56,6 +56,7 @@
               :props="defaultProps"
               :filter-node-method="casereasonNode"
               node-key="id"
+              icon-class="el-icon-arrow-right"
               @node-click="handleCasereasonClick">
               <span slot-scope="{ data }" class="span-ellipsis">
                 <span :title="data.name">{{ data.name }}</span>
@@ -81,6 +82,7 @@
               :props="lazyTreeProps"
               :expand-on-click-node="false"
               :load="loadNode"
+              icon-class="el-icon-arrow-right"
               node-key="index"
               lazy
               @node-click="handleregionClick">
@@ -662,8 +664,8 @@ i{
     text-overflow: ellipsis;
     display: block;
   }
-  .el-icon-caret-right:before{
-    content: "\e6e0";
-  }
+  // .el-icon-caret-right:before{
+  //   content: "\e6e0";
+  // }
 }
 </style>
