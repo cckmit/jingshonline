@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 <template>
   <div class="case-index">
     <el-row>
@@ -58,7 +57,7 @@
               :filter-node-method="casereasonNode"
               node-key="id"
               @node-click="handleCasereasonClick">
-              <span slot-scope="{ node, data }" class="span-ellipsis">
+              <span slot-scope="{ node }" class="span-ellipsis">
                 <span :title="node.label">{{ node.label }}</span>
               </span>
             </el-tree>
@@ -115,7 +114,7 @@
           </el-row>
         </div>
         <div class="case-content-main">
-          <ul v-bind="caseData">
+          <ul>
             <li v-for="(item, index) in caseData" :key="item.id" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
