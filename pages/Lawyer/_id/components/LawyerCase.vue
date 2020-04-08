@@ -11,7 +11,7 @@
           @select="HandleCourtSelect"
           @input="CourtdeChangeSelect"
         />
-        <!-- <client-only>
+        <client-only>
           <el-select
             v-el-select-loadmore="loadmore"
             v-model="courtSelectVal"
@@ -29,8 +29,8 @@
               :label="item.name"
               :value="item.id"
             />
-          </template>
-        </client-only> -->
+          </el-select>
+        </client-only>
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
@@ -49,15 +49,10 @@
           :normalizer="practiceareaNormalizer"
           placeholder="请选择所属领域"
         />
-        <!-- <el-tree-select
-          :props="props"
-          :options="practiceareaDataList"
-          :value="caseListParam.practiceAreaId"
-          :clearable="true"
-          :accordion="true"
-          height="200"
+        <el-tree-select
+          :tree-select-options="TreeselectData"
           @getValue="getValue($event)"
-        /> -->
+        />
       </div>
     </div>
     <div class="lawyer-case-filter">
@@ -128,7 +123,7 @@ export default {
         // 获取element-ui定义好的scroll盒子
         const SELECTWRAP_DOM = el.querySelector('.el-select-dropdown .el-select-dropdown__wrap')
         SELECTWRAP_DOM.addEventListener('scroll', function() {
-          const condition = this.scrollHeight - this.scrollTop <= this.clientHeight
+          const condition = Math.floor(this.scrollHeight - this.scrollTop) <= this.clientHeight
           if (condition) {
             binding.value()
           }
@@ -152,13 +147,6 @@ export default {
   },
   data() {
     return {
-      props: {
-        // 配置项（必选）
-        value: 'id',
-        label: 'name',
-        children: 'children'
-        // disabled:true
-      },
       // 认证案例列表
       lawyerCaseList: [],
       // 筛选条件高亮
@@ -197,7 +185,20 @@ export default {
       courtData: [],
       courtSelectVal: '',
       courtTotalCount: 0,
-      loading: false
+      loading: false,
+      TreeselectData: {
+        props: {
+        // 配置项（必选）
+          value: 'id',
+          label: 'name',
+          children: 'children'
+        // disabled:true
+        },
+        options: this.practiceareaDataList,
+        clearable: true,
+        accordion: true,
+        filterable: true
+      }
     }
   },
   watch: {

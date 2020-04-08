@@ -1,5 +1,11 @@
 <template>
-  <el-select :value="TreeSelectData.valueTitle" :clearable="TreeSelectOptions.clearable" @clear="TreeSelectOptions.clearHandle">
+  <el-select
+    :value="TreeSelectData.valueTitle"
+    :clearable="TreeSelectOptions.clearable"
+    :filterable="TreeSelectOptions.filterable"
+    :filter-method="filterQuery"
+    @clear="clearHandle"
+  >
     <el-option :value="TreeSelectData.valueTitle" :label="TreeSelectData.valueTitle" class="options">
       <el-tree
         id="tree-option"
@@ -7,8 +13,7 @@
         :accordion="TreeSelectOptions.accordion"
         :data="TreeSelectOptions.options"
         :props="TreeSelectOptions.props"
-        :node-key="props.value"
-        :default-expanded-keys="TreeSelectData.defaultExpandedKey"
+        :node-key="TreeSelectOptions.props.value"
         :filter-node-method="filterNode"
         @node-click="handleNodeClick"/>
     </el-option>
@@ -40,11 +45,6 @@ export default {
             type: Array,
             default: () => { return [] }
           },
-          /* 初始值 */
-          value: {
-            type: Number,
-            default: () => { return null }
-          },
           /* 可清空选项 */
           clearable: {
             type: Boolean,
@@ -55,9 +55,15 @@ export default {
             type: Boolean,
             default: () => { return false }
           },
+          // 提示文本
           placeholder: {
             type: String,
             default: () => { return '检索关键字' }
+          },
+          // 是否可搜索
+          filterable: {
+            type: Boolean,
+            default: () => { return false }
           }
         }
       }
@@ -66,11 +72,10 @@ export default {
   data() {
     return {
       TreeSelectData: {
-        filterText: '',
-        valueId: this.value, // 初始值
-        valueTitle: '',
-        defaultExpandedKey: []
-      }
+        valueId: null, // 初始值
+        valueTitle: ''
+      },
+      TreeSelectfilterText: ''
     }
   },
   watch: {
@@ -80,48 +85,24 @@ export default {
       },
       immediate: true
     },
-    'TreeSelectData.filterText': {
-      handler(val) {
-        this.$refs.selectTree.filter(val)
-      },
-      immediate: true
+    TreeSelectfilterText(val) {
+      this.$refs.selectTree.filter(val)
     }
+
   },
   mounted() {
-    this.initHandle()
   },
   methods: {
-    // 初始化值
-    initHandle() {
-      if (this.valueId) {
-        this.TreeSelectData.valueTitle = this.$refs.selectTree.getNode(this.TreeSelectData.valueId).data[this.props.label] // 初始化显示
-        this.$refs.selectTree.setCurrentKey(this.TreeSelectData.valueId) // 设置默认选中
-        this.TreeSelectData.defaultExpandedKey = [this.TreeSelectData.valueId] // 设置默认展开
-      }
-      this.initScroll()
-    },
-    // 初始化滚动条
-    initScroll() {
-      this.$nextTick(() => {
-        const scrollWrap = document.querySelectorAll('.el-scrollbar .el-select-dropdown__wrap')[0]
-        const scrollBar = document.querySelectorAll('.el-scrollbar .el-scrollbar__bar')
-        scrollWrap.style.cssText = 'margin: 0px; max-height: none; overflow: hidden;'
-        // eslint-disable-next-line no-return-assign
-        scrollBar.forEach(ele => ele.style.width = 0)
-      })
-    },
     // 切换选项
     handleNodeClick(node) {
-      this.TreeSelectData.valueTitle = node[this.props.label]
-      this.TreeSelectData.valueId = node[this.props.value]
+      this.TreeSelectData.valueTitle = node[this.TreeSelectOptions.props.label]
+      this.TreeSelectData.valueId = node[this.TreeSelectOptions.props.value]
       this.$emit('getValue', this.TreeSelectData.valueId)
-      this.TreeSelectData.defaultExpandedKey = []
     },
     // 清除选中
     clearHandle() {
       this.TreeSelectData.valueTitle = ''
       this.TreeSelectData.valueId = null
-      this.TreeSelectData.defaultExpandedKey = []
       this.clearSelected()
       this.$emit('getValue', null)
     },
@@ -129,6 +110,9 @@ export default {
     clearSelected() {
       const allNode = document.querySelectorAll('#tree-option .el-tree-node')
       allNode.forEach((element) => element.classList.remove('is-current'))
+    },
+    filterQuery(val) {
+      this.TreeSelectfilterText = val
     },
     filterNode(value, data) {
       if (!value) return true
