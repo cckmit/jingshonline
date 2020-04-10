@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 <template>
   <div class="case-index">
     <el-row>
@@ -45,11 +44,24 @@
         <!-- 具体案由 -->
         <el-collapse v-model="activeNameCasereason">
           <el-collapse-item title="具体案由" name="1">
+            <el-input
+              v-model="casereasonText"
+              style="margin:10px 0"
+              size="small"
+              clearable
+              placeholder="输入关键字进行过滤"/>
             <el-tree
+              ref="casereasonTree"
               :data="CasereasonTreeData"
               :props="defaultProps"
+              :filter-node-method="casereasonNode"
               node-key="id"
-              @node-click="handleCasereasonClick"/>
+              icon-class="el-icon-arrow-right"
+              @node-click="handleCasereasonClick">
+              <span slot-scope="{ data }" class="span-ellipsis">
+                <span :title="data.name">{{ data.name }}</span>
+              </span>
+            </el-tree>
           </el-collapse-item>
         </el-collapse>
         <!-- 法院等级 -->
@@ -67,12 +79,17 @@
           <el-collapse-item title="管辖法院">
             <el-tree
               :data="regionTreeData"
-              :props="defaultProps"
+              :props="lazyTreeProps"
               :expand-on-click-node="false"
               :load="loadNode"
+              icon-class="el-icon-arrow-right"
               node-key="index"
               lazy
-              @node-click="handleregionClick"/>
+              @node-click="handleregionClick">
+              <span slot-scope="{ data }" class="span-ellipsis">
+                <span :title="data.name">{{ data.name }}</span>
+              </span>
+            </el-tree>
           </el-collapse-item>
         </el-collapse>
       </el-col>
@@ -90,18 +107,20 @@
             </el-col>
           </el-row>
           <el-row class="case-content-titleBot">
-            <el-col :span="18">
+            <el-col :span="19">
               <ul v-bind="sortData">
-                <li v-for="item in sortData" :key="item.id"><span :class="{ hover:item.id==current}" class="cursorPointer" @click="getSortCaseData(item.displayName,item.id)"> {{ item.name }}<i class="el-icon-sort"/></span></li>
+                <li v-for="item in sortData" :key="item.id">
+                  <span :class="{ hover:item.id==current}" class="cursorPointer" @click="getSortCaseData(item.displayName,item.id)"> {{ item.name }}<i class="el-icon-sort"/></span>
+                </li>
               </ul>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="5">
               <p style="float:right">当前条件共找到 <i class="case-hover">{{ totalCount }}</i>个结果</p>
             </el-col>
           </el-row>
         </div>
         <div class="case-content-main">
-          <ul v-bind="caseData">
+          <ul>
             <li v-for="(item, index) in caseData" :key="item.id" style="position:relative">
               <nuxt-link :to="`/case/${item.id}/info`">
                 <div class="case-content-top">
@@ -160,6 +179,7 @@ export default {
       icon: icon,
       loading: '',
       searchText: '',
+      casereasonText: '',
       activeNameCasereason: '1',
       activeNamecourtLevel: '1',
       current: 1,
@@ -197,7 +217,7 @@ export default {
         pageCount: 10, //
         pageIndex: 1 //
       },
-      props: {
+      lazyTreeProps: {
         label: 'name',
         children: 'zones',
         isLeaf: 'leaf'
@@ -220,6 +240,11 @@ export default {
       courtLevelTreeData: state => state.court.courtLevel,
       sortData: state => state.case.sortData
     })
+  },
+  watch: {
+    casereasonText(val) {
+      this.$refs.casereasonTree.filter(val)
+    }
   },
   mounted() {
     this.getRegionTree(null)
@@ -392,6 +417,10 @@ export default {
         })
       }
     },
+    casereasonNode(value, data) {
+      if (!value) return true
+      return data.name.indexOf(value) !== -1
+    },
     // 分页切换点击事件
     handlePageChange(val) {
       this.caseSearch.pageIndex = val.page
@@ -404,6 +433,7 @@ export default {
 
 <style lang='scss' scoped>
 .case-index {
+  letter-spacing: 2px;
 i{
   font-style: normal
 }
@@ -435,9 +465,7 @@ i{
   font-size: 14px;
   color:#666666;
 }
-.el-tree-node__content {
-	height: 30px;
-}
+
 .el-tree-node__children {
 	.el-tree-node__label{
   font-size: 14px;
@@ -507,13 +535,11 @@ i{
 	.case-content-titleTop{
 	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
     color: #999999;
-    letter-spacing: 1px;
     height: 50px;
     line-height: 50px;
     font-size: 14px;
     span {
       color: #666666;
-      letter-spacing: 1px;
       margin-left: 10px;
       font-size: 14px;
     }
@@ -563,7 +589,6 @@ i{
     }
 
     p:nth-child(1) {
-      letter-spacing: 1px;
       font-size: 18px;
     }
 
@@ -609,23 +634,38 @@ i{
 </style>
 <style lang='scss'>
 .case-aside {
+  .el-tree-node__content {
+    height: 35px;
+  }
   .el-collapse{
     background-color: #fff;
-    padding:0 15px;
+    padding:0 28px;
     margin-bottom:20px;
    .el-collapse-item__wrap{
       border-bottom: none;
+      max-height:500px;
+      overflow:scroll;
     }
- .el-collapse-item__header{
-   height: 60px;
-	line-height: 60px;
-	border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
-	font-size: 16px;
-	color: #333333;
- }
- .el-collapse-item__content{
-  padding-top:10px;
- }
-}
+    .el-collapse-item__header{
+      height: 60px;
+      line-height: 60px;
+      border-bottom: 1px dotted rgba(217, 217, 217, 0.5);
+      font-size: 16px;
+      color: #333333;
+    }
+    .el-collapse-item__content{
+      padding-top:10px;
+    }
   }
+  .span-ellipsis {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  // .el-icon-caret-right:before{
+  //   content: "\e6e0";
+  // }
+}
 </style>

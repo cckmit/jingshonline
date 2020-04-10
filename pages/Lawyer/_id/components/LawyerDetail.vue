@@ -8,6 +8,7 @@
       <el-tab-pane>
         <span slot="label">认证案例<i>|</i></span>
         <lawyer-case
+          :court-list-data="courtListData"
           :industry-data-list="industryDataList"
           :practicearea-data-list="practiceareaDataList"
         />
@@ -98,6 +99,12 @@ export default {
       }
     },
     courtList: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    },
+    courtListData: {
       type: Array,
       default: function() {
         return []

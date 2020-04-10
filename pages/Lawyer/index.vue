@@ -128,6 +128,8 @@
           :highlight-current="true"
           :filter-node-method="filterNode"
           node-key="id"
+          icon-class="el-icon-plus"
+          expand-icon-class="el-icon-minus"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
           @node-click="region"

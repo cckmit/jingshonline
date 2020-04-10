@@ -50,7 +50,7 @@ export default {
 <style lang="scss" scoped>
 .often-court {
   border-top: 1px dashed #eaeaea;
-  padding-bottom: 188px;
+  margin-bottom: 188px;
   background: #fff;
   .often-container {
     background: #fff;

@@ -6,7 +6,7 @@
 //
 //##
 
-$color-base: #f68020; // 主题色
+$color-base: #f2f2f2; // 主题色
 // $color-main: #444; // 主要文字文本
 // $color-dark: #2c3e50; // 导航背景色
 // $color-light: #ccc; // 浅色文本
@@ -212,7 +212,7 @@ ul li,ol li{
 /* 滑块颜色 */
 ::-webkit-scrollbar-thumb {
   border-radius: 0;
-  background-color: rgba(246, 128, 32, 0.4);
+  background-color: rgba(242, 242, 242, 0.4);
   transition: all 0.2s;
   border-radius: 0.2rem;
 
