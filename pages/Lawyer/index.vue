@@ -714,7 +714,7 @@ export default {
       // 分享
       event.preventDefault()
       this.visible = true
-      this.url = window.location.href + '/' + id + '/list'
+      this.url = window.location.href + '/' + id + '/info'
       // 生成二维码
       this.getQrcode()
     },
