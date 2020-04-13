@@ -52,6 +52,7 @@
         :practicearea-data-list="practiceareaDataList"
       />
     </div>
+    <ExtraWrap :plugins="'error,qrcode,totop,share'" :share-url="shareUrl" :top="'200px'" :left="'100px'" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase" />
   </div>
 </template>
 
@@ -59,11 +60,13 @@
 import LawyerDetail from './components/LawyerDetail'
 import axios from 'axios'
 import setting from '@/plugins/setting'
+import ExtraWrap from '@/components/ExtraWrap'
 import { mapActions } from 'vuex'
 export default {
   layout: 'web',
   components: {
-    LawyerDetail
+    LawyerDetail,
+    ExtraWrap
   },
   head() {
     return {
@@ -196,7 +199,8 @@ export default {
       chartData: [],
       industryDataList: [],
       practiceareaDataList: [],
-      courtList: []
+      courtList: [],
+      shareUrl: ''
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -208,6 +212,9 @@ export default {
     } else {
       next()
     }
+  },
+  mounted() {
+    this.shareUrl = window.location.href
   },
   methods: {
     ...mapActions('lawyerinfo', ['LawyerClickCount'])
