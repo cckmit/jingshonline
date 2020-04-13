@@ -6,19 +6,19 @@
 
 # Attributes
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| ------ | ------ | ------ | ------ | ------ |
-| plugins | 组件启用功能 | String\Array | catalog/collection/download/error/qrcode/totop/share | catalog/collection/download/error/qrcode/totop/share |
-| inColection | 是否已收藏 | Boolean | - | false |
-| top | 距离顶部位置 | String | - | - |
-| left | 距离左侧位置 | String | - | - |
-| boottom | 距离底部位置 | String | - | - |
-| right | 距离右侧位置 | String | - | - |
-| catalogData | 案件目录。 eg: [ { id : 'maodian' , title : '案件标题' } ]  | Array | - | - |
-| copySuccessMessage | 分享按钮，连接复制成功提示文本 | String | - | 连接地址复制成功 |
-| copyErrorMessage | 分享按钮，连接复制失败提示文本 | String | - | 连接地址复制失败 |
-| shareUrl | 分享地址 | String | - | - |
-| shareVisible | 分享弹窗 | Boolean | - | false |
+| 参数 | 说明 | 类型 | 可选值 | 必填 | 默认值 |
+| ------ | ------ | ------ | ------ | ------ | ------ |
+| plugins | 组件启用功能 | String\Array | catalog/collection/download <br>/error/qrcode/totop/share | - | catalog/collection/download <br>/error/qrcode/totop/share |
+| inColection | 是否已收藏 | Boolean | - | - | false |
+| top | 距离顶部位置 | String | - | - | - |
+| left | 距离左侧位置 | String | - | - | - |
+| boottom | 距离底部位置 | String | - | - | - |
+| right | 距离右侧位置 | String | - | - | - |
+| catalogData | 案件目录。 eg: [ { id : 'maodian' , title : '案件标题' } ]  | Array | - | - | - |
+| copySuccessMessage | 分享按钮，连接复制成功提示文本 | String | - | - | 连接地址复制成功 |
+| copyErrorMessage | 分享按钮，连接复制失败提示文本 | String | - | - | 连接地址复制失败 |
+| shareUrl | 分享地址 | String | - | true | - |
+| shareVisible | 分享弹窗 | Boolean | - | - | false |
 
 # Events
 
