@@ -80,7 +80,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'catalog,collection,catalogdownload,error,qrcode,totop,share'" :top="200" :left="100" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase"/>
+    <ExtraWrap :share-url="shareUrl" :top="'200px'" :left="'100px'" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase" />
   </div>
 </template>
 
@@ -112,6 +112,7 @@ export default {
 
   data() {
     return {
+      shareUrl: '',
       errorImg: errorImg,
       loading: false,
       caseId: 0,
@@ -153,6 +154,7 @@ export default {
     this.caseId = this.$route.params.id
   },
   mounted() {
+    this.shareUrl = window.location.href
   },
   methods: {
     ...mapActions('case', ['getCaseInfoData', 'caseFollowClick', 'caseUnfollowClick', 'caseClickCount']),
