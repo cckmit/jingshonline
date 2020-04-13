@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="extrawrap">
     <ul :style="`top:${top};bottom:${bottom};left:${left};right:${right}`" class="extra-wrap">
       <li v-if="showPlugins.indexOf('catalog')>-1">
         <el-image :src="catalog"/>
@@ -84,19 +84,19 @@ export default {
     },
     top: {
       type: String,
-      default: null
+      default: ''
     },
     left: {
       type: String,
-      default: null
+      default: ''
     },
     right: {
       type: String,
-      default: null
+      default: ''
     },
     bottom: {
       type: String,
-      default: null
+      default: ''
     },
     catalogData: {
       type: Array,
@@ -108,7 +108,7 @@ export default {
     },
     copyErrorMessage: {
       type: String,
-      default: '复制失败'
+      default: '连接地址复制失败'
     },
     shareUrl: {
       type: String,
@@ -296,27 +296,29 @@ export default {
 
 </style>
 <style lang="scss">
-.catalog-timeline{
-  &.el-timeline{
-    margin-left: 10px;
-    padding-top:15px;
-    .el-timeline-item{
-      padding-bottom: 5px;
-    }
-    .el-timeline-item__tail{
-      border-width: 1px;
-    }
-    .el-timeline-item__node--normal{
-      left: 2px;
-      width:6px;
-      height: 6px;
-    }
-    .el-timeline-item__wrapper{
-      top: -7px;
-    }
-    .el-timeline-item__content{
-      a{
-        color: #666
+.extrawrap{
+  .catalog-timeline{
+    &.el-timeline{
+      margin-left: 10px;
+      padding-top:15px;
+      .el-timeline-item{
+        padding-bottom: 5px;
+      }
+      .el-timeline-item__tail{
+        border-width: 1px;
+      }
+      .el-timeline-item__node--normal{
+        left: 2px;
+        width:6px;
+        height: 6px;
+      }
+      .el-timeline-item__wrapper{
+        top: -7px;
+      }
+      .el-timeline-item__content{
+        a{
+          color: #666
+        }
       }
     }
   }
