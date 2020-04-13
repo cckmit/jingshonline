@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul :style="`top:${top}px;bottom:${bottom}px;left:${left}px;right:${right}px`" class="extra-wrap">
+    <ul :style="`top:${top};bottom:${bottom};left:${left};right:${right}`" class="extra-wrap">
       <li v-if="showPlugins.indexOf('catalog')>-1">
         <el-image :src="catalog"/>
         <div class="describe">
@@ -47,9 +47,9 @@
         <div class="describe" @click="backTop">返回<br>顶部</div>
       </li>
     </ul>
-    <el-dialog :visible.sync="visible" top="35vh" width="400px" title="分享">
+    <el-dialog :visible.sync="visible" top="35vh" width="400px" title="分享" @close="shareClose">
       <div class="share">
-        <el-input v-model="url" size="mini"/>
+        <el-input v-model="shareUrl" size="mini"/>
         <div>
           <el-button size="mini" icon="el-icon-share" @click="copy">分享</el-button>
         </div>
@@ -83,20 +83,20 @@ export default {
       default: false
     },
     top: {
-      type: Number,
-      default: 0
+      type: String,
+      default: null
     },
     left: {
-      type: Number,
-      default: 0
+      type: String,
+      default: null
     },
     right: {
-      type: Number,
-      default: 0
+      type: String,
+      default: null
     },
     bottom: {
-      type: Number,
-      default: 0
+      type: String,
+      default: null
     },
     catalogData: {
       type: Array,
@@ -109,6 +109,15 @@ export default {
     copyErrorMessage: {
       type: String,
       default: '复制失败'
+    },
+    shareUrl: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    shareVisible: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -123,7 +132,6 @@ export default {
       share,
       showPlugins: '',
       qrimg: '',
-      url: '',
       visible: false
     }
   },
@@ -135,15 +143,25 @@ export default {
         this.showPlugins = val
       }
     },
-    router: () => {
-      this.getQrcode()
+    shareUrl: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.shareUrl = val
+        this.getQrcode()
+      }
+    },
+    shareVisible: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        this.visible = val
+      }
     }
   },
   created() {
   },
   mounted() {
-    this.url = window.location.href
-    this.getQrcode()
   },
   methods: {
     backTop() {
@@ -159,12 +177,12 @@ export default {
       }, 16)
     },
     getQrcode() {
-      QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
+      this.shareUrl ? QRCode.toDataURL(this.shareUrl, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
         this.qrimg = url
-      })
+      }) : ''
     },
     copy() {
-      this.$copyText(this.url).then(e => {
+      this.$copyText(this.shareUrl).then(e => {
         this.$notify({
           message: this.copySuccessMessage,
           type: 'success'
@@ -182,6 +200,9 @@ export default {
     },
     doDownload() {
       this.$emit('download')
+    },
+    shareClose() {
+      this.$emit('share')
     }
   }
 }
