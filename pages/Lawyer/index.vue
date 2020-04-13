@@ -305,15 +305,6 @@
           </nuxt-link>
         </li>
       </ul>
-      <el-dialog :visible.sync="visible" top="35vh" width="400px" title="分享">
-        <div class="share">
-          <div>
-            <el-input v-model="url" size="mini"/>
-            <el-button size="mini" icon="el-icon-share" @click="copy">复制链接</el-button>
-          </div>
-          <img :src="qrimg">
-        </div>
-      </el-dialog>
       <Pagination
         v-show="totalCount > 0"
         :total="totalCount"
@@ -322,6 +313,7 @@
         @pagination="handlePageChange"
       />
     </el-col>
+    <ExtraWrap :plugins="'error,totop'" :share-url="shareUrl" :top="'350px'" :right="'40px'" :share-visible="sharevisible" @share="shareClose" />
   </el-row>
 </template>
 
@@ -333,7 +325,7 @@ import Pagination from '../../components/Pagination/index'
 import { mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
-import QRCode from 'qrcode'
+import ExtraWrap from '@/components/ExtraWrap'
 export default {
   layout: 'web',
   name: 'Lawyer',
@@ -342,7 +334,8 @@ export default {
     mode: 'out-in'
   },
   components: {
-    Pagination
+    Pagination,
+    ExtraWrap
   },
   async asyncData({ params }) {
     const [lawyerData, suitsData, NosuitsData, industryData, regionData, lawfirmData] = await Promise.all([
@@ -448,9 +441,8 @@ export default {
       searchtimelarge: '',
       littlesettime: '', // 定时器
       largesettime: '',
-      visible: false, // 分享弹框
-      url: '', // 分享链接
-      qrimg: '', // 二维码
+      sharevisible: false, // 分享弹框
+      shareUrl: '', // 分享链接
       pointsnum: 1, // 排序计次
       conditioncasecountnum: 0,
       filterText: '', // 城市数据过滤
@@ -715,29 +707,12 @@ export default {
     share(id) {
       // 分享
       event.preventDefault()
-      this.visible = true
-      this.url = window.location.href + '/' + id + '/info'
-      // 生成二维码
-      this.getQrcode()
+      this.sharevisible = true
+      this.shareUrl = `${location.origin}/lawyer/${id}/info`
     },
-    getQrcode() {
-      QRCode.toDataURL(this.url, { width: '200', errorCorrectionLevel: 'H' }).then(url => {
-        this.qrimg = url
-      })
-    },
-    copy() {
-      this.$copyText(this.url).then(e => {
-        this.$notify({
-          message: this.copySuccessMessage,
-          type: 'success'
-        })
-      }).catch(error => {
-        this.$notify({
-          message: this.copyErrorMessage,
-          type: 'error'
-        })
-        console.log(error)
-      })
+    shareClose() {
+      // 分享弹窗关闭事件
+      this.sharevisible = false
     }
   }
 }
@@ -1014,7 +989,7 @@ ul {
 </style>
 <style lang="scss">
 .el-popover{
-  max-width:800px;
+  max-width:400px;
 }
 .lawyerlist{
   .el-form{
