@@ -149,7 +149,7 @@
         </div>
       </el-col>
     </el-row>
-    <ExtraWrap :plugins="'error,qrcode,totop,share'" :top="400" :left="100"/>
+    <ExtraWrap :plugins="'error,totop'" :share-url="shareUrl" :top="'400px'" :right="'40px'" />
   </div>
 </template>
 
@@ -176,6 +176,7 @@ export default {
   },
   data() {
     return {
+      shareUrl: '/',
       icon: icon,
       loading: '',
       searchText: '',
