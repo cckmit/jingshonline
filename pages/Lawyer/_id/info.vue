@@ -52,7 +52,7 @@
         :practicearea-data-list="practiceareaDataList"
       />
     </div>
-    <ExtraWrap :plugins="'error,qrcode,totop,share'" :share-url="shareUrl" :top="'200px'" :left="'100px'" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase" />
+    <ExtraWrap :plugins="'error,qrcode,totop,share'" :share-url="shareUrl" :top="'200px'" :left="'100px'" />
   </div>
 </template>
 
