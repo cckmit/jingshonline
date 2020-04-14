@@ -12,12 +12,13 @@
             <nuxt-link to="/"><img v-if="url.name==='index'" :src="logo" class="logo" alt="”京师在线" style="border:none;"></nuxt-link>
           </el-menu-item>
           <el-menu-item index="index"><nuxt-link to="/">网站首页</nuxt-link></el-menu-item>
-          <el-menu-item index="usercentercase"><nuxt-link to="/usercenter/case">案例列表</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterfollow"><nuxt-link to="/usercenter/follow">关注律师</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/resume">律师简介</nuxt-link></el-menu-item>
+          <el-menu-item index="usercentercase"><nuxt-link to="/usercenter">工作台</nuxt-link></el-menu-item>
+          <el-menu-item index="usercentercase"><nuxt-link to="/usercenter/case">我的案例</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenterfollow"><nuxt-link to="/usercenter/resume">我的简历</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/follow">我都关注</nuxt-link></el-menu-item>
           <el-menu-item index="usercentercasestatistical"><nuxt-link to="/usercenter/case/statistical">案件统计</nuxt-link></el-menu-item>
           <el-menu-item index="usercentersetting"><nuxt-link to="/usercenter/setting">个人设置</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterexplain"><nuxt-link to="/usercenter/explain">积分说明</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenterexplain"><nuxt-link to="/usercenter/explain">帮助中心</nuxt-link></el-menu-item>
 
           <el-menu-item v-if="hasLogin" index="user" class="user">
             <nuxt-link to="/usercenter">
@@ -26,7 +27,8 @@
                   <el-image :src="account.avatar"/><span>{{ account.name }}</span>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter/setting" style="color:#606266;">个人中心</nuxt-link></el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter/auth" style="color:#606266;">律师认证</nuxt-link></el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter/case/create" style="color:#606266;">添加案例</nuxt-link></el-dropdown-item>
                   <el-dropdown-item icon="el-icon-delete" @click.native="handleLogout">登出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
