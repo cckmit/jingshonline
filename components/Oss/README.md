@@ -8,6 +8,14 @@
 | ------ | ------ | ------ | ------ | ------ | ------ |
 | option | 接收配置参数 | Object | - | true | - |
 
+<style lang="scss">
+table th:first-child,table td:first-child{
+  width:170px;
+}
+table th:nth-child(2),table td:nth-child(2){
+  width:400px;
+}
+</style>
 
 # Option
 
