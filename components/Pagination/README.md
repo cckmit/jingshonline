@@ -15,8 +15,6 @@
 
 # Events
 
-| 方法明 | 说明 | - |
+| 方法明 | 说明 | 回调参数 |
 | ------ | ------ | ------ |
-| doCollection | 收藏，回调父组件收藏方法 | - |
-| doDownload | 下载，回调父组件下载方法 | - |
-| shareClose | 分享弹窗关闭，回调父组件分享方法 | - |
+| pagination | page、limt 改变时触发 | function ( { page , limt } ) |
