@@ -20,7 +20,7 @@
                 <p>联系我们</p>
                 <el-form label-position="right">
                   <el-form-item label="客服：">4001 - 666 - 001 <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	 周一至周日 9:00-24:00（春节除外）</el-form-item>
-                  <el-form-item label="邮箱：">youdao_kecheng@163.com</el-form-item>
+                  <el-form-item label="邮箱：">admin@jingshonline.com</el-form-item>
                 </el-form>
               </el-col>
               <el-col :span="8">
