@@ -161,5 +161,21 @@ export const actions = {
         reject(error)
       })
     })
+  },
+
+  /**
+   * 提交律师认证
+   * @param {commit} commit
+   * @param {Object} lawyerData
+   */
+  LawyerCertify({ commit }, lawyerData) {
+    return new Promise((resolve, reject) => {
+      Lawyer.certify(lawyerData).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }

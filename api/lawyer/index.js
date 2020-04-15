@@ -83,3 +83,17 @@ export const uncollecteData = lawyerId => {
     method: 'delete'
   })
 }
+
+/**
+ * 律师认证
+ * @param {Object} lawyerData
+ */
+export const certify = lawyerData => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/certify`,
+    method: 'put',
+    data: {
+      input: lawyerData
+    }
+  })
+}
