@@ -47,10 +47,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.content{
-  >div{
-    margin: 60px 0;;
-  }
-}
+
 </style>
 
