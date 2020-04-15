@@ -15,7 +15,7 @@
           <el-menu-item index="usercentercase"><nuxt-link to="/usercenter">工作台</nuxt-link></el-menu-item>
           <el-menu-item index="usercentercase"><nuxt-link to="/usercenter/case">我的案例</nuxt-link></el-menu-item>
           <el-menu-item index="usercenterfollow"><nuxt-link to="/usercenter/resume">我的简历</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/follow">我都关注</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/follow">我的关注</nuxt-link></el-menu-item>
           <el-menu-item index="usercentercasestatistical"><nuxt-link to="/usercenter/case/statistical">案件统计</nuxt-link></el-menu-item>
           <el-menu-item index="usercentersetting"><nuxt-link to="/usercenter/setting">个人设置</nuxt-link></el-menu-item>
           <el-menu-item index="usercenterexplain"><nuxt-link to="/usercenter/explain">帮助中心</nuxt-link></el-menu-item>
@@ -113,6 +113,7 @@ export default {
 
 <style lang='scss' scoped>
 .navbar{
+  min-width: 1380px;
   height: 66px;
   line-height: 66px;
   display: flex;
