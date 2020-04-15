@@ -1,5 +1,5 @@
 import * as Region from '@/api/dictionaries/region'
-
+import utils from '@/utils'
 export const state = () => ({
   // token: cookie.get('token'),
   regionTreeData: []
@@ -7,6 +7,7 @@ export const state = () => ({
 
 export const mutations = {
   REGION_DATA(state, value) {
+    utils.filterAttributes({ data: value })
     state.regionTreeData = value
   }
 }

@@ -258,6 +258,16 @@ const Utils = {
       const reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
       ele.className = ele.className.replace(reg, ' ')
     }
+  },
+  /**
+   * 过滤数据中属性,children =[] 处理为 children=null
+   * @param {string} attrributes
+   * @param {Array} data
+   */
+  filterAttributes({ attrributes = 'children', data = [] }) {
+    data.forEach(item => {
+      item[attrributes].length > 0 ? this.filterAttributes({ data: item[attrributes] }) : item[attrributes] = null
+    })
   }
 }
 export default Utils
