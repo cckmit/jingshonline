@@ -47,6 +47,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.content{
+  min-width: 1380px;
+}
 </style>
 
