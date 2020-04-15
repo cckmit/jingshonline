@@ -132,18 +132,18 @@ $color-base: #f2f2f2; // 主题色
 //   box-sizing: border-box;
 // }
 
-// /** 清除浮动 - clear float **/
-// .clear:after {
-//   content: '\20';
-//   display: block;
-//   height: 0;
-//   clear: both;
-// }
+/** 清除浮动 - clear float **/
+.clear:after {
+  content: '\20';
+  display: block;
+  height: 0;
+  clear: both;
+}
 
-// .clear {
-//   *zoom: 1;
-//   /* IE */
-// }
+.clear {
+  *zoom: 1;
+  /* IE */
+}
 
 // /** 设置input的placeholder - set input placeholder **/
 // input::-webkit-input-placeholder {
