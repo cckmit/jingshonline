@@ -200,9 +200,13 @@ export default {
 </script>
 
 <style lang='scss'>
+.el-upload__tip{
+  line-height: normal;
+}
 .custom{
   .el-upload-list{
     display: none
   }
+
 }
 </style>
