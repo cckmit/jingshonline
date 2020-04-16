@@ -71,7 +71,7 @@ export const caseClick = caseId => {
     method: 'post'
   })
 }
-
+/** ***************************用户中心***************************** **/
 /**
  * 添加案件
  * @param {object} caseData
@@ -122,5 +122,16 @@ export const caseQuery = query => {
     data: {
       query
     }
+  })
+}
+
+/**
+ * 通过案件ID获取案件详情
+ * @param {number} caseId
+ */
+export const caseInfo = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/case/${caseId}`,
+    method: 'get'
   })
 }

@@ -155,6 +155,7 @@ export const actions = {
     })
   },
 
+  /** **********************用户中心***************************** **/
   /**
    * 创建案件
    * @param {commit} commit
@@ -209,6 +210,21 @@ export const actions = {
   caseQuery({ commit }, query) {
     return new Promise((resolve, reject) => {
       Case.caseQuery(query).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 通过案件ID获取案件详情
+   * @param {commit} commit
+   * @param {number} caseId
+   */
+  caseInfo({ commit }, caseId) {
+    return new Promise((resolve, reject) => {
+      Case.caseInfo(caseId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
