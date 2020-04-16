@@ -12,13 +12,13 @@
         </div>
         <div class="lawyer-info-text">
           <p>上次登录时间：2020-02-11</p>
-          <p>个人积分：<span class="high-light">62</span><i/></p>
+          <p>个人积分：<span class="high-light">62</span><i @click="Integralquery"><span class="tip">提示文本提示文本提示文本</span></i></p>
         </div>
         <div class="lawyer-info-icon">
           <ul>
-            <li><a href="javascript:void(0);"><i class="el-icon-user"/><span>审核中</span></a></li>
-            <li><a href="javascript:void(0);"><i class="el-icon-user"/><span>绑定手机</span></a></li>
-            <li><a href="javascript:void(0);"><i class="el-icon-user"/><span>绑定邮箱</span></a></li>
+            <li><a href="javascript:void(0);"><i class="iconfont iconpersonnone"/><span>审核中</span></a></li>
+            <li><a href="javascript:void(0);"><i class="iconfont iconshoujihao"/><span>绑定手机</span></a></li>
+            <li><a href="javascript:void(0);"><i class="iconfont iconyouxiangrenzheng"/><span>绑定邮箱</span></a></li>
           </ul>
         </div>
       </div>
@@ -43,17 +43,23 @@
         <div class="case-info-card">
           <h2><i class="icon-bell"/>消息动态<i class="more" @click="getMore"/></h2>
           <ul class="case-info-list">
+            <li @click="caseInfoHandle"><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
             <li><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
           </ul>
+          <!-- <p class="no-data">暂无数据</p> -->
         </div>
       </div>
       <div class="case-list">
         <h3>案例列表 <button @click="addCase"><i class="el-icon-circle-plus-outline"/>添加案件</button></h3>
         <div class="table-list">
           <el-table
+            v-if="totalCount>0"
             :header-cell-style="{background:'#EBEBEB',height:'32px',color:'#666',fontSize:'14px',lineHeight:'32px',padding:'0'}"
             :data="caseListData"
             :row-class-name="tableRowClassName"
@@ -80,6 +86,11 @@
               </template>
             </el-table-column>
           </el-table>
+          <div v-else class="table-no-data">
+            <h3>您尚未添加案例</h3>
+            <p>您尚未添加案例，您可以点击下方按钮按照步骤进行添加案例。</p>
+            <a href="javascript:void(0);" @click="addCase">添加案例></a>
+          </div>
         </div>
         <Pagination v-show="totalCount>0" :layout="' prev, pager, next'" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
       </div>
@@ -208,7 +219,7 @@ export default {
       totalCount: 500,
       // 案例检索条件
       caseListParam: {
-        pageCount: 5, // 页目条数 number
+        pageCount: 10, // 页目条数 number
         pageIndex: 1// 页码 number
       },
       // 弹窗
@@ -237,6 +248,10 @@ export default {
         return 'egg'
       }
     },
+    // 积分查询
+    Integralquery() {
+      console.log('积分查询')
+    },
     // 用户编辑
     handleEdit(index, row) {
       console.log('用户编辑:', row)
@@ -252,6 +267,10 @@ export default {
     // 获取更多讯息
     getMore() {
       console.log('获取更多')
+    },
+    // 案件讯息
+    caseInfoHandle() {
+      console.log('案件讯息详情')
     },
     // 翻页操作
     handlePageChange(val) {
@@ -273,6 +292,12 @@ export default {
   background:rgba(242,242,242,1);
   overflow: hidden;
   margin: 0 auto;
+  .no-data {
+    padding: 30px 0;
+    font-size: 26px;
+    text-align: center;
+    color: #cccccc;
+  }
   .high-light {
     font-size: 14px;
     font-weight: bold;
@@ -367,13 +392,48 @@ export default {
         font-size: 12px;
         line-height: 28px;
         margin-bottom: 15px;
+        position: relative;
         i {
+          cursor: pointer;
           display: inline-block;
           width: 16px;
           height: 16px;
           background: url("../../assets/usercenter/help.png") no-repeat center;
           vertical-align: -2px;
           margin-left: 6px;
+          position: relative;
+        }
+        .tip {
+          transition: opacity 2s;
+          position: absolute;
+          display: block;
+          width: 160px;
+          height: 60px;
+          border: 1px solid #ccc;
+          background: #fff;
+          z-index: 99;
+          border-radius: 5px;
+          top: -67px;
+          left: -19px;
+          font-size: 12px;
+          opacity: 0;
+        }
+        .tip:before {
+          content: '';
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          bottom: -5px;
+          left: 20px;
+          transform: rotate(-45deg);
+          border-width: 1px;
+          border-style: solid;
+          border-color: transparent transparent #ccc #ccc;
+          z-index: 100;
+          background: #fff;
+        }
+        i:hover .tip {
+          opacity: 1;
         }
       }
       .lawyer-info-icon {
@@ -382,12 +442,14 @@ export default {
           list-style: none;
           padding: 0 36px;
           justify-content: space-between;
+          overflow: hidden;
           li{
             font-size: 12px;
             line-height: 12px;
             a{
               color: #999999;
               i{
+                line-height: 33px;
                 display: block;
                 font-size: 30px;
                 text-align: center;
@@ -483,10 +545,14 @@ export default {
       .case-info-card{
         margin-left: 20px;
         width:340px;
-        min-height:486px;
+        max-height:486px;
         background:rgba(255,255,255,1);
         border:1px solid rgba(229, 229, 229, 0.3);
+        position: relative;
         h2{
+          position: fixed;
+          top: 0;
+          left: 0;
           height: 48px;
           line-height: 48px;
           color: #333333;
@@ -513,6 +579,9 @@ export default {
           }
         }
         .case-info-list {
+          padding-bottom: 12px;
+          max-height: 438px;
+          overflow-y: scroll;
           li {
             cursor: pointer;
             height: 107px;
@@ -520,11 +589,12 @@ export default {
             position: relative;
             .info-text {
               padding: 0 19px 0 25px;
+              color:rgba(51,51,51,1);
               h4 {
                 line-height: 28px;
                 font-size:14px;
                 font-weight:400;
-                color:rgba(51,51,51,1);
+
                 overflow: hidden;
                 position: relative;
                 .button{
@@ -561,6 +631,17 @@ export default {
                 bottom: 10px;
                 font-size: 12px;
                 text-align: right;
+              }
+            }
+            .is-read {
+              h4 {
+                color:rgba(153,153,153,1);
+                .button {
+                  background:rgba(153,153,153,1);
+                }
+              }
+              p{
+                color:rgba(153,153,153,1);
               }
             }
           }
@@ -601,6 +682,28 @@ export default {
       .table-list {
         padding: 0 18px;
         margin-bottom: 36px;
+        .table-no-data {
+          box-sizing: border-box;
+          padding-bottom: 180px;
+          text-align: center;
+          color:rgba(153,153,153,1);
+          h3{
+            padding: 0;
+            font-size:24px;
+            line-height: 24px;
+            font-weight:400;
+            margin:100px 0 30px 0;
+          }
+          p {
+            font-size: 16px;
+            margin-bottom: 75px;
+          }
+          a {
+            font-size: 18px;
+            text-decoration:underline;
+            color: #666666;
+          }
+        }
         .edit,.delete {
           i {
             margin: 0 2px;
