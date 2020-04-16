@@ -91,9 +91,20 @@ export const uncollecteData = lawyerId => {
 export const certify = lawyerData => {
   return request({
     url: `${setting.apiPrefix}/lawyer/certify`,
-    method: 'put',
+    method: 'post',
     data: {
       input: lawyerData
     }
+  })
+}
+
+/**
+ * 根据lawyerID获取律师认证信息
+ * @param {Number} lawyerId
+ */
+export const getCertifyInfo = lawyerId => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/certifyinfo/get/${lawyerId}`,
+    method: 'get'
   })
 }
