@@ -3,8 +3,8 @@
     <h2>您已成功通过了律师身份认证。</h2>
     <p>您可以点击下方按钮按照步骤进行对应案件的添加。</p>
     <div>
-      <span>添加诉讼案件 <i class="el-icon-arrow-right"/></span>
-      <span>添加非讼案件 <i class="el-icon-arrow-right"/></span>
+      <span @click="add(1)">添加诉讼案件 <i class="el-icon-arrow-right"/></span>
+      <span @click="add(2)">添加非讼案件 <i class="el-icon-arrow-right"/></span>
     </div>
   </div>
 </template>
@@ -32,6 +32,9 @@ export default {
   mounted() {
   },
   methods: {
+    add(type) {
+      this.$emit('one', type)
+    }
   }
 }
 </script>
@@ -57,6 +60,7 @@ div{
     background: #F68020;
     color: #fff;
     font-size: 22px;
+    cursor: pointer;
     &:first-child{
       margin-right: 86px;
     }

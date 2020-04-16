@@ -14,16 +14,19 @@
         <el-step title="" @click.native="steps=4" />
       </el-steps>
       <div v-if="steps===1" class="one">
-        <StepOne/>
+        <StepOne @one="one"/>
       </div>
       <div v-if="steps===2" class="two">
         <StepTwo/>
+        <el-button size="small" @click="steps=3">下一步</el-button>
       </div>
       <div v-if="steps===3" class="three">
         <StepThree/>
+        <el-button size="small" @click="steps=4">下一步</el-button>
       </div>
       <div v-if="steps===4" class="four">
         <StepFour/>
+        <el-button size="small" @click="submit">完成</el-button>
       </div>
     </div>
     <div v-if="steps===5" class="five">
@@ -58,18 +61,29 @@ export default {
   },
   data() {
     return {
-      steps: 5,
-      caseType: null
+      steps: 1,
+      caseType: null,
+      route: this.$route
     }
   },
   watch: {
+
   },
   mounted() {
+    this.steps = this.$route.query.type ? 2 : 1
+    this.caseType = this.$route.query.type
   },
   methods: {
+    one(type) {
+      this.caseType = type
+      this.steps = 2
+    },
     five(type) {
       this.steps = 2
       this.caseType = type
+    },
+    submit() {
+      this.steps = 5
     }
   }
 }
@@ -84,6 +98,16 @@ export default {
     margin-bottom: 60px;
     .el-step{
       cursor: pointer;
+    }
+  }
+  .one,.two,.three,.four,.five{
+    text-align: center;
+    .el-button{
+      width: 100px;
+      margin-top: 100px;
+      background: #F68020;
+      color: #fff;
+      font-size: 14px;
     }
   }
 
