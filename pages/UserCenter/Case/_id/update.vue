@@ -4,18 +4,16 @@
       <el-breadcrumb-item :to="{ path: '/' }">京师在线</el-breadcrumb-item>
       <el-breadcrumb-item :to="{path:'/userCenter'}">工作台</el-breadcrumb-item>
       <el-breadcrumb-item :to="{path:'/userCenter/case'}">我的案例</el-breadcrumb-item>
-      <el-breadcrumb-item>添加案例</el-breadcrumb-item>
+      <el-breadcrumb-item>编辑案例</el-breadcrumb-item>
     </el-breadcrumb>
-    <div v-if="steps!==5" class="clear case">
+    <div class="clear case">
       <el-steps :active="steps" finish-status="success">
-        <el-step title="" @click.native="steps=1" />
+        <el-step title="" />
         <el-step title="" @click.native="steps=2" />
         <el-step title="" @click.native="steps=3" />
         <el-step title="" @click.native="steps=4" />
+        <el-step title="" @click.native="steps=5" />
       </el-steps>
-      <div v-if="steps===1" class="one">
-        <StepOne/>
-      </div>
       <div v-if="steps===2" class="two">
         <StepTwo/>
       </div>
@@ -25,18 +23,17 @@
       <div v-if="steps===4" class="four">
         <StepFour/>
       </div>
-    </div>
-    <div v-if="steps===5" class="five">
-      <StepFive @five="five"/>
+      <div v-if="steps===5" class="five">
+        <StepFive/>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import StepOne from './components/StepOne'
-import StepTwo from './components/StepTwo'
-import StepThree from './components/StepThree'
-import StepFour from './components/StepFour'
-import StepFive from './components/StepFive'
+import StepTwo from '../components/StepTwo'
+import StepThree from '../components/StepThree'
+import StepFour from '../components/StepFour'
+import StepFive from '../components/StepFive'
 export default {
   layout: 'userCenter',
   name: 'UserCenterCaseStatistical',
@@ -50,7 +47,6 @@ export default {
     }
   },
   components: {
-    StepOne,
     StepTwo,
     StepThree,
     StepFour,
@@ -58,8 +54,7 @@ export default {
   },
   data() {
     return {
-      steps: 5,
-      caseType: null
+      steps: 5
     }
   },
   watch: {
@@ -67,10 +62,6 @@ export default {
   mounted() {
   },
   methods: {
-    five(type) {
-      this.steps = 2
-      this.caseType = type
-    }
   }
 }
 </script>
