@@ -14,7 +14,7 @@
         <el-step title="" @click.native="steps=4" />
       </el-steps>
       <div v-if="steps===1" class="one">
-        <StepOne/>
+        <StepOne @one="one"/>
       </div>
       <div v-if="steps===2" class="two">
         <StepTwo/>
@@ -58,15 +58,23 @@ export default {
   },
   data() {
     return {
-      steps: 5,
-      caseType: null
+      steps: 1,
+      caseType: null,
+      route: this.$route
     }
   },
   watch: {
+
   },
   mounted() {
+    this.steps = this.$route.query.type ? 2 : 1
+    this.caseType = this.$route.query.type
   },
   methods: {
+    one(type) {
+      this.caseType = type
+      this.steps = 2
+    },
     five(type) {
       this.steps = 2
       this.caseType = type
