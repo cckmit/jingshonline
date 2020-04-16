@@ -90,7 +90,7 @@
     >
       <h4>您尚未进行律师认证</h4>
       <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
-      <a href="javascript:void(0);" @click="goToConstructor">前往认证</a>
+      <a href="/userCenter/auth/update">前往认证</a>
     </el-dialog>
   </div>
 </template>
