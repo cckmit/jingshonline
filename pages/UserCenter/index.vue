@@ -8,11 +8,11 @@
       <div class="lawyer-info">
         <div class="lawyer-info-picture">
           <img src="../../assets/usercenter/woman-sample.jpg" alt="律师头像">
-          <span>更换头像</span>
+          <span @click="changPicture">更换头像</span>
         </div>
         <div class="lawyer-info-text">
           <p>上次登录时间：2020-02-11</p>
-          <p>个人积分：<span class="high-light">62</span><i @click="Integralquery"><span class="tip">提示文本提示文本提示文本</span></i></p>
+          <p>个人积分：<span class="high-light">62</span><i @click="Integralquery"/><span class="tip">提示文本提示文本提示文本</span></p>
         </div>
         <div class="lawyer-info-icon">
           <ul>
@@ -252,6 +252,10 @@ export default {
     Integralquery() {
       console.log('积分查询')
     },
+    // 更换头像
+    changPicture() {
+      console.log('跟换头像')
+    },
     // 用户编辑
     handleEdit(index, row) {
       console.log('用户编辑:', row)
@@ -413,8 +417,8 @@ export default {
           background: #fff;
           z-index: 99;
           border-radius: 5px;
-          top: -67px;
-          left: -19px;
+          top: -33px;
+          left: 94px;
           font-size: 12px;
           opacity: 0;
         }
@@ -432,7 +436,7 @@ export default {
           z-index: 100;
           background: #fff;
         }
-        i:hover .tip {
+        i:hover +.tip {
           opacity: 1;
         }
       }
