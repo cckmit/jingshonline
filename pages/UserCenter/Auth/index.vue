@@ -6,108 +6,60 @@
       <el-breadcrumb-item>律师认证</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="auth">
-      <h4>您正在进行律师身份认证</h4>
+      <h4>您提交的认证信息正在<span>审核中...</span></h4>
       <p>
         温馨提示：未通过认证您将不会进入律师库（他人无法检索到您）我们会对您提供的认证信息进行人工审核，请正确填写信息。
       </p>
       <hr>
-      <el-row>
-        <el-col :span="13">
-          <el-form ref="authForm" :model="authForm" :rules="authFormRules" label-position="left" label-width="90px">
-            <el-form-item label="律师姓名" prop="realName">
-              <el-input v-model="authForm.realName" placeholder="姓名" size="small" clearable/>
-            </el-form-item>
-            <el-form-item label="性别" prop="sex">
-              <el-radio-group v-model="authForm.sex" size="small">
-                <el-radio :label="true">男</el-radio>
-                <el-radio :label="false">女</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="所在地区" prop="regionId">
-              <el-cascader
-                v-model="authForm.regionId"
-                :options="regionTreeData"
-                :props="{ expandTrigger: 'hover', checkStrictly: true, label: 'name', value: 'id' }"
-                placeholder="请选择您所在的地区"
-                filterable
-                clearable
-                style="width:100%"
-                size="small"/>
-            </el-form-item>
-            <el-form-item label="执业机构" prop="lawfirmId">
-              <el-select
-                v-model="authForm.lawfirmId"
-                placeholder="请选择您所在的执业机构"
-                size="small"
-                style="width:100%"
-                filterable
-                clearable>
-                <el-option
-                  v-for="item in lawfirmData"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="执业证号" prop="licenceNo">
-              <el-input v-model="authForm.licenceNo" placeholder="请输入真实有效的执业证号" size="small" clearable/>
-            </el-form-item>
-            <el-form-item label="上传头像" prop="avatar">
-              <Oss :option="ossOption" @change="ossChange"/>
-            </el-form-item>
-            <el-form-item class="auth_form_button">
-              <el-button size="small">返回</el-button>
-              <el-button size="small" @click="submit">提交认证</el-button>
-            </el-form-item>
+      <h2>您所提交的信息正在<span>审核中...</span></h2>
+      <div class="div">
+        我们将以&nbsp;&nbsp;<u>短信</u>&nbsp;&nbsp;的方式告知您的审核状态，您可以进行
+        <router-link to="/usercenter/case/create"><el-button icon="el-icon-circle-plus-outline" size="mini">添加案例</el-button></router-link>
+        或
+        <router-link to="/usercenter/resume"><el-button icon="el-icon-circle-plus-outline" size="mini">添加简历</el-button></router-link>
+      </div>
+      <div class="info">
+        <div>
+          <el-form :rules="authFormRules" label-width="92px" label-position="left">
+            <el-row>
+              <el-col :span="14">
+                <el-form-item label="头像" prop="realName" class="avatar" style="line-height:normal;">
+                  <dl>
+                    <dt>
+                      <el-image :src="lawyer.avatar || ''"/>
+                    </dt>
+                    <dd>本图片将作为您的头像进行展示，仅支持jpg/png格式。</dd>
+                  </dl>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="律师姓名" prop="realName">{{ lawyer.realName || '' }}</el-form-item>
+                <el-form-item label="性别" prop="realName">{{ laywer || '' }}</el-form-item>
+                <el-form-item label="所在地区" prop="realName">{{ lawyer.regionId || '' }}</el-form-item>
+                <el-form-item label="执业机构" prop="realName">{{ lawyer.lawfirmId || '' }}</el-form-item>
+                <el-form-item label="执业证号" prop="realName">{{ lawyer.licenceNo || '' }}</el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
-        </el-col>
-        <el-col :span="11">
-          <p>头像示例：</p>
-          <div class="clear">
-            <dl>
-              <dt>
-                <img :src="manSamplen" alt="">
-              </dt>
-              <dd>
-                标准照-男
-              </dd>
-            </dl>
-            <dl>
-              <dt>
-                <img :src="womanSamplen" alt="">
-              </dt>
-              <dd>
-                标准照-女
-              </dd>
-            </dl>
-          </div>
-          <p>上传建议：</p>
-          <div>
-            1、深色西服正装，男士需扎领带<br>
-            2、脸部正面朝前，身体朝左前方45度<br>
-            3、灰色背景<br>
-            4、面带微笑，可露齿<br>
-            5、为了您的照片更加靓丽，建议拍摄前整理发型、女士可化生活妆或淡妆<br>
-            6、为了能够展现您完美的一面，建议您携带我们的样片到当地专业摄影机构进行符合要求的肖像拍照
-          </div>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
+      <div class="opt">
+        <router-link to="/usercenter/auth/update">修改资料</router-link>
+        <router-link to="/usercenter">返回首页</router-link>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import Oss from '@/components/Oss'
 import { mapState, mapActions } from 'vuex'
-import manSamplen from '@/assets/usercenter/man-sample.jpg'
-import womanSamplen from '@/assets/usercenter/woman-sample.jpg'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
   middleware: 'auth',
   head() {
     return {
-      title: '用户中心-律师审核',
+      title: '律师认证-用户中心-京师在线',
       meta: [
         { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]
@@ -118,66 +70,31 @@ export default {
   },
   data() {
     return {
-      manSamplen,
-      womanSamplen,
-      ossOption: {
-        fileCategory: 3,
-        tip: '本图片将作为您的头像进行展示，仅支持jpg/png格式。'
-      },
-      authForm: {
-        realName: '',
-        sex: true,
-        regionId: null,
-        lawfirmId: null,
-        licenceNo: '',
-        avatarPathId: null,
-        avatar: ''
+      lawyerCertifyInfo: {
+
       },
       authFormRules: {
         realName: [
-          { required: true, message: '真实姓名不可为空', trigger: 'blur' }
-        ],
-        sex: [
-          { required: true, message: '性别不可为空', trigger: 'change' }
-        ],
-        regionId: [
-          { required: true, message: '所在地区不可为空', trigger: 'change' }
-        ],
-        lawfirmId: [
-          { required: true, message: '执业机构不可为空', trigger: 'change' }
-        ],
-        licenceNo: [
-          { required: true, message: '执业证号不可为空', trigger: 'change' }
-        ],
-        avatar: [
-          { required: true, message: '请上传头像', trigger: 'change' }
+          { required: true, message: '', trigger: 'blur' }
         ]
       }
     }
   },
   computed: {
     ...mapState({
-      regionTreeData: state => state.region.regionTreeData,
-      lawfirmData: state => state.lawfirm.lawfirmData
+      lawyer: state => state.account.lawyerInfo.lawyerInfo
     })
   },
   watch: {
   },
   mounted() {
+    this.getCertifyInfo()
   },
   methods: {
-    ...mapActions('lawyer', ['LawyerCertify']),
-    ossChange(fileList) {
-      this.authForm.avatarPathId = fileList.length >= 1 ? fileList[0].fileId : ''
-      this.authForm.avatar = fileList.length >= 1 ? fileList[0].url : ''
-    },
-    submit() {
-      this.$refs.authForm.validate((valid) => {
-        if (valid) {
-          this.LawyerCertify(this.authForm).then(res => {
-            console.log(res)
-          })
-        }
+    ...mapActions('lawyer', ['getLawyerCertifyInfo']),
+    getCertifyInfo() {
+      this.getLawyerCertifyInfo(this.lawyer.id).then(res => {
+        this.lawyerCertifyInfo = res
       })
     }
   }
@@ -189,6 +106,11 @@ export default {
   border:1px solid rgba(229, 229, 229, 0.3);
   margin-bottom: 45px;
   padding: 48px 76px 72px 76px;
+  h4{
+    span{
+      color: #FF7200;
+    }
+  }
   >p{
     font-size:14px;
     color:rgba(233,29,29,1);
@@ -198,55 +120,74 @@ export default {
   hr{
     border-bottom: none;
     border-color: rgba(0, 0, 0, 0.05);
-    margin-bottom: 40px;
+    margin-bottom: 80px;
   }
-  .el-col-13{
-    padding: 40px 100px 0 80px ;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
+  h2{
+    text-align: center;
+    margin-bottom: 24px;
+    span{
+      color: #FF7200;
+    }
   }
-  .auth_form_button{
+  .div{
+    text-align: center;
+    margin-bottom: 44px;
+    line-height: 28px;
+    font-size: 16px;
+    color: #333333;
+    font-weight: bold;
+    u{
+      color: #E91D1D;
+    }
     .el-button{
-      width: 100px;
+      width: 94px;
+      background: #F68020;
       color: #fff;
-      &:first-child{
-        background: #E1E1E1FF;
-      }
-      &:last-child{
-        background: #F68020FF;
-        margin-left: 36px;
-      }
     }
   }
-  .el-col-11{
-    padding:0 115px 0 55px;
-    p{
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 26px;
-    }
-    div{
-      padding-left: 30px;
-      color: #999999;
-      font-size: 12px;
-      line-height: 20px;
-    }
-    dl{
-      float: left;
-      margin-bottom: 34px;
-      &:first-child{
-        margin-right: 20px;
-      }
-      dt{
-        img{
-          width: 160px;
-          height: 160px;
+  .info{
+    margin: 0 127px 58px 127px;
+    >div{
+      width: 100%;
+      height: 334px;
+      background-color: #FDFDFD;
+      border: 1px solid #F5F5F5;
+      padding: 80px 0 70px 90px;
+      .el-form{
+        .el-form-item{
+          color: #6C6C6C;
+          margin-bottom: 0;
+          .el-image{
+              width: 150px;
+              height: 150px;
+          }
+          dt{
+            height: 150px;
+          }
+          dd{
+            display: inline-block;
+            font-size: 12px;
+            color: #999;
+            line-height: normal;
+          }
         }
       }
-      dd{
-        font-size: 14px;
-        text-align: center;
-        color: #808080;
-        padding-top: 15px;
+    }
+  }
+  .opt{
+    text-align: center;
+    a{
+      display: inline-block;
+      width: 100px;
+      height: 32px;
+      line-height: 32px;
+      color: #fff;
+      background: #E1E1E1;
+      border-radius: 3px;
+      font-size: 14px;
+      &:last-child{
+        background: #F68020;
+        margin-left: 32px;
       }
     }
   }
