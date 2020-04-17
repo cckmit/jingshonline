@@ -217,14 +217,7 @@ export default {
         ]
       },
       // 案例数据
-      caseListData: [
-        { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' },
-        { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' },
-        { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' },
-        { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' },
-        { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' },
-        { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' }
-      ],
+      caseListData: [],
       totalCount: 0,
       // 案例检索条件
       caseListParam: {
