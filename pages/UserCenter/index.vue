@@ -7,26 +7,24 @@
     <div class="lawyer-info-card">
       <div class="lawyer-info">
         <div class="lawyer-info-picture">
-          <img src="../../assets/usercenter/woman-sample.jpg" alt="律师头像">
+          <img :src="lawyerInfo.avatar" alt="律师头像">
           <span @click="changPicture">更换头像</span>
         </div>
         <div class="lawyer-info-text">
-          <p>上次登录时间：2020-02-11</p>
-          <p>个人积分：<span class="high-light">62</span><i @click="Integralquery"/><span class="tip">提示文本提示文本提示文本</span></p>
+          <p>上次登录时间：{{ userInfo.lastLoginTime | dateFormat("YYYY-mm-dd") }}</p>
+          <p>个人积分：<span class="high-light">{{ lawyerInfo.points }}</span><i @click="Integralquery"/><span class="tip">提示文本提示文本提示文本</span></p>
         </div>
         <div class="lawyer-info-icon">
           <ul>
-            <li><a href="javascript:void(0);"><i class="iconfont iconpersonnone"/><span>审核中</span></a></li>
-            <li><a href="javascript:void(0);"><i class="iconfont iconshoujihao"/><span>绑定手机</span></a></li>
-            <li><a href="javascript:void(0);"><i class="iconfont iconyouxiangrenzheng"/><span>绑定邮箱</span></a></li>
+            <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.status === 1 || lawyerInfo.status === 2 ? '#F44E12' : '#B6B6B6'}" class="iconfont iconpersonnone"/><span>{{ statusName }}</span></a></li>
+            <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.phone ? '#71C856' : '#B6B6B6'}" class="iconfont iconshoujihao"/><span>{{ lawyerInfo.phone ? '已绑定' : '绑定手机' }}</span></a></li>
+            <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.email ? '#55A3FF' : '#B6B6B6'}" class="iconfont iconyouxiangrenzheng"/><span>{{ lawyerInfo.email ? '已绑定' : '绑定邮箱' }}</span></a></li>
           </ul>
         </div>
       </div>
       <div class="lawyer-business">
         <h4>擅长领域</h4>
-        <p><a href="javascript:void(0);">房产土地&nbsp;(<span class="high-light">256</span>)</a></p>
-        <p><a href="javascript:void(0);">房产土地&nbsp;(<span class="high-light">256</span>)</a></p>
-        <p><a href="javascript:void(0);">房产土地&nbsp;(<span class="high-light">256</span>)</a></p>
+        <p v-for="(item,index) in practiceareaData" :key="index"><a href="javascript:void(0);">{{ item.name }}&nbsp;(<span class="high-light">{{ item.caseCount }}</span>)</a></p>
       </div>
     </div>
     <div class="work-bench-detail">
@@ -65,11 +63,12 @@
             :row-class-name="tableRowClassName"
             style="width: 100%">
             <el-table-column
-              prop="name"
+              show-overflow-tooltip
+              prop="title"
               label="案例名称"
               width="320"/>
             <el-table-column
-              prop="practicearea"
+              prop="practiceAreaName"
               label="所属领域"
               width="332"/>
             <el-table-column>
@@ -82,7 +81,7 @@
               label="录入时间">
               <template slot-scope="scope">
                 <i class="el-icon-time"/>
-                <span style="margin-left: 5px">{{ scope.row.time }}</span>
+                <span style="margin-left: 5px">{{ scope.row.startTime | dateFormat("YYYY-mm-dd") }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -96,6 +95,7 @@
       </div>
     </div>
     <el-dialog
+      v-if="userInfo.status !== 1 || userInfo.status !== 2"
       :visible.sync="dialogVisible"
       width="510px"
     >
@@ -108,6 +108,7 @@
 
 <script>
 import Pagination from '@/components/Pagination/index'
+import { mapActions, mapState } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -126,6 +127,14 @@ export default {
 
   data() {
     return {
+      // 用户信息
+      userInfo: {},
+      // 律师信息
+      lawyerInfo: {},
+      // 律师状态
+      statusName: '',
+      // 律师擅长领域信息
+      practiceareaData: [],
       // 案例图表数据
       caseChart: {
         tooltip: {
@@ -216,9 +225,10 @@ export default {
         { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' },
         { name: '刘某某与阮某某房屋租赁合同纠纷', practicearea: '诉讼领域-合同纠纷-承包合同', time: '2020-03-08' }
       ],
-      totalCount: 500,
+      totalCount: 0,
       // 案例检索条件
       caseListParam: {
+        lawyerId: '',
         pageCount: 10, // 页目条数 number
         pageIndex: 1// 页码 number
       },
@@ -226,15 +236,46 @@ export default {
       dialogVisible: true
     }
   },
-
+  computed: {
+    ...mapState({
+      lawyerStatus: state => state.lawyer.status
+    })
+  },
   watch: {
   },
-
+  created() {
+    this.getUserInfo()
+  },
   mounted() {
     this.initChart()
   },
-
   methods: {
+    ...mapActions('account', ['GetLoginUserInfo']),
+    ...mapActions('case', ['caseQuery', 'caseDelete']),
+    ...mapActions('abundant', ['getAbundantInfo']),
+    // 用户信息
+    getUserInfo() {
+      this.GetLoginUserInfo().then(res => {
+        this.userInfo = res
+        this.lawyerInfo = res.lawyerInfo
+        this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
+        this.caseListParam.lawyerId = this.userInfo.lawyerInfo.id
+        // 获取律师擅长领域
+        this.getAbundantInfo(this.caseListParam.lawyerId).then(res => {
+          this.practiceareaData = res.practiceareas
+        })
+        // 获取律师案例
+        this.getLawyerCase(this.caseListParam)
+      })
+    },
+    // 律师案例
+    getLawyerCase(query) {
+      this.caseQuery(query).then(res => {
+        this.totalCount = res.totalCount
+        this.caseListData = res.items
+        console.log(this.caseListData)
+      })
+    },
     // 初始化图表
     initChart() {
       const myChart = this.$echarts.init(this.$refs.caseInfoChart)
@@ -262,7 +303,9 @@ export default {
     },
     // 用户删除
     handleDelete(index, row) {
-      console.log('用户删除:', row)
+      this.caseDelete(row.id).then(res => {
+        this.getLawyerCase(this.caseListParam)
+      })
     },
     // 添加案件
     addCase() {
@@ -444,7 +487,7 @@ export default {
         ul {
           display: flex;
           list-style: none;
-          padding: 0 36px;
+          padding: 0 36px 0 30px;
           justify-content: space-between;
           overflow: hidden;
           li{
@@ -460,9 +503,6 @@ export default {
                 margin-bottom: 5px;
               }
             }
-            a:hover{
-              color: #F44E12;
-            }
           }
         }
       }
@@ -471,7 +511,8 @@ export default {
       width:238px;
       min-height:172px;
       border:1px solid rgba(229, 229, 229, 0.3);
-      background: url("../../assets/usercenter/index-practice-bj.png") no-repeat;
+      background-size: 100vh 100vh;
+      background: url("../../assets/usercenter/index-practice-bj.png") repeat-y;
       color: #333;
       h4 {
         font-size:12px;

@@ -188,7 +188,7 @@ export const actions = {
     })
   },
   /**
-   * 编辑案件
+   * 删除案件
    * @param {commit} commit
    * @param {number} caseId
    */
