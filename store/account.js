@@ -6,7 +6,8 @@ export const state = () => ({
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  lawyerInfo: {}
 })
 export const mutations = {
   SET_TOKEN: (state, token) => {
@@ -22,6 +23,9 @@ export const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_LAWYER_INFO: (state, lawyerInfo) => {
+    state.lawyerInfo = lawyerInfo
   }
 }
 export const actions = {
@@ -85,6 +89,7 @@ export const actions = {
           commit('SET_NAME', userName)
           commit('SET_REAL_NAME', realName)
           commit('SET_AVATAR', avatar)
+          commit('SET_LAWYER_INFO', data)
           resolve(data)
         })
         .catch(error => {

@@ -177,5 +177,21 @@ export const actions = {
         reject(error)
       })
     })
+  },
+
+  /**
+   * 获取律师认证详情
+   * @param {commit} commit
+   * @param {Number} lawyerId
+   */
+  getLawyerCertifyInfo({ commit }, lawyerId) {
+    return new Promise((resolve, reject) => {
+      Lawyer.getCertifyInfo(lawyerId).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }

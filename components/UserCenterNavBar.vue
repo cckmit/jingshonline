@@ -8,11 +8,11 @@
           active-text-color="#000"
           mode="horizontal"
           text-color="#fff">
-          <el-menu-item index="logo" style="min-width:110px;margin-right:50px;">
-            <nuxt-link to="/"><img v-if="url.name==='index'" :src="logo" class="logo" alt="”京师在线" style="border:none;"></nuxt-link>
+          <el-menu-item v-if="url.name==='index'" index="logo" style="min-width:110px;margin-right:50px;">
+            <nuxt-link to="/"><img :src="logo" class="logo" alt="”京师在线" style="border:none;"></nuxt-link>
           </el-menu-item>
           <el-menu-item index="index"><nuxt-link to="/">网站首页</nuxt-link></el-menu-item>
-          <el-menu-item index="usercentercase"><nuxt-link to="/usercenter">工作台</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenter"><nuxt-link to="/usercenter">工作台</nuxt-link></el-menu-item>
           <el-menu-item index="usercentercase"><nuxt-link to="/usercenter/case">我的案例</nuxt-link></el-menu-item>
           <el-menu-item index="usercenterfollow"><nuxt-link to="/usercenter/resume">我的简历</nuxt-link></el-menu-item>
           <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/follow">我的关注</nuxt-link></el-menu-item>

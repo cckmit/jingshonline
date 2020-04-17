@@ -153,5 +153,83 @@ export const actions = {
           reject(error)
         })
     })
+  },
+
+  /** **********************用户中心***************************** **/
+  /**
+   * 创建案件
+   * @param {commit} commit
+   * @param {object} caseData
+   */
+  caseCreate({ commit }, caseData) {
+    return new Promise((resolve, reject) => {
+      Case.caseCreate(caseData).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   * 编辑案件
+   * @param {commit} commit
+   * @param {object} caseData
+   */
+  caseUpdate({ commit }, caseData) {
+    return new Promise((resolve, reject) => {
+      Case.caseUpdate(caseData).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 编辑案件
+   * @param {commit} commit
+   * @param {number} caseId
+   */
+  caseDelete({ commit }, caseId) {
+    return new Promise((resolve, reject) => {
+      Case.caseDelete(caseId).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 案件查询
+   * @param {commit} commit
+   * @param {number} query
+   */
+  caseQuery({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Case.caseQuery(query).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+  /**
+   * 通过案件ID获取案件详情
+   * @param {commit} commit
+   * @param {number} caseId
+   */
+  caseInfo({ commit }, caseId) {
+    return new Promise((resolve, reject) => {
+      Case.caseInfo(caseId).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }
