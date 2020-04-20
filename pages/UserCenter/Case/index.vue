@@ -165,7 +165,7 @@
                     <el-row class="case-article-bottom">
                       <el-col :span="16" class="case-article-time">录入时间：2020-04-07</el-col>
                       <el-col :span="8" class="case-article-button">
-<el-button size="mini" icon="el-icon-delete" >删除</el-button></el-col></el-row></div></el-col></el-row></li></ul></div></el-col></el-row></div></ul></li></el-row></el-col></div></el-row></el-col></el-button></template>
+                        <el-button size="mini" icon="el-icon-delete" >删除</el-button>
                         <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button>
                       </el-col>
                     </el-row>
@@ -208,7 +208,7 @@
                     <el-row class="case-article-bottom">
                       <el-col :span="16" class="case-article-time">录入时间：2020-04-07</el-col>
                       <el-col :span="8" class="case-article-button">
-                        <el-button size="mini" icon="el-icon-delete" >删除</template>
+                        <el-button size="mini" icon="el-icon-delete" >删除</el-button>
                         <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button>
                       </el-col>
                     </el-row>
