@@ -302,7 +302,7 @@ export default {
     },
     // 添加案件
     addCase() {
-      console.log('添加案件')
+      this.$router.push({ path: '/usercenter/case/create' })
     },
     // 获取更多讯息
     getMore() {
