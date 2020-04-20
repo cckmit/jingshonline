@@ -15,7 +15,7 @@
             <div class="case-screen-industryId case-screen-item">
               <p>所属行业</p>
               <img class="case-icon" src="../../../assets/usercenter/industry.png">
-              <el-select v-model="userCaseSearch.industryId" size="mini" placeholder="请选择" filterable clearable>
+              <el-select v-model="userCaseSearch.industryId" size="mini" placeholder="请选择" filterable clearable @change="selectIndustryChanged">
                 <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
               </el-select>
             </div>
@@ -27,7 +27,8 @@
                 size="mini"
                 placeholder="请选择"
                 filterable
-                clearable>
+                clearable
+                @change="selectCourtChanged">
                 <el-option
                   v-for="item in courtData"
                   :key="item.id"
@@ -51,7 +52,7 @@
             </div>
             <div class="case-screen-practice case-screen-item">
               <p>审核状态</p>
-              <el-checkbox-group v-model="userCaseSearch.checkList">
+              <el-checkbox-group v-model="userCaseSearch.checkExamineList" :min="1" :max="1" @change="handleExamineChange">
                 <el-checkbox label="审核中"/>
                 <el-checkbox label="审核通过"/>
                 <el-checkbox label="已驳回"/>
@@ -62,32 +63,33 @@
         </div>
         <!-- 添加案例 -->
         <div class="case-addCase">
-          <el-button type="primary" icon="el-icon-circle-plus-outline">添加案例</el-button>
+          <nuxt-link :to="{name: 'UserCenter-Case-create'}"><el-button type="primary" icon="el-icon-circle-plus-outline">添加案例</el-button></nuxt-link>
         </div>
       </el-col>
       <el-col :span="19">
         <div class="case-sort">
           <img class="case-icon" src="../../../assets/usercenter/sort.png">排序
-          <el-select v-model="userCaseSearch.sortId" size="small" clearable placeholder="请选择" class="sort-select">
+          <el-select v-model="userCaseSearch.sortId" size="small" clearable placeholder="请选择" class="sort-select" @change="selectSortChanged">
             <el-option
-              v-for="item in sortOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
+              v-for="item in sortData"
+              :key="item.id"
+              :label="item.name"
+              :value="item.displayName"/>
           </el-select>
           <el-input
             v-model="userCaseSearch.searchKey"
             class="search-input"
             placeholder="搜索案例"
             size="small"
-            suffix-icon="el-icon-search"/>
-          <el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加案例</el-button>
+            suffix-icon="el-icon-search"
+            @keyup.enter.native="enterSearchKey"/>
+          <nuxt-link :to="{name: 'UserCenter-Case-create'}"><el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加案例</el-button></nuxt-link>
         </div>
         <div class="case-list">
           <ul>
             <li>
               <el-row>
-                <el-col :span="7">
+                <el-col :span="6">
                   <div class="case-introduce">
                     <p>裁判文书号：</p>
                     <p style="margin:13px 0 26px 0">（2015）渝二中法行终字第00085号</p>
@@ -106,7 +108,7 @@
                     </div>
                   </div>
                 </el-col>
-                <el-col :span="17">
+                <el-col :span="18">
                   <div class="case-article">
                     <p class="case-article-title">
                       邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行
@@ -114,14 +116,14 @@
                     <div class="case-article-desc">
                       <span>【法院观点】</span>
                       <p>
-                        本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋强占土目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋强占土地行为违法.......
+                        民政府（简称朱衣镇政府）在未办理农用地转用和土和土地征收土地征收民用其房屋强占土目建设需占用其房屋和耕地，奉节县占土地行为违法奉节县占土地
                       </p>
                     </div>
                     <el-row class="case-article-bottom">
                       <el-col :span="16" class="case-article-time">录入时间：2020-04-07</el-col>
                       <el-col :span="8" class="case-article-button">
-                        <el-button size="mini" icon="el-icon-delete" >删除</el-button>
-                        <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button>
+                        <el-button size="mini" icon="el-icon-delete" @click="deteleCase">删除</el-button>
+                        <nuxt-link :to="{name: 'UserCenter-Case-update?caseType=' + 1}"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
                       </el-col>
                     </el-row>
                   </div>
@@ -130,7 +132,7 @@
             </li>
             <li>
               <el-row>
-                <el-col :span="7">
+                <el-col :span="6">
                   <div class="case-introduce">
                     <p>裁判文书号：</p>
                     <p style="margin:13px 0 26px 0">（2015）渝二中法行终字第00085号</p>
@@ -142,57 +144,14 @@
                     </div>
                     <div class="case-introduce-button">
                       <el-button type="primary" size="mini" icon="el-icon-coordinate">经典案例</el-button>
-                      <el-button size="mini" style="margin-left:18px" type="danger">已驳回</el-button>
-                      <!-- <el-button size="mini" style="margin-left:18px" type="info">草稿案件</el-button>
+                      <!-- <el-button size="mini" style="margin-left:18px" type="danger">已驳回</el-button> -->
+                      <!-- <el-button size="mini" style="margin-left:18px" type="info">草稿案件</el-button> -->
                       <el-button size="mini" style="margin-left:18px" type="warning">审核中</el-button>
-                      <el-button size="mini" style="margin-left:18px" type="primary">审核通过</el-button> -->
+                      <!-- <el-button size="mini" style="margin-left:18px" type="primary">审核通过</el-button> -->
                     </div>
                   </div>
                 </el-col>
-                <el-col :span="17">
-                  <div class="case-article">
-                    <p class="case-article-title">
-                      邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行
-                    </p>
-                    <div class="case-article-desc">
-                      <span>【法院观点】</span>
-                      <p>
-                        本院认为，邓维超起诉称，因飞洋世纪城小区项目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋强占土目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋强占土目建设需占用其房屋和耕地，奉节县朱衣镇人民政府（简称朱衣镇政府）在未办理农用地转用和土地征收手续情况下，强行占用其房屋强占土地行为违法.......
-                      </p>
-                    </div>
-                    <el-row class="case-article-bottom">
-                      <el-col :span="16" class="case-article-time">录入时间：2020-04-07</el-col>
-                      <el-col :span="8" class="case-article-button">
-                        <el-button size="mini" icon="el-icon-delete" >删除</el-button>
-                        <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button>
-                      </el-col>
-                    </el-row>
-                  </div>
-                </el-col>
-              </el-row>
-            </li>
-            <li>
-              <el-row>
-                <el-col :span="7">
-                  <div class="case-introduce">
-                    <p>裁判文书号：</p>
-                    <p style="margin:13px 0 26px 0">（2015）渝二中法行终字第00085号</p>
-                    <div class="case-introduce-list">
-                      <p><i class="iconfont icontriangle-arrow-r"/>所属行业：无所属行业</p>
-                      <p><i class="iconfont icontriangle-arrow-r"/>所属领域：政府</p>
-                      <p><i class="iconfont icontriangle-arrow-r"/>所属案由：行政征收</p>
-                      <p><i class="iconfont icontriangle-arrow-r"/>管辖法院：重庆市第二中级人民法院</p>
-                    </div>
-                    <div class="case-introduce-button">
-                      <el-button type="primary" size="mini" icon="el-icon-coordinate">经典案例</el-button>
-                      <el-button size="mini" style="margin-left:18px" type="danger">已驳回</el-button>
-                      <!-- <el-button size="mini" style="margin-left:18px" type="info">草稿案件</el-button>
-                      <el-button size="mini" style="margin-left:18px" type="warning">审核中</el-button>
-                      <el-button size="mini" style="margin-left:18px" type="primary">审核通过</el-button> -->
-                    </div>
-                  </div>
-                </el-col>
-                <el-col :span="17">
+                <el-col :span="18">
                   <div class="case-article">
                     <p class="case-article-title">
                       邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行
@@ -206,7 +165,50 @@
                     <el-row class="case-article-bottom">
                       <el-col :span="16" class="case-article-time">录入时间：2020-04-07</el-col>
                       <el-col :span="8" class="case-article-button">
-                        <el-button size="mini" icon="el-icon-delete" >删除</el-button>
+<el-button size="mini" icon="el-icon-delete" >删除</el-button></el-col></el-row></div></el-col></el-row></li></ul></div></el-col></el-row></div></ul></li></el-row></el-col></div></el-row></el-col></el-button></template>
+                        <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-col>
+              </el-row>
+            </li>
+            <li>
+              <el-row>
+                <el-col :span="6">
+                  <div class="case-introduce">
+                    <p>裁判文书号：</p>
+                    <p style="margin:13px 0 26px 0">（2015）渝二中法行终字第00085号</p>
+                    <div class="case-introduce-list">
+                      <p><i class="iconfont icontriangle-arrow-r"/>所属行业：无所属行业</p>
+                      <p><i class="iconfont icontriangle-arrow-r"/>所属领域：政府</p>
+                      <p><i class="iconfont icontriangle-arrow-r"/>所属案由：行政征收</p>
+                      <p><i class="iconfont icontriangle-arrow-r"/>管辖法院：重庆市第二中级人民法院</p>
+                    </div>
+                    <div class="case-introduce-button">
+                      <el-button type="primary" size="mini" icon="el-icon-coordinate">经典案例</el-button>
+                      <!-- <el-button size="mini" style="margin-left:18px" type="danger">已驳回</el-button> -->
+                      <el-button size="mini" style="margin-left:18px" type="info">草稿案件</el-button>
+                      <!-- <el-button size="mini" style="margin-left:18px" type="warning">审核中</el-button> -->
+                      <!-- <el-button size="mini" style="margin-left:18px" type="primary">审核通过</el-button> -->
+                    </div>
+                  </div>
+                </el-col>
+                <el-col :span="18">
+                  <div class="case-article">
+                    <p class="case-article-title">
+                      邓维超与重庆市奉节县朱衣镇人民政府关于请求确认行政行为违法案人民政府关于请求确认行人民政府关于请求确认行人民政府关于请求确认行
+                    </p>
+                    <div class="case-article-desc">
+                      <span>【法院观点】</span>
+                      <p>
+                        民政府（简称朱衣镇政府）在未办理农用地转用和土和土地征收土地征收民用其房屋强占土目建设需占用其房屋和耕地，奉节县占土地行为违法奉节县占土地
+                      </p>
+                    </div>
+                    <el-row class="case-article-bottom">
+                      <el-col :span="16" class="case-article-time">录入时间：2020-04-07</el-col>
+                      <el-col :span="8" class="case-article-button">
+                        <el-button size="mini" icon="el-icon-delete" >删除</template>
                         <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button>
                       </el-col>
                     </el-row>
@@ -226,6 +228,7 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination/index'
+
 import { mapState } from 'vuex'
 export default {
   layout: 'userCenter',
@@ -253,27 +256,11 @@ export default {
         courtLevel: undefined, // 法院等级 number
         courtReginId: undefined, // 法院所属区域 nmuber || arr
         courtId: undefined, // 法院Id number
-        checkList: [], // 审核
+        checkExamineList: [], // 审核
         sortId: '', // 排序
         pageCount: 5, // 页目条数 number
         pageIndex: 1// 页码 number
-      },
-      sortOptions: [{
-        value: '选项1',
-        label: '判决时间排序'
-      }, {
-        value: '选项2',
-        label: '按决时间排序'
-      }, {
-        value: '选项3',
-        label: '按判时间排序'
-      }, {
-        value: '选项4',
-        label: '按判决间排序'
-      }, {
-        value: '选项5',
-        label: '按判决时间排序'
-      }]
+      }
     }
   },
   computed: {
@@ -281,7 +268,8 @@ export default {
       casereasonTreeData: state => state.caseReason.casereasonTreeData,
       PracticeTreeData: state => state.practice.PracticeTreeData,
       courtData: state => state.court.courtData,
-      industryData: state => state.industry.industryData
+      industryData: state => state.industry.industryData,
+      sortData: state => state.case.sortData
     })
   },
   watch: {
@@ -289,6 +277,54 @@ export default {
   mounted() {
   },
   methods: {
+    // 审核状态点击事件
+    handleExamineChange() {
+      console.log(this.userCaseSearch)
+      // 掉接口
+      // this.userCaseSearch.checkExamineList = []
+    },
+    // 所属行业点击事件
+    selectIndustryChanged() {
+      console.log(this.userCaseSearch)
+      // 掉接口
+      // this.userCaseSearch.industryId = ''
+    },
+    // 管辖法院点击事件
+    selectCourtChanged() {
+      console.log(this.userCaseSearch)
+      // 掉接口
+      // this.userCaseSearch.courtId = ''
+    },
+    // 排序筛选点击事件
+    selectSortChanged() {
+      console.log(this.userCaseSearch)
+      // 掉接口
+      // this.userCaseSearch.sortId = '1'
+    },
+    // 排序筛选点击事件
+    enterSearchKey() {
+      console.log(this.userCaseSearch)
+      // 掉接口
+      // this.userCaseSearch.searchKey = ''
+    },
+    // 删除
+    deteleCase() {
+      // this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   this.$notify({
+      //     type: 'success',
+      //     message: '删除成功!'
+      //   })
+      // }).catch(() => {
+      //   this.$message({
+      //     type: 'info',
+      //     message: '已取消删除'
+      //   })
+      // })
+    },
     // 分页切换点击事件
     handlePageChange(val) {
       this.userCaseSearch.pageIndex = val.page
@@ -324,6 +360,7 @@ export default {
         .case-icon{position:absolute;top:30px;left:5px;z-index:10;}
       }
     }
+
   }
   // 左边添加案例
   .case-addCase{margin-top:21px;.el-button--primary{width: 278px;height: 46px;background:#F68020;border-color: #F68020;font-size: 16px;margin-bottom: 120px}}
@@ -344,13 +381,13 @@ export default {
   .case-introduce-button{position: absolute;bottom: 0;left: 17px;}
   }
   // 右边右边
-  .case-article{padding:0 18px 0 40px;border-left:1px solid rgba(0,0,0,0.05);
+  .case-article{padding:0 18px 0 40px;border-left:1px solid rgba(0,0,0,0.05);margin-left: 30px;
   min-height:268px;
   .case-article-title{font-size:18px;color:rgba(51,51,51,1);line-height:28px;}
   .case-article-desc{margin-top: 24px;margin-bottom:57px;
   span{font-size:14px;color:rgba(51,51,51,1);}
   p{font-size:14px;color:rgba(153,153,153,1);margin-top:13px}}
-  .case-article-bottom{position: absolute;bottom: 0;right: 20px;width: 670px;
+  .case-article-bottom{position: absolute;bottom: 0;right: 30px;width: 670px;
   .case-article-button{.el-button{margin-left:18px;float:right}}
   .case-article-time{font-size:12px;color:rgba(102,102,102,1);}}
   }
@@ -364,17 +401,15 @@ export default {
     .case-screen-content{
       .case-screen-item{
          .el-input__inner{
-        // height: 28px !important;
         line-height:28px !important;
         padding-left:30px !important;
         font-size:12px;
         color:rgba(102,102,102,1) !important;
       }
-      .el-input__suffix{
-        top:5px;
-      }
       }
     }
+     .vue-treeselect__control{height: 28px !important;line-height:28px !important;padding-left: 30px !important;
+    font-size: 12px;color: #666666 !important;width:208px;}
   }
    .case-sort{
   }
