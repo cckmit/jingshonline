@@ -1,9 +1,12 @@
 <template>
-  <div>
-    2
+  <div class="two_content">
+    <CaseInfoLawSuit v-if="type===1"/>
+    <CaseInfoLawNotSuit v-if="type===2"/>
   </div>
 </template>
 <script>
+import CaseInfoLawSuit from './case-info-law-suit'
+import CaseInfoLawNotSuit from './case-info-law-notSuit'
 export default {
   layout: 'userCenter',
   name: 'UserCenterCaseStatistical',
@@ -17,6 +20,14 @@ export default {
     }
   },
   components: {
+    CaseInfoLawSuit,
+    CaseInfoLawNotSuit
+  },
+  props: {
+    type: {
+      type: Number,
+      default: null
+    }
   },
   data() {
     return {
@@ -30,5 +41,8 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
+<style lang='scss'>
+.two_content{
+  text-align: left;
+}
 </style>

@@ -8,24 +8,26 @@
     </el-breadcrumb>
     <div v-if="steps!==5" class="clear case">
       <el-steps :active="steps" finish-status="success">
-        <el-step title="" @click.native="steps=1" />
-        <el-step title="" @click.native="steps=2" />
-        <el-step title="" @click.native="steps=3" />
-        <el-step title="" @click.native="steps=4" />
+        <el-step title="" />
+        <el-step title="" />
+        <el-step title="" />
+        <el-step title="" />
       </el-steps>
       <div v-if="steps===1" class="one">
         <StepOne @one="one"/>
       </div>
       <div v-if="steps===2" class="two">
-        <StepTwo/>
-        <el-button size="small" @click="steps=3">下一步</el-button>
+        <StepTwo :type="caseType"/>
+        <el-button size="small" @click="changeSteps(1)">上一步</el-button>
+        <el-button size="small" @click="changeSteps(3)">下一步</el-button>
       </div>
       <div v-if="steps===3" class="three">
-        <StepThree/>
-        <el-button size="small" @click="steps=4">下一步</el-button>
+        <StepThree :type="caseType"/>
+        <el-button size="small" @click="changeSteps(2)">上一步</el-button>
+        <el-button size="small" @click="changeSteps(4)">下一步</el-button>
       </div>
       <div v-if="steps===4" class="four">
-        <StepFour/>
+        <StepFour :type="caseType"/>
         <el-button size="small" @click="submit">完成</el-button>
       </div>
     </div>
@@ -75,12 +77,14 @@ export default {
   },
   methods: {
     one(type) {
-      this.caseType = type
-      this.steps = 2
+      this.changeSteps(2, type)
     },
     five(type) {
-      this.steps = 2
-      this.caseType = type
+      this.changeSteps(2, type)
+    },
+    changeSteps(steps, caseType = this.caseType) {
+      this.steps = steps
+      this.caseType = caseType
     },
     submit() {
       this.steps = 5
@@ -105,11 +109,13 @@ export default {
     .el-button{
       width: 100px;
       margin-top: 100px;
-      background: #F68020;
+      background: #E5E5E5;
       color: #fff;
       font-size: 14px;
     }
+    .el-button+.el-button{
+      background: #F68020;
+    }
   }
-
 }
 </style>
