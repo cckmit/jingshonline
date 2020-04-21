@@ -14,25 +14,26 @@
         <el-step title="" />
       </el-steps>
       <div v-if="steps===1" class="one">
-        <StepOne @one="one"/>
+        <StepOne ref="one" @one="one"/>
       </div>
       <div v-if="steps===2" class="two">
-        <StepTwo :type="caseType"/>
-        <el-button size="small" @click="changeSteps(1)">上一步</el-button>
-        <el-button size="small" @click="changeSteps(3)">下一步</el-button>
+        <StepTwo ref="two" :type="caseType"/>
+        <el-button v-show="false" size="small" @click="changeSteps(1)">上一步</el-button>
+        <el-button size="small" @click="nextToThree">下一步</el-button>
       </div>
       <div v-if="steps===3" class="three">
-        <StepThree :type="caseType"/>
+        <StepThree ref="three" :type="caseType"/>
         <el-button size="small" @click="changeSteps(2)">上一步</el-button>
-        <el-button size="small" @click="changeSteps(4)">下一步</el-button>
+        <el-button size="small" @click="nextToFour">下一步</el-button>
       </div>
       <div v-if="steps===4" class="four">
-        <StepFour :type="caseType"/>
+        <StepFour ref="four" :type="caseType"/>
+        <el-button size="small" @click="changeSteps(3)">上一步</el-button>
         <el-button size="small" @click="submit">完成</el-button>
       </div>
     </div>
     <div v-if="steps===5" class="five">
-      <StepFive @five="five"/>
+      <StepFive ref="five" @five="five"/>
     </div>
   </div>
 </template>
@@ -42,9 +43,10 @@ import StepTwo from './components/StepTwo'
 import StepThree from './components/StepThree'
 import StepFour from './components/StepFour'
 import StepFive from './components/StepFive'
+import { mapActions } from 'vuex'
 export default {
   layout: 'userCenter',
-  name: 'UserCenterCaseStatistical',
+  name: 'UserCenterCaseCreate',
   middleware: 'auth',
   head() {
     return {
@@ -65,7 +67,8 @@ export default {
     return {
       steps: 1,
       caseType: null,
-      route: this.$route
+      route: this.$route,
+      case: {}
     }
   },
   watch: {
@@ -76,6 +79,7 @@ export default {
     this.caseType = this.$route.query.type
   },
   methods: {
+    ...mapActions('lawyer', ['lawyerCaseCreate']),
     one(type) {
       this.changeSteps(2, type)
     },
@@ -86,8 +90,26 @@ export default {
       this.steps = steps
       this.caseType = caseType
     },
+    /**
+     * 下一步按钮事件，前往第三步
+     */
+    nextToThree() {
+      this.$refs.two.$refs.caseInfo.$refs.caseInfoForm.validate(valid => {
+        if (valid) {
+          this.case = { ...this.$refs.two.$refs.caseInfo.caseInfo }
+          this.changeSteps(3)
+        }
+      })
+    },
+    nextToFour() {
+      this.case = { ...this.case, judgmentDocument: this.$refs.three.judgmentDocument, files: this.$refs.three.files }
+      this.changeSteps(4)
+    },
     submit() {
-      this.steps = 5
+      this.case = { ...this.case, analyses: this.$refs.four.analyses }
+      this.lawyerCaseCreate(this.case).then(res => {
+        this.steps = 5
+      })
     }
   }
 }
@@ -100,9 +122,9 @@ export default {
   margin-bottom: 120px;
   .el-steps{
     margin-bottom: 60px;
-    .el-step{
-      cursor: pointer;
-    }
+    // .el-step{
+    //   cursor: pointer;
+    // }
   }
   .one,.two,.three,.four,.five{
     text-align: center;

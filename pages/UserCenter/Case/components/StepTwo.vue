@@ -1,7 +1,7 @@
 <template>
   <div class="two_content">
-    <CaseInfoLawSuit v-if="type===1"/>
-    <CaseInfoLawNotSuit v-if="type===2"/>
+    <CaseInfoLawSuit v-if="type===1" ref="caseInfo"/>
+    <CaseInfoLawNotSuit v-if="type===2" ref="caseInfo"/>
   </div>
 </template>
 <script>

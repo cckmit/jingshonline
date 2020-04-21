@@ -2,52 +2,69 @@
   <div>
     <el-form ref="caseInfoForm" :model="caseInfo" :rules="caseInfoRules" label-width="150px">
       <el-form-item label="案例标题" prop="title">
-        <el-input v-model="caseInfo.title" />
+        <el-input v-model="caseInfo.title" size="small" />
       </el-form-item>
       <el-form-item label="委托人" prop="client">
-        <el-input v-model="caseInfo.client" />
+        <el-input v-model="caseInfo.client" size="small" />
       </el-form-item>
       <el-form-item label="所属行业" prop="industryId">
-        <!-- <caseIndustry ref="industry" :value="caseInfo.industryId" @caseIndustry="industryChange" /> -->
+        <a-tree-select
+          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+          :tree-data="industryData"
+          v-model="caseInfo.industryId"
+          show-search
+          style="width: 100%"
+          tree-node-filter-prop="title"
+          placeholder="请选择"
+        />
       </el-form-item>
       <el-form-item label="所属领域" prop="practiceAreaId">
-        <!-- <casePractice ref="practice" :value="caseInfo.practiceAreaId" :type="2" @casePractice="practiceChange" /> -->
+        <a-tree-select
+          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+          :tree-data="nolawsuitTreeData"
+          v-model="caseInfo.practiceAreaId"
+          show-search
+          style="width: 100%"
+          tree-node-filter-prop="title"
+          placeholder="请选择"
+        />
       </el-form-item>
       <el-form-item label="主管机关" prop="administrativeOrgan">
-        <el-input v-model="caseInfo.adminstrativeOrgan" />
+        <el-input v-model="caseInfo.adminstrativeOrgan" size="small"/>
       </el-form-item>
       <el-form-item label="搜索引擎关键字" prop="">
-        <el-input v-model="caseInfo.keywords" />
+        <el-input v-model="caseInfo.keywords" size="small" />
       </el-form-item>
       <el-form-item label="搜索引擎描述" prop="">
-        <el-input v-model="caseInfo.description" />
+        <el-input v-model="caseInfo.description" size="small" />
       </el-form-item>
       <el-form-item label="项目时间" prop="endTime">
-        <el-date-picker v-model="time" type="daterange" style="width:100%" @change="selectTime" />
+        <el-date-picker v-model="time" type="daterange" style="width:100%" size="small" @change="selectTime"/>
       </el-form-item>
       <el-form-item label="经典案例" prop="isClassicCase">
-        <el-checkbox v-model="caseInfo.isClassicCase">经典案例</el-checkbox>
+        <el-checkbox v-model="caseInfo.isClassicCase" size="small">经典案例</el-checkbox>
       </el-form-item>
       <el-form-item label="委托人类型" prop="clientType">
-        <el-radio-group v-model="caseInfo.clientType">
+        <el-radio-group v-model="caseInfo.clientType" size="small">
           <el-radio v-for="item in clientType" :key="item.id" :label="item.id">{{ item.displayName }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="群体性案件" prop="isGroupment">
-        <el-checkbox v-model="caseInfo.isGroupment">群体案件</el-checkbox>
+        <el-checkbox v-model="caseInfo.isGroupment" size="small">群体案件</el-checkbox>
       </el-form-item>
       <el-form-item label="公共案源" prop="isPublic">
-        <el-checkbox v-model="caseInfo.isPublic">公共案源</el-checkbox>
+        <el-checkbox v-model="caseInfo.isPublic" size="small">公共案源</el-checkbox>
       </el-form-item>
       <el-form-item label="推荐案件" prop="isRecommend">
-        <el-checkbox v-model="caseInfo.isRecommend">群体案件</el-checkbox>
+        <el-checkbox v-model="caseInfo.isRecommend" size="small">群体案件</el-checkbox>
       </el-form-item>
       <el-form-item label="优先显示" prop="isPreferenceShowIntro">
-        <el-checkbox v-model="caseInfo.isPreferenceShowIntro">优先显示案情介绍</el-checkbox>
+        <el-checkbox v-model="caseInfo.isPreferenceShowIntro" size="small">优先显示案情介绍</el-checkbox>
       </el-form-item>
       <el-form-item label="冻结" prop="isEnable">
         <el-switch
           v-model="caseInfo.isEnable"
+          size="small"
           active-color="#13ce66"
           inactive-color="#ff4949"
           active-text="否"
@@ -59,14 +76,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-// import casePractice from '../../components/case-practice'
-// import caseIndustry from '../../components/case-industry'
+import { mapState } from 'vuex'
 export default {
   name: 'CaseInfoLawSuit',
   components: {
-    // casePractice,
-    // caseIndustry,
   },
   props: {
     sourceCaseInfo: {
@@ -118,10 +131,10 @@ export default {
           { required: true, message: '请输入委托人', trigger: 'change' }
         ],
         industryId: [
-          { required: true, message: '请选则所属行业', trigger: 'change' }
+          { required: true, message: '请选则所属行业', trigger: 'blur' }
         ],
         practiceAreaId: [
-          { required: true, message: '请选则所属领域', trigger: 'change' }
+          { required: true, message: '请选则所属领域', trigger: 'blur' }
         ],
         endTime: [
           { required: true, message: '请选择项目时间', trigger: 'change' }
@@ -130,9 +143,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'clientType'
-    ])
+    ...mapState({
+      clientType: state => state.case.clientType,
+      nolawsuitTreeData: state => state.practice.nolawsuitTreeDataForAntd,
+      industryData: state => state.industry.industryDataForAntd
+    })
   },
   watch: {
     sourceCaseInfo(val) {

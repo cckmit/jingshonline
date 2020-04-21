@@ -1,9 +1,24 @@
 <template>
   <div>
-    4
+    <el-tabs style="margin-bottom:20px">
+      <el-tab-pane :label="type===1?'案情简介':'项目简介'">
+        <Tinymce ref="editor" v-model="analyses[0].describe" :width="'98.5%'" :height="400" :toolbar="tinymceToolbar" :menubar="false" />
+      </el-tab-pane>
+    </el-tabs>
+    <el-tabs style="margin-bottom:20px">
+      <el-tab-pane :label="type===1?'案情经过':'项目经过'">
+        <Tinymce ref="editor" v-model="analyses[1].describe" :width="'98.5%'" :height="400" :toolbar="tinymceToolbar" :menubar="false" />
+      </el-tab-pane>
+    </el-tabs>
+    <el-tabs style="margin-bottom:20px">
+      <el-tab-pane :label="type===1?'案情结果':'项目结果'">
+        <Tinymce ref="editor" v-model="analyses[2].describe" :width="'98.5%'" :height="400" :toolbar="tinymceToolbar" :menubar="false" />
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script>
+import Tinymce from '@/components/Tinymce'
 export default {
   layout: 'userCenter',
   name: 'UserCenterCaseStatistical',
@@ -17,12 +32,56 @@ export default {
     }
   },
   components: {
+    Tinymce
+  },
+  props: {
+    type: {
+      type: Number,
+      default: 1
+    },
+    sourceAnalyses: {
+      type: Array,
+      default: function() {
+        return [
+          {
+            describe: '',
+            stage: 1
+          },
+          {
+            describe: '',
+            stage: 2
+          },
+          {
+            describe: '',
+            stage: 3
+          }
+        ]
+      }
+    }
   },
   data() {
     return {
+      tinymceToolbar: ['searchreplace bold italic underline strikethrough alignleft aligncenter alignright outdent indent  blockquote removeformat subscript superscript undo redo'],
+      analyses: [
+        {
+          describe: '',
+          stage: 1
+        },
+        {
+          describe: '',
+          stage: 2
+        },
+        {
+          describe: '',
+          stage: 3
+        }
+      ]
     }
   },
   watch: {
+    sourceAnalyses(val) {
+      this.analyses = val
+    }
   },
   mounted() {
   },

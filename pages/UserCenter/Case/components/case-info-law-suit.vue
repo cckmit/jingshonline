@@ -165,7 +165,7 @@ export default {
           { required: true, message: '请选则所属案由', trigger: 'change' }
         ],
         courtId: [
-          { required: true, message: '请选择所属律师', trigger: 'change' }
+          { required: true, message: '请选择所属审批机关', trigger: 'change' }
         ],
         judgmentNumber: [
           { required: true, message: '请输入裁判文书号', trigger: 'change' }
