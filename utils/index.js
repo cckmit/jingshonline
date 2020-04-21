@@ -268,6 +268,13 @@ const Utils = {
     data.forEach(item => {
       item[attrributes].length > 0 ? this.filterAttributes({ data: item[attrributes] }) : item[attrributes] = null
     })
+  },
+  /**
+   * tree data 数据格式化，兼容antd tree select
+   * @param {Array} data
+   */
+  formatTreeDataForAntd(data) {
+    return JSON.parse(JSON.stringify(data).replace(/name/g, 'title').replace(/id/g, 'value').replace(/code/g, 'key'))
   }
 }
 export default Utils

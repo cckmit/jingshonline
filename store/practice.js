@@ -1,19 +1,26 @@
 import * as Practice from '@/api/dictionaries/practice'
+import utils from '@/utils'
 export const state = () => ({
   PracticeTreeData: [],
+  PracticeTreeDataForAntd: [],
   lawsuitTreeData: [],
-  nolawsuitTreeData: []
+  lawsuitTreeDataForAntd: [],
+  nolawsuitTreeData: [],
+  nolawsuitTreeDataForAntd: []
 })
 
 export const mutations = {
   SET_PRACTICE_TREE_DATA: (state, data) => {
     state.PracticeTreeData = data
+    state.PracticeTreeDataForAntd = utils.formatTreeDataForAntd(data)
   },
   SET_LAWSUIT_TREE_DATA: (state, data) => {
-    state.lawsuitTreeData = data
+    state.lawsuitTreeData = data[0].children
+    state.lawsuitTreeDataForAntd = utils.formatTreeDataForAntd(data)[0].children
   },
   SET_NOLAWSUIT_TREE_DATA: (state, data) => {
-    state.nolawsuitTreeData = data
+    state.nolawsuitTreeData = data[0].children
+    state.nolawsuitTreeDataForAntd = utils.formatTreeDataForAntd(data)[0].children
   }
 }
 

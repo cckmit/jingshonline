@@ -14,8 +14,8 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: '//at.alicdn.com/t/font_1685422_wcss7jnfelr.css' }, // 项目生产环境图标库链接 每天晚上固定改动
-      { rel: 'stylesheet', href: '//at.alicdn.com/t/font_1685305_k0q2a3f4p69.css' } // 项目开发版图标库链接 随时改动
+      { rel: 'stylesheet', href: '//at.alicdn.com/t/font_1685422_vstv1bb0tkf.css' }, // 项目生产环境图标库链接 每天晚上固定改动
+      { rel: 'stylesheet', href: '//at.alicdn.com/t/font_1685305_slt15f45pjh.css' } // 项目开发版图标库链接 随时改动
     ]
   },
   /*

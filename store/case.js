@@ -1,6 +1,54 @@
 import * as Case from '@/api/case/index'
 
 export const state = () => ({
+  caseStatus: [
+    {
+      id: 0,
+      type: 'info',
+      name: 'draft',
+      displayName: '草稿'
+    },
+    {
+      id: 1,
+      type: '',
+      name: 'Unreviewd',
+      displayName: '待审核'
+    },
+    {
+      id: 2,
+      type: 'success',
+      name: 'PassReview',
+      displayName: '审核通过'
+    },
+    {
+      id: 3,
+      type: 'danger',
+      name: 'UnPassReview',
+      displayName: '审核驳回'
+    }
+  ],
+  clientType: [
+    {
+      id: 0,
+      name: 'person',
+      displayName: '个人'
+    },
+    {
+      id: 1,
+      name: 'company',
+      displayName: '公司'
+    },
+    {
+      id: 2,
+      name: 'government',
+      displayName: '政府'
+    },
+    {
+      id: 3,
+      name: 'other',
+      displayName: '其他'
+    }
+  ],
   sortData: [
     {
       name: '默认排序',

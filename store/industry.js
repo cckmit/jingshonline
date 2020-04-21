@@ -1,10 +1,13 @@
 import * as Industry from '@/api/dictionaries/industry'
+import utils from '@/utils'
 export const state = () => ({
-  industryData: []
+  industryData: [],
+  industryDataForAntd: []
 })
 export const mutations = {
   SET_INDUSTRY_DATA: (state, data) => {
     state.industryData = data
+    state.industryDataForAntd = utils.formatTreeDataForAntd(data)
   }
 }
 
