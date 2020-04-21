@@ -46,6 +46,32 @@ export const state = () => ({
       name: 'Failed',
       displayName: '审核未通过'
     }
+  ],
+  examineStatus: [
+    {
+      id: 0,
+      type: '',
+      name: 'UnCertified',
+      displayName: '审核中'
+    },
+    {
+      id: 1,
+      type: 'success',
+      name: 'Certified',
+      displayName: '审核通过'
+    },
+    {
+      id: 2,
+      type: '',
+      name: 'Failed',
+      displayName: '已驳回'
+    },
+    {
+      id: 3,
+      type: '',
+      name: 'draft',
+      displayName: '草稿案件'
+    }
   ]
 })
 
