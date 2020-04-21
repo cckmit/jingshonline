@@ -193,5 +193,84 @@ export const actions = {
         reject(error)
       })
     })
+  },
+  /**
+   * 律师创建案例
+   * @param {commit} commit
+   * @param {Object} caseData
+   */
+  lawyerCaseCreate({ commit }, caseData) {
+    return new Promise((resolve, reject) => {
+      Lawyer.lawyerCaseCreate(caseData).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   * 律师编辑案例
+   * @param {commit} commit
+   * @param {Object} caseData
+   */
+  lawyerCaseUpdate({ commit }, caseData) {
+    return new Promise((resolve, reject) => {
+      Lawyer.lawyerCaseUpdate(caseData).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   * 律师删除案例
+   * @param {commit} commit
+   * @param {Number} caseId
+   */
+  lawyerCaseDelect({ commit }, caseId) {
+    return new Promise((resolve, reject) => {
+      Lawyer.lawyerCaseDelect(caseId).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   * 律师查询案例
+   * @param {commit} commit
+   * @param {Object} query
+   */
+  lawyerCaseQuery({ commit }, query) {
+    return new Promise((resolve, reject) => {
+      Lawyer.lawyerCaseQuery(query).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
+  /**
+   * 律师查询案例
+   * @param {commit} commit
+   * @param {Number} caseId
+   */
+  lawyerGetCaseInfo({ commit }, caseId) {
+    return new Promise((resolve, reject) => {
+      Lawyer.lawyerGetCaseInfo(caseId).then(response => {
+        const { data } = response
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 }

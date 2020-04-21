@@ -108,3 +108,67 @@ export const getCertifyInfo = lawyerId => {
     method: 'get'
   })
 }
+
+/**
+ * 律师创建案例
+ * @param {Object} caseData
+ */
+export const lawyerCaseCreate = caseData => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/case/create`,
+    method: 'post',
+    data: {
+      input: caseData
+    }
+  })
+}
+
+/**
+ * 律师编辑案例
+ * @param {Object} caseData
+ */
+export const lawyerCaseUpdate = caseData => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/case/update`,
+    method: 'put',
+    data: {
+      input: caseData
+    }
+  })
+}
+
+/**
+ * 律师删除案例
+ * @param {Number} caseId
+ */
+export const lawyerCaseDelect = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/case/delete/${caseId}`,
+    method: 'delete'
+  })
+}
+
+/**
+ * 律师查询案例
+ * @param {Object} query
+ */
+export const lawyerCaseQuery = query => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/case/query`,
+    method: 'post',
+    data: {
+      query: query
+    }
+  })
+}
+
+/**
+ * 律师查询案例
+ * @param {Number} caseId
+ */
+export const lawyerGetCaseInfo = caseId => {
+  return request({
+    url: `${setting.apiPrefix}/lawyer/case/get/${caseId}`,
+    method: 'get'
+  })
+}
