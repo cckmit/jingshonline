@@ -17,8 +17,10 @@
         :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
         :tree-data="lawsuitPracticeTreeData"
         v-model="caseInfo.practiceAreaId"
+        show-search
         style="width: 100%"
-        placeholder="Please select"
+        tree-node-filter-prop="title"
+        placeholder="请选择"
       />
     </el-form-item>
     <el-form-item label="所属案由" prop="caseReasonId">
@@ -26,8 +28,10 @@
         :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
         :tree-data="casereasonTreeData"
         v-model="caseInfo.caseReasonId"
+        show-search
         style="width: 100%"
-        placeholder="Please select"
+        tree-node-filter-prop="title"
+        placeholder="请选择"
       />
     </el-form-item>
     <el-form-item label="裁判机关" prop="courtId">
@@ -94,15 +98,9 @@
 
 <script>
 import { mapState } from 'vuex'
-// import caseCourt from '../../components/case-court'
-// import casePractice from '../../components/case-practice'
-// import caseReason from '../../components/case-reason'
 export default {
   name: 'CaseInfoLawSuit',
   components: {
-    // caseCourt,
-    // casePractice,
-    // caseReason,
   },
   props: {
     sourceCaseInfo: {
