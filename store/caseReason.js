@@ -1,11 +1,14 @@
 import * as Casereason from '@/api/dictionaries/casereason'
+import utils from '@/utils'
 
 export const state = () => ({
-  casereasonTreeData: []
+  casereasonTreeData: [],
+  casereasonTreeDataForAntd: []
 })
 export const mutations = {
   SET_CASE_REASION_TREE_DATA: (state, data) => {
     state.casereasonTreeData = data
+    state.casereasonTreeDataForAntd = utils.formatTreeDataForAntd(data)
   }
 }
 
