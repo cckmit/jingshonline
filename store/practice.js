@@ -15,12 +15,12 @@ export const mutations = {
     state.PracticeTreeDataForAntd = utils.formatTreeDataForAntd(data)
   },
   SET_LAWSUIT_TREE_DATA: (state, data) => {
-    state.lawsuitTreeData = data
-    state.lawsuitTreeDataForAntd = utils.formatTreeDataForAntd(data)
+    state.lawsuitTreeData = data[0].children
+    state.lawsuitTreeDataForAntd = utils.formatTreeDataForAntd(data)[0].children
   },
   SET_NOLAWSUIT_TREE_DATA: (state, data) => {
-    state.nolawsuitTreeData = data
-    state.nolawsuitTreeDataForAntd = utils.formatTreeDataForAntd(data)
+    state.nolawsuitTreeData = data[0].children
+    state.nolawsuitTreeDataForAntd = utils.formatTreeDataForAntd(data)[0].children
   }
 }
 
