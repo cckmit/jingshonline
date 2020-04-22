@@ -16,7 +16,7 @@
           <el-menu-item index="usercenter"><nuxt-link to="/usercenter">工作台</nuxt-link></el-menu-item>
           <el-menu-item index="usercentercase"><nuxt-link to="/usercenter/case">我的案例</nuxt-link></el-menu-item>
           <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/resume">我的简历</nuxt-link></el-menu-item>
-          <el-submenu index="/usercenterfollow" popper-class="usercentersummenu">
+          <el-submenu index="usercenterfollow" popper-class="usercentersummenu">
             <template slot="title">我的关注</template>
             <el-menu-item index="usercenterfollowlaweyr"><nuxt-link to="/usercenter/follow/lawyer">关注律师</nuxt-link></el-menu-item>
             <el-menu-item index="usercenterfollowcase"><nuxt-link to="/usercenter/follow/case">收藏案例</nuxt-link></el-menu-item>
@@ -95,7 +95,8 @@ export default {
   methods: {
     ...mapActions('account', ['Logout', 'GetLoginUserInfo']),
     selectActiveNav() {
-      this.activeNav = this.$route ? this.$route.name.toLocaleLowerCase() : 'index'
+      const pathName = this.$route.name.toLocaleLowerCase()
+      this.activeNav = pathName.indexOf('case') > -1 ? 'usercentercase' : pathName.indexOf('resume') > -1 ? 'usercenterresume' : pathName.indexOf('follow') > -1 ? 'usercenterfollow' : pathName.indexOf('statistical') > -1 ? 'usercentercasestatistical' : pathName.indexOf('setting') > -1 ? 'usercentersetting' : pathName.indexOf('explain') > -1 ? 'usercenterexplain' : 'usercenter'
     },
     login() {
       this.hasLogin = this.$cookie.get('token')
