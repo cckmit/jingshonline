@@ -5,6 +5,7 @@
       <div :style="{'width':mainwidth+'px'}">
         <el-menu
           :default-active="activeNav"
+          class="usercenternav"
           active-text-color="#000"
           mode="horizontal"
           text-color="#fff">
@@ -14,12 +15,15 @@
           <el-menu-item index="index"><nuxt-link to="/">网站首页</nuxt-link></el-menu-item>
           <el-menu-item index="usercenter"><nuxt-link to="/usercenter">工作台</nuxt-link></el-menu-item>
           <el-menu-item index="usercentercase"><nuxt-link to="/usercenter/case">我的案例</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterfollow"><nuxt-link to="/usercenter/resume">我的简历</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/follow">我的关注</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenterresume"><nuxt-link to="/usercenter/resume">我的简历</nuxt-link></el-menu-item>
+          <el-submenu index="/usercenterfollow" popper-class="usercentersummenu">
+            <template slot="title">我的关注</template>
+            <el-menu-item index="usercenterfollowlaweyr"><nuxt-link to="/usercenter/follow/lawyer">关注律师</nuxt-link></el-menu-item>
+            <el-menu-item index="usercenterfollowcase"><nuxt-link to="/usercenter/follow/case">收藏案例</nuxt-link></el-menu-item>
+          </el-submenu>
           <el-menu-item index="usercentercasestatistical"><nuxt-link to="/usercenter/case/statistical">案件统计</nuxt-link></el-menu-item>
           <el-menu-item index="usercentersetting"><nuxt-link to="/usercenter/setting">个人设置</nuxt-link></el-menu-item>
           <el-menu-item index="usercenterexplain"><nuxt-link to="/usercenter/explain">帮助中心</nuxt-link></el-menu-item>
-
           <el-menu-item v-if="hasLogin" index="user" class="user">
             <nuxt-link to="/usercenter">
               <el-dropdown class="user_info" trigger="hover">
@@ -185,11 +189,50 @@ export default {
       }
     }
   }
+
 }
 
 @media (max-width: 1760px) {
   .telephone{
     display: none;
+  }
+}
+.usercentersummenu{
+  .el-menu-item{
+    float: none !important;
+    height: 40px;
+    line-height: 40px;
+    a{
+      color: #000;
+      &:hover{
+        color: #000;
+      }
+    }
+    &:last-child:hover{
+      background: none;
+      color: #000 !important;
+      a{
+        color: #000 !important;
+      }
+    }
+  }
+}
+
+</style>
+
+<style lang="scss">
+.usercenternav{
+  .el-submenu{
+    height: 66px;
+    line-height: 66px;
+    .el-submenu__title{
+      height: 66px !important;
+      line-height: 66px !important;
+      font-size: 16px;
+      &:hover{
+        color: #000 !important;
+      }
+    }
   }
 }
 
