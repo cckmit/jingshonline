@@ -10,31 +10,79 @@
     <el-col :span="6">
       <div class="bgf tree_left">
         <b><img src="../../../assets/usercenter/screen.png" alt="" >条件筛选</b>
-        <p>所属行业</p>
-        <el-input
-          v-model="filterText"
-          clearable
-          placeholder="所属行业"/>
-        <p>所属案由</p>
-        <el-input
-          v-model="lawyerfilterText"
-          clearable
-          placeholder="输入关键字进行过滤"/>
-        <p>专业领域</p>
-        <el-input
-          v-model="filterText"
-          clearable
-          placeholder="输入关键字进行过滤"/>
-        <p>管辖法院</p>
-        <el-input
-          v-model="lawyerfilterText"
-          clearable
-          placeholder="管辖法院"/>
-        <p>法院等级</p>
-        <el-input
-          v-model="lawyerfilterText"
-          clearable
-          placeholder="法院等级"/>
+        <div class="case-item">
+          <p>擅长行业</p>
+          <img class="case-icon" src="../../../assets/usercenter/industry.png">
+          <el-select
+            v-model="CaseSearch.industryId"
+            size="mini"
+            placeholder="请选择"
+            filterable
+            clearable
+            @clear="CaseSearch.industryId=null"
+            @change="getUserCaseList">
+            <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
+          </el-select>
+        </div>
+        <div class="case-item">
+          <p>所属案由</p>
+          <img class="case-icon" src="../../../assets/usercenter/casereason.png">
+          <a-tree-select
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            :tree-data="casereasonTreeData"
+            v-model="CaseSearch.caseReasonId"
+            show-search
+            style="width: 100%"
+            tree-node-filter-prop="title"
+            placeholder="请选择"
+          />
+        </div>
+        <div class="case-item">
+          <p>专业领域</p>
+          <img class="case-icon" src="../../../assets/usercenter/practice.png">
+          <a-tree-select
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            :tree-data="lawsuitPracticeTreeData"
+            v-model="CaseSearch.practiceId"
+            show-search
+            style="width: 100%"
+            tree-node-filter-prop="title"
+            placeholder="请选择"
+          />
+        </div>
+        <div class="case-item">
+          <p>管辖法院</p>
+          <img class="case-icon" src="../../../assets/usercenter/court.png">
+          <el-select
+            v-model="CaseSearch.courtId"
+            size="mini"
+            placeholder="请选择"
+            filterable
+            clearable
+            @clear="CaseSearch.courtId=''"
+            @change="getUserCaseList"
+          >
+            <el-option
+              v-for="item in courtData"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"/>
+          </el-select>
+        </div>
+        <div class="case-item">
+          <p>法院等级</p>
+          <img class="case-icon" src="../../../assets/usercenter/courtlevel.png">
+          <el-select
+            v-model="CaseSearch.courtLevel"
+            size="mini"
+            placeholder="请选择"
+            filterable
+            clearable
+            @clear="CaseSearch.courtLevel=null"
+            @change="getUserCaseList">
+            <el-option v-for="item in courtLevelData" :key="item.id" :label="item.name" :value="item.id"/>
+          </el-select>
+        </div>
       </div>
     </el-col>
     <el-col :span="18">
@@ -49,9 +97,9 @@
               :value="item.value"/>
           </el-select>
           <el-input
-            v-model="lawyerfilterText"
+            v-model="CaseSearch.searchKey"
             clearable
-            placeholder="请输入想要查询的律师名称"/>
+            placeholder="请输入关键字查询"/>
         </div>
       </div>
       <div class="case-content-main">
@@ -79,9 +127,8 @@
           <li v-if="caseData.length===0" style="height:200px;line-height:200px;text-align:center">暂无相关数据！</li>
         </ul>
       </div>
-      <Pagination v-show="totalCount>0" :total="totalCount" :page="caseSearch.pageIndex" :limit="caseSearch.pageCount" @pagination="handlePageChange" />
+      <Pagination v-show="totalCount>0" :total="totalCount" :page="CaseSearch.pageIndex" :limit="CaseSearch.pageCount" @pagination="handlePageChange" />
     </el-col>
-    <ExtraWrap :plugins="'error,totop'" :share-url="shareUrl" :top="'350px'" :right="'40px'" :share-visible="sharevisible" @share="shareClose" />
   </el-row>
 </template>
 
@@ -90,10 +137,9 @@ import authIcon from '@/assets/lawyer/lawyer_auth.png'
 import shareIcon from '@/assets/lawyer/share.png'
 import collectionIcon from '@/assets/lawyer/collection.png'
 import Pagination from '../../../components/Pagination/index'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import setting from '@/plugins/setting'
 import axios from 'axios'
-import ExtraWrap from '@/components/ExtraWrap'
 export default {
   layout: 'userCenter',
   name: 'Lawyer',
@@ -102,16 +148,13 @@ export default {
     mode: 'out-in'
   },
   components: {
-    Pagination,
-    ExtraWrap
+    Pagination
   },
   async asyncData({ params }) {
-    const [CasereasonTreeData, caseData] = await Promise.all([
-      axios.get(`${process.env.baseUrl}/${setting.apiPrefix}/casereason/tree`, { 'Content-Type': 'application/json' }),
-      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
+    const [caseData] = await Promise.all([
+      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/query`, { query: { practiceId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
     ])
     return {
-      CasereasonTreeData: CasereasonTreeData.data.data,
       caseData: caseData.data.data.items,
       totalCount: caseData.data.data.totalCount
     }
@@ -149,9 +192,8 @@ export default {
       collectionIcon,
       loading: false,
       activeName: 'first',
-      tabsearchData: [],
-      caseSearch: { // 搜索条件
-        practiceAreaId: '', // 诉讼领域
+      CaseSearch: { // 搜索条件
+        practiceId: '', // 诉讼领域
         searchKey: '', // 搜索关键字: 支持(裁判文书正文,裁判文书标题)
         courtLevel: '', // 法院等级 0-6
         courtId: '', // 法院Id
@@ -164,126 +206,41 @@ export default {
         pageCount: 10, //
         pageIndex: 1 //
       },
-      yearstart: '', // 年限开始时间
-      yearend: '', // 年限结束时间
-      sortactive: 'active', // 默认排序class
-      caseactive: '', // 案例总数排序class
-      selectData: {
-        industry: [],
-        practice: [],
-        region: [],
-        lawfirm: [],
-        lawyerName: []
-      }, // 筛选条件数据
-      suitsData: [], // 诉讼领域数据
-      NosuitsData: [], // 非诉领域数据
-      industryData: [], // 行业数据
-      lawfirmData: [], // 律所数据
-      lawfirmDatabackups: [], // 律所数据备份
-      regionData: [], // 地区数据
-      lawyerData: [],
       totalCount: 1,
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      lawfirmsearch: {
-        // name: '',
-        // regionId: 0,
-        // creditCode: '',
-        // lawfirmType: 0
-      },
-      searchtimelittle: '', // 输入框时间
-      searchtimelarge: '',
-      littlesettime: '', // 定时器
-      largesettime: '',
-      sharevisible: false, // 分享弹框
-      shareUrl: '', // 分享链接
       pointsnum: 1, // 排序计次
-      conditioncasecountnum: 0,
-      filterText: '', // 城市数据过滤
-      lawyerfilterText: ''// 律所数据过滤
+      conditioncasecountnum: 0
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      lawsuitPracticeTreeData: state => state.practice.PracticeTreeDataForAntd,
+      casereasonTreeData: state => state.caseReason.casereasonTreeDataForAntd,
+      industryData: state => state.industry.industryData,
+      courtData: state => state.court.courtData,
+      courtLevelData: state => state.court.courtLevel
+    })
+  },
 
   watch: {
-    filterText(val) {
-      this.$refs.tree2.filter(val)
-    },
-    lawyerfilterText(val) {
-      if (val === '') {
-        this.lawfirmData = this.lawfirmDatabackups
-      } else {
-        const arr = []
-        for (var i = 0; i < this.lawfirmData.length; i++) {
-          if (this.lawfirmData[i].name.indexOf(val) !== -1) {
-            arr.push(this.lawfirmData[i])
-          }
-        }
-        this.lawfirmData = arr
-      }
-    }
   },
-  mounted() {
-    // this.getLawyer()
-    // this.getLawfirmData()
-  },
+  mounted() {},
 
   methods: {
-    ...mapActions('lawyer', ['GetLawyerList', 'LawyerCollecte', 'LawyerUnCollecte']),
-    ...mapActions('practice', [
-      'getPracticeTreeData',
-      'getPracticeTreeDataOfType'
-    ]),
-    ...mapActions('industry', ['getIndustryTreeData']),
-    ...mapActions('lawfirm', ['getLawfirm']),
-    ...mapActions('region', ['getRegionTreeData']),
-    getPractice() {
-      // 获取领域
-      // this.getPracticeTreeData().then(res => {
-      //   this.suitsData = res[0].children
-      //   this.NosuitsData = res[1].children
-      // })
-      this.getPracticeTreeDataOfType(1).then(res => {
-        this.suitsData = res[0].children
-      })
-      this.getPracticeTreeDataOfType(2).then(res => {
-        this.NosuitsData = res[0].children
-      })
-    },
-    getIndustry() {
-      // 获取行业
-      this.getIndustryTreeData().then(res => {
-        this.industryData = res
-      })
-    },
-    getLawfirmData() {
-      // 获取律所
-      this.getLawfirm({
-        ...this.lawfirmsearch
-      }).then(res => {
-        this.lawfirmData = res
-        this.lawfirmDatabackups = res// 备份数据
-      })
-    },
-    getRegion() {
-      // 获取地区
-      this.getRegionTreeData().then(res => {
-        this.regionData = res
-        this.loading = false
-      })
-    },
+    ...mapActions('case', ['getCaseListData']),
     // 获取数据
-    getLawyer() {
+    getUserCaseList() {
       this.loading = true
       setTimeout(this.request)
     },
     request() {
-      this.GetLawyerList({
+      this.getCaseListData({
         ...this.caseSearch
       }).then(res => {
-        this.lawyerData = res.items
+        this.caseData = res.items
         this.totalCount = res.totalCount
         this.loading = false
       })
@@ -294,108 +251,6 @@ export default {
       this.caseSearch.pageCount = val.limit
       this.loading = true
       this.getLawyer(150)
-    },
-    filterNode(value, data) {
-      if (!value) return true
-      return data.name.indexOf(value) !== -1
-    },
-    industry(id, name) {
-      this.caseSearch.industryId = id
-      this.multiple('industry', { id: id, name: '擅长行业：' + name })
-    },
-    practice(id, name) {
-      this.caseSearch.practiceAreaId = id
-      this.multiple('practice', { id: id, name: '专业领域：' + name })
-    },
-    region(data) {
-      this.caseSearch.regionId = data.id
-      this.multiple('region', { id: data.id, name: '所在城市：' + data.fullName })
-    },
-    lawfirm(data) {
-      this.caseSearch.lawfirmId = data.id
-      this.multiple('lawfirm', { id: data.id, name: '所属律所：' + data.name })
-    },
-    selectname() {
-      this.multiple('lawyerName', {
-        id: 0,
-        name: '姓名：' + this.caseSearch.lawyerName
-      })
-    },
-    multiple(type, data) {
-      // 添加筛选方法
-      // 多选
-      // const hasthis = this.selectData[type].indexOf(data.id) > -1 && this.selectData.indexOf(data.name) > -1
-      // hasthis ? '' : this.selectData[type].push(data)
-      // 单选
-      this.selectData[type] = [data]
-      // 更新数据
-      this.getLawyer()
-    },
-    selectdelete(type, data) {
-      // 删除筛选方法
-      // 多选
-      // for (var i = 0; i < this.selectData[type].length; i++) {
-      //   if (this.selectData[type][i].id === data.id && this.selectData[type][i].name === data.name) {
-      //     this.selectData[type].splice([i], 1)
-      //   }
-      // }
-      // 单选
-      this.selectData[type] = []
-      // 删除请求中筛选值
-      this.deleteData(type)
-      // 更新数据
-      this.getLawyer()
-    },
-    deleteData(type) {
-      if (type === 'industry') {
-        this.caseSearch.industryId = ''
-      }
-      if (type === 'practice') {
-        this.caseSearch.practiceAreaId = ''
-      }
-      if (type === 'region') {
-        this.caseSearch.regionId = ''
-      }
-      if (type === 'lawfirm') {
-        this.caseSearch.lawfirmId = ''
-      }
-      if (type === 'lawyerName') {
-        this.caseSearch.lawyerName = ''
-      }
-    },
-    sortselect() {
-      // 默认排序
-      this.pointsnum += 1
-      if (this.pointsnum % 2 === 0) {
-        this.sortactive = 'active'
-        this.caseactive = ''
-        this.caseSearch.sorting = 'points'
-        this.caseSearch.sortType = 1
-      } else {
-        this.sortactive = 'active'
-        this.caseactive = ''
-        this.caseSearch.sorting = 'points'
-        this.caseSearch.sortType = 0
-      }
-      // 重新请求数据
-      this.getLawyer()
-    },
-    caseselect() {
-      // 按照案例数排序
-      this.conditioncasecountnum += 1
-      if (this.conditioncasecountnum % 2 === 0) {
-        this.sortactive = ''
-        this.caseactive = 'active'
-        this.caseSearch.sorting = 'conditioncasecount'
-        this.caseSearch.sortType = 1
-      } else {
-        this.sortactive = ''
-        this.caseactive = 'active'
-        this.caseSearch.sorting = 'conditioncasecount'
-        this.caseSearch.sortType = 0
-      }
-      // 重新请求数据
-      this.getLawyer()
     },
     collection(data) { // 收藏
       // 判断是否登录
@@ -421,7 +276,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .title {
   height: 60px;
@@ -443,6 +298,35 @@ ul {
 }
 .tree_left {
   padding: 30px;
+  .case-item{
+    position: relative;
+    p{
+      font-size: 12px;
+      margin-bottom: 0px;
+    }
+    img{
+      position: absolute;
+      top: 32px;
+      left: 5px;
+      z-index: 10;
+    }
+    .case-icon{
+      height: 20px;
+      width: 20px;
+      margin-right: 6px;
+    }
+    .el-select{
+      width: 100%;
+      margin: 10px 0px;
+      .el-input__inner{
+        padding-left: 30px!important;
+      }
+    }
+    .ant-select{
+      display: inline-block;
+      margin: 10px 0px;
+    }
+  }
   b {
     display: block;
     border-bottom: 1px dotted #ddd;
@@ -454,13 +338,6 @@ ul {
       margin-right: 5px;
       margin-bottom: 5px;
     }
-  }
-  p{
-    font-size: 12px;
-    margin: 0px;
-  }
-  .el-input{
-    margin: 10px 0px;
   }
 }
 .selectend {
@@ -478,7 +355,7 @@ ul {
     .el-select{
       float: left;
     }
-    .el-input{
+    >.el-input{
       float: right;
       width:390px;
     }

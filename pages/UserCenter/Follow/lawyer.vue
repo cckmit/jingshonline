@@ -26,7 +26,7 @@
         </div>
         <div class="lawyer-item">
           <p>所在律所</p>
-          <img class="lawyer-icon" src="../../../assets/usercenter/industry.png">
+          <img class="lawyer-icon" src="../../../assets/usercenter/practice.png">
           <el-select
             v-model="lawyerSearch.lawfirmId"
             size="mini"
