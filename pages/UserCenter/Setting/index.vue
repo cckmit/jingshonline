@@ -47,7 +47,7 @@
                 <el-input v-model="passwordForm.password" size="small" clearable placeholder="当前密码" />
               </el-form-item>
               <el-form-item label="新密码" prop="newpassword">
-                <el-input v-model="newpassword" size="small" clearable placeholder="新密码" @input="checknum(newpassword)"/>
+                <el-input v-model="passwordForm.newpassword" size="small" clearable placeholder="新密码" @input="checknum(passwordForm.newpassword)"/>
               </el-form-item>
               <el-form-item label="强度">
                 <div class="input_span">
@@ -160,10 +160,9 @@ export default {
         pageCount: 10, // 页目条数 number
         pageIndex: 1// 页码 number
       },
-      newpassword: '', // 密码
       passwordForm: {
         password: '',
-        newpassword: this.newpassword,
+        newpassword: '',
         confirmpassword: ''
       },
       teleForm: {
@@ -217,41 +216,6 @@ export default {
     }
   },
   watch: {
-    checkStrong(sValue) {
-      var modes = 0
-      // 正则表达式验证符合要求的
-      if (sValue.length < 1) return modes
-      if (/\d/.test(sValue)) modes++ // 数字
-      if (/[a-z]/.test(sValue)) modes++ // 小写
-      if (/[A-Z]/.test(sValue)) modes++ // 大写
-      if (/\W/.test(sValue)) modes++ // 特殊字符
-
-      // 逻辑处理
-      if (modes === 1) { return 1 }
-      if (modes === 2) { return 2 }
-      if (modes === 3) { return 3 }
-      if (modes === 4) { return sValue.length < 10 ? 3 : 4 }
-      return modes
-    },
-    newpassword(newValue, oldValue) {
-      console.log('newValue')
-      this.msgText = this.checkStrong(newValue)
-      if (this.msgText > 1 || this.msgText === 1) {
-        this.one = 'light'
-      } else {
-        this.one = 'default'
-      }
-      if (this.msgText > 2 || this.msgText === 2) {
-        this.two = 'light'
-      } else {
-        this.two = 'default'
-      }
-      if (this.msgText === 4) {
-        this.three = 'light'
-      } else {
-        this.three = 'default'
-      }
-    }
   },
   created() {
     this.getUserInfo()
@@ -642,12 +606,12 @@ export default {
     background: #eee;
   }
   #one.light{
-    background: #CE0505;
+    background: #e01c04;
   }
   #two.light{
-    background: #F29C0F;
+    background: #FF9007;
   }
   #three.light{
-    background: #0CA237;
+    background: #65BD26;
   }
 </style>
