@@ -1,5 +1,5 @@
 <template>
-  <div class="five">
+  <div class="five_content">
     <h2>{{ isUpdate?'您已完成案件的编辑':` 您已完成 ${caseType===1?'诉讼':'非诉'} 案例的添加` }}</h2>
     <p>您所{{ isUpdate?'编辑':'添加' }}的案例正在 <span>审核中...</span> 您可以点击下方按钮按照步骤继续添加案例。</p>
     <router-link v-if="isUpdate" :to="{path:'/userCenter/case/create?type=1'}">添加诉讼案件 ></router-link>
@@ -48,19 +48,21 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.five{
+.five_content{
   text-align: center;
   padding: 170px;
   background: #fff;
   margin-bottom: 90px;
   h2{
     margin-bottom: 30px;
+    font-size: 24px;
   }
   p{
     margin-bottom: 96px;
-    font-weight: bold;
+    font-size: 16px;
     span{
       color: #FF7200;
+      font-weight: bold;
     }
   }
   >span,a{

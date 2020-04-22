@@ -95,7 +95,7 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 export default {
-  layout: 'web',
+  layout: 'userCenter',
   name: 'Lawyer',
   transition: {
     name: 'test',

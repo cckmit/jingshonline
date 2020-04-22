@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-form ref="caseInfoForm" :model="caseInfo" :rules="caseInfoRules" label-width="150px">
+    <el-form ref="caseInfoForm" :model="caseInfo" :rules="caseInfoRules" label-position="left" label-width="150px">
       <el-form-item label="案例标题" prop="title">
-        <el-input v-model="caseInfo.title" size="small" />
+        <el-input v-model="caseInfo.title" size="small" prefix-icon="iconfont iconclipboard" />
       </el-form-item>
       <el-form-item label="委托人" prop="client">
-        <el-input v-model="caseInfo.client" size="small" />
+        <el-input v-model="caseInfo.client" size="small" prefix-icon="iconfont iconclipboard" />
       </el-form-item>
       <el-form-item label="所属行业" prop="industryId">
         <a-tree-select
@@ -30,7 +30,7 @@
         />
       </el-form-item>
       <el-form-item label="主管机关" prop="administrativeOrgan">
-        <el-input v-model="caseInfo.adminstrativeOrgan" size="small"/>
+        <el-input v-model="caseInfo.adminstrativeOrgan" size="small" prefix-icon="iconfont iconcourt" />
       </el-form-item>
       <el-form-item label="搜索引擎关键字" prop="">
         <el-input v-model="caseInfo.keywords" size="small" />

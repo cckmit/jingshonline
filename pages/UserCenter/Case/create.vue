@@ -118,10 +118,10 @@ export default {
 .case{
   min-height: 200px;
   background: #fff;
-  padding: 68px 180px 100px 180px;
+  padding: 80px 280px 100px 280px;
   margin-bottom: 120px;
   .el-steps{
-    margin-bottom: 60px;
+    margin-bottom: 90px;
     // .el-step{
     //   cursor: pointer;
     // }

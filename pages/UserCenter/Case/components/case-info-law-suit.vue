@@ -1,10 +1,10 @@
 <template>
   <el-form ref="caseInfoForm" :model="caseInfo" :rules="caseInfoRules" label-position="left" label-width="150px">
     <el-form-item label="案例标题" prop="title">
-      <el-input v-model="caseInfo.title" size="small" />
+      <el-input v-model="caseInfo.title" size="small" prefix-icon="iconfont iconclipboard" />
     </el-form-item>
     <el-form-item label="委托人" prop="client">
-      <el-input v-model="caseInfo.client" size="small" />
+      <el-input v-model="caseInfo.client" size="small" prefix-icon="iconfont iconclipboard" />
     </el-form-item>
     <el-form-item label="利益相对方" prop="relative">
       <el-input v-model="caseInfo.relative" size="small" />
@@ -36,6 +36,9 @@
     </el-form-item>
     <el-form-item label="裁判机关" prop="courtId">
       <el-select v-model="caseInfo.courtId" size="small" clearable filterable style="width:100%">
+        <template slot="prefix">
+          <i class="iconfont iconcourt"/>
+        </template>
         <el-option
           v-for="item in courtData"
           :key="item.id"

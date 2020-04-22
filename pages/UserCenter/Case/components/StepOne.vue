@@ -43,13 +43,18 @@ h2,p{
   text-align: center;
   margin-bottom: 30px;
 }
+h2{
+  font-size: 24px;
+}
 p{
+  font-size: 16px;
   margin-bottom: 120px;
+  color: #000;
 }
 
 div{
   text-align: center;
-  margin-bottom: 187px;
+  margin-bottom: 214px;
   span{
     display: inline-block;
     width: 340px;
