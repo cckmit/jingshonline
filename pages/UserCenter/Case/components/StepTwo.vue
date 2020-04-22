@@ -1,7 +1,10 @@
 <template>
   <div class="two_content">
-    <CaseInfoLawSuit v-if="type===1" ref="caseInfo"/>
-    <CaseInfoLawNotSuit v-if="type===2" ref="caseInfo"/>
+    <p> <i class="iconfont iconid-card"/> 案件基本信息</p>
+    <div>
+      <CaseInfoLawSuit v-if="type===1" ref="caseInfo"/>
+      <CaseInfoLawNotSuit v-if="type===2" ref="caseInfo"/>
+    </div>
   </div>
 </template>
 <script>
@@ -41,8 +44,19 @@ export default {
   }
 }
 </script>
-<style lang='scss'>
+<style lang='scss' scoped>
 .two_content{
   text-align: left;
+  padding: 0 34px;
+  p{
+    font-size: 16px;
+    margin-bottom: 66px;
+    i{
+      margin-right: 8px;
+    }
+  }
+  >div{
+    padding: 0 50px;
+  }
 }
 </style>
