@@ -48,28 +48,28 @@
             <div class="case-screen-casereason case-screen-item">
               <p>所属案由</p>
               <img class="case-icon" src="../../../assets/usercenter/casereason.png">
-              <el-select
+              <a-tree-select
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                :tree-data="casereasonTreeData"
                 v-model="userCaseSearch.casereasonId"
+                show-search
+                style="width: 100%"
+                tree-node-filter-prop="title"
                 placeholder="请选择"
-                clearable
-                size="mini"
-                @clear="userCaseSearch.casereasonId=''"
-                @change="getUserCaseList">
-                <el-option v-for="item in casereasonTreeData" :key="item.id" :label="item.name" :value="item.id"/>
-              </el-select>
+              />
             </div>
             <div class="case-screen-practice case-screen-item">
               <p>专业领域</p>
               <img class="case-icon" src="../../../assets/usercenter/practice.png">
-              <el-select
+              <a-tree-select
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                :tree-data="lawsuitPracticeTreeData"
                 v-model="userCaseSearch.practiceId"
+                show-search
+                style="width: 100%"
+                tree-node-filter-prop="title"
                 placeholder="请选择"
-                clearable
-                size="mini"
-                @clear="userCaseSearch.practiceId=''"
-                @change="getUserCaseList">
-                <el-option v-for="item in PracticeTreeData" :key="item.name" :label="item.name" :value="item.name"/>
-              </el-select>
+              />
             </div>
             <div class="case-screen-practice case-screen-item">
               <p>审核状态</p>
@@ -212,8 +212,8 @@ export default {
   },
   computed: {
     ...mapState({
-      casereasonTreeData: state => state.caseReason.casereasonTreeData,
-      PracticeTreeData: state => state.practice.PracticeTreeData,
+      lawsuitPracticeTreeData: state => state.practice.lawsuitTreeDataForAntd,
+      casereasonTreeData: state => state.caseReason.casereasonTreeDataForAntd,
       courtData: state => state.court.courtData,
       industryData: state => state.industry.industryData,
       sortData: state => state.case.sortData,
@@ -247,23 +247,23 @@ export default {
     },
     // 删除
     deteleCase() {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        center: true
-      })
-      // .then(() => {
-      //   this.$message({
-      //     type: 'success',
-      //     message: '删除成功!'
-      //   })
-      // }).catch(() => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: '已取消删除'
-      //   })
+      // this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning',
+      //   center: true
       // })
+      //   .then(() => {
+      //     this.$message({
+      //       type: 'success',
+      //       message: '删除成功!'
+      //     })
+      //   }).catch(() => {
+      //     this.$message({
+      //       type: 'info',
+      //       message: '已取消删除'
+      //     })
+      //   })
     },
     // 分页切换点击事件
     handlePageChange(val) {
@@ -298,7 +298,7 @@ export default {
        }
        //搜索图标
        .case-screen-industryId,.case-screen-court,.case-screen-casereason,.case-screen-practice{
-        .case-icon{position:absolute;top:30px;left:5px;z-index:10;}
+        .case-icon{position:absolute;top:32px;left:5px;z-index:10;}
       }
       .el-radio-group{margin-left:30px;.el-radio{display: block;margin-bottom:18px;}}
     }
@@ -344,14 +344,18 @@ export default {
       .case-screen-item{
          .el-input__inner{
         line-height:28px !important;
+        width:216px;
         padding-left:30px !important;
         font-size:12px;
         color:rgba(102,102,102,1) !important;
       }
       }
+      .case-screen-casereason ,.case-screen-practice{
+        .ant-select{font-size:12px;
+           .ant-select-selection--single{height:28px;padding-left:19px;
+           .ant-select-selection__rendered{line-height:28px !important;}}
+      }}
     }
-     .vue-treeselect__control{height: 28px !important;line-height:28px !important;padding-left: 30px !important;
-    font-size: 12px;color: #666666 !important;width:208px;}
   }
  .el-radio{
       .el-radio__label{font-size: 12px !important;}}
