@@ -264,6 +264,11 @@ export default {
   border:1px solid rgba(229, 229, 229, 0.3);
   margin-bottom: 45px;
   padding: 48px 76px 72px 76px;
+  >h4{
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 0;
+  }
   >p{
     font-size:14px;
     color:rgba(233,29,29,1);
