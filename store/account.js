@@ -32,12 +32,14 @@ export const actions = {
   // user login
   Login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      account.login(userInfo).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data)
-        cookie.set('token', data)
-        resolve(data)
-      })
+      account
+        .login(userInfo)
+        .then(response => {
+          const { data } = response
+          commit('SET_TOKEN', data)
+          cookie.set('token', data)
+          resolve(data)
+        })
         .catch(error => {
           reject(error)
         })
@@ -45,25 +47,28 @@ export const actions = {
   },
 
   /**
-   * user register
-   * @param {commit} commit
-   * @param {object} register
-   */
+          * user register
+          * @param {commit} commit
+          * @param {object} register
+          */
   Register({ commit }, register) {
     return new Promise((resolve, reject) => {
-      account.register(register).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+      account
+        .register(register)
+        .then(response => {
+          const { data } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
     })
   },
 
   /**
-   * user logout
-   * @param {*} param0
-   */
+          * user logout
+          * @param {*} param0
+          */
   Logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       commit('SET_NAME', '')
@@ -78,7 +83,8 @@ export const actions = {
   // get user info
   GetLoginUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      account.getLoginUserInfo()
+      account
+        .getLoginUserInfo()
         .then(response => {
           const { data } = response
           if (!data) {
@@ -104,6 +110,60 @@ export const actions = {
       commit('SET_TOKEN', '')
       cookie.remove()
       resolve()
+    })
+  },
+  /**
+  * 修改密码
+  * @param {commit} commit
+  * @param {boject} changePasswordData
+  */
+  ChangePassWord({ commit }, changePasswordData) {
+    return new Promise((resolve, reject) => {
+      account
+        .ChangePassword(changePasswordData)
+        .then(response => {
+          const { data } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  /**
+  * 修改邮箱
+  * @param {commit} commit
+  * @param {boject} ChangeEmailData
+  */
+  ChangeEmail({ commit }, ChangeEmailData) {
+    return new Promise((resolve, reject) => {
+      account
+        .ChangeEmail(ChangeEmailData)
+        .then(response => {
+          const { data } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  /**
+  * 修改手机号
+  * @param {commit} commit
+  * @param {boject} ChangePhoneData
+  */
+  ChangePhone({ commit }, ChangePhoneData) {
+    return new Promise((resolve, reject) => {
+      account
+        .ChangePhone(ChangePhoneData)
+        .then(response => {
+          const { data } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
     })
   }
 }
