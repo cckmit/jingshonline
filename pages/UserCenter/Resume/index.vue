@@ -50,7 +50,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="editWork">
+                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加工作经历</h2>
                   </div>
@@ -64,7 +64,7 @@
                         <p>{{ item.time }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
-                            <el-col :span="11" @click.native="editWork(item.id)">编辑</el-col>
+                            <el-col :span="11" @click.native="createOrUpdateWorkVisible=true,work=item">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
                             <el-col :span="11" @click.native="resumeDelete(item.id,'1')">删除</el-col>
                           </el-row>
@@ -217,9 +217,11 @@
         </el-row>
       </el-col>
     </el-row>
+    <WorkCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" @operate="createOrUpdate"/>
   </div>
 </template>
 <script>
+import WorkCreateOrUpdate from './components/WorkCreateOrUpdate.vue'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -233,6 +235,7 @@ export default {
     }
   },
   components: {
+    WorkCreateOrUpdate
   },
   data() {
     return {
@@ -240,6 +243,8 @@ export default {
       socialIsBtn: false, // 社会可编辑
       academicIsBtn: false, // 学术成果可编辑
       industryIsBtn: false, // 行业资质可编辑
+      createOrUpdateWorkVisible: false, // 工作经历新增编辑弹框
+      work: {}, // 单个工作
       resumeData: {
         info: 'wohfsjfoi'
       },
@@ -296,6 +301,10 @@ export default {
     },
     editWork() {
       alert('编辑')
+    },
+    createOrUpdate(val) {
+      this.createOrUpdateWorkVisible = false
+      // this.getUserData()
     }
   }
 }
