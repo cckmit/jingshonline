@@ -29,12 +29,17 @@
         <el-row>
           <el-col :span="24" class="resume-introduce resume-mould" >
             <el-row class="resume-title">
-              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/usercenter/user_checking.png" alt="个人简介"></p> </el-col>
+              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/usercenter/label.png" alt="个人简介"></p> </el-col>
               <el-col :span="19"> <span>个人简介</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="editOrSubmitClick">{{ disabledInfo?'编辑':'保存' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
-              <p>曾在政府部门、政协、工商联、司法局法律电大、律师事务所、公证处注册执业、国企集团董事会民企高管以及中国政法大学成人教育学院法律研究生班内蒙教学部，民主与法制社内蒙古事业发展中心、北京师范大学博士后工作站等单位，跨地域跨领域多行业多层次从事过工作，得到很多历炼积累了丰富的实践经验。</p>
+              <el-input
+                v-model="resumeData.info"
+                :disabled="disabledInfo"
+                type="textarea"
+                autosize
+                placeholder="请输入内容"/>
             </div>
           </el-col>
           <el-col :span="24" class="resume-work resume-mould">
@@ -45,57 +50,28 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model">
+                  <div class="resume-desc-model" @click="editWork">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加工作经历</h2>
                   </div>
                 </el-col>
                 <el-col :span="17">
                   <el-row>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 北京京师律师事务所</p>
-                        <p>合伙人律师</p>
-                        <p>2014.04 - 至今</p>
-                        <div class="resume-desc-button">
-                          <el-row>
-                            <el-col :span="11">编辑</el-col>
+                    <el-col v-for="(item, index) in workData" :span="8" :key="index">
+                      <div class="resume-desc-model" @mouseenter="item.isShowBtn=false" @mouseleave="item.isShowBtn=true">
+                        <p>{{ item.name }}</p>
+                        <p>{{ item.position }}</p>
+                        <p>{{ item.time }}</p>
+                        <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
+                          <el-row >
+                            <el-col :span="11" @click.native="editWork(item.id)">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
-                            <el-col :span="11">删除</el-col>
+                            <el-col :span="11" @click.native="resumeDelete(item.id,'1')">删除</el-col>
                           </el-row>
                         </div>
                       </div>
                     </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 北京京师律师事务所</p>
-                        <p>合伙人律师</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 北京京师律师事务所</p>
-                        <p>合伙人律师</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 北京京师律师事务所</p>
-                        <p>合伙人律师</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 北京京师律师事务所</p>
-                        <p>合伙人律师</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
                   </el-row>
-
                 </el-col>
               </el-row>
             </div>
@@ -109,46 +85,25 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model">
+                  <div class="resume-desc-model" @click="editWork">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加教育经历</h2>
                   </div>
                 </el-col>
                 <el-col :span="17">
                   <el-row>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 吉林大学</p>
-                        <p> 本科</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 吉林大学</p>
-                        <p> 本科</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 吉林大学</p>
-                        <p> 本科</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 吉林大学</p>
-                        <p> 本科</p>
-                        <p>2014.04 - 至今</p>
-                      </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div class="resume-desc-model">
-                        <p> 吉林大学</p>
-                        <p> 本科</p>
-                        <p>2014.04 - 至今</p>
+                    <el-col v-for="(item, index) in educationData" :span="8" :key="index">
+                      <div class="resume-desc-model" @mouseenter="item.isShowBtn=false" @mouseleave="item.isShowBtn=true">
+                        <p>{{ item.name }}</p>
+                        <p>{{ item.position }}</p>
+                        <p>{{ item.time }}</p>
+                        <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
+                          <el-row >
+                            <el-col :span="11" @click.native="editWork(item.id)">编辑</el-col>
+                            <el-col :span="2" class="resume-desc-button-line"/>
+                            <el-col :span="11" @click.native="resumeDelete(item.id,'2')">删除</el-col>
+                          </el-row>
+                        </div>
                       </div>
                     </el-col>
                   </el-row>
@@ -159,7 +114,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/study.png" alt="学术成果"></p> </el-col>
               <el-col :span="19"> <span>学术成果</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="academicIsBtn=true">编辑</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -171,11 +126,20 @@
                 </el-col>
                 <el-col :span="17">
                   <div class="resume-desc-list">
-                    <ul>
-                      <li>中央电视台《法律讲堂》节目主讲律师</li>
-                      <li>中央电视台《热线12》节目特约嘉宾“刘谈判”</li>
-                      <li>中央电视台《心理访谈》节目特约嘉宾</li>
-                    </ul>
+                    <el-row>
+                      <el-col v-for="(item, index) in listData" :span="24" :key="index">
+                        <el-row>
+                          <el-col :span="1"> <p class="listSpot"/></el-col>
+                          <el-col :span="17"> <p>{{ item.name }}</p></el-col>
+                          <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="editWork(item.id)"/>
+                          </el-col>
+                          <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
+                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
+                          </el-col>
+                        </el-row>
+                      </el-col>
+                    </el-row>
                   </div>
                 </el-col>
               </el-row>
@@ -185,7 +149,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/industry.png" alt="行业资质"></p> </el-col>
               <el-col :span="19"> <span>行业资质</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="industryIsBtn=true">编辑</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -197,11 +161,20 @@
                 </el-col>
                 <el-col :span="17">
                   <div class="resume-desc-list">
-                    <ul>
-                      <li>中央电视台《法律讲堂》节目主讲律师</li>
-                      <li>中央电视台《热线12》节目特约嘉宾“刘谈判”</li>
-                      <li>中央电视台《心理访谈》节目特约嘉宾</li>
-                    </ul>
+                    <el-row>
+                      <el-col v-for="(item, index) in listData" :span="24" :key="index">
+                        <el-row>
+                          <el-col :span="1"> <p class="listSpot"/></el-col>
+                          <el-col :span="17"> <p>{{ item.name }}</p></el-col>
+                          <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="editWork(item.id)"/>
+                          </el-col>
+                          <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
+                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
+                          </el-col>
+                        </el-row>
+                      </el-col>
+                    </el-row>
                   </div>
                 </el-col>
             </el-row></div>
@@ -210,7 +183,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/society.png" alt="社会职务"></p> </el-col>
               <el-col :span="19"> <span>社会职务</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="socialIsBtn=true">编辑</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -222,17 +195,24 @@
                 </el-col>
                 <el-col :span="17">
                   <div class="resume-desc-list">
-                    <ul>
-                      <li>中央电视台《法律讲堂》节目主讲律师</li>
-                      <li>中央电视台《热线12》节目特约嘉宾“刘谈判”</li>
-                      <li>中央电视台《心理访谈》节目特约嘉宾</li>
-                      <li>中央电视台《法律讲堂》节目主讲律师</li>
-                      <li>中央电视台《热线12》节目特约嘉宾“刘谈判”</li>
-                      <li>中央电视台《心理访谈》节目特约嘉宾</li>
-                    </ul>
+                    <el-row>
+                      <el-col v-for="(item, index) in listData" :span="24" :key="index">
+                        <el-row>
+                          <el-col :span="1"> <p class="listSpot"/></el-col>
+                          <el-col :span="17"> <p>{{ item.name }}</p></el-col>
+                          <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="editWork(item.id)"/>
+                          </el-col>
+                          <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
+                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
+                          </el-col>
+                        </el-row>
+                      </el-col>
+                    </el-row>
                   </div>
                 </el-col>
-            </el-row></div>
+              </el-row>
+            </div>
           </el-col>
         </el-row>
       </el-col>
@@ -256,6 +236,31 @@ export default {
   },
   data() {
     return {
+      disabledInfo: true, // 个人信息是否可编辑
+      socialIsBtn: false, // 社会可编辑
+      academicIsBtn: false, // 学术成果可编辑
+      industryIsBtn: false, // 行业资质可编辑
+      resumeData: {
+        info: 'wohfsjfoi'
+      },
+      workData: [
+        { id: '1', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' },
+        { id: '2', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' },
+        { id: '3', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' },
+        { id: '4', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' }
+      ],
+      educationData: [
+        { id: '1', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' },
+        { id: '2', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' },
+        { id: '3', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' },
+        { id: '4', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' }
+      ],
+      listData: [
+        { id: '1', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },
+        { id: '2', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },
+        { id: '3', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },
+        { id: '4', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' }
+      ]
     }
   },
   watch: {
@@ -263,11 +268,41 @@ export default {
   mounted() {
   },
   methods: {
+    // 个人信息编辑或提交点击事件
+    editOrSubmitClick() {
+      if (!this.disabledInfo) {
+        alert('已提交')
+      }
+      this.disabledInfo = !this.disabledInfo
+    },
+    resumeDelete(id, resumeId) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
+    editWork() {
+      alert('编辑')
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
 .userCenter-resume{
+  .hover{display: none}
   letter-spacing:1px;
   img{width: 100%;height: 100%;}
   .resume-info{width:240px;height:340px;background:#fff;padding-top:42px;
@@ -300,13 +335,14 @@ export default {
   .resume-desc{font-size:14px;color:rgba(102,102,102,1);line-height:26px;
   .resume-desc-model{width:214px;height:110px;background:rgba(255,255,255,1);box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.12);margin:0 auto;text-align: center;padding:20px;margin-bottom:20px; cursor: pointer;position: relative;
   >p{line-height: 14px;text-align: left}
-  .resume-desc-model-add{height:24px;width:24px;color:rgba(51,51,51,1);}
+  .resume-desc-model-add{height:24px;width:24px;color:rgba(51,51,51,1);font-size:30px;}
   .resume-desc-model-title{font-size:14px;color:rgba(51,51,51,1);}
   .resume-desc-button{position: absolute;bottom:0;left:0;width: 214px;height: 34px;background-color: rgba(0,0,0,.8);line-height: 34px;padding: 10 37px;color: rgba(255,255,255,.8);
   .resume-desc-button-line{margin-top:10px;height:15px;width:10px;border-right:1px solid #ddd;}}
   }
   .resume-desc-list{border-left: 1px dashed #ccc;padding-left: 50px;margin-left: 10px;
-  ul li{margin-bottom:10px;}}
+  .listSpot{height:4px;width:4px;background:red;display:block;margin-top:10px;}
+  }
   }
 }
 </style>

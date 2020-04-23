@@ -5,26 +5,30 @@ export const state = () => ({
     {
       id: 0,
       type: 'info',
+      color: '#999999',
       name: 'UnCertified',
-      displayName: '待提交审核'
+      displayName: '未提交'
     },
     {
       id: 1,
       type: '',
+      color: '#F44E12',
       name: 'Unreviewd',
-      displayName: '等待审核'
+      displayName: '审核中'
     },
     {
       id: 2,
       type: 'success',
+      color: '#5AC51F',
       name: 'PassReview',
       displayName: '审核通过'
     },
     {
       id: 3,
       type: 'danger',
+      color: '#F92B2B',
       name: 'UnPassReview',
-      displayName: '审核未通过'
+      displayName: '审核失败'
     }
   ],
   resumeStatus: [

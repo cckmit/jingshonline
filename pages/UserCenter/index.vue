@@ -5,23 +5,7 @@
       <el-breadcrumb-item :to="{path:'/userCenter'}">工作台</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="lawyer-info-card">
-      <div class="lawyer-info">
-        <div class="lawyer-info-picture">
-          <img :src="lawyerInfo.avatar" alt="律师头像">
-          <span @click="changPicture">更换头像</span>
-        </div>
-        <div class="lawyer-info-text">
-          <p>上次登录时间：{{ userInfo.lastLoginTime | dateFormat("YYYY-mm-dd") }}</p>
-          <p>个人积分：<span class="high-light">{{ lawyerInfo.points }}</span><i @click="Integralquery"/><span class="tip">提示文本提示文本提示文本</span></p>
-        </div>
-        <div class="lawyer-info-icon">
-          <ul>
-            <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.status === 1 || lawyerInfo.status === 2 ? '#F44E12' : '#B6B6B6'}" class="iconfont iconpersonnone"/><span>{{ statusName }}</span></a></li>
-            <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.phone ? '#71C856' : '#B6B6B6'}" class="iconfont iconshoujihao"/><span>{{ lawyerInfo.phone ? '已绑定' : '绑定手机' }}</span></a></li>
-            <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.email ? '#55A3FF' : '#B6B6B6'}" class="iconfont iconyouxiangrenzheng"/><span>{{ lawyerInfo.email ? '已绑定' : '绑定邮箱' }}</span></a></li>
-          </ul>
-        </div>
-      </div>
+      <UserInfo/>
       <div class="lawyer-business">
         <h4>擅长领域</h4>
         <p v-for="(item,index) in practiceareaData" :key="index"><a href="javascript:void(0);">{{ item.name }}&nbsp;(<span class="high-light">{{ item.caseCount }}</span>)</a></p>
@@ -108,6 +92,7 @@
 
 <script>
 import Pagination from '@/components/Pagination/index'
+import UserInfo from './components/UserInfo'
 import { mapActions, mapState } from 'vuex'
 export default {
   layout: 'userCenter',
@@ -122,7 +107,8 @@ export default {
     }
   },
   components: {
-    Pagination
+    Pagination,
+    UserInfo
   },
 
   data() {
@@ -325,7 +311,7 @@ export default {
 }
 </script>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 .work-bench {
   max-width: 1327px;
   min-width: 1327px;
