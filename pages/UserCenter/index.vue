@@ -1,96 +1,86 @@
 <template>
-  <div class="work-bench">
+  <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
       <el-breadcrumb-item :to="{ path: '/' }">京师在线</el-breadcrumb-item>
       <el-breadcrumb-item :to="{path:'/userCenter'}">工作台</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="lawyer-info-card">
+    <div class="usercenter_index_left">
       <UserInfo/>
       <div class="lawyer-business">
         <h4>擅长领域</h4>
-        <p v-for="(item,index) in practiceareaData" :key="index"><a href="javascript:void(0);">{{ item.name }}&nbsp;(<span class="high-light">{{ item.caseCount }}</span>)</a></p>
+        <p>房产土地（<span>256</span>）</p>
+        <p>房产土地（<span>256</span>）</p>
+        <p>房产土地（<span>256</span>）</p>
+        <!-- <p v-for="(item,index) in practiceareaData" :key="index">{{ item.name }}&nbsp;(<span>{{ item.caseCount }}</span>)</p> -->
       </div>
     </div>
-    <div class="work-bench-detail">
-      <div class="case-count">
-        <ul>
-          <li><span class="title">草稿箱</span><p><b>11</b><span>昨日新增 32</span></p></li>
-          <li><span class="title">未审核通过的案例</span><p><b>11</b><span>昨日新增 32</span></p></li>
-          <li><span class="title">审核中的案例</span><p><b>11</b><span>昨日新增 32</span></p></li>
-          <li><span class="title">通过审核案例</span><p><b>11</b><span>昨日新增 32</span></p></li>
-        </ul>
-      </div>
-      <div class="case-info">
+    <div class="usercenter_index_right">
+      <ul class="case_count">
+        <li>草稿箱<div class="clear"><count-to :start-val="0" :end-val="11" :duration="500"/><small>昨日新增 11</small></div></li>
+        <li>未审核通过的案例<div class="clear"><count-to :start-val="0" :end-val="3" :duration="500"/><small>昨日新增 3</small></div></li>
+        <li>审核中的案例<div class="clear"><count-to :start-val="0" :end-val="5" :duration="500"/><small>昨日新增 5</small></div></li>
+        <li>通过审核案例<div class="clear"><count-to :start-val="0" :end-val="999" :duration="500"/><small>昨日新增 9</small></div></li>
+      </ul>
+      <div class="clear">
         <div ref="caseInfoChart" class="chart"/>
-        <div class="case-info-card">
-          <h2><i class="icon-bell"/>消息动态<i class="more" @click="getMore"/></h2>
-          <ul class="case-info-list">
-            <li @click="caseInfoHandle"><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text"><h4>案例审核<span class="button">未读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
-            <li><div class="info-text is-read"><h4>案例审核<span class="button">已读</span></h4><p>刘洪辉律师，后台管理员为您添加一条标题为：刘某某与阮某某房屋租赁合同纠纷的案例！</p><span class="time">2020-03-08</span></div></li>
+        <div class="notice">
+          <p><i class="iconfont iconbell1"/>消息动态<i class="iconfont iconmore" @click="getMore"/></p>
+          <ul class="infinite-list-wrapper">
+            <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li class="unread"><p>案例审核<span>未读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li class="unread"><p>案例审核<span>未读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
+            <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
           </ul>
-          <!-- <p class="no-data">暂无数据</p> -->
         </div>
       </div>
-      <div class="case-list">
-        <h3>案例列表 <button @click="addCase"><i class="el-icon-circle-plus-outline"/>添加案件</button></h3>
-        <div class="table-list">
-          <el-table
-            v-if="totalCount>0"
-            :header-cell-style="{background:'#EBEBEB',height:'32px',color:'#666',fontSize:'14px',lineHeight:'32px',padding:'0'}"
-            :data="caseListData"
-            :row-class-name="tableRowClassName"
-            style="width: 100%">
-            <el-table-column
-              show-overflow-tooltip
-              prop="title"
-              label="案例名称"
-              width="320"/>
-            <el-table-column
-              prop="practiceAreaName"
-              label="所属领域"
-              width="332"/>
-            <el-table-column>
-              <template slot-scope="scope">
-                <span class="edit" @click="handleEdit(scope.$index, scope.row)"><i class="el-icon-edit"/>编辑</span>
-                <span class="delete" @click="handleDelete(scope.$index, scope.row)"><i class="el-icon-delete"/>删除</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              label="录入时间">
-              <template slot-scope="scope">
-                <i class="el-icon-time"/>
-                <span style="margin-left: 5px">{{ scope.row.startTime | dateFormat("YYYY-mm-dd") }}</span>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div v-else class="table-no-data">
-            <h3>您尚未添加案例</h3>
-            <p>您尚未添加案例，您可以点击下方按钮按照步骤进行添加案例。</p>
-            <a href="javascript:void(0);" @click="addCase">添加案例></a>
-          </div>
-        </div>
-        <Pagination v-show="totalCount>0" :layout="' prev, pager, next'" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" @pagination="handlePageChange" />
+      <div class="caselist">
+        <p>
+          案例列表
+          <span @click="()=>{this.$router.push({path:'/usercenter/case/create'})}"><i class="el-icon-circle-plus-outline"/>添加案例</span>
+        </p>
+        <el-table
+          :data="tableData"
+          stripe
+          style="width: 100%">
+          <el-table-column
+            prop="name"
+            label="案件名称"
+            width="346"/>
+
+          <el-table-column
+            prop="name"
+            label="所属领域"
+            width="356"/>
+          <el-table-column>
+            <el-button type="text" icon="el-icon-edit">编辑</el-button>
+            <el-button type="text" icon="el-icon-delete">删除</el-button>
+
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            label="录入时间"
+            width="112"/>
+        </el-table>
       </div>
+      <el-dialog
+        v-if="userInfo.status !== 1 || userInfo.status !== 2"
+        :visible.sync="dialogVisible"
+        width="510px"
+      >
+        <h4>您尚未进行律师认证</h4>
+        <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
+        <a href="/userCenter/auth/update">前往认证</a>
+      </el-dialog>
     </div>
-    <el-dialog
-      v-if="userInfo.status !== 1 || userInfo.status !== 2"
-      :visible.sync="dialogVisible"
-      width="510px"
-    >
-      <h4>您尚未进行律师认证</h4>
-      <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
-      <a href="/userCenter/auth/update">前往认证</a>
-    </el-dialog>
   </div>
 </template>
 
 <script>
+import CountTo from 'vue-count-to'
 import Pagination from '@/components/Pagination/index'
 import UserInfo from './components/UserInfo'
 import { mapActions, mapState } from 'vuex'
@@ -107,12 +97,30 @@ export default {
     }
   },
   components: {
+    CountTo,
     Pagination,
     UserInfo
   },
 
   data() {
     return {
+      tableData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1517 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1519 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1516 弄'
+      }],
       // 用户信息
       userInfo: {},
       // 律师信息
@@ -223,7 +231,7 @@ export default {
   watch: {
   },
   created() {
-    this.getUserInfo()
+    // this.getUserInfo()
   },
   mounted() {
     this.initChart()
@@ -312,446 +320,221 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.work-bench {
-  max-width: 1327px;
-  min-width: 1327px;
-  background:rgba(242,242,242,1);
-  overflow: hidden;
-  margin: 0 auto;
-  .no-data {
-    padding: 30px 0;
-    font-size: 26px;
-    text-align: center;
-    color: #cccccc;
-  }
-  .high-light {
-    font-size: 14px;
-    font-weight: bold;
-    color: #ED0F0F;
-  }
-  .el-dialog{
-    height: 380px;
-    border-radius:3px;
-    overflow: hidden;
-    box-sizing: border-box;
+.usercenter_index_left{
+  float: left;
+  margin-right: 40px;
+  .lawyer-business{
+    width:240px;
+    min-height:172px;
+    border:1px solid rgba(229, 229, 229, 0.3);
+    background-size: 100vh 100vh;
+    background: url("../../assets/usercenter/index-practice-bj.png") repeat-y;
+    color: #333;
     h4 {
-      font-size:24px;
-      color:rgba(0,0,0,1);
-      text-align: center;
-      margin: 59px 0 40px 0;
-      font-weight:400;
-    }
-    p {
-      padding: 0 80px;
-      text-align: center;
-      margin-bottom: 88px;
-      font-size:16px;
-      color:rgba(51,51,51,1);
-      line-height:30px;
-    }
-    a {
-      display: block;
-      width:166px;
-      height:38px;
-      line-height: 38px;
-      background:rgba(246,128,32,1);
-      font-size:16px;
-      border-radius:3px;
-      text-align: center;
-      margin: 0 auto;
-      color: #fff;
-    }
-  }
-  .el-dialog__header {
-    padding: 0;
-  }
-  .el-dialog__body {
-    padding: 0;
-  }
-  .lawyer-info-card{
-    width: 240px;
-    float: left;
-    margin-right: 40px;
-    .lawyer-info{
-      width:240px;
-      height:340px;
-      background:rgba(255,255,255,1);
-      border:1px solid rgba(229, 229, 229, 0.3);
-      margin-bottom: 20px;
-      padding-top: 40px;
-      .lawyer-info-picture:hover span {
-        bottom: 0px;
-      }
-      .lawyer-info-picture {
-        margin: 0 auto;
-        position: relative;
-        display: block;
-        width: 140px;
-        height: 140px;
-        box-sizing: border-box;
-        border:1px solid rgba(215, 215, 215, 1);
-        cursor: pointer;
-        overflow: hidden;
-        padding: 2px;
-        margin-bottom: 18px;
-        img {
-          display: inline-block;
-          width: 100%;
-          height: 100%;
-        }
-        span{
-          font-size: 14px;
-          text-align: center;
-          line-height: 26px;
-          position: absolute;
-          bottom: -26px;
-          left: 0;
-          transition: bottom .5s;
-          color:rgba(255,255,255,1);
-          background:rgba(0,0,0,1);
-          opacity:0.5;
-          width: 100%;
-        }
-      }
-      .lawyer-info-text{
-        padding-left: 30px;
-        font-size: 12px;
-        line-height: 28px;
-        margin-bottom: 15px;
-        position: relative;
-        i {
-          cursor: pointer;
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          background: url("../../assets/usercenter/help.png") no-repeat center;
-          vertical-align: -2px;
-          margin-left: 6px;
-          position: relative;
-        }
-        .tip {
-          transition: opacity 2s;
-          position: absolute;
-          display: block;
-          width: 160px;
-          height: 60px;
-          border: 1px solid #ccc;
-          background: #fff;
-          z-index: 99;
-          border-radius: 5px;
-          top: -33px;
-          left: 94px;
-          font-size: 12px;
-          opacity: 0;
-        }
-        .tip:before {
-          content: '';
-          position: absolute;
-          width: 10px;
-          height: 10px;
-          bottom: -5px;
-          left: 20px;
-          transform: rotate(-45deg);
-          border-width: 1px;
-          border-style: solid;
-          border-color: transparent transparent #ccc #ccc;
-          z-index: 100;
-          background: #fff;
-        }
-        i:hover +.tip {
-          opacity: 1;
-        }
-      }
-      .lawyer-info-icon {
-        ul {
-          display: flex;
-          list-style: none;
-          padding: 0 36px 0 30px;
-          justify-content: space-between;
-          overflow: hidden;
-          li{
-            font-size: 12px;
-            line-height: 12px;
-            a{
-              color: #999999;
-              i{
-                line-height: 33px;
-                display: block;
-                font-size: 30px;
-                text-align: center;
-                margin-bottom: 5px;
-              }
-            }
-          }
-        }
-      }
-    }
-    .lawyer-business{
-      width:238px;
-      min-height:172px;
-      border:1px solid rgba(229, 229, 229, 0.3);
-      background-size: 100vh 100vh;
-      background: url("../../assets/usercenter/index-practice-bj.png") repeat-y;
+      font-size:12px;
+      height: 13px;
+      line-height: 13px;
       color: #333;
-      h4 {
-        font-size:12px;
-        margin: 23px 0 12px 26px;
-      }
-      a {
-        line-height: 34px;
-        padding-left: 50px;
-        color: #333;
-        font-size:14px;
-        font-weight:bold;
-      }
+      margin: 22px 0 22px 26px;
     }
-  }
-  .work-bench-detail {
-    width: 1046px;
-    float: left;
-    .case-count{
+    p{
       font-size: 14px;
-      color: #FFFFFF;
-      margin-bottom: 33px;
-      b{
-        font-size:30px;
-        font-weight: 400;
-        line-height: 30px;
-      }
-      ul {
-        display: flex;
-        justify-content: space-between;
-        li {
-          box-sizing: border-box;
-          padding: 23px 0 0 36px;
-          cursor: pointer;
-          width:246px;
-          height:110px;
-          border-radius:5px;
-          border:1px solid rgba(229, 229, 229, 0.3);
-          .title {
-            margin-bottom: 28px;
-            display: block;
-            line-height: 14px;
-          }
-          p{
-            padding-right: 51px;
-            span {
-              line-height: 30px;
-              float: right;
-            }
-          }
-        }
-        li:nth-child(1) {
-          background: #63A4FF;
-        }
-        li:nth-child(2) {
-          background: #FD6F6E;
-        }
-        li:nth-child(3) {
-          background: #FFC056;
-        }
-        li:nth-child(4) {
-          background: #1ED0AC;
-        }
-
+      padding-left: 50px;
+      margin-bottom: 16px;
+      span{
+        font-weight: bold;
+        color: #FF1111;
       }
     }
-    .case-info{
-      display: flex;
-      margin-bottom: 20px;
-      .chart{
-        width:687px;
-        height:486px;
-        border:1px solid rgba(229, 229, 229, 0.3);
-        background: #fff;
+  }
+}
+.usercenter_index_right{
+  float: right;
+  width: 1100px;
+  /** 顶部案例数据 **/
+  .case_count{
+    display: flex;
+    margin-bottom: 30px;
+    li{
+      // float: left;
+      width: 260px;
+      margin: 0 10px;
+      padding: 22px 36px;
+      border:1px solid rgba(229, 229, 229, 0.3);
+      border-radius:5px;
+      color: #fff;
+      font-size: 14px;
+      &:first-child{
+        margin-left: 0;
+        background: #63A4FF;
       }
-      .case-info-card{
-        margin-left: 20px;
-        width:340px;
-        max-height:486px;
-        background:rgba(255,255,255,1);
-        border:1px solid rgba(229, 229, 229, 0.3);
-        position: relative;
-        h2{
-          position: fixed;
-          top: 0;
-          left: 0;
-          height: 48px;
-          line-height: 48px;
-          color: #333333;
-          position: relative;
-          font-size: 12px;
-          cursor: pointer;
-          .icon-bell {
-            display: inline-block;
-            width: 16px;
-            vertical-align: -3px;
-            height: 17px;
-            margin: 0 5px 0 26px;
-            background: url('../../assets/usercenter/bell.png') no-repeat center center;
-          }
-          .more {
-            display: inline-block;
-            width: 4px;
-            height: 17px;
-            padding: 0 5px;
-            right: 26px;
-            position: absolute;
-            top: 14px;
-            background: url('../../assets/usercenter/more.png') no-repeat center center;
-          }
+      &:nth-child(2){
+        background: #FD6F6E;
+      }
+      &:nth-child(3){
+        background: #FFC056;
+      }
+      &:last-child{
+        margin-right: 0;
+        background: #1ED0AC;
+      }
+      div{
+        margin-top: 28px;
+        font-size: 30px;
+        text-align: right;
+        span{
+          float: left;
         }
-        .case-info-list {
-          padding-bottom: 12px;
-          max-height: 438px;
-          overflow-y: scroll;
-          li {
-            cursor: pointer;
-            height: 107px;
-            border-top:1px solid rgba(245,245,245,1);
-            position: relative;
-            .info-text {
-              padding: 0 19px 0 25px;
-              color:rgba(51,51,51,1);
-              h4 {
-                line-height: 28px;
-                font-size:14px;
-                font-weight:400;
-
-                overflow: hidden;
-                position: relative;
-                .button{
-                  position: absolute;
-                  right: 0;
-                  top: 4px;
-                  display: inline-block;
-                  width:40px;
-                  height:20px;
-                  background:rgba(25,198,204,1);
-                  border-radius:5px;
-                  text-align: center;
-                  line-height: 20px;
-                  font-size:12px;
-                  font-weight:400;
-                  color:rgba(255,255,255,1);
-                }
-              }
-              p{
-                font-size:12px;
-                line-height: 22px;
-                font-family:Microsoft YaHei;
-                font-weight:400;
-                color:rgba(102,102,102,1);
-                text-overflow: ellipsis;
-                display: -webkit-box; /** 对象作为伸缩盒子模型显示 **/
-                -webkit-box-orient: vertical; /** 设置或检索伸缩盒对象的子元素的排列方式 **/
-                -webkit-line-clamp: 2; /** 显示的行数 **/
-                overflow: hidden;  /** 隐藏超出的内容 **/
-              }
-              .time {
-                position: absolute;
-                right: 18px;
-                bottom: 10px;
-                font-size: 12px;
-                text-align: right;
-              }
-            }
-            .is-read {
-              h4 {
-                color:rgba(153,153,153,1);
-                .button {
-                  background:rgba(153,153,153,1);
-                }
-              }
-              p{
-                color:rgba(153,153,153,1);
-              }
-            }
-          }
+        small{
+          font-size: 14px;
         }
       }
     }
-    .case-list {
-      padding-bottom: 29px;
-      background: #fff;
-      h3 {
-        font-size:12px;
-        font-weight:400;
-        line-height: 50px;
-        position: relative;
-        padding-left: 31px;
-        button {
-          width:94px;
-          height:28px;
-          background:rgba(246,128,32,1);
-          border-radius:3px;
-          border: none;
-          outline: none;
-          cursor: pointer;
-          font-size: 12px;
-          line-height: 28px;
+  }
+  /** 图表 **/
+  .chart{
+    width:730px;
+    height:490px;
+    border:1px solid rgba(229, 229, 229, 0.3);
+    background: #fff;
+    float: left;
+  }
+  /** 消息动态 **/
+  .notice{
+    width: 350px;
+    height: 490px;
+    float: right;
+    background: #fff;
+    >p{
+      padding: 20px 26px 10px 26px;
+      border-bottom: 1px solid #F5F5F5;
+      font-size: 12px;
+      color: #333;
+      margin-bottom: 0;
+      .iconbell1{
+        margin-right: 5px;
+      }
+      .iconmore{
+        float: right;
+      }
+    }
+    ul{
+      height: 435px;
+      overflow: auto;
+      li{
+        border-bottom: 1px solid rgba(245,245,245,1);;
+        padding: 10px 20px 10px 26px;
+      p{
+        font-size: 14px;
+        margin-bottom: 12px;
+        color: #999;
+        span{
+          width: 40px;
+          height: 20px;
+          display: block;
+          float: right;
           text-align: center;
+          font-size: 12px;
           color: #fff;
-          position: absolute;
-          top: 15px;
-          right: 19px;
-          i {
-            vertical-align: -1.4px;
-            font-size: 16px;
-            margin-right: 3px;
-          }
+          border-radius: 5px;
+          background: #CBCBCB;
         }
       }
-      .table-list {
-        padding: 0 18px;
-        margin-bottom: 36px;
-        .table-no-data {
-          box-sizing: border-box;
-          padding-bottom: 180px;
-          text-align: center;
-          color:rgba(153,153,153,1);
-          h3{
-            padding: 0;
-            font-size:24px;
-            line-height: 24px;
-            font-weight:400;
-            margin:100px 0 30px 0;
-          }
-          p {
-            font-size: 16px;
-            margin-bottom: 75px;
-          }
-          a {
-            font-size: 18px;
-            text-decoration:underline;
-            color: #666666;
+      div{
+        color: #999;
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+      small{
+        display: block;
+        text-align: right;
+      }
+      }
+      li.unread{
+        p{
+          color: #333;
+          span{
+            background: #19C6CC;
           }
         }
-        .edit,.delete {
-          i {
-            margin: 0 2px;
+        div{
+          span{
+            color: #307FFF;
           }
-          margin: 0 15px;
-          cursor: pointer;
-        }
-        .el-table td {
-          padding: 0;
-        }
-        .el-table .odd {
-          height:34px;
-          line-height: 34px;
-          font-size: 12px;
-        }
-        .el-table .egg {
-          background:rgba(249,249,249,1);
-          height:34px;
-          line-height: 34px;
-          font-size: 12px
         }
       }
     }
   }
 
+  /** 案例列表 **/
+  .caselist {
+    margin-top: 20px;
+    margin-bottom: 80px;
+    background: #fff;
+    padding: 24px 18px;
+    height: 614px;
+    p{
+      font-size: 12px;
+      color: #333;
+      height: 30px;
+      line-height: 30px;
+      span{
+        display: block;
+        float: right;
+        width: 94px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        background: #F68020;
+        border-radius: 3px;
+        color: #fff;
+        cursor: pointer;
+        i{
+          margin-right: 3px;
+        }
+      }
+    }
+    .el-table{
+      margin-top: 8px;
+      .el-button{
+        color: #666666;
+      }
+    }
+  }
+}
+</style>
+<style lang="scss">
+.caselist{
+  .el-table{
+    thead{
+      th{
+        padding: 0;
+        background: #EBEBEB;
+        .cell{
+          height: 32px;
+          line-height: 32px;
+        }
+      }
+    }
+    tbody{
+      tr:nth-child(odd){
+        td{
+          background: #fff;
+        }
+      }
+      tr:nth-child(even){
+        td{
+          background: #f9f9f9;
+        }
+      }
+      td{
+        padding: 0;
+      }
+    }
+    .cell{
+        height: 34px;
+        line-height: 34px;
+    }
+  }
 }
 </style>
