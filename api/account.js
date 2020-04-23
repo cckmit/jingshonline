@@ -27,3 +27,42 @@ export const getLoginUserInfo = () => {
     method: 'get'
   })
 }
+/**
+ * 修改账号密码
+ * @param {object} passwordData
+ */
+export const ChangePassword = passwordData => {
+  return request({
+    url: `${setting.apiPrefix}/account/changepassword`,
+    method: 'put',
+    data: {
+      input: passwordData
+    }
+  })
+}
+/**
+ * 修改邮箱
+ * @param {object} emailData
+ */
+export const ChangeEmail = emailData => {
+  return request({
+    url: `${setting.apiPrefix}/account/changemail`,
+    method: 'put',
+    data: {
+      input: emailData
+    }
+  })
+}
+/**
+ * 修改手机号
+ * @param {object} phoneData
+ */
+export const ChangePhone = phoneData => {
+  return request({
+    url: `${setting.apiPrefix}/account/changphone`,
+    method: 'put',
+    data: {
+      input: phoneData
+    }
+  })
+}

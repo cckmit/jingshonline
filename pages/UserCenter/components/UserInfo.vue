@@ -9,9 +9,9 @@
         <p>上次登录时间：{{ this.$moment(lawyerInfo.lastLoginTime).format('YYYY-MM-DD') }}</p>
         <p>个人积分：<span>{{ lawyerInfo.id }}</span><i class="iconfont iconHelp" title="12s3af456s4fs3f4sa34f65sf13"/></p>
         <div class="bind clear">
-          <div :style="{color:lawyerStatus && lawyerInfo?lawyerStatus.filter(item=> item.id===lawyerInfo.status)[0]['color']:'' }" @click="()=>{this.$router.push({path:'/usercenter/auth'})}">
+          <div :style="{color:lawyerStatus[lawyerInfo.status]!==undefined ? lawyerStatus[lawyerInfo.status].color:'' }" @click="()=>{this.$router.push({path:'/usercenter/auth'})}">
             <i class="iconfont iconuser"/>
-            <span>{{ lawyerStatus && lawyerInfo? lawyerStatus.filter(item=> item.id===lawyerInfo.status)[0]['displayName']:'' }}</span>
+            <span>{{ lawyerStatus[lawyerInfo.status]!==undefined? lawyerStatus[lawyerInfo.status].displayName:'' }}</span>
           </div>
           <div :style="{color:lawyerInfo.phone?'#71c956':''}" @click="()=>{this.$router.push({path:'/usercenter/setting'})}">
             <i class="iconfont iconphone1"/>

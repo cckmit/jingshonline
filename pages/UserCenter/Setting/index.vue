@@ -33,8 +33,7 @@
             </ul>
           </div>
           <div class="addcase" style="">
-            <img src="../../../assets/usercenter/plus-circle.png" alt="add">
-            添加案件
+            <nuxt-link :to="{name: 'UserCenter-Case-create'}"><el-button icon="el-icon-circle-plus-outline">添加案例</el-button></nuxt-link>
           </div>
       </div></el-col>
       <el-col :span="19">
@@ -43,11 +42,11 @@
             <p>修改密码</p>
             <b>温馨提示：密码可以用来登录京师在线相关产品，请勿随意泄露您的信息，以防不法分子利用造成个人损失</b>
             <el-form ref="passwordForm" :rules="rules" :model="passwordForm" label-position="right" label-width="100px">
-              <el-form-item label="当前密码" prop="password">
-                <el-input v-model="passwordForm.password" size="small" clearable placeholder="当前密码" />
+              <el-form-item label="当前密码" prop="oldPassword">
+                <el-input v-model="passwordForm.oldPassword" size="small" clearable placeholder="当前密码" />
               </el-form-item>
-              <el-form-item label="新密码" prop="newpassword">
-                <el-input v-model="passwordForm.newpassword" size="small" clearable placeholder="新密码" @input="checknum(passwordForm.newpassword)"/>
+              <el-form-item label="新密码" prop="newPassword">
+                <el-input v-model="passwordForm.newPassword" size="small" clearable placeholder="新密码" @input="checknum(passwordForm.newPassword)"/>
               </el-form-item>
               <el-form-item label="强度">
                 <div class="input_span">
@@ -56,8 +55,8 @@
                   <span id="three" :class="three"/>
                 </div>
               </el-form-item>
-              <el-form-item label="确认密码" prop="password">
-                <el-input v-model="passwordForm.confirmpassword" size="small" clearable placeholder="确认密码" />
+              <el-form-item label="确认密码" prop="confirmPassword">
+                <el-input v-model="passwordForm.confirmPassword" size="small" clearable placeholder="确认密码" />
               </el-form-item>
               <el-form-item class="dialog-footer">
                 <el-button @click="submit">确认修改</el-button>
@@ -68,11 +67,11 @@
             <p>修改绑定手机</p>
             <b>温馨提示：手机可以用来登录京师在线相关产品，请勿随意泄露您的信息，以防不法分子利用造成个人损失</b>
             <el-form ref="teleForm" :rules="telerules" :model="teleForm" label-position="right" label-width="100px">
-              <el-form-item label="当前手机号" prop="telephone">
-                <el-input v-model="teleForm.telephone" size="small" clearable placeholder="当前手机号" />
+              <el-form-item label="当前手机号" prop="oldtelephone">
+                <el-input v-model="teleForm.oldtelephone" size="small" clearable placeholder="当前手机号" />
               </el-form-item>
-              <el-form-item label="新手机号" prop="newtelephone">
-                <el-input v-model="teleForm.newtelephone" size="small" clearable placeholder="新手机号" />
+              <el-form-item label="新手机号" prop="phone">
+                <el-input v-model="teleForm.phone" size="small" clearable placeholder="新手机号" />
               </el-form-item>
               <el-form-item label="短信验证" prop="number" class="number">
                 <el-input v-model="teleForm.number" size="small" clearable placeholder="验证码" />
@@ -87,11 +86,11 @@
             <p>修改绑定邮箱</p>
             <b>温馨提示：邮箱可以用来登录京师在线相关产品，请勿随意泄露您的信息，以防不法分子利用造成个人损失</b>
             <el-form ref="emailForm" :rules="emailrules" :model="emailForm" label-position="right" label-width="100px">
-              <el-form-item label="邮箱地址" prop="email">
-                <el-input v-model="emailForm.email" size="small" clearable placeholder="邮箱地址" />
+              <el-form-item label="邮箱地址" prop="oldemail">
+                <el-input v-model="emailForm.oldemail" size="small" clearable placeholder="邮箱地址" />
               </el-form-item>
-              <el-form-item label="新邮箱" prop="newemail">
-                <el-input v-model="emailForm.newemail" size="small" clearable placeholder="新邮箱" />
+              <el-form-item label="新邮箱" prop="email">
+                <el-input v-model="emailForm.email" size="small" clearable placeholder="新邮箱" />
               </el-form-item>
               <el-form-item class="dialog-footer">
                 <el-button @click="submitemail">确认修改</el-button>
@@ -114,6 +113,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterSetting',
@@ -143,13 +143,13 @@ export default {
         callback()
       }
     }
-    const checknumber = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback('验证码格式不正确')
-      } else {
-        callback()
-      }
-    }
+    // const checknumber = (rule, value, callback) => {
+    //   if (value.length < 6) {
+    //     callback('验证码格式不正确')
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       userInfo: {}, // 用户信息
       lawyerInfo: {}, // 律师信息
@@ -161,59 +161,64 @@ export default {
         pageIndex: 1// 页码 number
       },
       passwordForm: {
-        password: '',
-        newpassword: '',
-        confirmpassword: ''
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
       },
       teleForm: {
-        telephone: '',
-        newtelephone: '',
+        oldtelephone: '',
+        phone: '',
         number: ''
       },
       emailForm: {
         email: '',
-        newemail: ''
+        oldemail: ''
       },
       one: 'default',
       two: 'default',
       three: 'default',
       rules: {
-        password: [
+        oldPassword: [
           { required: true, trigger: 'blur', message: '密码不可为空' },
           { validator: checkPassword, trigger: 'blur' }
         ],
-        newpassword: [
+        newPassword: [
           { required: true, trigger: 'blur', message: '新密码不可为空' },
           { validator: checkPassword, trigger: 'blur' }
         ],
-        confirmpassword: [
+        confirmPassword: [
           { required: true, trigger: 'blur', message: '确认密码不可为空' },
           { validator: checkPassword, trigger: 'blur' }
         ]
       },
       telerules: {
-        telephone: [
-          { required: true, trigger: 'blur', message: '手机号不可为空' },
+        // oldtelephone: [
+        //   { required: true, trigger: 'blur', message: '手机号不可为空' },
+        //   { validator: checktelephone, trigger: 'blur' }
+        // ],
+        phone: [
+          { required: true, trigger: 'blur', message: '新号码不可为空' },
           { validator: checktelephone, trigger: 'blur' }
-        ],
-        newtelephone: [
-          { required: true, trigger: 'blur', message: '新手机号码不可为空' },
-          { validator: checktelephone, trigger: 'blur' }
-        ],
-        number: [
-          { required: true, trigger: 'blur', message: '验证码不可为空' },
-          { validator: checknumber, trigger: 'blur' }
         ]
+        // number: [
+        //   { required: true, trigger: 'blur', message: '验证码不可为空' },
+        //   { validator: checknumber, trigger: 'blur' }
+        // ]
       },
       emailrules: {
+        // oldemail: [
+        //   { required: true, trigger: 'blur', message: '邮箱不可为空' }
+        // ],
         email: [
-          { required: true, trigger: 'blur', message: '邮箱不可为空' }
-        ],
-        newemail: [
           { required: true, trigger: 'blur', message: '新邮箱不可为空' }
         ]
       }
     }
+  },
+  computed: {
+    ...mapState({
+      lawyerStatus: state => state.lawyer.status
+    })
   },
   watch: {
   },
@@ -223,13 +228,13 @@ export default {
   mounted() {
   },
   methods: {
-    ...mapActions('account', ['GetLoginUserInfo']),
+    ...mapActions('account', ['GetLoginUserInfo', 'ChangeEmail', 'ChangePassWord', 'ChangePhone']),
     // 用户信息
     getUserInfo() {
       this.GetLoginUserInfo().then(res => {
         this.userInfo = res
         this.lawyerInfo = res.lawyerInfo
-        // this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
+        this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
         this.caseListParam.lawyerId = this.userInfo.lawyerInfo.id
       })
     },
@@ -242,28 +247,42 @@ export default {
       console.log('跟换头像')
     },
     submit() {
-      this.$refs.passwordForm.$refs.passwordForm.validate(valid => {
+      this.$refs.passwordForm.validate(valid => {
         if (valid) {
-          this.createUser({ ...this.$refs.passwordForm.passwordForm }).then(res => {
+          this.ChangePassWord(this.passwordForm).then(res => {
             this.$message.success(res)
+            this.passwordForm = {
+              oldPassword: '',
+              newPassword: '',
+              confirmPassword: ''
+            }
           })
         }
       })
     },
     submittele() {
-      this.$refs.teleForm.$refs.teleForm.validate(valid => {
+      this.$refs.teleForm.validate(valid => {
         if (valid) {
-          this.createUser({ ...this.$refs.teleForm.teleForm }).then(res => {
+          this.ChangePhone(this.teleForm).then(res => {
             this.$message.success(res)
+            this.teleForm = {
+              oldtelephone: '',
+              phone: '',
+              number: ''
+            }
           })
         }
       })
     },
     submitemail() {
-      this.$refs.emailForm.$refs.emailForm.validate(valid => {
+      this.$refs.emailForm.validate(valid => {
         if (valid) {
-          this.createUser({ ...this.$refs.emailForm.emailForm }).then(res => {
+          this.ChangeEmail(this.emailForm).then(res => {
             this.$message.success(res)
+            this.emailForm = {
+              email: '',
+              oldemail: ''
+            }
           })
         }
       })
@@ -387,7 +406,7 @@ export default {
           text-align: center;
           line-height: 26px;
           position: absolute;
-          bottom: 0px;
+          bottom: -30px;
           left: 0;
           transition: bottom .5s;
           color:rgba(255,255,255,1);
@@ -509,12 +528,11 @@ export default {
   }
 }
 .addcase{
-  height:40px;
-  background:#f68020;
-  text-align:center;
-  font-size:16px;
-  color:#fff;
-  padding-top: 10px;
+  .el-button{
+    background:#f68020;
+    color:#fff;
+    width: 100%;
+  }
   }
 .changeform{
   .el-col{
