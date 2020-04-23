@@ -31,9 +31,9 @@
                   <el-image :src="account.avatar"/><span>{{ account.name }}</span>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter/auth" style="color:#606266;">律师认证</nuxt-link></el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-user"><nuxt-link to="/userCenter/case/create" style="color:#606266;">添加案例</nuxt-link></el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-delete" @click.native="handleLogout">登出</el-dropdown-item>
+                  <el-dropdown-item icon="iconfont iconsuerauthen"><nuxt-link to="/userCenter/auth" style="color:#606266;">律师认证</nuxt-link></el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-circle-plus-outline"><nuxt-link to="/userCenter/case/create" style="color:#606266;">添加案例</nuxt-link></el-dropdown-item>
+                  <el-dropdown-item icon="iconfont iconsignout" @click.native="handleLogout">登出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </nuxt-link>

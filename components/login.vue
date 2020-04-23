@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="type==='login'?'登录':'注册'" :visible.sync="formVisible" width="350px" custom-class="login" @close="close">
+    <el-dialog :title="type==='login'?'登录':'注册'" :visible.sync="formVisible" :close-on-press-escape="false" :close-on-click-modal="false" width="350px" custom-class="login" @close="close">
       <el-form v-show="type==='login'" ref="loginForm" :model="loginForm" :rules="loginFormRules">
         <el-form-item prop="account">
           <el-input v-model="loginForm.account" placeholder="请输入用户名或手机号"/>
@@ -75,7 +75,8 @@ export default {
           { required: true, tigger: 'change', message: '用户名不可为空' }
         ],
         phone: [
-          { required: true, tigger: 'change', message: '手机号不可为空' }
+          { required: true, tigger: 'change', message: '手机号不可为空' },
+          { max: 11, min: 11, tigger: 'change', message: '手机号格式不正确' }
         ],
         verificationCode: [
           { required: true, tigger: 'change', message: '请输入验证码' }
@@ -100,8 +101,8 @@ export default {
   methods: {
     ...mapActions('account', ['Login', 'Register', 'GetLoginUserInfo']),
     changeForm(type) {
+      this.type === 'login' ? this.$refs.registerForm.resetFields() : this.$refs.loginForm.resetFields()
       this.type = type
-      // this.type === 'login' ? this.registerForm.resetFields() : this.loginForm.resetFields()
     },
     close() {
       this.formVisible = false
@@ -129,7 +130,9 @@ export default {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.Register(this.registerForm).then(res => {
-
+            this.$message.success(`${res}请登录`)
+            this.type = 'login'
+            this.$refs.registerForm.resetFields()
           })
         }
       })

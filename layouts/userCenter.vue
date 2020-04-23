@@ -33,6 +33,7 @@ export default {
   beforeCreate() {
     this.$store.dispatch('caseReason/getCasereasonTreeData') // 案由
     this.$store.dispatch('court/getCourt')// 法院
+    this.$store.dispatch('court/getCourtLevel')// 法院等级
     this.$store.dispatch('industry/getIndustryTreeData')// 行业
     this.$store.dispatch('lawfirm/getLawfirmAllData')// 律所
     this.$store.dispatch('practice/getPracticeTreeData')// 领域
