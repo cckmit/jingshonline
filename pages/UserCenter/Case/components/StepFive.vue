@@ -54,11 +54,11 @@ export default {
   background: #fff;
   margin-bottom: 90px;
   h2{
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
     font-size: 24px;
   }
   p{
-    margin-bottom: 96px;
+    margin-bottom: 96px !important;
     font-size: 16px;
     span{
       color: #FF7200;

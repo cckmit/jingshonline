@@ -50,7 +50,7 @@ export default {
   padding: 0 34px;
   p{
     font-size: 16px;
-    margin-bottom: 66px;
+    margin-bottom: 66px !important;
     i{
       margin-right: 8px;
     }
