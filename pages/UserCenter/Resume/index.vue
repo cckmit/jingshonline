@@ -114,7 +114,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/study.png" alt="学术成果"></p> </el-col>
               <el-col :span="19"> <span>学术成果</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="academicIsBtn=true">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -127,7 +127,7 @@
                 <el-col :span="17">
                   <div class="resume-desc-list">
                     <el-row>
-                      <el-col v-for="(item, index) in listData" :span="24" :key="index">
+                      <el-col v-for="(item, index) in listData" :span="24" :key="index" class="desc-li">
                         <el-row>
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
@@ -149,7 +149,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/industry.png" alt="行业资质"></p> </el-col>
               <el-col :span="19"> <span>行业资质</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="industryIsBtn=true">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -162,7 +162,7 @@
                 <el-col :span="17">
                   <div class="resume-desc-list">
                     <el-row>
-                      <el-col v-for="(item, index) in listData" :span="24" :key="index">
+                      <el-col v-for="(item, index) in listData" :span="24" :key="index" class="desc-li">
                         <el-row>
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
@@ -183,7 +183,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/society.png" alt="社会职务"></p> </el-col>
               <el-col :span="19"> <span>社会职务</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="socialIsBtn=true">编辑</el-button></el-col>
+              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -196,7 +196,7 @@
                 <el-col :span="17">
                   <div class="resume-desc-list">
                     <el-row>
-                      <el-col v-for="(item, index) in listData" :span="24" :key="index">
+                      <el-col v-for="(item, index) in listData" :span="24" :key="index" class="desc-li">
                         <el-row>
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
@@ -376,7 +376,7 @@ export default {
   .resume-mould{background:#fff;margin-bottom:20px;padding: 30px 45px 15px 30px;
   .resume-title{height: 30px;line-height:30px;font-size:16px;color:rgba(51,51,51,1);margin-bottom:19px;overflow: hidden;
   .resume-title-img{height: 30px;line-height:30px;width: 30px;}
-  .resume-title-edit{float:right;height: 26px;line-height:6px;width: 72px;}}}
+  .resume-title-edit{float:right;height: 26px;line-height:6px;}}}
   .resume-desc{font-size:14px;color:rgba(102,102,102,1);line-height:26px;
   .resume-desc-model{width:214px;height:110px;background:rgba(255,255,255,1);box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.12);margin:0 auto;text-align: center;padding:20px;margin-bottom:20px; cursor: pointer;position: relative;
   >p{line-height: 14px;text-align: left}
@@ -386,7 +386,8 @@ export default {
   .resume-desc-button-line{margin-top:10px;height:15px;width:10px;border-right:1px solid #ddd;}}
   }
   .resume-desc-list{border-left: 1px dashed #ccc;padding-left: 50px;margin-left: 10px;
-  .listSpot{height:4px;width:4px;background:red;display:block;margin-top:10px;}
+  .listSpot{height:4px;width:4px;background:red;display:block;margin-top:10px !important;}
+  .desc-li{height:30px}
   }
   }
 }
