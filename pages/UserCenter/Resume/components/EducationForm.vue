@@ -1,10 +1,10 @@
 <template>
-  <el-form ref="educationForm" :model="educationForm" label-position="left" label-width="80px">
+  <el-form ref="educationForm" :model="educationForm" label-position="right" label-width="80px">
     <el-form-item label="院校" prop="name">
-      <el-input v-model="educationForm.name" size="small" clearable placeholder="请输入所在单位" />
+      <el-input v-model="educationForm.name" size="small" clearable placeholder="请输入院校" />
     </el-form-item>
     <el-form-item label="学历" prop="position">
-      <el-input v-model="educationForm.position" size="small" clearable placeholder="请输入担任职务" />
+      <el-input v-model="educationForm.position" size="small" clearable placeholder="请输入学历" />
     </el-form-item>
     <el-form-item label="在校时间" prop="time">
       <el-date-picker
