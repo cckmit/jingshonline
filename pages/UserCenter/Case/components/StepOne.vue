@@ -48,7 +48,7 @@ h2{
 }
 p{
   font-size: 16px;
-  margin-bottom: 120px;
+  margin-bottom: 120px !important;
   color: #000;
 }
 
