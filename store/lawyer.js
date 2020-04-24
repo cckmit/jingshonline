@@ -1,4 +1,5 @@
 import * as Lawyer from '@/api/lawyer/index'
+import * as UserCenterLawyerAuth from '@/api/usercenter/lawyer/auth'
 
 export const state = () => ({
   status: [
@@ -200,7 +201,7 @@ export const actions = {
    */
   LawyerCertify({ commit }, lawyerData) {
     return new Promise((resolve, reject) => {
-      Lawyer.certify(lawyerData).then(response => {
+      UserCenterLawyerAuth.certify(lawyerData).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -216,7 +217,7 @@ export const actions = {
    */
   getLawyerCertifyInfo({ commit }, lawyerId) {
     return new Promise((resolve, reject) => {
-      Lawyer.getCertifyInfo(lawyerId).then(response => {
+      UserCenterLawyerAuth.getCertifyInfo(lawyerId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
