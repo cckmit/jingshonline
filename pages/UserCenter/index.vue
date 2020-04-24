@@ -42,29 +42,53 @@
           案例列表
           <span @click="()=>{this.$router.push({path:'/usercenter/case/create'})}"><i class="el-icon-circle-plus-outline"/>添加案例</span>
         </p>
-        <el-table
-          :data="tableData"
-          stripe
-          style="width: 100%">
-          <el-table-column
-            prop="name"
-            label="案件名称"
-            width="346"/>
+        <div v-if="totalCount>0">
+          <el-table
+            v-loading="loading"
+            :data="caseListData"
+            stripe
+            style="width: 100%">
+            <el-table-column
+              prop="title"
+              label="案件名称"
+              width="346"/>
+            <el-table-column
+              prop="practiceAreaName"
+              label="所属领域"
+              width="356"/>
+            <el-table-column>
+              <template slot-scope="{row}">
+                <el-button type="text" icon="el-icon-edit" style="margin-right:30px" @click="updateCase(row.id)">编辑</el-button>
+                <!-- <el-popconfirm :title="row.isEnable ? '确定冻结该案例?' : '确定激活该案例?'" placement="top" @onConfirm="freezeCase(row)">
+                <el-button slot="reference" type="success" size="mini" :icon="row.isEnable?'el-icon-lock':'el-icon-unlock'" style="margin-bottom:10px;margin-left:0px;">{{ row.isEnable ? '冻结' : '激活' }}</el-button>
+              </el-popconfirm> -->
 
-          <el-table-column
-            prop="name"
-            label="所属领域"
-            width="356"/>
-          <el-table-column>
-            <el-button type="text" icon="el-icon-edit">编辑</el-button>
-            <el-button type="text" icon="el-icon-delete">删除</el-button>
-
-          </el-table-column>
-          <el-table-column
-            prop="date"
-            label="录入时间"
-            width="112"/>
-        </el-table>
+                <el-popconfirm
+                  placement="top"
+                  confirm-button-text="删除"
+                  cancel-button-text="取消"
+                  icon="iconfont iconinfo"
+                  icon-color="#FF1111"
+                  confirm-button-type="danger"
+                  title="确定删除此条案例？"
+                  @onConfirm="deletCase(row.id)">
+                  <el-button slot="reference" type="text" icon="el-icon-delete">删除</el-button>
+                </el-popconfirm>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :formatter="formatterTime"
+              prop="updateTime"
+              label="录入时间"
+              width="112"/>
+          </el-table>
+          <Pagination :layout="'pager'" :total="totalCount" :page="caseListParam.pageIndex" :limit="caseListParam.pageCount" class="page" @pagination="handlePageChange"/>
+        </div>
+        <div v-else class="nocase">
+          您尚未添加案例
+          <p>您尚未添加案例，您可以点击下方按钮按照步骤进行添加案例。</p>
+          <el-link :underline="false" href="/usercenter/case/create"><u>添加案例></u></el-link>
+        </div>
       </div>
     </div>
     <el-dialog
@@ -87,7 +111,7 @@
 import CountTo from 'vue-count-to'
 import Pagination from '@/components/Pagination/index'
 import UserInfo from './components/UserInfo'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -221,10 +245,10 @@ export default {
       totalCount: 0,
       // 案例检索条件
       caseListParam: {
-        lawyerId: '',
-        pageCount: 10, // 页目条数 number
+        pageCount: 15, // 页目条数 number
         pageIndex: 1// 页码 number
       },
+      loading: false,
       // 弹窗
       dialogVisible: this.lawyerStatus !== 0
     }
@@ -240,25 +264,50 @@ export default {
     // this.getUserInfo()
   },
   mounted() {
+    this.getLawyerCase()
     this.initChart()
   },
   methods: {
-
+    ...mapActions('case', ['userCenterCaseQuery', 'userCenterCaseDelete']),
+    getLawyerCase(delay = 200) {
+      this.loading = true
+      setTimeout(() => {
+        this.userCenterCaseQuery(this.caseListParam).then(res => {
+          this.caseListData = res.items
+          this.totalCount = res.totalCount
+          this.loading = false
+        })
+      }, delay)
+    },
+    formatterTime(row) {
+      return this.$moment(row.update).format('YYYY-MM-DD')
+    },
+    // 页码切换
+    handlePageChange(val) {
+      this.caseListParam.pageIndex = val.page
+      this.getLawyerCase()
+    },
+    // 添加案件
+    addCase() {
+      this.$router.push({ path: '/usercenter/case/create' })
+    },
+    // 编辑案件
+    updateCase(caseId) {
+      this.$router.push({ path: `/usercenter/case/${caseId}/update` })
+    },
+    // 删除案件
+    deletCase(caseId) {
+      this.userCenterCaseDelete(caseId).then(res => {
+        this.$message.success(res)
+        this.getLawyerCase()
+      })
+    },
     // 初始化图表
     initChart() {
       const myChart = this.$echarts.init(this.$refs.caseInfoChart)
       myChart.setOption(this.caseChart)
-    },
-
-    // 积分查询
-    Integralquery() {
-      console.log('积分查询')
-    },
-
-    // 添加案件
-    addCase() {
-      this.$router.push({ path: '/usercenter/case/create' })
     }
+
   }
 }
 </script>
@@ -447,9 +496,24 @@ export default {
         color: #666666;
       }
     }
+    .nocase{
+      margin-top: 8px;
+      border-top: 1px solid #E5E5E5;
+      text-align: center;
+      padding-top: 100px;
+      font-size: 24px;
+      color: #999;
+      p{
+        font-size: 16px;
+        margin:30px 0 76px 0 !important;
+      }
+      a{
+        color: #666;
+        font-size: 18px;
+      }
+    }
   }
 }
-
 </style>
 <style lang="scss">
 .caselist{
@@ -521,5 +585,25 @@ export default {
     }
   }
 
+}
+
+.page{
+  margin-top: 36px;
+  .el-pagination{
+    .el-pager{
+      li:not(.disabled){
+        &.active{
+          background-color: #307FFF;
+        }
+        &:hover{
+          color: #307FFF;
+        }
+      }
+    }
+  }
+}
+
+.el-popconfirm__main{
+  margin-bottom: 1em !important;
 }
 </style>
