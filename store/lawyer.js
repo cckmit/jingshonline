@@ -135,37 +135,6 @@ export const actions = {
   },
 
   /**
-   * 修改律师擅长行业、领域
-   * @param {commit} commit
-   * @param {object} knowledgeData
-   */
-  ChangeKnowledge({ commit }, knowledgeData) {
-    return new Promise((resolve, reject) => {
-      Lawyer.ChangeKnowledge(knowledgeData).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-  /**
-   * 修改律师账号密码
-   * @param {commit} commit
-   * @param {boject} changePasswordData
-   */
-  ChangePassWord({ commit }, changePasswordData) {
-    return new Promise((resolve, reject) => {
-      Lawyer.ChangePassword(changePasswordData).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  /**
    * 收藏律师
    * @param {number} lawyerId
    */

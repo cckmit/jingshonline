@@ -37,33 +37,6 @@ export const GetInfo = id => {
 }
 
 /**
- * 修改律师擅长行业、领域
- * @param {object} knowledgeData
- */
-export const ChangeKnowledge = knowledgeData => {
-  return request({
-    url: `${setting.apiPrefix}/lawyer/knowledge/update`,
-    method: 'post',
-    data: {
-      input: knowledgeData
-    }
-  })
-}
-
-/**
- * 修改律师账号密码
- * @param {object} passwordData
- */
-export const ChangePassword = passwordData => {
-  return request({
-    url: `${setting.apiPrefix}/lawyer/changepassword`,
-    method: 'put',
-    data: {
-      input: passwordData
-    }
-  })
-}
-/**
  * 收藏律师
  * @param {number} lawyerId
  */
