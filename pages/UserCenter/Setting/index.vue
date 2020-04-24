@@ -100,7 +100,6 @@
         </el-row>
       </el-col>
       <el-dialog
-        v-if="userInfo.status !== 1 || userInfo.status !== 2"
         :visible.sync="dialogVisible"
         width="510px"
       >
@@ -111,6 +110,7 @@
     </el-row>
   </div>
 </template>
+
 <script>
 import { mapActions } from 'vuex'
 import { mapState } from 'vuex'
@@ -236,6 +236,9 @@ export default {
         this.lawyerInfo = res.lawyerInfo
         this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
         this.caseListParam.lawyerId = this.userInfo.lawyerInfo.id
+        if (this.userInfo.status !== 1 || this.userInfo.status !== 2) {
+          this.dialogVisible = true
+        }
       })
     },
     // 积分查询

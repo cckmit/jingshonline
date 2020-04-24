@@ -309,7 +309,7 @@ export default {
           })
         })
       }
-      this.getLawyer()
+      this.getUserLawyerList()
     },
     share(id) {
       // 分享
@@ -360,13 +360,13 @@ ul {
     }
   }
   .lawyer-item{
-    position: relative;
+    //position: relative;
     p{
       font-size: 12px;
       margin-bottom: 0px;
     }
     img{
-      position: absolute;
+     position: absolute;
       top: 32px;
       left: 5px;
       z-index: 10;
@@ -384,20 +384,22 @@ ul {
       }
     }
     .ant-select{
-      display: inline-block;
+      width: 100%;
       margin: 10px 0px;
+      position: relative;
     }
   }
 }
 .selectend {
   padding: 0px 25px;
+  margin-bottom: 20px;
   .selecttab {
     padding: 20px;
     overflow: hidden;
     p{
       float: left;
       font-size: 14px;
-      margin-right: 35px;
+      margin-right: 35px!important;
       margin-bottom: 0px;
       padding-top: 10px;
     }
