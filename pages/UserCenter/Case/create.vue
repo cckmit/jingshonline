@@ -79,7 +79,7 @@ export default {
     this.caseType = this.$route.query.type
   },
   methods: {
-    ...mapActions('lawyer', ['lawyerCaseCreate']),
+    ...mapActions('case', ['userCenterCaseCreate']),
     one(type) {
       this.changeSteps(2, type)
     },
@@ -107,7 +107,7 @@ export default {
     },
     submit() {
       this.case = { ...this.case, analyses: this.$refs.four.analyses }
-      this.lawyerCaseCreate(this.case).then(res => {
+      this.userCenterCaseCreate(this.case).then(res => {
         this.steps = 5
       })
     }

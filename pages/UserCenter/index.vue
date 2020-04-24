@@ -24,7 +24,7 @@
       <div class="clear">
         <div ref="caseInfoChart" class="chart"/>
         <div class="notice">
-          <p><i class="iconfont iconbell1"/>消息动态<i class="iconfont iconmore" @click="getMore"/></p>
+          <p><i class="iconfont iconbell1"/>消息动态<i class="iconfont iconmore" /></p>
           <ul class="infinite-list-wrapper">
             <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
             <li class="unread"><p>案例审核<span>未读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
@@ -66,16 +66,20 @@
             width="112"/>
         </el-table>
       </div>
-      <el-dialog
-        v-if="userInfo.status !== 1 || userInfo.status !== 2"
-        :visible.sync="dialogVisible"
-        width="510px"
-      >
-        <h4>您尚未进行律师认证</h4>
-        <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
-        <a href="/userCenter/auth/update">前往认证</a>
-      </el-dialog>
     </div>
+    <el-dialog
+      v-if="userInfo.status !== 1 || userInfo.status !== 2"
+      :visible.sync="dialogVisible"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      custom-class="usercenter_index_auth"
+      width="510px"
+      title=""
+    >
+      <div>您尚未进行律师认证</div>
+      <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
+      <a href="/userCenter/auth/update">前往认证</a>
+    </el-dialog>
   </div>
 </template>
 
@@ -83,7 +87,7 @@
 import CountTo from 'vue-count-to'
 import Pagination from '@/components/Pagination/index'
 import UserInfo from './components/UserInfo'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -104,23 +108,25 @@ export default {
 
   data() {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }
+      ],
       // 用户信息
       userInfo: {},
       // 律师信息
@@ -237,83 +243,21 @@ export default {
     this.initChart()
   },
   methods: {
-    ...mapActions('account', ['GetLoginUserInfo']),
-    ...mapActions('case', ['caseQuery', 'caseDelete']),
-    ...mapActions('abundant', ['getAbundantInfo']),
-    // 用户信息
-    getUserInfo() {
-      this.GetLoginUserInfo().then(res => {
-        this.userInfo = res
-        this.lawyerInfo = res.lawyerInfo
-        this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
-        this.caseListParam.lawyerId = this.userInfo.lawyerInfo.id
-        // 获取律师擅长领域
-        this.getAbundantInfo(this.caseListParam.lawyerId).then(res => {
-          this.practiceareaData = res.practiceareas
-        })
-        // 获取律师案例
-        this.getLawyerCase(this.caseListParam)
-      })
-    },
-    // 律师案例
-    getLawyerCase(query) {
-      this.caseQuery(query).then(res => {
-        this.totalCount = res.totalCount
-        this.caseListData = res.items
-        console.log(this.caseListData)
-      })
-    },
+
     // 初始化图表
     initChart() {
       const myChart = this.$echarts.init(this.$refs.caseInfoChart)
       myChart.setOption(this.caseChart)
     },
-    // 隔行换色
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex % 2 === 0) {
-        return 'odd'
-      } else {
-        return 'egg'
-      }
-    },
+
     // 积分查询
     Integralquery() {
       console.log('积分查询')
     },
-    // 更换头像
-    changPicture() {
-      console.log('跟换头像')
-    },
-    // 用户编辑
-    handleEdit(index, row) {
-      console.log('用户编辑:', row)
-    },
-    // 用户删除
-    handleDelete(index, row) {
-      this.caseDelete(row.id).then(res => {
-        this.getLawyerCase(this.caseListParam)
-      })
-    },
+
     // 添加案件
     addCase() {
       this.$router.push({ path: '/usercenter/case/create' })
-    },
-    // 获取更多讯息
-    getMore() {
-      console.log('获取更多')
-    },
-    // 案件讯息
-    caseInfoHandle() {
-      console.log('案件讯息详情')
-    },
-    // 翻页操作
-    handlePageChange(val) {
-      this.caseListParam.pageIndex = val.page
-      this.caseListParam.pageCount = val.limit
-    },
-    // 弹窗认证
-    goToConstructor() {
-      this.dialogVisible = false
     }
   }
 }
@@ -419,11 +363,12 @@ export default {
       }
     }
     ul{
-      height: 435px;
+      height: 420px;
       overflow: auto;
       li{
         border-bottom: 1px solid rgba(245,245,245,1);;
         padding: 10px 20px 10px 26px;
+        cursor: pointer;
       p{
         font-size: 14px;
         margin-bottom: 12px;
@@ -502,6 +447,7 @@ export default {
     }
   }
 }
+
 </style>
 <style lang="scss">
 .caselist{
@@ -536,5 +482,42 @@ export default {
         line-height: 34px;
     }
   }
+}
+/** 未认证弹窗 **/
+.usercenter_index_auth{
+  height: 380px;
+  .el-dialog__header{
+    border-bottom: none !important;
+    padding: 0 !important;
+    height: 58px;
+  }
+  .el-dialog__body{
+    padding: 0 80px !important;
+    text-align: center;
+    div{
+      margin-bottom: 40px;
+      font-size: 24px;
+      height: 25px;
+      color: #000;
+    }
+    p{
+      margin-bottom: 70px;
+      font-size: 16px;
+      color: #333;
+      text-align: left;
+      line-height: 30px;
+    }
+    a{
+      width: 166px;
+      height: 38px;
+      display: inline-block;
+      line-height: 38px;
+      color: #fff;
+      font-size: 16px;
+      background: #F68020;
+      border-radius: 3px;
+    }
+  }
+
 }
 </style>

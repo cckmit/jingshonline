@@ -1,4 +1,4 @@
-import * as Workexperience from '@/api/lawyer/workexperience'
+import * as Workexperience from '@/api/usercenter/lawyer/workexperience'
 
 export const actions = {
   /**

@@ -1,4 +1,4 @@
-import * as academic from '@/api/lawyer/academic'
+import * as academic from '@/api/usercenter/lawyer/academic'
 
 export const actions = {
 

@@ -31,6 +31,8 @@
     </div>
     <el-dialog
       :visible.sync="changeAvatar"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
       title="修改头像"
       width="500px">
       <Oss :option="avatarOssOption" @change="avatarOssChange"/>

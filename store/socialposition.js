@@ -1,4 +1,4 @@
-import * as Socialposition from '@/api/lawyer/socialposition'
+import * as Socialposition from '@/api/usercenter/lawyer/socialposition'
 
 export const actions = {
   /**

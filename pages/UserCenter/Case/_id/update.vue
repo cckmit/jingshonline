@@ -78,9 +78,9 @@ export default {
     this.getCaseInfo()
   },
   methods: {
-    ...mapActions('lawyer', ['lawyerCaseUpdate', 'lawyerGetCaseInfo']),
+    ...mapActions('case', ['userCenterCaseUpdate', 'userCenterCaseInfo']),
     getCaseInfo() {
-      this.lawyerGetCaseInfo(this.$route.params.id).then(res => {
+      this.userCenterCaseInfo(this.$route.params.id).then(res => {
         this.case = res
         this.caseType = res.caseType
       })
@@ -112,7 +112,7 @@ export default {
     },
     submit() {
       this.case = { ...this.case, analyses: this.$refs.four.analyses }
-      this.lawyerCaseUpdate(this.case).then(res => {
+      this.userCenterCaseUpdate(this.case).then(res => {
         this.steps = 5
       })
     }

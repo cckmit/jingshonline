@@ -1,4 +1,5 @@
 import * as Case from '@/api/case/index'
+import * as userCenterCase from '@/api/usercenter/case'
 
 export const state = () => ({
   caseStatus: [
@@ -128,7 +129,7 @@ export const actions = {
   },
 
   /**
-   * 获取律师详情
+   * 获取案件详情
    * @param {commit} commit
    * @param {number} id
    */
@@ -209,9 +210,9 @@ export const actions = {
    * @param {commit} commit
    * @param {object} caseData
    */
-  caseCreate({ commit }, caseData) {
+  userCenterCaseCreate({ commit }, caseData) {
     return new Promise((resolve, reject) => {
-      Case.caseCreate(caseData).then(response => {
+      userCenterCase.caseCreate(caseData).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -225,9 +226,9 @@ export const actions = {
    * @param {commit} commit
    * @param {object} caseData
    */
-  caseUpdate({ commit }, caseData) {
+  userCenterCaseUpdate({ commit }, caseData) {
     return new Promise((resolve, reject) => {
-      Case.caseUpdate(caseData).then(response => {
+      userCenterCase.caseUpdate(caseData).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -240,9 +241,9 @@ export const actions = {
    * @param {commit} commit
    * @param {number} caseId
    */
-  caseDelete({ commit }, caseId) {
+  userCenterCaseDelete({ commit }, caseId) {
     return new Promise((resolve, reject) => {
-      Case.caseDelete(caseId).then(response => {
+      userCenterCase.caseDelete(caseId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -255,9 +256,9 @@ export const actions = {
    * @param {commit} commit
    * @param {number} query
    */
-  caseQuery({ commit }, query) {
+  userCenterCaseQuery({ commit }, query) {
     return new Promise((resolve, reject) => {
-      Case.caseQuery(query).then(response => {
+      userCenterCase.caseQuery(query).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -270,9 +271,9 @@ export const actions = {
    * @param {commit} commit
    * @param {number} caseId
    */
-  caseInfo({ commit }, caseId) {
+  userCenterCaseInfo({ commit }, caseId) {
     return new Promise((resolve, reject) => {
-      Case.caseInfo(caseId).then(response => {
+      userCenterCase.caseInfo(caseId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {

@@ -1,4 +1,4 @@
-import * as Certificate from '@/api/lawyer/certificate'
+import * as Certificate from '@/api/usercenter/lawyer/certificate'
 
 export const actions = {
   /**

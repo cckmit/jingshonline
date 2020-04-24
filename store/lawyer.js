@@ -1,4 +1,5 @@
 import * as Lawyer from '@/api/lawyer/index'
+import * as UserCenterLawyerAuth from '@/api/usercenter/lawyer/auth'
 
 export const state = () => ({
   status: [
@@ -134,37 +135,6 @@ export const actions = {
   },
 
   /**
-   * 修改律师擅长行业、领域
-   * @param {commit} commit
-   * @param {object} knowledgeData
-   */
-  ChangeKnowledge({ commit }, knowledgeData) {
-    return new Promise((resolve, reject) => {
-      Lawyer.ChangeKnowledge(knowledgeData).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-  /**
-   * 修改律师账号密码
-   * @param {commit} commit
-   * @param {boject} changePasswordData
-   */
-  ChangePassWord({ commit }, changePasswordData) {
-    return new Promise((resolve, reject) => {
-      Lawyer.ChangePassword(changePasswordData).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  /**
    * 收藏律师
    * @param {number} lawyerId
    */
@@ -200,7 +170,7 @@ export const actions = {
    */
   LawyerCertify({ commit }, lawyerData) {
     return new Promise((resolve, reject) => {
-      Lawyer.certify(lawyerData).then(response => {
+      UserCenterLawyerAuth.certify(lawyerData).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
@@ -216,86 +186,7 @@ export const actions = {
    */
   getLawyerCertifyInfo({ commit }, lawyerId) {
     return new Promise((resolve, reject) => {
-      Lawyer.getCertifyInfo(lawyerId).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-  /**
-   * 律师创建案例
-   * @param {commit} commit
-   * @param {Object} caseData
-   */
-  lawyerCaseCreate({ commit }, caseData) {
-    return new Promise((resolve, reject) => {
-      Lawyer.lawyerCaseCreate(caseData).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  /**
-   * 律师编辑案例
-   * @param {commit} commit
-   * @param {Object} caseData
-   */
-  lawyerCaseUpdate({ commit }, caseData) {
-    return new Promise((resolve, reject) => {
-      Lawyer.lawyerCaseUpdate(caseData).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  /**
-   * 律师删除案例
-   * @param {commit} commit
-   * @param {Number} caseId
-   */
-  lawyerCaseDelect({ commit }, caseId) {
-    return new Promise((resolve, reject) => {
-      Lawyer.lawyerCaseDelect(caseId).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  /**
-   * 律师查询案例
-   * @param {commit} commit
-   * @param {Object} query
-   */
-  lawyerCaseQuery({ commit }, query) {
-    return new Promise((resolve, reject) => {
-      Lawyer.lawyerCaseQuery(query).then(response => {
-        const { data } = response
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  /**
-   * 律师查询案例
-   * @param {commit} commit
-   * @param {Number} caseId
-   */
-  lawyerGetCaseInfo({ commit }, caseId) {
-    return new Promise((resolve, reject) => {
-      Lawyer.lawyerGetCaseInfo(caseId).then(response => {
+      UserCenterLawyerAuth.getCertifyInfo(lawyerId).then(response => {
         const { data } = response
         resolve(data)
       }).catch(error => {
