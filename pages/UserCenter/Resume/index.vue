@@ -7,23 +7,7 @@
         <el-breadcrumb-item >我的简历</el-breadcrumb-item>
       </el-breadcrumb>
       <el-col :span="5">
-        <div class="resume-info">
-          <div class="resume-info-picture">
-            <img src="../../../assets/usercenter/woman-sample.jpg" alt="律师头像">
-            <span>修改头像</span>
-          </div>
-          <div class="resume-info-text">
-            <p>上次登录时间：2020-02-11</p>
-            <p>个人积分：<span class="high-light">62</span><i/><span class="tip">提示文本提示文本提示文本</span></p>
-          </div>
-          <div class="resume-info-icon">
-            <ul>
-              <li><a href="javascript:void(0);"><i class="iconfont iconpersonnone"/><span>审核中</span></a></li>
-              <li><a href="javascript:void(0);"><i class="iconfont iconshoujihao"/><span>绑定手机</span></a></li>
-              <li><a href="javascript:void(0);"><i class="iconfont iconyouxiangrenzheng"/><span>绑定邮箱</span></a></li>
-            </ul>
-          </div>
-        </div>
+        <UserInfo/>
       </el-col>
       <el-col :span="19" style="margin-bottom:75px">
         <el-row>
@@ -230,6 +214,7 @@ import EducationCreateOrUpdate from './components/EducationCreateOrUpdate.vue'
 import AcademicCreateOrUpdate from './components/AcademicCreateOrUpdate.vue'
 import IndustryCreateOrUpdate from './components/IndustryCreateOrUpdate.vue'
 import SocialCreateOrUpdate from './components/SocialCreateOrUpdate.vue'
+import UserInfo from '../components/UserInfo'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -243,6 +228,7 @@ export default {
     }
   },
   components: {
+    UserInfo,
     WorkCreateOrUpdate,
     EducationCreateOrUpdate,
     AcademicCreateOrUpdate,
@@ -350,29 +336,6 @@ export default {
   .hover{display: none}
   letter-spacing:1px;
   img{width: 100%;height: 100%;}
-  .resume-info{width:240px;height:340px;background:#fff;padding-top:42px;
-   .resume-info-picture {margin: 0 auto;position: relative;display: block;width: 140px;height: 140px;box-sizing: border-box;border:1px solid rgba(215, 215, 215, 1);cursor: pointer;overflow: hidden;padding: 2px;margin-bottom: 18px;
-        img {display: inline-block;width: 100%;height: 100%;}
-        span{font-size: 14px;text-align: center;line-height: 26px;position: absolute;bottom: 0px;left: 0;transition: bottom .5s;color:rgba(255,255,255,1);background:rgba(0,0,0,1);opacity:0.5; width: 100%;}
-      }
-    .resume-info-text{padding-left: 30px;font-size: 12px; margin-bottom: 15px; position: relative;color:#000000;
-       .high-light {font-size: 14px;font-weight: bold;color: #ED0F0F;}
-        i { cursor: pointer;display: inline-block;width: 16px;height: 16px;background: url("../../../assets/usercenter/help.png") no-repeat center;vertical-align: -2px; margin-left: 6px;position: relative;}
-        .tip { transition: opacity 2s;position: absolute; display: block;width: 160px;height: 60px;border: 1px solid #ccc;background: #fff;z-index: 99;border-radius: 5px;top: -33px;left: 94px;font-size: 12px;opacity: 0;}
-        .tip:before { content: '';position: absolute;width: 10px;height: 10px;bottom: -5px;left: 20px;transform: rotate(-45deg); border-width: 1px; border-style: solid;border-color: transparent transparent #ccc #ccc;z-index: 100;background: #fff;}
-        i:hover +.tip { opacity: 1; }
-      }
-       .resume-info-icon {margin-top:20px;
-        ul {display: flex;list-style: none;padding: 0 36px 0 30px;justify-content: space-between;overflow: hidden;
-          li{font-size: 12px; line-height: 12px;
-            a{color: #999999;
-              i{line-height: 33px;display: block;font-size: 30px;text-align: center;margin-bottom: 5px;
-              }
-            }
-          }
-        }
-      }
-  }
   .resume-mould{background:#fff;margin-bottom:20px;padding: 30px 45px 15px 30px;
   .resume-title{height: 30px;line-height:30px;font-size:16px;color:rgba(51,51,51,1);margin-bottom:19px;overflow: hidden;
   .resume-title-img{height: 30px;line-height:30px;width: 30px;}
