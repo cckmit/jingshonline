@@ -66,16 +66,20 @@
             width="112"/>
         </el-table>
       </div>
-      <el-dialog
-        v-if="userInfo.status !== 1 || userInfo.status !== 2"
-        :visible.sync="dialogVisible"
-        width="510px"
-      >
-        <h4>您尚未进行律师认证</h4>
-        <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
-        <a href="/userCenter/auth/update">前往认证</a>
-      </el-dialog>
     </div>
+    <el-dialog
+      v-if="userInfo.status !== 1 || userInfo.status !== 2"
+      :visible.sync="dialogVisible"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      custom-class="usercenter_index_auth"
+      width="510px"
+      title=""
+    >
+      <div>您尚未进行律师认证</div>
+      <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
+      <a href="/userCenter/auth/update">前往认证</a>
+    </el-dialog>
   </div>
 </template>
 
@@ -104,23 +108,25 @@ export default {
 
   data() {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }
+      ],
       // 用户信息
       userInfo: {},
       // 律师信息
@@ -419,11 +425,12 @@ export default {
       }
     }
     ul{
-      height: 435px;
+      height: 420px;
       overflow: auto;
       li{
         border-bottom: 1px solid rgba(245,245,245,1);;
         padding: 10px 20px 10px 26px;
+        cursor: pointer;
       p{
         font-size: 14px;
         margin-bottom: 12px;
@@ -502,6 +509,7 @@ export default {
     }
   }
 }
+
 </style>
 <style lang="scss">
 .caselist{
@@ -536,5 +544,42 @@ export default {
         line-height: 34px;
     }
   }
+}
+/** 未认证弹窗 **/
+.usercenter_index_auth{
+  height: 380px;
+  .el-dialog__header{
+    border-bottom: none !important;
+    padding: 0 !important;
+    height: 58px;
+  }
+  .el-dialog__body{
+    padding: 0 80px !important;
+    text-align: center;
+    div{
+      margin-bottom: 40px;
+      font-size: 24px;
+      height: 25px;
+      color: #000;
+    }
+    p{
+      margin-bottom: 70px;
+      font-size: 16px;
+      color: #333;
+      text-align: left;
+      line-height: 30px;
+    }
+    a{
+      width: 166px;
+      height: 38px;
+      display: inline-block;
+      line-height: 38px;
+      color: #fff;
+      font-size: 16px;
+      background: #F68020;
+      border-radius: 3px;
+    }
+  }
+
 }
 </style>
