@@ -11,7 +11,8 @@
       </el-col>
       <el-col :span="19" style="margin-bottom:75px">
         <el-row>
-          <el-col :span="24" class="resume-introduce resume-mould" >
+          <!-- 个人信息 -->
+          <el-col :span="24" class="resume-introduce resume-mould">
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/usercenter/label.png" alt="个人简介"></p> </el-col>
               <el-col :span="19"> <span>个人简介</span> </el-col>
@@ -26,9 +27,10 @@
                 placeholder="请输入内容"/>
             </div>
           </el-col>
+          <!-- 工作经历 -->
           <el-col :span="24" class="resume-work resume-mould">
             <el-row class="resume-title">
-              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/work.png" alt="工作经历"></p> </el-col>
+              <el-col :span="1"> <p class="resume-title-img"><img :src="workpng" alt="工作经历"></p> </el-col>
               <el-col :span="19"> <span>工作经历</span> </el-col>
             </el-row>
             <div class="resume-desc">
@@ -60,10 +62,10 @@
               </el-row>
             </div>
           </el-col>
-
+          <!-- 教育经历 -->
           <el-col :span="24" class="resume-education resume-mould">
             <el-row class="resume-title">
-              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/learning.png" alt="教育经历"></p> </el-col>
+              <el-col :span="1"> <p class="resume-title-img"><img :src="learnpng" alt="教育经历"></p> </el-col>
               <el-col :span="19"> <span>教育经历</span> </el-col>
             </el-row>
             <div class="resume-desc">
@@ -94,9 +96,10 @@
                 </el-col>
             </el-row> </div>
           </el-col>
+          <!-- 学术成果 -->
           <el-col :span="24" class="resume-academic resume-mould">
             <el-row class="resume-title">
-              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/study.png" alt="学术成果"></p> </el-col>
+              <el-col :span="1"> <p class="resume-title-img"><img :src="studypng" alt="学术成果"></p> </el-col>
               <el-col :span="19"> <span>学术成果</span> </el-col>
               <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
@@ -129,9 +132,10 @@
               </el-row>
             </div>
           </el-col>
+          <!-- 行业资质 -->
           <el-col :span="24" class="resume-industry resume-mould">
             <el-row class="resume-title">
-              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/industry.png" alt="行业资质"></p> </el-col>
+              <el-col :span="1"> <p class="resume-title-img"><img :src="industrypng" alt="行业资质"></p> </el-col>
               <el-col :span="19"> <span>行业资质</span> </el-col>
               <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
@@ -163,9 +167,10 @@
                 </el-col>
             </el-row></div>
           </el-col>
+          <!-- 社会职务 -->
           <el-col :span="24" class="resume-social resume-mould">
             <el-row class="resume-title">
-              <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/society.png" alt="社会职务"></p> </el-col>
+              <el-col :span="1"> <p class="resume-title-img"><img :src="societypng" alt="社会职务"></p> </el-col>
               <el-col :span="19"> <span>社会职务</span> </el-col>
               <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
@@ -215,6 +220,12 @@ import AcademicCreateOrUpdate from './components/AcademicCreateOrUpdate.vue'
 import IndustryCreateOrUpdate from './components/IndustryCreateOrUpdate.vue'
 import SocialCreateOrUpdate from './components/SocialCreateOrUpdate.vue'
 import UserInfo from '../components/UserInfo'
+import societypng from '../../../assets/lawyerinfo/society.png'
+import industrypng from '../../../assets/lawyerinfo/industry.png'
+import studypng from '../../../assets/lawyerinfo/study.png'
+import learnpng from '../../../assets/lawyerinfo/learning.png'
+import workpng from '../../../assets/lawyerinfo/work.png'
+
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -237,6 +248,11 @@ export default {
   },
   data() {
     return {
+      societypng, // 社会职务icon
+      industrypng, // 行业资质icon
+      studypng, // 教育经历icon
+      learnpng, // 学术成果icon
+      workpng, // 工作经历icon
       disabledInfo: true, // 个人信息是否可编辑
       socialIsBtn: false, // 社会可编辑
       academicIsBtn: false, // 学术成果可编辑
@@ -305,28 +321,20 @@ export default {
           })
         })
     },
-    editWork() {
-      alert('编辑')
-    },
     createOrUpdateWork(val) {
       this.createOrUpdateWorkVisible = false
-      // this.getUserData()
     },
     createOrUpdateEducation(val) {
       this.createOrUpdateEducationVisible = false
-      // this.getUserData()
     },
     createOrUpdateAcademic(val) {
       this.createOrUpdateAcademicVisible = false
-      // this.getUserData()
     },
     createOrUpdateIndustry(val) {
       this.createOrUpdateIndustryVisible = false
-      // this.getUserData()
     },
     createOrUpdateSocial(val) {
       this.createOrUpdateSocialVisible = false
-      // this.getUserData()
     }
   }
 }
