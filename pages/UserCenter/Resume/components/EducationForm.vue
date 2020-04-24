@@ -1,30 +1,33 @@
 <template>
-  <el-form ref="workForm" :model="workForm" label-position="left" label-width="80px">
-    <el-form-item label="所在单位" prop="name">
-      <el-input v-model="workForm.name" size="small" clearable placeholder="请输入所在单位" />
+  <el-form ref="educationForm" :model="educationForm" label-position="left" label-width="80px">
+    <el-form-item label="院校" prop="name">
+      <el-input v-model="educationForm.name" size="small" clearable placeholder="请输入所在单位" />
     </el-form-item>
-    <el-form-item label="担任职务" prop="position">
-      <el-input v-model="workForm.position" size="small" clearable placeholder="请输入担任职务" />
+    <el-form-item label="学历" prop="position">
+      <el-input v-model="educationForm.position" size="small" clearable placeholder="请输入担任职务" />
     </el-form-item>
-    <el-form-item label="在职时间" prop="time">
+    <el-form-item label="在校时间" prop="time">
       <el-date-picker
-        v-model="workForm.time"
+        v-model="educationForm.time"
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
         end-placeholder="结束日期"/>
     </el-form-item>
     <el-form-item label="说明" prop="explain">
-      <el-input v-model="workForm.explain" size="small" type="textarea" clearable placeholder="请输入说明" />
+      <el-input v-model="educationForm.explain" size="small" type="textarea" clearable placeholder="请输入说明" />
+    </el-form-item>
+    <el-form-item label="附件" prop="enclosure">
+      <el-input v-model="educationForm.enclosure" size="small" type="textarea" clearable placeholder="请输入说明" />
     </el-form-item>
   </el-form>
 </template>
 
 <script>
 export default {
-  name: 'WorkForm',
+  name: 'EducationForm',
   props: {
-    workFormData: {
+    educationFormData: {
       type: Object,
       default: function() {
         return {
@@ -41,14 +44,14 @@ export default {
     return {
       disabled: false,
       psdDisabled: false,
-      workForm: {}
+      educationForm: {}
     }
   },
   watch: {
-    workFormData: {
+    educationFormData: {
       immediate: true,
       handler(val) {
-        this.workForm = val
+        this.educationForm = val
       }
     },
     sourceDisabled: {
