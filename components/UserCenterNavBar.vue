@@ -145,6 +145,8 @@ export default {
     a{
       padding: 0 30px;
       background: none;
+      display: block;
+      height: 100%;
     }
     &:hover{
       a{
