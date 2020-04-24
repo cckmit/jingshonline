@@ -162,6 +162,24 @@ export const actions = {
       })
     })
   },
+  /**
+   * 律师访问数量
+   * @param {number} lawyerId
+   */
+  LawyerClickCount({ commit }, lawyerId) {
+    return new Promise((resolve, reject) => {
+      Lawyer.LawyerClickCount(lawyerId)
+        .then(response => {
+          const {
+            data
+          } = response
+          resolve(data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
 
   /**
    * 提交律师认证

@@ -217,7 +217,7 @@ export default {
     this.shareUrl = window.location.href
   },
   methods: {
-    ...mapActions('lawyerinfo', ['LawyerClickCount'])
+    ...mapActions('lawyer', ['LawyerClickCount'])
   }
 }
 </script>

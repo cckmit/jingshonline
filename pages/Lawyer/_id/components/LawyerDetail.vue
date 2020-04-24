@@ -118,11 +118,11 @@ export default {
   },
   methods: {
     // 用户关注律师 取消关注
-    ...mapActions('lawyerinfo', ['UserCancleFollow', 'UserFollow']),
+    ...mapActions('lawyer', ['LawyerCollecte', 'uncollecteData']),
     // 关注按钮操作
     followHandle() {
       if (!this.follow) {
-        this.UserFollow(this.$route.params.id).then(res => {
+        this.LawyerCollecte(this.$route.params.id).then(res => {
           this.$notify({
             message: `关注律师 : ${this.realName}`,
             duration: 2000
@@ -130,7 +130,7 @@ export default {
           this.follow = !this.follow
         })
       } else {
-        this.UserCancleFollow(this.$route.params.id).then(res => {
+        this.uncollecteData(this.$route.params.id).then(res => {
           this.$notify({
             message: `取消关注律师 : ${this.realName}`,
             duration: 2000
