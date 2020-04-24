@@ -77,7 +77,7 @@
             </div>
           </el-col>
 
-          <el-col :span="24" class=" resume-educational resume-mould">
+          <el-col :span="24" class="resume-education resume-mould">
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img src="../../../assets/lawyerinfo/learning.png" alt="教育经历"></p> </el-col>
               <el-col :span="19"> <span>教育经历</span> </el-col>
@@ -85,7 +85,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="editWork">
+                  <div class="resume-desc-model" @click="createOrUpdateEducationVisible=true,education={}">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加教育经历</h2>
                   </div>
@@ -99,7 +99,7 @@
                         <p>{{ item.time }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
-                            <el-col :span="11" @click.native="editWork(item.id)">编辑</el-col>
+                            <el-col :span="11" @click.native="createOrUpdateEducationVisible=true,education=item">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
                             <el-col :span="11" @click.native="resumeDelete(item.id,'2')">删除</el-col>
                           </el-row>
@@ -217,11 +217,13 @@
         </el-row>
       </el-col>
     </el-row>
-    <WorkCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" @operate="createOrUpdate"/>
+    <EducationCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" @operate="createOrUpdateWork"/>
+    <EducationCreateOrUpdate :source-visible="createOrUpdateEducationVisible" :source-data="education" @operate="createOrUpdateEducation"/>
   </div>
 </template>
 <script>
 import WorkCreateOrUpdate from './components/WorkCreateOrUpdate.vue'
+import EducationCreateOrUpdate from './components/EducationCreateOrUpdate.vue'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -235,7 +237,8 @@ export default {
     }
   },
   components: {
-    WorkCreateOrUpdate
+    WorkCreateOrUpdate,
+    EducationCreateOrUpdate
   },
   data() {
     return {
@@ -244,7 +247,9 @@ export default {
       academicIsBtn: false, // 学术成果可编辑
       industryIsBtn: false, // 行业资质可编辑
       createOrUpdateWorkVisible: false, // 工作经历新增编辑弹框
+      createOrUpdateEducationVisible: false, // 教育经历新增编辑弹框
       work: {}, // 单个工作
+      education: {}, // 教育经历
       resumeData: {
         info: 'wohfsjfoi'
       },
@@ -302,8 +307,12 @@ export default {
     editWork() {
       alert('编辑')
     },
-    createOrUpdate(val) {
+    createOrUpdateWork(val) {
       this.createOrUpdateWorkVisible = false
+      // this.getUserData()
+    },
+    createOrUpdateEducation(val) {
+      this.createOrUpdateEducationVisible = false
       // this.getUserData()
     }
   }
