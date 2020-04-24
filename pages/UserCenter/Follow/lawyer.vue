@@ -360,7 +360,7 @@ ul {
     }
   }
   .lawyer-item{
-    //position: relative;
+    position: relative;
     p{
       font-size: 12px;
       margin-bottom: 0px;
@@ -401,14 +401,21 @@ ul {
       font-size: 14px;
       margin-right: 35px!important;
       margin-bottom: 0px;
-      padding-top: 10px;
     }
     .el-select{
       float: left;
+      .el-input__inner{
+        height:30px;
+        line-height: 30px;
+      }
     }
     >.el-input{
       float: right;
       width:390px;
+      .el-input__inner{
+        height:30px;
+        line-height: 30px;
+      }
     }
 
   }

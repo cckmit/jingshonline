@@ -7,23 +7,7 @@
       </el-breadcrumb>
       <el-col :span="5">
         <div class="lawyer-info-card">
-          <div class="lawyer-info">
-            <div class="lawyer-info-picture">
-              <img :src="lawyerInfo.avatar" alt="律师头像">
-              <span @click="changPicture">更换头像</span>
-            </div>
-            <div class="lawyer-info-text">
-              <p>上次登录时间：{{ userInfo.lastLoginTime | dateFormat("YYYY-mm-dd") }}</p>
-              <p>个人积分：<span class="high-light">{{ lawyerInfo.points }}</span><i @click="Integralquery"/><span class="tip">提示文本提示文本提示文本</span></p>
-            </div>
-            <div class="lawyer-info-icon">
-              <ul>
-                <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.status === 1 || lawyerInfo.status === 2 ? '#F44E12' : '#B6B6B6'}" class="iconfont iconpersonnone"/><span>{{ statusName }}</span></a></li>
-                <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.phone ? '#71C856' : '#B6B6B6'}" class="iconfont iconshoujihao"/><span>{{ lawyerInfo.phone ? '已绑定' : '绑定手机' }}</span></a></li>
-                <li><a href="javascript:void(0);"><i :style="{color:lawyerInfo.email ? '#55A3FF' : '#B6B6B6'}" class="iconfont iconyouxiangrenzheng"/><span>{{ lawyerInfo.email ? '已绑定' : '绑定邮箱' }}</span></a></li>
-              </ul>
-            </div>
-          </div>
+          <UserInfo/>
           <div class="setting">
             <p>&nbsp;&nbsp;●&nbsp;&nbsp;个人设置</p>
             <ul>
@@ -99,21 +83,14 @@
           </el-col>
         </el-row>
       </el-col>
-      <el-dialog
-        :visible.sync="dialogVisible"
-        width="510px"
-      >
-        <h4>您尚未进行律师认证</h4>
-        <p>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</p>
-        <a href="/userCenter/auth/update">前往认证</a>
-      </el-dialog>
     </el-row>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import UserInfo from '@/pages/UserCenter/components/UserInfo'
+
 export default {
   layout: 'userCenter',
   name: 'UserCenterSetting',
@@ -127,6 +104,7 @@ export default {
     }
   },
   components: {
+    UserInfo
   },
   data() {
     const checkPassword = (rule, value, callback) => {
@@ -154,7 +132,6 @@ export default {
       userInfo: {}, // 用户信息
       lawyerInfo: {}, // 律师信息
       statusName: '', // 律师状态
-      dialogVisible: false,
       caseListParam: {// 案例检索条件
         lawyerId: '',
         pageCount: 10, // 页目条数 number
@@ -236,9 +213,6 @@ export default {
         this.lawyerInfo = res.lawyerInfo
         this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
         this.caseListParam.lawyerId = this.userInfo.lawyerInfo.id
-        if (this.userInfo.status !== 1 || this.userInfo.status !== 2) {
-          this.dialogVisible = true
-        }
       })
     },
     // 积分查询
