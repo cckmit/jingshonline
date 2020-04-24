@@ -119,7 +119,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model">
+                  <div class="resume-desc-model" @click="createOrUpdateAcademicVisible=true,academic={}">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加学术成果</h2>
                   </div>
@@ -132,7 +132,7 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="editWork(item.id)"/>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateAcademicVisible=true,academic=item"/>
                           </el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
                             <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
@@ -154,7 +154,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model">
+                  <div class="resume-desc-model" @click="createOrUpdateIndustryVisible=true,industry={}">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加行业资质</h2>
                   </div>
@@ -167,7 +167,7 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="editWork(item.id)"/>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateIndustryVisible=true,industry=item"/>
                           </el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
                             <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
@@ -188,7 +188,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model">
+                  <div class="resume-desc-model" @click="createOrUpdateSocialVisible=true,social={}">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加社会职务</h2>
                   </div>
@@ -201,7 +201,7 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="editWork(item.id)"/>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateSocialVisible=true,social=item"/>
                           </el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
                             <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
@@ -217,13 +217,19 @@
         </el-row>
       </el-col>
     </el-row>
-    <EducationCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" @operate="createOrUpdateWork"/>
+    <WorkCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" @operate="createOrUpdateWork"/>
     <EducationCreateOrUpdate :source-visible="createOrUpdateEducationVisible" :source-data="education" @operate="createOrUpdateEducation"/>
+    <AcademicCreateOrUpdate :source-visible="createOrUpdateAcademicVisible" :source-data="academic" @operate="createOrUpdateAcademic"/>
+    <IndustryCreateOrUpdate :source-visible="createOrUpdateIndustryVisible" :source-data="industry" @operate="createOrUpdateIndustry"/>
+    <SocialCreateOrUpdate :source-visible="createOrUpdateSocialVisible" :source-data="social" @operate="createOrUpdateSocial"/>
   </div>
 </template>
 <script>
 import WorkCreateOrUpdate from './components/WorkCreateOrUpdate.vue'
 import EducationCreateOrUpdate from './components/EducationCreateOrUpdate.vue'
+import AcademicCreateOrUpdate from './components/AcademicCreateOrUpdate.vue'
+import IndustryCreateOrUpdate from './components/IndustryCreateOrUpdate.vue'
+import SocialCreateOrUpdate from './components/SocialCreateOrUpdate.vue'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -238,7 +244,10 @@ export default {
   },
   components: {
     WorkCreateOrUpdate,
-    EducationCreateOrUpdate
+    EducationCreateOrUpdate,
+    AcademicCreateOrUpdate,
+    IndustryCreateOrUpdate,
+    SocialCreateOrUpdate
   },
   data() {
     return {
@@ -248,8 +257,14 @@ export default {
       industryIsBtn: false, // 行业资质可编辑
       createOrUpdateWorkVisible: false, // 工作经历新增编辑弹框
       createOrUpdateEducationVisible: false, // 教育经历新增编辑弹框
+      createOrUpdateAcademicVisible: false, // 学术成果新增编辑弹框
+      createOrUpdateIndustryVisible: false, // 行业资质新增编辑弹框
+      createOrUpdateSocialVisible: false, // 社会职务新增编辑弹框
       work: {}, // 单个工作
       education: {}, // 教育经历
+      academic: {}, // 学术成果
+      industry: {}, // 行业资质
+      social: {}, // 社会职务
       resumeData: {
         info: 'wohfsjfoi'
       },
@@ -313,6 +328,18 @@ export default {
     },
     createOrUpdateEducation(val) {
       this.createOrUpdateEducationVisible = false
+      // this.getUserData()
+    },
+    createOrUpdateAcademic(val) {
+      this.createOrUpdateAcademicVisible = false
+      // this.getUserData()
+    },
+    createOrUpdateIndustry(val) {
+      this.createOrUpdateIndustryVisible = false
+      // this.getUserData()
+    },
+    createOrUpdateSocial(val) {
+      this.createOrUpdateSocialVisible = false
       // this.getUserData()
     }
   }

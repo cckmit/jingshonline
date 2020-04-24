@@ -2,7 +2,7 @@
   <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加教育经历':'编辑教育经历'" width="23%" @close="close">
     <EducationForm ref="educationForm" :education-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" size="small">保存</el-button>
+      <el-button type="primary" size="small" @click="close">保存</el-button>
     </div>
   </el-dialog>
 </template>
