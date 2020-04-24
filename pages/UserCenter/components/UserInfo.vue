@@ -107,6 +107,7 @@ export default {
   padding: 35px 30px 0px 30px;
   margin-bottom: 20px;
   position: relative;
+  letter-spacing:0 !important;
   >div{
     text-align: center;
     .avatar{

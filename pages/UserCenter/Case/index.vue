@@ -14,7 +14,7 @@
           <div class="case-screen-content">
             <div class="case-screen-industryId case-screen-item">
               <p>所属行业</p>
-              <img class="case-icon" src="../../../assets/usercenter/industry.png">
+              <!-- <img class="case-icon" src="../../../assets/usercenter/industry.png"> -->
               <el-select
                 v-model="userCaseSearch.industryId"
                 size="mini"
@@ -28,7 +28,7 @@
             </div>
             <div class="case-screen-court case-screen-item">
               <p>管辖法院</p>
-              <img class="case-icon" src="../../../assets/usercenter/court.png">
+              <!-- <img class="case-icon" src="../../../assets/usercenter/court.png"> -->
               <el-select
                 v-model="userCaseSearch.courtId"
                 size="mini"
@@ -47,7 +47,7 @@
             </div>
             <div class="case-screen-casereason case-screen-item">
               <p>所属案由</p>
-              <img class="case-icon" src="../../../assets/usercenter/casereason.png">
+              <!-- <img class="case-icon" src="../../../assets/usercenter/casereason.png"> -->
               <a-tree-select
                 :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                 :tree-data="casereasonTreeData"
@@ -60,7 +60,7 @@
             </div>
             <div class="case-screen-practice case-screen-item">
               <p>专业领域</p>
-              <img class="case-icon" src="../../../assets/usercenter/practice.png">
+              <!-- <img class="case-icon" src="../../../assets/usercenter/practice.png"> -->
               <a-tree-select
                 :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                 :tree-data="PracticeTreeDataForAntd"
@@ -113,7 +113,7 @@
                 <el-col :span="6">
                   <div class="case-introduce">
                     <p v-if="item.caseType===1">裁判文书号：</p>
-                    <p v-if="item.caseType===1" style="margin:13px 0 26px 0">{{ item.judgmentNumber }}</p>
+                    <p v-if="item.caseType===1">{{ item.judgmentNumber }}</p>
                     <div class="case-introduce-list">
                       <p v-if="item.caseType===2" ><i class="iconfont icontriangle-arrow-r"/>所属行业：{{ item.industryName }}</p>
                       <p><i class="iconfont icontriangle-arrow-r"/>所属领域：{{ item.practiceAreaName }}</p>
@@ -291,7 +291,7 @@ export default {
       .case-screen-item{
         margin-top:17px;
         position:relative;
-        p{margin-bottom: 11px;font-size:12px;}
+        p{margin-bottom: 11px!important;font-size:12px;}
          .el-input__inner{height: 28px !important;}
          //审核状态
          .el-checkbox-group{.el-checkbox{display: block;margin-bottom: 18px;margin-left: 30px}}
@@ -319,7 +319,8 @@ export default {
   ul{li{background:#fff;min-height:310px;margin-bottom: 22px;padding: 21px;
   // 右边左边
   .case-introduce{min-height:268px;width:260px;padding-left: 17px;font-size: 12px;color:#666666;
-  .case-introduce-list{p{margin-bottom: 17px;color:#999999}}
+  p:nth-child(2){ margin:13px 0 26px 0 !important;}
+  .case-introduce-list{p{margin-bottom: 17px !important;color:#999999}}
   .case-introduce-button{position: absolute;bottom: 0;left: 17px;}
   }
   // 右边右边
