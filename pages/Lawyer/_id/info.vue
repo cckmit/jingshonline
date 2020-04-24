@@ -272,12 +272,12 @@ export default {
         box-sizing: border-box;
       .lawyer-name {
         font-size: 24px;
-        margin: 30px 0 20px 0;
+        margin: 30px 0 20px 0 !important;
       }
       .lawyer-year {
         display: flex;
         justify-content: flex-start;
-        margin-bottom: 7px;
+        margin-bottom: 7px !important;
         span {
           margin-right: 11px;
           padding: 3px 9px;
@@ -293,12 +293,12 @@ export default {
     }
     .lawyer-information {
       h4 {
-        margin-top: 13px;
+        margin-top: 13px !important;
         font-size: 16px;
         color: #333;
         padding-bottom: 9px;
         border-bottom: 1px dashed #ececec;
-        margin-bottom: 17px;
+        margin-bottom: 17px !important;
       }
       ul li {
         overflow: hidden;

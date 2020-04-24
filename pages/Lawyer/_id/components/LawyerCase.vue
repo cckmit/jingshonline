@@ -376,8 +376,8 @@ export default {
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         .title{
-          margin-top: 2px;
-          margin-bottom: 7px;
+          margin-top: 2px !important;
+          margin-bottom: 7px !important;
         }
         .text{
           overflow: hidden;
