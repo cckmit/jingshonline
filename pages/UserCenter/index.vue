@@ -24,7 +24,7 @@
       <div class="clear">
         <div ref="caseInfoChart" class="chart"/>
         <div class="notice">
-          <p><i class="iconfont iconbell1"/>消息动态<i class="iconfont iconmore" @click="getMore"/></p>
+          <p><i class="iconfont iconbell1"/>消息动态<i class="iconfont iconmore" /></p>
           <ul class="infinite-list-wrapper">
             <li><p>案例审核<span>已读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
             <li class="unread"><p>案例审核<span>未读</span></p><div>刘洪辉律师，后台管理员为您添加一条标题为：<span>刘某某与阮某某房屋租赁合同纠纷</span></div><small>2020-03-08</small></li>
@@ -87,7 +87,7 @@
 import CountTo from 'vue-count-to'
 import Pagination from '@/components/Pagination/index'
 import UserInfo from './components/UserInfo'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -243,83 +243,21 @@ export default {
     this.initChart()
   },
   methods: {
-    ...mapActions('account', ['GetLoginUserInfo']),
-    ...mapActions('case', ['caseQuery', 'caseDelete']),
-    ...mapActions('abundant', ['getAbundantInfo']),
-    // 用户信息
-    getUserInfo() {
-      this.GetLoginUserInfo().then(res => {
-        this.userInfo = res
-        this.lawyerInfo = res.lawyerInfo
-        this.statusName = this.lawyerStatus.filter(item => item.id === this.userInfo.lawyerInfo.status)[0].displayName
-        this.caseListParam.lawyerId = this.userInfo.lawyerInfo.id
-        // 获取律师擅长领域
-        this.getAbundantInfo(this.caseListParam.lawyerId).then(res => {
-          this.practiceareaData = res.practiceareas
-        })
-        // 获取律师案例
-        this.getLawyerCase(this.caseListParam)
-      })
-    },
-    // 律师案例
-    getLawyerCase(query) {
-      this.caseQuery(query).then(res => {
-        this.totalCount = res.totalCount
-        this.caseListData = res.items
-        console.log(this.caseListData)
-      })
-    },
+
     // 初始化图表
     initChart() {
       const myChart = this.$echarts.init(this.$refs.caseInfoChart)
       myChart.setOption(this.caseChart)
     },
-    // 隔行换色
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex % 2 === 0) {
-        return 'odd'
-      } else {
-        return 'egg'
-      }
-    },
+
     // 积分查询
     Integralquery() {
       console.log('积分查询')
     },
-    // 更换头像
-    changPicture() {
-      console.log('跟换头像')
-    },
-    // 用户编辑
-    handleEdit(index, row) {
-      console.log('用户编辑:', row)
-    },
-    // 用户删除
-    handleDelete(index, row) {
-      this.caseDelete(row.id).then(res => {
-        this.getLawyerCase(this.caseListParam)
-      })
-    },
+
     // 添加案件
     addCase() {
       this.$router.push({ path: '/usercenter/case/create' })
-    },
-    // 获取更多讯息
-    getMore() {
-      console.log('获取更多')
-    },
-    // 案件讯息
-    caseInfoHandle() {
-      console.log('案件讯息详情')
-    },
-    // 翻页操作
-    handlePageChange(val) {
-      this.caseListParam.pageIndex = val.page
-      this.caseListParam.pageCount = val.limit
-    },
-    // 弹窗认证
-    goToConstructor() {
-      this.dialogVisible = false
     }
   }
 }

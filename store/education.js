@@ -1,4 +1,4 @@
-import * as Education from '@/api/lawyer/education'
+import * as Education from '@/api/usercenter/lawyer/education'
 export const state = () => ({
   // 专科=0,本科=1,硕士=2,博士=3
   education: [
