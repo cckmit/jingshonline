@@ -50,7 +50,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true">
+                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true,work={}">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加工作经历</h2>
                   </div>
@@ -249,16 +249,16 @@ export default {
         info: 'wohfsjfoi'
       },
       workData: [
-        { id: '1', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' },
-        { id: '2', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' },
-        { id: '3', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' },
-        { id: '4', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 至今', isShowBtn: 'false' }
+        { id: '1', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' },
+        { id: '2', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' },
+        { id: '3', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' },
+        { id: '4', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' }
       ],
       educationData: [
-        { id: '1', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' },
-        { id: '2', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' },
-        { id: '3', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' },
-        { id: '4', name: '吉林大学', position: '本科', time: '2014.04 - 至今', isShowBtn: 'false' }
+        { id: '1', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' },
+        { id: '2', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' },
+        { id: '3', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' },
+        { id: '4', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' }
       ],
       listData: [
         { id: '1', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },

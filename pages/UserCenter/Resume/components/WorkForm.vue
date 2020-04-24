@@ -1,10 +1,18 @@
 <template>
   <el-form ref="workForm" :model="workForm" label-position="left" label-width="80px">
-    <el-form-item label="所在单位" prop="workName">
-      <el-input v-model="workForm.workName" size="small" clearable placeholder="请输入所在单位" />
+    <el-form-item label="所在单位" prop="name">
+      <el-input v-model="workForm.name" size="small" clearable placeholder="请输入所在单位" />
     </el-form-item>
     <el-form-item label="担任职务" prop="position">
       <el-input v-model="workForm.position" size="small" clearable placeholder="请输入担任职务" />
+    </el-form-item>
+    <el-form-item label="在职时间" prop="time">
+      <el-date-picker
+        v-model="workForm.time"
+        type="daterange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"/>
     </el-form-item>
     <el-form-item label="说明" prop="explain">
       <el-input v-model="workForm.explain" size="small" type="textarea" clearable placeholder="请输入说明" />
@@ -58,3 +66,9 @@ export default {
   }
 }
 </script>
+<style lang='scss'>
+.el-date-editor--daterange{
+  width:364px !important;
+}
+</style>
+
