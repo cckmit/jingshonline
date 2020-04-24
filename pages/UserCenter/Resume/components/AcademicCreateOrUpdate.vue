@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加工作经历':'编辑工作经历'" width="23%" @close="close">
-    <WorkForm ref="workForm" :work-form-data="sourceData" />
+  <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加学术成果':'编辑学术成果'" width="23%" @close="close">
+    <AcademicForm ref="academicForm" :academic-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" size="small" @click="close">保存</el-button>
     </div>
@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import WorkForm from './WorkForm'
+import AcademicForm from './AcademicForm'
 export default {
-  name: 'WorkCreatOrUpdate',
+  name: 'AcademicCreateOrUpdate',
   components: {
-    WorkForm
+    AcademicForm
   },
   props: {
     sourceVisible: {

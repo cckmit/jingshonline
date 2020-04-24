@@ -119,10 +119,10 @@
             </nuxt-link>
             <div class="case-content-bottom">
               <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
-              <span><i class="el-icon-time"/>{{ item.endTime }}</span>
+              <span><i class="el-icon-time"/>{{ item.endTime.split(" ")[0] }}</span>
               <span v-if="item.caseType===1">{{ item.judgmentNumber }}</span>
             </div>
-            <img v-if="item.isClassicCase" src="@/assets/case/case-classic.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+            <img v-if="item.isClassicCase" src="@/assets/case/case-classic2.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
           </li>
           <li v-if="caseData.length===0" style="height:200px;line-height:200px;text-align:center">暂无相关数据！</li>
         </ul>
@@ -342,13 +342,14 @@ ul {
 }
 .selectend {
   padding: 0px 25px;
+  margin-bottom: 20px;
   .selecttab {
     padding: 20px;
     overflow: hidden;
     p{
       float: left;
       font-size: 14px;
-      margin-right: 35px;
+      margin-right: 35px!important;
       margin-bottom: 0px;
       padding-top: 10px;
     }

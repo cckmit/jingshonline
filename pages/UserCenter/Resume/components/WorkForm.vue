@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="workForm" :model="workForm" label-position="left" label-width="80px">
+  <el-form ref="workForm" :model="workForm" label-position="right" label-width="80px">
     <el-form-item label="所在单位" prop="name">
       <el-input v-model="workForm.name" size="small" clearable placeholder="请输入所在单位" />
     </el-form-item>
