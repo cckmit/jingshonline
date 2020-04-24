@@ -23,7 +23,7 @@
           </el-submenu>
           <el-menu-item index="usercentercasestatistical"><nuxt-link to="/usercenter/case/statistical">案件统计</nuxt-link></el-menu-item>
           <el-menu-item index="usercentersetting"><nuxt-link to="/usercenter/setting">个人设置</nuxt-link></el-menu-item>
-          <el-menu-item index="usercenterexplain"><nuxt-link to="/usercenter/explain">帮助中心</nuxt-link></el-menu-item>
+          <el-menu-item index="usercenterexplain"><nuxt-link to="/usercenter/help">帮助中心</nuxt-link></el-menu-item>
           <el-menu-item v-if="hasLogin" index="user" class="user">
             <nuxt-link to="/usercenter">
               <el-dropdown class="user_info" trigger="hover">
