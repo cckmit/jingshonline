@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div :style="{display:lawyerInfo.status!==0?'none':'none'}" class="tip">
+      <div :style="{display:lawyerInfo.status!==0?'none':''}" class="tip">
         <p>律师认证</p>
         <div>您尚未进行律师身份认证其他人无法检索到您，请您尽快前往律师认证，我们会对您提供的认证信息进行人工审核，请正确填写。</div>
         <router-link to="/usercenter/auth/update">前往认证</router-link>
@@ -150,7 +150,7 @@ export default {
       height: 12px;
       line-height: 12px;
       color: #000;
-      margin-bottom: 16px;
+      margin-bottom: 16px !important;
       span{
         font-weight: bold;
         color: #ED0F0F;
@@ -199,8 +199,8 @@ export default {
       font-size: 24px;
       color: #fff !important;
       text-align: center;
-      margin-top: 52px;
-      margin-bottom: 20px;
+      margin-top: 52px !important;
+      margin-bottom: 20px !important;
     }
     div{
       font-size: 14px;

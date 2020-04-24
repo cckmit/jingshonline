@@ -41,14 +41,14 @@ export default {
 <style lang='scss' scoped>
 h2,p{
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 30px !important;
 }
 h2{
   font-size: 24px;
 }
 p{
   font-size: 16px;
-  margin-bottom: 120px;
+  margin-bottom: 120px !important;
   color: #000;
 }
 

@@ -174,11 +174,11 @@ export default {
     this.getLawyerCaseList(this.caseListParam)
   },
   methods: {
-    ...mapActions('lawyerinfo', ['GetLawyerCaseList', 'UserFollowCase', 'UserUnFollowCase']),
+    ...mapActions('case', ['getCaseListData', 'caseFollowClick', 'caseUnfollowClick']),
     ...mapActions('region', ['getCourtRegionsData', 'getCourtRegionsChildData']),
     // 获取认证案例列表
     getLawyerCaseList(query) {
-      this.GetLawyerCaseList(query).then(res => {
+      this.getCaseListData(query).then(res => {
         if (res !== null) {
           this.totalCount = res.totalCount
           this.lawyerCaseList = res.items
@@ -209,7 +209,7 @@ export default {
     userCollect(index) {
       const caseIndex = this.lawyerCaseList[index]
       if (caseIndex.isFollow) {
-        this.UserUnFollowCase(caseIndex.id).then(res => {
+        this.caseUnfollowClick(caseIndex.id).then(res => {
           this.$notify({
             message: `取消收藏案例 : ${this.lawyerCaseList[index].title}`,
             duration: 2000
@@ -217,7 +217,7 @@ export default {
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       } else {
-        this.UserFollowCase(caseIndex.id).then(res => {
+        this.caseFollowClick(caseIndex.id).then(res => {
           this.$notify({
             message: `收藏案例 : ${this.lawyerCaseList[index].title}`,
             duration: 2000
@@ -376,8 +376,8 @@ export default {
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         .title{
-          margin-top: 2px;
-          margin-bottom: 7px;
+          margin-top: 2px !important;
+          margin-bottom: 7px !important;
         }
         .text{
           overflow: hidden;

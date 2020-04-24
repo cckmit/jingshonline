@@ -98,7 +98,7 @@ export default {
   padding: 0 45px;
   p{
     font-size: 16px;
-    margin-bottom: 36px;
+    margin-bottom: 36px !important;
     i{
       margin-right: 8px;
     }

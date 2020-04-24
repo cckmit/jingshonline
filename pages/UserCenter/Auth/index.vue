@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     ...mapState({
-      lawyer: state => state.account.lawyerInfo.lawyerInfo
+      lawyer: state => state.account.lawyerInfo
     })
   },
   watch: {
@@ -107,6 +107,8 @@ export default {
   margin-bottom: 45px;
   padding: 48px 76px 72px 76px;
   h4{
+    font-size: 16px;
+    font-weight: bold;
     span{
       color: #FF7200;
     }
@@ -115,7 +117,7 @@ export default {
     font-size:14px;
     color:rgba(233,29,29,1);
     text-indent: 80px;
-    margin: 14px 0 24px 0;
+    margin: 14px 0 24px 0 !important;
   }
   hr{
     border-bottom: none;
@@ -123,8 +125,10 @@ export default {
     margin-bottom: 80px;
   }
   h2{
+    font-size: 24px;
+    font-weight: bold;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 24px !important;
     span{
       color: #FF7200;
     }
@@ -135,7 +139,6 @@ export default {
     line-height: 28px;
     font-size: 16px;
     color: #333333;
-    font-weight: bold;
     u{
       color: #E91D1D;
     }

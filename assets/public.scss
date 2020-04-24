@@ -188,9 +188,16 @@ a{
 }
 ul,ol{
   padding: 0;
+  margin: 0 !important;
 }
 ul li,ol li{
   list-style: none;
+}
+p{
+  margin: 0 !important;
+}
+h1,h2,h3,h4,h5,h6{
+  margin: 0 !important;
 }
 
 //

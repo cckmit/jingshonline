@@ -226,7 +226,7 @@ export default {
         pageIndex: 1// 页码 number
       },
       // 弹窗
-      dialogVisible: true
+      dialogVisible: this.lawyerStatus !== 0
     }
   },
   computed: {
@@ -279,12 +279,12 @@ export default {
       height: 13px;
       line-height: 13px;
       color: #333;
-      margin: 22px 0 22px 26px;
+      margin: 22px 0 22px 26px !important;
     }
     p{
       font-size: 14px;
       padding-left: 50px;
-      margin-bottom: 16px;
+      margin-bottom: 16px !important;
       span{
         font-weight: bold;
         color: #FF1111;
@@ -298,9 +298,8 @@ export default {
   /** 顶部案例数据 **/
   .case_count{
     display: flex;
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
     li{
-      // float: left;
       width: 260px;
       margin: 0 10px;
       padding: 22px 36px;
@@ -308,6 +307,7 @@ export default {
       border-radius:5px;
       color: #fff;
       font-size: 14px;
+      line-height: normal;
       &:first-child{
         margin-left: 0;
         background: #63A4FF;
@@ -326,6 +326,8 @@ export default {
         margin-top: 28px;
         font-size: 30px;
         text-align: right;
+        height: 25px;
+        line-height: 25px;
         span{
           float: left;
         }
@@ -371,7 +373,7 @@ export default {
         cursor: pointer;
       p{
         font-size: 14px;
-        margin-bottom: 12px;
+        margin-bottom: 12px !important;
         color: #999;
         span{
           width: 40px;
@@ -501,7 +503,7 @@ export default {
       color: #000;
     }
     p{
-      margin-bottom: 70px;
+      margin-bottom: 70px !important;
       font-size: 16px;
       color: #333;
       text-align: left;
