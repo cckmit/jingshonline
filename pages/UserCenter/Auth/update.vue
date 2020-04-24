@@ -273,7 +273,7 @@ export default {
     font-size:14px;
     color:rgba(233,29,29,1);
     text-indent: 80px;
-    margin: 14px 0 24px 0;
+    margin: 14px 0 24px 0 !important;
   }
   hr{
     border-bottom: none;
@@ -302,7 +302,7 @@ export default {
     p{
       font-size: 14px;
       color: #666;
-      margin-bottom: 26px;
+      margin-bottom: 26px !important;
     }
     div{
       padding-left: 30px;
