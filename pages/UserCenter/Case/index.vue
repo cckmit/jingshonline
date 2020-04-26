@@ -1,5 +1,15 @@
 <template>
   <div class="userCenter-case">
+    <!-- ↓↓↓↓↓↓↓↓↓↓↓ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <a-tree-select
+      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      show-search
+      allow-clear
+      style="width: 100%;display:none;"
+      tree-node-filter-prop="title"
+      placeholder="请选择"
+    />
+    <!-- ↑↑↑↑↑↑↑↑↑↑↑ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
     <el-row>
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >京师在线</el-breadcrumb-item>
@@ -20,13 +30,11 @@
               placeholder="请选择"
               filterable
               clearable
-
               @clear="userCaseSearch.industryId=null"
               @change="getUserCaseList">
               <template slot="prefix">
                 <img class="case-icon" src="../../../assets/usercenter/industry.png">
               </template>
-
               <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
             <p>管辖法院</p>
@@ -146,7 +154,7 @@
                       <el-col :span="16" class="case-article-time">{{ item.endTime }}</el-col>
                       <el-col :span="8" class="case-article-button">
                         <el-button size="mini" icon="el-icon-delete" @click="deteleCase(item.id)">删除</el-button>
-                        <nuxt-link :to="{name: 'UserCenter-Case-update?caseType=' + item.caseType}"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
+                        <nuxt-link :to="{path: `usercenter/case/${item.id}/update?caseType=${item.caseType}` }"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
                       </el-col>
                     </el-row>
                   </div>
