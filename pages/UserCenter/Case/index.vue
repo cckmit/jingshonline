@@ -1,5 +1,14 @@
 <template>
   <div class="userCenter-case">
+    <a-tree-select
+      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      :tree-data="casereasonTreeData"
+      v-model="userCaseSearch.casereasonId"
+      show-search
+      style="width: 100%"
+      tree-node-filter-prop="title"
+      placeholder="请选择"
+    />
     <el-row>
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >京师在线</el-breadcrumb-item>
@@ -45,31 +54,37 @@
                   :value="item.id"/>
               </el-select>
             </div>
-            <div class="case-screen-casereason case-screen-item">
+            <div>
               <p>所属案由</p>
-              <!-- <img class="case-icon" src="../../../assets/usercenter/casereason.png"> -->
-              <a-tree-select
-                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                :tree-data="casereasonTreeData"
-                v-model="userCaseSearch.casereasonId"
-                show-search
-                style="width: 100%"
-                tree-node-filter-prop="title"
-                placeholder="请选择"
-              />
+              <!--  -->
+              <div class="casereason_treedata">
+                <img class="case-icon" src="../../../assets/usercenter/casereason.png">
+                <a-tree-select
+                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                  :tree-data="casereasonTreeData"
+                  v-model="userCaseSearch.casereasonId"
+                  show-search
+                  style="width: 100%"
+                  tree-node-filter-prop="title"
+                  placeholder="请选择"
+                />
+              </div>
             </div>
-            <div class="case-screen-practice case-screen-item">
+            <div>
               <p>专业领域</p>
               <!-- <img class="case-icon" src="../../../assets/usercenter/practice.png"> -->
-              <a-tree-select
-                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                :tree-data="PracticeTreeDataForAntd"
-                v-model="userCaseSearch.practiceId"
-                show-search
-                style="width: 100%"
-                tree-node-filter-prop="title"
-                placeholder="请选择"
-              />
+              <div class="practice_treedata">
+                <img class="case-icon" src="../../../assets/usercenter/practice.png">
+                <a-tree-select
+                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                  :tree-data="PracticeTreeDataForAntd"
+                  v-model="userCaseSearch.practiceId"
+                  show-search
+                  style="width: 100%"
+                  tree-node-filter-prop="title"
+                  placeholder="请选择"
+                />
+              </div>
             </div>
             <div class="case-screen-practice case-screen-item">
               <p>审核状态</p>
@@ -225,6 +240,12 @@ export default {
   mounted() {
   },
   methods: {
+    FixLocation(triggerNode) {
+      console.log(triggerNode)
+      debugger
+      triggerNode => document // .getDocument().getElementById('casereasontreeselect')
+      // return document.getDocument() // .getElementById('casereasontreeselect')
+    },
     ...mapActions('case', ['getCaseListData']),
     // 获取案件
     getUserCaseList(delayTime = 150) {
@@ -298,6 +319,7 @@ export default {
        }
        //搜索图标
        .case-screen-industryId,.case-screen-court,.case-screen-casereason,.case-screen-practice{
+         position: relative;
         .case-icon{position:absolute;top:32px;left:5px;z-index:10;}
       }
       .el-radio-group{margin-left:30px;.el-radio{display: block;margin-bottom:18px;}}
@@ -336,7 +358,9 @@ export default {
   }
   }}}
 }
-
+#casereason{
+  position: relative;
+}
 </style>
 <style lang='scss'>
 .userCenter-case{
@@ -361,5 +385,14 @@ export default {
  .el-radio{
       .el-radio__label{font-size: 12px !important;}}
 }
-
+.casereason_treedata,.practice_treedata{
+  img{
+    position: absolute;
+    z-index: 9;
+    margin: 6px;
+  }
+  .ant-select-selection--single{
+    text-indent: 20px;
+  }
+}
 </style>
