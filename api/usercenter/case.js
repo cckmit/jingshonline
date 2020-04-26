@@ -61,7 +61,7 @@ export const caseQuery = query => {
  */
 export const caseInfo = caseId => {
   return request({
-    url: `${setting.apiPrefix}/lawyer/case/${caseId}`,
+    url: `${setting.apiPrefix}/lawyer/case/get/${caseId}`,
     method: 'get'
   })
 }

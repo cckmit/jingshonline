@@ -4,6 +4,7 @@ import cookie from '@/plugins/cookie'
 export const state = () => ({
   token: cookie.get('token'),
   name: '',
+  realName: '',
   avatar: '',
   introduction: '',
   roles: [],

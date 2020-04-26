@@ -67,7 +67,6 @@ export default {
     return {
       steps: 2,
       caseType: null,
-      route: this.$route,
       case: {}
     }
   },

@@ -78,7 +78,7 @@
               <Oss :option="avatarOssOption" @change="avatarOssChange"/>
             </el-form-item>
             <el-form-item class="auth_form_button">
-              <el-button size="small">返回</el-button>
+              <el-button size="small" @click="()=>{this.$router.push('/usercenter/auth')}">返回</el-button>
               <el-button size="small" @click="submit">提交认证</el-button>
             </el-form-item>
           </el-form>
@@ -138,24 +138,7 @@ export default {
     Oss
   },
   props: {
-    auth: {
-      type: Object,
-      default: () => {
-        return {
-          realName: '',
-          sex: true,
-          regionId: null,
-          lawfirmId: null,
-          licenceNo: '',
-          avatarPathId: null,
-          avatar: '',
-          birthday: '',
-          licenceDate: '',
-          licencePathId: null,
-          licencePath: ''
-        }
-      }
-    }
+
   },
   data() {
     return {
@@ -221,20 +204,26 @@ export default {
   computed: {
     ...mapState({
       regionTreeData: state => state.region.regionTreeData,
-      lawfirmData: state => state.lawfirm.lawfirmData
+      lawfirmData: state => state.lawfirm.lawfirmData,
+      lawyerInfo: state => state.account.lawyerInfo
     })
   },
   watch: {
-    auth: function(val) {
-      this.authForm = val
-      val.avatar ? this.avatarOssChange.fileList = [{ name: 'avatar', url: val.avatar, fileId: val.avatarPathId, uid: Math.random() * 200, status: 'success' }] : ''
-      val.licencePath ? this.licencePathOssOption.fileList = [{ name: 'lawyerlicence', url: val.licencePath, fileId: val.licencePathId, uid: Math.random() * 200, status: 'success' }] : ''
+    lawyerInfo: function() {
+      this.getLawyerInfo()
     }
   },
   mounted() {
+    this.getLawyerInfo()
   },
   methods: {
+    ...mapActions('account', ['GetLoginUserInfo']),
     ...mapActions('lawyer', ['LawyerCertify']),
+    getLawyerInfo() {
+      this.lawyerInfo.lawyerInfo !== undefined ? this.authForm = JSON.parse(JSON.stringify(this.lawyerInfo.lawyerInfo)) : ''
+      this.lawyerInfo.lawyerInfo !== undefined ? this.avatarOssOption.fileList = [{ name: 'avatar', url: this.lawyerInfo.lawyerInfo.avatar, fileId: this.lawyerInfo.lawyerInfo.avatarPathId, uid: Math.random() * 200, status: 'success' }] : ''
+      this.lawyerInfo.lawyerInfo !== undefined ? this.licencePathOssOption.fileList = [{ name: 'lawyerlicence', url: this.lawyerInfo.lawyerInfo.licencePath, fileId: this.lawyerInfo.lawyerInfo.licencePathId, uid: Math.random() * 200, status: 'success' }] : ''
+    },
     regionChange(val) {
       this.authForm.regionId = val[val.length - 1]
     },
@@ -251,6 +240,9 @@ export default {
         if (valid) {
           this.LawyerCertify(this.authForm).then(res => {
             this.$message.success(res)
+            this.GetLoginUserInfo().then(res => {
+              this.$router.push('/usercenter/auth')
+            })
           })
         }
       })

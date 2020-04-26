@@ -36,7 +36,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true,work={}">
+                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true,work={},ifCreate=true">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加工作经历</h2>
                   </div>
@@ -45,14 +45,14 @@
                   <el-row>
                     <el-col v-for="(item, index) in workData" :span="8" :key="index">
                       <div class="resume-desc-model" @mouseenter="item.isShowBtn=false" @mouseleave="item.isShowBtn=true">
-                        <p>{{ item.name }}</p>
+                        <p>{{ item.organization }}</p>
                         <p>{{ item.position }}</p>
-                        <p>{{ item.time }}</p>
+                        <p>{{ item.startDate }}-{{ item.endDate }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
-                            <el-col :span="11" @click.native="createOrUpdateWorkVisible=true,work=item">编辑</el-col>
+                            <el-col :span="11" @click.native="createOrUpdateWorkVisible=true,work=item,ifCreate=false">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
-                            <el-col :span="11" @click.native="resumeDelete(item.id,'1')">删除</el-col>
+                            <el-col :span="11" @click.native="resumeDelete(item.id,1)">删除</el-col>
                           </el-row>
                         </div>
                       </div>
@@ -80,9 +80,9 @@
                   <el-row>
                     <el-col v-for="(item, index) in educationData" :span="8" :key="index">
                       <div class="resume-desc-model" @mouseenter="item.isShowBtn=false" @mouseleave="item.isShowBtn=true">
-                        <p>{{ item.name }}</p>
-                        <p>{{ item.position }}</p>
-                        <p>{{ item.time }}</p>
+                        <p>{{ item.school }}</p>
+                        <p>{{ item.educationBackground }}</p>
+                        <p>{{ item.startDate }}-{{ item.endDate }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
                             <el-col :span="11" @click.native="createOrUpdateEducationVisible=true,education=item">编辑</el-col>
@@ -101,7 +101,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="studypng" alt="学术成果"></p> </el-col>
               <el-col :span="19"> <span>学术成果</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="academicData" class="resume-title-edit" size="mini" type="text" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -114,7 +114,7 @@
                 <el-col :span="17">
                   <div class="resume-desc-list">
                     <el-row>
-                      <el-col v-for="(item, index) in listData" :span="24" :key="index" class="desc-li">
+                      <el-col v-for="(item, index) in academicData" :span="24" :key="index" class="desc-li">
                         <el-row>
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
@@ -137,7 +137,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="industrypng" alt="行业资质"></p> </el-col>
               <el-col :span="19"> <span>行业资质</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="certificateData" class="resume-title-edit" size="mini" type="text" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -150,7 +150,7 @@
                 <el-col :span="17">
                   <div class="resume-desc-list">
                     <el-row>
-                      <el-col v-for="(item, index) in listData" :span="24" :key="index" class="desc-li">
+                      <el-col v-for="(item, index) in certificateData" :span="24" :key="index" class="desc-li">
                         <el-row>
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
@@ -172,7 +172,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="societypng" alt="社会职务"></p> </el-col>
               <el-col :span="19"> <span>社会职务</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="socialData" class="resume-title-edit" type="text" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -185,7 +185,7 @@
                 <el-col :span="17">
                   <div class="resume-desc-list">
                     <el-row>
-                      <el-col v-for="(item, index) in listData" :span="24" :key="index" class="desc-li">
+                      <el-col v-for="(item, index) in socialData" :span="24" :key="index" class="desc-li">
                         <el-row>
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
@@ -206,7 +206,7 @@
         </el-row>
       </el-col>
     </el-row>
-    <WorkCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" @operate="createOrUpdateWork"/>
+    <WorkCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" :create-data="ifCreate" @operate="createOrUpdateWork"/>
     <EducationCreateOrUpdate :source-visible="createOrUpdateEducationVisible" :source-data="education" @operate="createOrUpdateEducation"/>
     <AcademicCreateOrUpdate :source-visible="createOrUpdateAcademicVisible" :source-data="academic" @operate="createOrUpdateAcademic"/>
     <IndustryCreateOrUpdate :source-visible="createOrUpdateIndustryVisible" :source-data="industry" @operate="createOrUpdateIndustry"/>
@@ -225,6 +225,7 @@ import industrypng from '../../../assets/lawyerinfo/industry.png'
 import studypng from '../../../assets/lawyerinfo/study.png'
 import learnpng from '../../../assets/lawyerinfo/learning.png'
 import workpng from '../../../assets/lawyerinfo/work.png'
+import { mapActions } from 'vuex'
 
 export default {
   layout: 'userCenter',
@@ -267,34 +268,98 @@ export default {
       academic: {}, // 学术成果
       industry: {}, // 行业资质
       social: {}, // 社会职务
+      ifCreate: '', // 是否新增
       resumeData: {
         info: 'wohfsjfoi'
       },
-      workData: [
-        { id: '1', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' },
-        { id: '2', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' },
-        { id: '3', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' },
-        { id: '4', name: '北京京师律师事务所', position: '合伙人律师', time: '2014.04 - 2018.08', isShowBtn: 'false' }
-      ],
-      educationData: [
-        { id: '1', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' },
-        { id: '2', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' },
-        { id: '3', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' },
-        { id: '4', name: '吉林大学', position: '本科', time: '2014.04 - 2018.08', isShowBtn: 'false' }
-      ],
-      listData: [
-        { id: '1', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },
-        { id: '2', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },
-        { id: '3', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' },
-        { id: '4', name: '中央电视台《法律讲堂》节目主讲律师', isShowBtn: 'false' }
-      ]
+      workData: [], // 工作
+      educationData: [], // 教育经历
+      academicData: [], // 学术成果
+      certificateData: [], // 行业资质
+      socialData: []// 社会职务
     }
   },
   watch: {
   },
   mounted() {
+    this.getWorkexperienceData()
+    this.getEducationData()
+    this.getAcademicData()
+    this.getCertificateData()
+    this.getSocialpositionData()
   },
   methods: {
+    ...mapActions('workexperience', ['getWorkexperienceList', 'deleteWorkexperience']),
+    ...mapActions('education', ['getEducationList'], ['createEducation'], ['updateEducation'], ['deletetEducation']),
+    ...mapActions('academic', ['getAcademicList'], ['createtAcademic'], ['updatetAcademic'], ['deletetAcademic']),
+    ...mapActions('certificate', ['getCertificateList'], ['createtCertificate'], ['updatetCertificate'], ['deletetCertificate']),
+    ...mapActions('socialposition', ['getSocialpositionList'], ['createSocialposition'], ['updateSocialposition'], ['deleteSocialposition']),
+
+    // 获取工作经历
+    getWorkexperienceData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.requestWork, delayTime)
+    },
+    requestWork() {
+      this.getWorkexperienceList().then(res => {
+        res.forEach(item => {
+          this.$set(item, 'isShowBtn', true)
+          item.startDate = this.$moment(item.startDate).format('YYYY.MM')
+          item.endDate = this.$moment(item.endDate).format('YYYY.MM')
+        })
+        this.workData = res
+        this.loading = false
+      })
+    },
+    // 获取教育经历
+    getEducationData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.requestEdu, delayTime)
+    },
+    requestEdu() {
+      this.getEducationList().then(res => {
+        res.forEach(item => {
+          this.$set(item, 'isShowBtn', true)
+          item.startDate = this.$moment(item.startDate).format('YYYY.MM')
+          item.endDate = this.$moment(item.endDate).format('YYYY.MM')
+        })
+        this.educationData = res
+        this.loading = false
+      })
+    },
+    // 获取学术成果
+    getAcademicData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.requestAca, delayTime)
+    },
+    requestAca() {
+      this.getAcademicList().then(res => {
+        this.academicData = res
+        this.loading = false
+      })
+    },
+    // 获取行业资质
+    getCertificateData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.requestCer, delayTime)
+    },
+    requestCer() {
+      this.getCertificateList().then(res => {
+        this.certificateData = res
+        this.loading = false
+      })
+    },
+    // 获取社会职务
+    getSocialpositionData(delayTime = 150) {
+      this.loading = true
+      setTimeout(this.requestSocial, delayTime)
+    },
+    requestSocial() {
+      this.getSocialpositionList().then(res => {
+        this.socialData = res
+        this.loading = false
+      })
+    },
     // 个人信息编辑或提交点击事件
     editOrSubmitClick() {
       if (!this.disabledInfo) {
@@ -302,7 +367,7 @@ export default {
       }
       this.disabledInfo = !this.disabledInfo
     },
-    resumeDelete(id, resumeId) {
+    resumeDelete(workId, resumeId) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -310,10 +375,15 @@ export default {
         center: true
       })
         .then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+          if (resumeId === 1) {
+            this.deleteWorkexperience(workId).then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.getWorkexperienceData()
+            })
+          }
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -323,6 +393,7 @@ export default {
     },
     createOrUpdateWork(val) {
       this.createOrUpdateWorkVisible = false
+      this.getWorkexperienceData()
     },
     createOrUpdateEducation(val) {
       this.createOrUpdateEducationVisible = false
