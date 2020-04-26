@@ -174,8 +174,6 @@
 </template>
 <script>
 import Pagination from '@/components/Pagination/index'
-import setting from '@/plugins/setting'
-import axios from 'axios'
 import { mapState, mapActions } from 'vuex'
 export default {
   layout: 'userCenter',
@@ -213,15 +211,6 @@ export default {
       }
     }
   },
-  async asyncData({ params }) {
-    const [userCaseData] = await Promise.all([
-      axios.post(`${process.env.baseUrl}/${setting.apiPrefix}/customer/case/query`, { query: { practiceAreaId: '', searchKey: '', courtLevel: '', courtId: '', industryId: '', caseReasonId: '', lawyerId: '', courtReginId: '', sorting: 'casestatus', sortType: 1, pageCount: 10, pageIndex: 1 }}, { 'Content-Type': 'application/json' })
-    ])
-    return {
-      userCaseData: userCaseData.data.data.items,
-      totalCount: userCaseData.data.data.totalCount
-    }
-  },
   computed: {
     ...mapState({
       PracticeTreeDataForAntd: state => state.practice.PracticeTreeDataForAntd,
@@ -235,6 +224,7 @@ export default {
   watch: {
   },
   mounted() {
+    this.getUserCaseList()
   },
   methods: {
     FixLocation(triggerNode) {
@@ -243,14 +233,14 @@ export default {
       triggerNode => document // .getDocument().getElementById('casereasontreeselect')
       // return document.getDocument() // .getElementById('casereasontreeselect')
     },
-    ...mapActions('case', ['getCaseListData']),
+    ...mapActions('case', ['userCenterCaseQuery']),
     // 获取案件
     getUserCaseList(delayTime = 150) {
       this.loading = true
       setTimeout(this.request, delayTime)
     },
     request() {
-      this.getCaseListData({ ...this.userCaseSearch, ...this.searchKey }).then(res => {
+      this.userCenterCaseQuery({ ...this.userCaseSearch, ...this.searchKey }).then(res => {
         this.userCaseData = res.items
         this.totalCount = res.totalCount
         this.loading = false
