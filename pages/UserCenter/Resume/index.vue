@@ -80,9 +80,9 @@
                   <el-row>
                     <el-col v-for="(item, index) in educationData" :span="8" :key="index">
                       <div class="resume-desc-model" @mouseenter="item.isShowBtn=false" @mouseleave="item.isShowBtn=true">
-                        <p>{{ item.name }}</p>
-                        <p>{{ item.position }}</p>
-                        <p>{{ item.time }}</p>
+                        <p>{{ item.school }}</p>
+                        <p>{{ item.educationBackground }}</p>
+                        <p>{{ item.startDate }}-{{ item.endDate }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
                             <el-col :span="11" @click.native="createOrUpdateEducationVisible=true,education=item">编辑</el-col>
@@ -101,7 +101,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="studypng" alt="学术成果"></p> </el-col>
               <el-col :span="19"> <span>学术成果</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="academicData" class="resume-title-edit" size="mini" type="text" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -137,7 +137,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="industrypng" alt="行业资质"></p> </el-col>
               <el-col :span="19"> <span>行业资质</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="certificateData" class="resume-title-edit" size="mini" type="text" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -172,7 +172,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="societypng" alt="社会职务"></p> </el-col>
               <el-col :span="19"> <span>社会职务</span> </el-col>
-              <el-col :span="4"> <el-button class="resume-title-edit" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="socialData" class="resume-title-edit" type="text" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -318,7 +318,12 @@ export default {
     },
     requestEdu() {
       this.getEducationList().then(res => {
-        this.educationData = res.items
+        res.forEach(item => {
+          this.$set(item, 'isShowBtn', true)
+          item.startDate = this.$moment(item.startDate).format('YYYY.MM')
+          item.endDate = this.$moment(item.endDate).format('YYYY.MM')
+        })
+        this.educationData = res
         this.loading = false
       })
     },
@@ -329,7 +334,7 @@ export default {
     },
     requestAca() {
       this.getAcademicList().then(res => {
-        this.academicData = res.items
+        this.academicData = res
         this.loading = false
       })
     },
@@ -340,7 +345,7 @@ export default {
     },
     requestCer() {
       this.getCertificateList().then(res => {
-        this.certificateData = res.items
+        this.certificateData = res
         this.loading = false
       })
     },
@@ -351,7 +356,7 @@ export default {
     },
     requestSocial() {
       this.getSocialpositionList().then(res => {
-        this.socialData = res.items
+        this.socialData = res
         this.loading = false
       })
     },
