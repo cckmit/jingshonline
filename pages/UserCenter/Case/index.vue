@@ -1,14 +1,5 @@
 <template>
   <div class="userCenter-case">
-    <a-tree-select
-      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-      :tree-data="casereasonTreeData"
-      v-model="userCaseSearch.casereasonId"
-      show-search
-      style="width: 100%"
-      tree-node-filter-prop="title"
-      placeholder="请选择"
-    />
     <el-row>
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >京师在线</el-breadcrumb-item>
