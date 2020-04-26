@@ -11,9 +11,9 @@
           <div class="setting">
             <p>&nbsp;&nbsp;●&nbsp;&nbsp;个人设置</p>
             <ul>
-              <li>修改密码</li>
-              <li>修改手机号</li>
-              <li>绑定邮箱</li>
+              <li><a href="#changepassword">修改密码</a></li>
+              <li><a href="#changetele">修改手机号</a></li>
+              <li><a href="#changemail">绑定邮箱</a></li>
             </ul>
           </div>
           <div class="addcase" style="">
@@ -22,17 +22,17 @@
       </div></el-col>
       <el-col :span="19">
         <el-row class="changeform">
-          <el-col :span="24">
+          <el-col id="changepassword" :span="24">
             <p>修改密码</p>
             <b>温馨提示：密码可以用来登录京师在线相关产品，请勿随意泄露您的信息，以防不法分子利用造成个人损失</b>
-            <el-form ref="passwordForm" :rules="rules" :model="passwordForm" label-position="right" label-width="100px">
+            <el-form ref="passwordForm" :rules="rules" :model="passwordForm" label-position="left" label-width="100px">
               <el-form-item label="当前密码" prop="oldPassword">
                 <el-input v-model="passwordForm.oldPassword" size="small" clearable placeholder="当前密码" />
               </el-form-item>
               <el-form-item label="新密码" prop="newPassword">
                 <el-input v-model="passwordForm.newPassword" size="small" clearable placeholder="新密码" @input="checknum(passwordForm.newPassword)"/>
               </el-form-item>
-              <el-form-item label="强度">
+              <el-form-item label="密码强度">
                 <div class="input_span">
                   <span id="one" :class="one"/>
                   <span id="two" :class="two"/>
@@ -47,10 +47,10 @@
               </el-form-item>
             </el-form>
           </el-col>
-          <el-col :span="24">
+          <el-col id="changetele" :span="24">
             <p>修改绑定手机</p>
             <b>温馨提示：手机可以用来登录京师在线相关产品，请勿随意泄露您的信息，以防不法分子利用造成个人损失</b>
-            <el-form ref="teleForm" :rules="telerules" :model="teleForm" label-position="right" label-width="100px">
+            <el-form ref="teleForm" :rules="telerules" :model="teleForm" label-position="left" label-width="100px">
               <el-form-item label="当前手机号" prop="oldtelephone">
                 <el-input v-model="teleForm.oldtelephone" size="small" clearable placeholder="当前手机号" />
               </el-form-item>
@@ -66,10 +66,10 @@
               </el-form-item>
             </el-form>
           </el-col>
-          <el-col :span="24" >
+          <el-col id="changemail" :span="24">
             <p>修改绑定邮箱</p>
             <b>温馨提示：邮箱可以用来登录京师在线相关产品，请勿随意泄露您的信息，以防不法分子利用造成个人损失</b>
-            <el-form ref="emailForm" :rules="emailrules" :model="emailForm" label-position="right" label-width="100px">
+            <el-form ref="emailForm" :rules="emailrules" :model="emailForm" label-position="left" label-width="100px">
               <el-form-item label="邮箱地址" prop="oldemail">
                 <el-input v-model="emailForm.oldemail" size="small" clearable placeholder="邮箱地址" />
               </el-form-item>
@@ -487,20 +487,25 @@ export default {
   }
 
 .setting{
-  padding: 30px;
+  padding: 20px;
   background: #fff;
   margin-bottom:25px;
   p{
     color: #f68020;
-    padding-left: 20px;
+    padding-left: 10px;
     font-size: 16px;
+    margin-bottom: 10px!important;
   }
   ul{
     margin: 0px;
+    padding-left: 40px;
     li{
-      text-align: center;
       line-height: 36px;
       font-size: 14px;
+      a{
+        display: block;
+        color:#333;
+      }
     }
   }
 }
@@ -526,10 +531,11 @@ export default {
       font-size: 14px;
       color: #e91d1d;
       padding: 20px;
+      letter-spacing: 1px;
     }
     .el-form{
       width: 50%;
-      margin: 20px auto;
+      margin: 50px auto 30px auto;
       .number{
         overflow: hidden;
         .el-input{
@@ -574,7 +580,6 @@ export default {
 		border-top-left-radius: 5px;
 		border-bottom-left-radius: 5px;
 		border-right: 0px solid;
-		margin-left: 20px;
 		margin-right: 3px;
 	}
 

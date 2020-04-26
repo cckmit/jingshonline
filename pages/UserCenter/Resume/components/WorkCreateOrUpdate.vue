@@ -2,12 +2,13 @@
   <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加工作经历':'编辑工作经历'" width="23%" @close="close">
     <WorkForm ref="workForm" :work-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" size="small" @click="close">保存</el-button>
+      <el-button type="primary" size="small" @click="submit">保存</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import WorkForm from './WorkForm'
 export default {
   name: 'WorkCreatOrUpdate',
@@ -16,6 +17,10 @@ export default {
   },
   props: {
     sourceVisible: {
+      type: Boolean,
+      default: false
+    },
+    createData: {
       type: Boolean,
       default: false
     },
@@ -28,19 +33,43 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      ifCreateUpdate: ''
     }
   },
   watch: {
     sourceVisible: function(val) {
       this.visible = val
+    },
+    createData: function(val) {
+      this.ifCreateUpdate = val
     }
   },
   methods: {
+    ...mapActions('workexperience', ['createWorkexperience', 'updateWorkexperience']),
+    submit() {
+      this.$refs.workForm.$refs.workForm.model.startDate = this.$refs.workForm.workTime[0]
+      this.$refs.workForm.$refs.workForm.model.endDate = this.$refs.workForm.workTime[1]
+      this.$refs.workForm.$refs.workForm.validate(valid => {
+        if (valid) {
+          if (this.ifCreateUpdate) {
+            this.createWorkexperience({ ...this.$refs.workForm.workForm }).then(res => {
+              this.$message.success(res)
+              this.visible = false
+            })
+          } else {
+            this.updateWorkexperience({ ...this.$refs.workForm.workForm }).then(res => {
+              this.$message.success(res)
+              this.visible = false
+            })
+          }
+        }
+      })
+    },
     close() {
       this.visible = false
       this.$emit('operate', this.visible)
-      // this.$refs.workForm.$refs.workForm.resetFields()
+      this.$refs.workForm.$refs.workForm.resetFields()
     }
   }
 }

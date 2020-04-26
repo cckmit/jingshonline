@@ -8,6 +8,7 @@
 </template>
 
 <script>
+
 import AcademicForm from './AcademicForm'
 export default {
   name: 'AcademicCreateOrUpdate',
@@ -37,10 +38,11 @@ export default {
     }
   },
   methods: {
+
     close() {
       this.visible = false
       this.$emit('operate', this.visible)
-      // this.$refs.workForm.$refs.workForm.resetFields()
+      this.$refs.workForm.$refs.workForm.resetFields()
     }
   }
 }

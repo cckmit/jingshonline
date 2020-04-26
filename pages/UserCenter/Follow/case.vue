@@ -91,7 +91,7 @@
               clearable
               @clear="CaseSearch.courtLevel=null"
               @change="getUserCaseList">
-              <el-option v-for="item in courtLevelData" :key="item.id" :label="item.name" :value="item.id"/>
+              <el-option v-for="item in courtLevelData" :key="item.id" :label="item.description" :value="item.id"/>
             </el-select>
           </div>
         </div>
@@ -310,6 +310,7 @@ ul {
 }
 .tree_left {
   padding: 30px;
+  margin-bottom: 150px;
   .case-item{
     p{
       font-size: 12px;
@@ -334,6 +335,9 @@ ul {
     }
     .ant-select{
       width: 100%;
+      .ant-select-selection-selected-value{
+        padding-left: 20px;
+      }
     }
   }
   b {

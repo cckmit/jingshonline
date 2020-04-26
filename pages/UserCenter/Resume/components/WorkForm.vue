@@ -1,14 +1,15 @@
 <template>
   <el-form ref="workForm" :model="workForm" label-position="right" label-width="80px">
-    <el-form-item label="所在单位" prop="name">
-      <el-input v-model="workForm.name" size="small" clearable placeholder="请输入所在单位" />
+    <el-form-item label="所在单位" prop="organization">
+      <el-input v-model="workForm.organization" size="small" clearable placeholder="请输入所在单位" />
     </el-form-item>
     <el-form-item label="担任职务" prop="position">
       <el-input v-model="workForm.position" size="small" clearable placeholder="请输入担任职务" />
     </el-form-item>
+
     <el-form-item label="在职时间" prop="time">
       <el-date-picker
-        v-model="workForm.time"
+        v-model="workTime"
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
@@ -41,14 +42,18 @@ export default {
     return {
       disabled: false,
       psdDisabled: false,
-      workForm: {}
+      workForm: {},
+      workTime: []
     }
   },
   watch: {
     workFormData: {
       immediate: true,
       handler(val) {
+        val = JSON.stringify(val)
+        val = JSON.parse(val)
         this.workForm = val
+        this.workTime = [val.startDate, val.endDate]
       }
     },
     sourceDisabled: {
