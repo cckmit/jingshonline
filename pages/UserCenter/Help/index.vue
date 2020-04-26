@@ -99,13 +99,16 @@ export default {
 .selectend{
   background: #fff;
   padding: 30px 50px;
+  margin-bottom: 40px;
   .title{
       font-size: 18px;
       border-bottom: 1px solid #e9e9e9;
       padding-bottom: 15px;
+      color:#333;
+      display: block;
     }
   .selecttab{
-    padding: 35px 20px;
+    padding: 35px 20px 0px 20px;
     p{
       font-size: 16px;
       font-weight: bold;
@@ -115,6 +118,10 @@ export default {
       padding: 20px;
       line-height: 50px;
       font-size: 14px;
+      color:#999;
+      b{
+        color:#666;
+      }
     }
   }
 }
