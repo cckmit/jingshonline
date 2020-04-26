@@ -14,76 +14,74 @@
       <hr>
       <el-row>
         <el-col :span="13">
-          <keep-alive>
-            <el-form ref="authForm" :model="authForm" :rules="authFormRules" label-position="left" label-width="90px">
-              <el-form-item label="律师姓名" prop="realName">
-                <el-input v-model="authForm.realName" placeholder="姓名" size="small" clearable/>
-              </el-form-item>
-              <el-form-item label="性别" prop="sex">
-                <el-radio-group v-model="authForm.sex" size="small">
-                  <el-radio :label="true">男</el-radio>
-                  <el-radio :label="false">女</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item label="出生日期" prop="birthday">
-                <el-date-picker
-                  v-model="authForm.birthday"
-                  type="month"
-                  size="small"
-                  style="width:100%"
-                  placeholder="选择出生日期"/>
-              </el-form-item>
-              <el-form-item label="所在地区" prop="regionId">
-                <el-cascader
-                  v-model="authForm.regionId"
-                  :options="regionTreeData"
-                  :props="{ expandTrigger: 'hover', checkStrictly: true, label: 'name', value: 'id' }"
-                  placeholder="请选择您所在的地区"
-                  filterable
-                  clearable
-                  style="width:100%"
-                  size="small"
-                  @change="regionChange"/>
-              </el-form-item>
-              <el-form-item label="执业机构" prop="lawfirmId">
-                <el-select
-                  v-model="authForm.lawfirmId"
-                  placeholder="请选择您所在的执业机构"
-                  size="small"
-                  style="width:100%"
-                  filterable
-                  clearable>
-                  <el-option
-                    v-for="item in lawfirmData"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="执业证号" prop="licenceNo">
-                <el-input v-model="authForm.licenceNo" placeholder="请输入真实有效的执业证号" size="small" clearable/>
-              </el-form-item>
-              <el-form-item label="执业证领取时间" prop="licenceDate">
-                <el-date-picker
-                  v-model="authForm.licenceDate"
-                  type="month"
-                  size="small"
-                  style="width:100%"
-                  placeholder="选择执业证领取时间"/>
-              </el-form-item>
-              <el-form-item label="执业证" prop="licencePath">
-                <Oss :option="licencePathOssOption" @change="licencePathOssChange"/>
-              </el-form-item>
-              <el-form-item label="上传头像" prop="avatar">
-                <Oss :option="avatarOssOption" @change="avatarOssChange"/>
-              </el-form-item>
-              <el-form-item class="auth_form_button">
-                <el-button size="small" @click="()=>{this.$router.push('/usercenter/auth')}">返回</el-button>
-                <el-button size="small" @click="submit">提交认证</el-button>
-              </el-form-item>
-            </el-form>
-          </keep-alive>
+          <el-form ref="authForm" :model="authForm" :rules="authFormRules" label-position="left" label-width="90px">
+            <el-form-item label="律师姓名" prop="realName">
+              <el-input v-model="authForm.realName" placeholder="姓名" size="small" clearable/>
+            </el-form-item>
+            <el-form-item label="性别" prop="sex">
+              <el-radio-group v-model="authForm.sex" size="small">
+                <el-radio :label="true">男</el-radio>
+                <el-radio :label="false">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="出生日期" prop="birthday">
+              <el-date-picker
+                v-model="authForm.birthday"
+                type="month"
+                size="small"
+                style="width:100%"
+                placeholder="选择出生日期"/>
+            </el-form-item>
+            <el-form-item label="所在地区" prop="regionId">
+              <el-cascader
+                v-model="authForm.regionId"
+                :options="regionTreeData"
+                :props="{ expandTrigger: 'hover', checkStrictly: true, label: 'name', value: 'id' }"
+                placeholder="请选择您所在的地区"
+                filterable
+                clearable
+                style="width:100%"
+                size="small"
+                @change="regionChange"/>
+            </el-form-item>
+            <el-form-item label="执业机构" prop="lawfirmId">
+              <el-select
+                v-model="authForm.lawfirmId"
+                placeholder="请选择您所在的执业机构"
+                size="small"
+                style="width:100%"
+                filterable
+                clearable>
+                <el-option
+                  v-for="item in lawfirmData"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="执业证号" prop="licenceNo">
+              <el-input v-model="authForm.licenceNo" placeholder="请输入真实有效的执业证号" size="small" clearable/>
+            </el-form-item>
+            <el-form-item label="执业证领取时间" prop="licenceDate">
+              <el-date-picker
+                v-model="authForm.licenceDate"
+                type="month"
+                size="small"
+                style="width:100%"
+                placeholder="选择执业证领取时间"/>
+            </el-form-item>
+            <el-form-item label="执业证" prop="licencePath">
+              <Oss :option="licencePathOssOption" @change="licencePathOssChange"/>
+            </el-form-item>
+            <el-form-item label="上传头像" prop="avatar">
+              <Oss :option="avatarOssOption" @change="avatarOssChange"/>
+            </el-form-item>
+            <el-form-item class="auth_form_button">
+              <el-button size="small" @click="()=>{this.$router.push('/usercenter/auth')}">返回</el-button>
+              <el-button size="small" @click="submit">提交认证</el-button>
+            </el-form-item>
+          </el-form>
         </el-col>
         <el-col :span="11">
           <p>头像示例：</p>
@@ -219,9 +217,10 @@ export default {
     this.getLawyerInfo()
   },
   methods: {
+    ...mapActions('account', ['GetLoginUserInfo']),
     ...mapActions('lawyer', ['LawyerCertify']),
     getLawyerInfo() {
-      this.lawyerInfo.lawyerInfo !== undefined ? this.authForm = this.lawyerInfo.lawyerInfo : ''
+      this.lawyerInfo.lawyerInfo !== undefined ? this.authForm = JSON.parse(JSON.stringify(this.lawyerInfo.lawyerInfo)) : ''
       this.lawyerInfo.lawyerInfo !== undefined ? this.avatarOssOption.fileList = [{ name: 'avatar', url: this.lawyerInfo.lawyerInfo.avatar, fileId: this.lawyerInfo.lawyerInfo.avatarPathId, uid: Math.random() * 200, status: 'success' }] : ''
       this.lawyerInfo.lawyerInfo !== undefined ? this.licencePathOssOption.fileList = [{ name: 'lawyerlicence', url: this.lawyerInfo.lawyerInfo.licencePath, fileId: this.lawyerInfo.lawyerInfo.licencePathId, uid: Math.random() * 200, status: 'success' }] : ''
     },
@@ -241,6 +240,9 @@ export default {
         if (valid) {
           this.LawyerCertify(this.authForm).then(res => {
             this.$message.success(res)
+            this.GetLoginUserInfo().then(res => {
+              this.$router.push('/usercenter/auth')
+            })
           })
         }
       })
