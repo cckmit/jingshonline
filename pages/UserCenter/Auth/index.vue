@@ -26,18 +26,18 @@
                 <el-form-item label="头像" prop="realName" class="avatar" style="line-height:normal;">
                   <dl>
                     <dt>
-                      <el-image :src="lawyer.avatar || ''"/>
+                      <el-image :src="lawyerCertifyInfo.avatar"/>
                     </dt>
                     <dd>本图片将作为您的头像进行展示，仅支持jpg/png格式。</dd>
                   </dl>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item label="律师姓名" prop="realName">{{ lawyer.realName || '' }}</el-form-item>
-                <el-form-item label="性别" prop="realName">{{ laywer || '' }}</el-form-item>
-                <el-form-item label="所在地区" prop="realName">{{ lawyer.regionId || '' }}</el-form-item>
-                <el-form-item label="执业机构" prop="realName">{{ lawyer.lawfirmId || '' }}</el-form-item>
-                <el-form-item label="执业证号" prop="realName">{{ lawyer.licenceNo || '' }}</el-form-item>
+                <el-form-item label="律师姓名" prop="realName">{{ lawyerCertifyInfo.realName }}</el-form-item>
+                <el-form-item label="性别" prop="realName">{{ lawyerCertifyInfo.sex===1?'男':'女' }}</el-form-item>
+                <el-form-item label="所在地区" prop="realName">{{ lawyerCertifyInfo.regionId }}</el-form-item>
+                <el-form-item label="执业机构" prop="realName">{{ lawyerCertifyInfo.lawfirmId }}</el-form-item>
+                <el-form-item label="执业证号" prop="realName">{{ lawyerCertifyInfo.licenceNo }}</el-form-item>
               </el-col>
             </el-row>
           </el-form>
@@ -52,7 +52,7 @@
 </template>
 <script>
 import Oss from '@/components/Oss'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   layout: 'userCenter',
   name: 'UserCenterIndex',
@@ -70,9 +70,7 @@ export default {
   },
   data() {
     return {
-      lawyerCertifyInfo: {
-
-      },
+      lawyerCertifyInfo: { },
       authFormRules: {
         realName: [
           { required: true, message: '', trigger: 'blur' }
@@ -82,20 +80,20 @@ export default {
   },
   computed: {
     ...mapState({
-      lawyer: state => state.account.lawyerInfo
+      lawyerInfo: state => state.account.lawyerInfo
     })
   },
   watch: {
+    lawyerInfo: function() {
+      this.getLawyerInfo()
+    }
   },
   mounted() {
-    this.getCertifyInfo()
+    this.getLawyerInfo()
   },
   methods: {
-    ...mapActions('lawyer', ['getLawyerCertifyInfo']),
-    getCertifyInfo() {
-      this.getLawyerCertifyInfo(this.lawyer.id).then(res => {
-        this.lawyerCertifyInfo = res
-      })
+    getLawyerInfo() {
+      this.lawyerInfo.lawyerInfo !== undefined ? this.lawyerCertifyInfo = this.lawyerInfo.lawyerInfo : ''
     }
   }
 }

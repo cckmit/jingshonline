@@ -1,5 +1,15 @@
 <template>
   <div class="userCenter-case">
+    <!-- ↓↓↓↓↓↓↓↓↓↓↓ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <a-tree-select
+      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      show-search
+      allow-clear
+      style="width: 100%;display:none;"
+      tree-node-filter-prop="title"
+      placeholder="请选择"
+    />
+    <!-- ↑↑↑↑↑↑↑↑↑↑↑ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
     <el-row>
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
         <el-breadcrumb-item :to="{path:'/'}" >京师在线</el-breadcrumb-item>
@@ -12,71 +22,73 @@
             <i class="case-icon  iconfont iconicon-test"/>条件筛选
           </div>
           <div class="case-screen-content">
-            <div class="case-screen-industryId case-screen-item">
-              <p>所属行业</p>
-              <!-- <img class="case-icon" src="../../../assets/usercenter/industry.png"> -->
-              <el-select
-                v-model="userCaseSearch.industryId"
-                size="mini"
-                placeholder="请选择"
-                filterable
-                clearable
-                @clear="userCaseSearch.industryId=null"
-                @change="getUserCaseList">
-                <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
-              </el-select>
-            </div>
-            <div class="case-screen-court case-screen-item">
-              <p>管辖法院</p>
-              <!-- <img class="case-icon" src="../../../assets/usercenter/court.png"> -->
-              <el-select
-                v-model="userCaseSearch.courtId"
-                size="mini"
-                placeholder="请选择"
-                filterable
-                clearable
-                @clear="userCaseSearch.courtId=''"
-                @change="getUserCaseList"
-              >
-                <el-option
-                  v-for="item in courtData"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"/>
-              </el-select>
-            </div>
-            <div class="case-screen-casereason case-screen-item">
-              <p>所属案由</p>
-              <!-- <img class="case-icon" src="../../../assets/usercenter/casereason.png"> -->
+            <p>所属行业</p>
+            <el-select
+              v-model="userCaseSearch.industryId"
+              style="width:100%"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="userCaseSearch.industryId=null"
+              @change="getUserCaseList">
+              <template slot="prefix">
+                <img class="case-icon" src="../../../assets/usercenter/industry.png">
+              </template>
+              <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
+            </el-select>
+            <p>管辖法院</p>
+            <el-select
+              v-model="userCaseSearch.courtId"
+              style="width:100%"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="userCaseSearch.courtId=''"
+              @change="getUserCaseList"
+            >
+              <template slot="prefix">
+                <img class="case-icon" src="../../../assets/usercenter/court.png">
+              </template>
+              <el-option
+                v-for="item in courtData"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"/>
+            </el-select>
+            <p>所属案由</p>
+            <div class="casereason_treedata">
+              <img class="case-icon" src="../../../assets/usercenter/casereason.png">
               <a-tree-select
                 :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                 :tree-data="casereasonTreeData"
                 v-model="userCaseSearch.casereasonId"
                 show-search
+                allow-clear
                 style="width: 100%"
                 tree-node-filter-prop="title"
                 placeholder="请选择"
               />
             </div>
-            <div class="case-screen-practice case-screen-item">
-              <p>专业领域</p>
-              <!-- <img class="case-icon" src="../../../assets/usercenter/practice.png"> -->
+            <p>专业领域</p>
+            <div class="practice_treedata">
+              <img class="case-icon" src="../../../assets/usercenter/practice.png">
               <a-tree-select
                 :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                 :tree-data="PracticeTreeDataForAntd"
                 v-model="userCaseSearch.practiceId"
                 show-search
+                allow-clear
                 style="width: 100%"
                 tree-node-filter-prop="title"
                 placeholder="请选择"
               />
             </div>
-            <div class="case-screen-practice case-screen-item">
-              <p>审核状态</p>
-              <el-radio-group v-model="userCaseSearch.checkExamine">
-                <el-radio v-for="item in examineStatus" :label="item.name" :key="item.displayName" @change="getUserCaseList">{{ item.displayName }}</el-radio>
-              </el-radio-group>
-            </div>
+            <p>审核状态</p>
+            <el-radio-group v-model="userCaseSearch.checkExamine">
+              <el-radio v-for="item in examineStatus" :label="item.name" :key="item.displayName" @change="getUserCaseList">{{ item.displayName }}</el-radio>
+            </el-radio-group>
           </div>
         </div>
         <!-- 添加案例 -->
@@ -131,7 +143,7 @@
                 </el-col>
                 <el-col :span="18">
                   <div class="case-article">
-                    <p class="case-article-title">
+                    <p class="case-article-title" @click="toCaseInfo(item.id)">
                       {{ item.title }}
                     </p>
                     <div class="case-article-desc">
@@ -142,7 +154,7 @@
                       <el-col :span="16" class="case-article-time">{{ item.endTime }}</el-col>
                       <el-col :span="8" class="case-article-button">
                         <el-button size="mini" icon="el-icon-delete" @click="deteleCase(item.id)">删除</el-button>
-                        <nuxt-link :to="{name: 'UserCenter-Case-update?caseType=' + item.caseType}"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
+                        <nuxt-link :to="{path: `/usercenter/case/${item.id}/update` }"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
                       </el-col>
                     </el-row>
                   </div>
@@ -225,6 +237,12 @@ export default {
   mounted() {
   },
   methods: {
+    FixLocation(triggerNode) {
+      console.log(triggerNode)
+      debugger
+      triggerNode => document // .getDocument().getElementById('casereasontreeselect')
+      // return document.getDocument() // .getElementById('casereasontreeselect')
+    },
     ...mapActions('case', ['getCaseListData']),
     // 获取案件
     getUserCaseList(delayTime = 150) {
@@ -237,6 +255,9 @@ export default {
         this.totalCount = res.totalCount
         this.loading = false
       })
+    },
+    toCaseInfo(caseId) {
+      this.$router.push(`/usercenter/case/${caseId}/info`)
     },
     // 搜索关键字防抖节流
     changeSearch: function(data) {
@@ -282,26 +303,57 @@ export default {
     }
     // 左侧搜索
   .case-screen{
-    height:540px;margin-right:7px;background:#fff;color:rgba(0,0,0,1);
+    height:560px;margin-right:7px;background:#fff;color:rgba(0,0,0,1);
     .case-screen-title{ //搜索标题
       height:48px;line-height:48px;padding-left:31px;font-size: 14px;border-bottom: 1px solid rgba(238,238,238,1);
+      margin-bottom: 20px;
     }
-    .case-screen-content{//搜索下拉框
-      padding:2px 31px 21px 31px;
-      .case-screen-item{
-        margin-top:17px;
-        position:relative;
-        p{margin-bottom: 11px!important;font-size:12px;}
-         .el-input__inner{height: 28px !important;}
-         //审核状态
-         .el-checkbox-group{.el-checkbox{display: block;margin-bottom: 18px;margin-left: 30px}}
-       }
-       //搜索图标
-       .case-screen-industryId,.case-screen-court,.case-screen-casereason,.case-screen-practice{
-        .case-icon{position:absolute;top:32px;left:5px;z-index:10;}
+    .case-screen-content{
+      padding: 0 32px;
+      p{
+        margin-top: 18px !important;
+        margin-bottom: 12px !important;
+        &:first-child{
+          margin-top: 0 !important;
+        }
       }
-      .el-radio-group{margin-left:30px;.el-radio{display: block;margin-bottom:18px;}}
+      .casereason_treedata,.practice_treedata{
+        img{
+          position: absolute;
+          z-index: 9;
+          margin: 6px;
+        }
+      }
+      .el-radio-group{
+        padding-left: 26px;
+        .el-radio{
+          display: block;
+          margin-bottom: 14px;
+          font-size: 12px;
+          &:last-child{
+            margin-bottom: 0;
+          }
+        }
+      }
     }
+
+    // .case-screen-content{//搜索下拉框
+    //   padding:2px 31px 21px 31px;
+    //   .case-screen-item{
+    //     margin-top:17px;
+    //     position:relative;
+    //     p{margin-bottom: 11px!important;font-size:12px;}
+    //      .el-input__inner{height: 28px !important;}
+    //      //审核状态
+    //      .el-checkbox-group{.el-checkbox{display: block;margin-bottom: 18px;margin-left: 30px}}
+    //    }
+    //    //搜索图标
+    //    .case-screen-industryId,.case-screen-court,.case-screen-casereason,.case-screen-practice{
+    //      position: relative;
+    //     .case-icon{position:absolute;top:32px;left:5px;z-index:10;}
+    //   }
+    //   .el-radio-group{margin-left:30px;.el-radio{display: block;margin-bottom:18px;}}
+    // }
 
   }
   // 左边添加案例
@@ -326,7 +378,7 @@ export default {
   // 右边右边
   .case-article{padding:0 18px 0 40px;border-left:1px solid rgba(0,0,0,0.05);margin-left: 30px;
   min-height:268px;
-  .case-article-title{font-size:18px;color:rgba(51,51,51,1);line-height:28px;}
+  .case-article-title{font-size:18px;color:rgba(51,51,51,1);line-height:28px;cursor: pointer;}
   .case-article-desc{margin-top: 24px;margin-bottom:57px;
   span{font-size:14px;color:rgba(51,51,51,1);}
   .case-judgment,p{font-size:14px;color:rgba(153,153,153,1);margin-top:13px}}
@@ -336,7 +388,9 @@ export default {
   }
   }}}
 }
-
+#casereason{
+  position: relative;
+}
 </style>
 <style lang='scss'>
 .userCenter-case{
@@ -362,4 +416,14 @@ export default {
       .el-radio__label{font-size: 12px !important;}}
 }
 
+.el-input__prefix{
+  img{
+    margin: 4px;
+  }
+}
+.casereason_treedata,.practice_treedata{
+  .ant-select-selection--single{
+    text-indent: 20px;
+  }
+}
 </style>

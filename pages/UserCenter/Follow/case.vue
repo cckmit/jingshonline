@@ -1,135 +1,147 @@
 <template>
-  <el-row :gutter="20">
-    <el-col :span="24">
-      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">京师在线</el-breadcrumb-item>
-        <el-breadcrumb-item>我的关注</el-breadcrumb-item>
-        <el-breadcrumb-item>案例列表</el-breadcrumb-item>
-      </el-breadcrumb>
-    </el-col>
-    <el-col :span="6">
-      <div class="bgf tree_left">
-        <b><img src="../../../assets/usercenter/screen.png" alt="" >条件筛选</b>
-        <div class="case-item">
-          <p>擅长行业</p>
-          <img class="case-icon" src="../../../assets/usercenter/industry.png">
-          <el-select
-            v-model="CaseSearch.industryId"
-            size="mini"
-            placeholder="请选择"
-            filterable
-            clearable
-            @clear="CaseSearch.industryId=null"
-            @change="getUserCaseList">
-            <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
+  <div>
+    <!-- ↓↓↓↓↓↓↓↓↓↓↓ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <a-tree-select
+      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      show-search
+      allow-clear
+      style="width: 100%;display:none;"
+      tree-node-filter-prop="title"
+      placeholder="请选择"
+    />
+    <!-- ↑↑↑↑↑↑↑↑↑↑↑ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <el-row :gutter="20">
+      <el-col :span="24">
+        <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
+          <el-breadcrumb-item :to="{ path: '/' }">京师在线</el-breadcrumb-item>
+          <el-breadcrumb-item>我的关注</el-breadcrumb-item>
+          <el-breadcrumb-item>案例列表</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col :span="6">
+        <div class="bgf tree_left">
+          <b><img src="../../../assets/usercenter/screen.png" alt="" >条件筛选</b>
+          <div class="case-item">
+            <p>擅长行业</p>
+            <img class="case-icon" src="../../../assets/usercenter/industry.png">
+            <el-select
+              v-model="CaseSearch.industryId"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="CaseSearch.industryId=null"
+              @change="getUserCaseList">
+              <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
+            </el-select>
+          </div>
+          <div class="case-item">
+            <p>所属案由</p>
+            <img class="case-icon" src="../../../assets/usercenter/casereason.png">
+            <a-tree-select
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :tree-data="casereasonTreeData"
+              v-model="CaseSearch.caseReasonId"
+              show-search
+              style="width: 100%"
+              tree-node-filter-prop="title"
+              placeholder="请选择"
+            />
+          </div>
+          <div class="case-item">
+            <p>专业领域</p>
+            <img class="case-icon" src="../../../assets/usercenter/practice.png">
+            <a-tree-select
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :tree-data="lawsuitPracticeTreeData"
+              v-model="CaseSearch.practiceId"
+              show-search
+              style="width: 100%"
+              tree-node-filter-prop="title"
+              placeholder="请选择"
+            />
+          </div>
+          <div class="case-item">
+            <p>管辖法院</p>
+            <img class="case-icon" src="../../../assets/usercenter/court.png">
+            <el-select
+              v-model="CaseSearch.courtId"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="CaseSearch.courtId=''"
+              @change="getUserCaseList"
+            >
+              <el-option
+                v-for="item in courtData"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"/>
+            </el-select>
+          </div>
+          <div class="case-item">
+            <p>法院等级</p>
+            <img class="case-icon" src="../../../assets/usercenter/courtlevel.png">
+            <el-select
+              v-model="CaseSearch.courtLevel"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="CaseSearch.courtLevel=null"
+              @change="getUserCaseList">
+              <el-option v-for="item in courtLevelData" :key="item.id" :label="item.name" :value="item.id"/>
+            </el-select>
+          </div>
         </div>
-        <div class="case-item">
-          <p>所属案由</p>
-          <img class="case-icon" src="../../../assets/usercenter/casereason.png">
-          <a-tree-select
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            :tree-data="casereasonTreeData"
-            v-model="CaseSearch.caseReasonId"
-            show-search
-            style="width: 100%"
-            tree-node-filter-prop="title"
-            placeholder="请选择"
-          />
+      </el-col>
+      <el-col :span="18">
+        <div class="bgf selectend">
+          <div class="selecttab">
+            <p><img src="../../../assets/usercenter/sort.png" alt="" >排序</p>
+            <el-select v-model="valueselect" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
+            <el-input
+              v-model="CaseSearch.searchKey"
+              clearable
+              placeholder="请输入关键字查询"/>
+          </div>
         </div>
-        <div class="case-item">
-          <p>专业领域</p>
-          <img class="case-icon" src="../../../assets/usercenter/practice.png">
-          <a-tree-select
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            :tree-data="lawsuitPracticeTreeData"
-            v-model="CaseSearch.practiceId"
-            show-search
-            style="width: 100%"
-            tree-node-filter-prop="title"
-            placeholder="请选择"
-          />
-        </div>
-        <div class="case-item">
-          <p>管辖法院</p>
-          <img class="case-icon" src="../../../assets/usercenter/court.png">
-          <el-select
-            v-model="CaseSearch.courtId"
-            size="mini"
-            placeholder="请选择"
-            filterable
-            clearable
-            @clear="CaseSearch.courtId=''"
-            @change="getUserCaseList"
-          >
-            <el-option
-              v-for="item in courtData"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"/>
-          </el-select>
-        </div>
-        <div class="case-item">
-          <p>法院等级</p>
-          <img class="case-icon" src="../../../assets/usercenter/courtlevel.png">
-          <el-select
-            v-model="CaseSearch.courtLevel"
-            size="mini"
-            placeholder="请选择"
-            filterable
-            clearable
-            @clear="CaseSearch.courtLevel=null"
-            @change="getUserCaseList">
-            <el-option v-for="item in courtLevelData" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
-        </div>
-      </div>
-    </el-col>
-    <el-col :span="18">
-      <div class="bgf selectend">
-        <div class="selecttab">
-          <p><img src="../../../assets/usercenter/sort.png" alt="" >排序</p>
-          <el-select v-model="valueselect" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-          </el-select>
-          <el-input
-            v-model="CaseSearch.searchKey"
-            clearable
-            placeholder="请输入关键字查询"/>
-        </div>
-      </div>
-      <div class="case-content-main">
-        <ul>
-          <li v-for="(item, index) in caseData" :key="item.id" style="position:relative">
-            <nuxt-link :to="`/case/${item.id}/info`">
-              <div class="case-content-top">
-                <p> {{ item.title }}</p>
-                <div class="case-content-col">
-                  <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
-                  <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
-                  <el-col v-if="item.caseType===2" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
-                  <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
+        <div class="case-content-main">
+          <ul>
+            <li v-for="(item, index) in caseData" :key="item.id" style="position:relative">
+              <nuxt-link :to="`/case/${item.id}/info`">
+                <div class="case-content-top">
+                  <p> {{ item.title }}</p>
+                  <div class="case-content-col">
+                    <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>管辖法院：{{ item.courtName }}</el-col>
+                    <el-col v-if="item.caseType===1" :span="12"><i class="el-icon-caret-right"/>所属案由：{{ item.caseReasonName }}</el-col>
+                    <el-col v-if="item.caseType===2" :span="12"><i class="el-icon-caret-right"/>所属行业：{{ item.industryName }}</el-col>
+                    <el-col :span="12"><i class="el-icon-caret-right"/>所属领域：{{ item.practiceAreaName }}</el-col>
+                  </div>
+                  <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
                 </div>
-                <div class="case-judgment" v-html="item.highlight.judgmentDocument?item.highlight.judgmentDocument[0]:''"/>
+              </nuxt-link>
+              <div class="case-content-bottom">
+                <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
+                <span><i class="el-icon-time"/>{{ item.endTime.split(" ")[0] }}</span>
+                <span v-if="item.caseType===1">{{ item.judgmentNumber }}</span>
               </div>
-            </nuxt-link>
-            <div class="case-content-bottom">
-              <span class="cursorPointer" @click="collectionCase(item.id,index)"><i :class="{ hover:item.isFollow}" class="el-icon-star-off"/>收藏</span>
-              <span><i class="el-icon-time"/>{{ item.endTime.split(" ")[0] }}</span>
-              <span v-if="item.caseType===1">{{ item.judgmentNumber }}</span>
-            </div>
-            <img v-if="item.isClassicCase" src="@/assets/case/case-classic2.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
-          </li>
-          <li v-if="caseData.length===0" style="height:200px;line-height:200px;text-align:center">暂无相关数据！</li>
-        </ul>
-      </div>
-      <Pagination v-show="totalCount>0" :total="totalCount" :page="CaseSearch.pageIndex" :limit="CaseSearch.pageCount" @pagination="handlePageChange" />
-    </el-col>
-  </el-row>
+              <img v-if="item.isClassicCase" src="@/assets/case/case-classic2.png" style="border:none;width:100%;max-width:fit-content;position:absolute;top:0;right:0;">
+            </li>
+            <li v-if="caseData.length===0" style="height:200px;line-height:200px;text-align:center">暂无相关数据！</li>
+          </ul>
+        </div>
+        <Pagination v-show="totalCount>0" :total="totalCount" :page="CaseSearch.pageIndex" :limit="CaseSearch.pageCount" @pagination="handlePageChange" />
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -299,16 +311,15 @@ ul {
 .tree_left {
   padding: 30px;
   .case-item{
-    position: relative;
     p{
       font-size: 12px;
-      margin-bottom: 0px;
+      margin-top: 18px !important;
+      margin-bottom: 12px !important;
     }
     img{
       position: absolute;
-      top: 32px;
-      left: 5px;
       z-index: 10;
+      margin: 6px;
     }
     .case-icon{
       height: 20px;
@@ -317,14 +328,12 @@ ul {
     }
     .el-select{
       width: 100%;
-      margin: 10px 0px;
       .el-input__inner{
         padding-left: 30px!important;
       }
     }
     .ant-select{
-      display: inline-block;
-      margin: 10px 0px;
+      width: 100%;
     }
   }
   b {
@@ -394,33 +403,31 @@ ul {
       background-color: #fff;
       .case-content-top{
         padding: 30px;
+        p{
+          margin-bottom: 20px!important;
+          color: #333333;
+          font-size: 14px;
+          line-height: 28px;
+        }
       }
+        p:nth-child(1) {
+          font-size: 18px;
+        }
 
-    p{
-      color: #333333;
-      font-size: 14px;
-      line-height: 28px;
-      margin-bottom: 20px;
-      span{
-        display: block
-      }
-    }
-
-    p:nth-child(1) {
-      font-size: 18px;
-    }
-
-    .case-content-col {
-      color: #999999;
-      font-size: 14px;
-      height: 40px;
-    }
-    .case-judgment{
-      color: #333333;
-      font-size: 14px;
-      line-height: 28px;
-      margin: 20px 0;
-    }
+        .case-content-col {
+          color: #999999;
+          font-size: 14px;
+          height: 40px;
+          >div{
+            line-height: 22px;
+          }
+        }
+        .case-judgment{
+          color: #333333;
+          font-size: 14px;
+          line-height: 28px;
+          margin: 20px 0;
+        }
       }
     }
   }

@@ -1,155 +1,166 @@
 <template>
-  <el-row :gutter="20">
-    <el-col :span="24">
-      <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">京师在线</el-breadcrumb-item>
-        <el-breadcrumb-item>我的关注</el-breadcrumb-item>
-        <el-breadcrumb-item>律师列表</el-breadcrumb-item>
-      </el-breadcrumb>
-    </el-col>
-    <el-col :span="6">
-      <div class="bgf tree_left">
-        <b><img src="../../../assets/usercenter/screen.png" alt="" >条件筛选</b>
-        <div class="lawyer-item">
-          <p>所在城市</p>
-          <img class="lawyer-icon" src="../../../assets/usercenter/industry.png">
-          <el-select
-            v-model="lawyerSearch.regionId"
-            size="mini"
-            placeholder="请选择"
-            filterable
-            clearable
-            @clear="lawyerSearch.regionId=null"
-            @change="getUserLawyerList">
-            <el-option v-for="item in regionData" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
+  <div>
+    <!-- ↓↓↓↓↓↓↓↓↓↓↓ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <a-tree-select
+      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      show-search
+      allow-clear
+      style="width: 100%;display:none;"
+      tree-node-filter-prop="title"
+      placeholder="请选择"
+    />
+    <!-- ↑↑↑↑↑↑↑↑↑↑↑ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <el-row :gutter="20">
+      <el-col :span="24">
+        <el-breadcrumb separator-class="el-icon-minus" class="breadcrumb">
+          <el-breadcrumb-item :to="{ path: '/' }">京师在线</el-breadcrumb-item>
+          <el-breadcrumb-item>我的关注</el-breadcrumb-item>
+          <el-breadcrumb-item>律师列表</el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col :span="6">
+        <div class="bgf tree_left">
+          <b><img src="../../../assets/usercenter/screen.png" alt="" >条件筛选</b>
+          <div class="lawyer-item">
+            <p>所在城市</p>
+            <img class="lawyer-icon" src="../../../assets/usercenter/industry.png">
+            <a-tree-select
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :tree-data="regionData"
+              v-model="lawyerSearch.regionId"
+              show-search
+              style="width: 100%"
+              tree-node-filter-prop="title"
+              placeholder="请选择"
+            />
+          </div>
+          <div class="lawyer-item">
+            <p>所在律所</p>
+            <img class="lawyer-icon" src="../../../assets/usercenter/practice.png">
+            <el-select
+              v-model="lawyerSearch.lawfirmId"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="lawyerSearch.lawfirmId=null"
+              @change="getUserLawyerList">
+              <el-option v-for="item in lawfirmData" :key="item.id" :label="item.name" :value="item.id"/>
+            </el-select>
+          </div>
+          <div class="lawyer-item">
+            <p>擅长行业</p>
+            <img class="lawyer-icon" src="../../../assets/usercenter/industry.png">
+            <el-select
+              v-model="lawyerSearch.industryId"
+              size="mini"
+              placeholder="请选择"
+              filterable
+              clearable
+              @clear="lawyerSearch.industryId=null"
+              @change="getUserLawyerList">
+              <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
+            </el-select>
+          </div>
+          <div class="lawyer-item">
+            <p>专业领域</p>
+            <img class="lawyer-icon" src="../../../assets/usercenter/practice.png">
+            <a-tree-select
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :tree-data="lawsuitPracticeTreeData"
+              v-model="lawyerSearch.practiceId"
+              show-search
+              style="width: 100%"
+              tree-node-filter-prop="title"
+              placeholder="请选择"
+            />
+          </div>
         </div>
-        <div class="lawyer-item">
-          <p>所在律所</p>
-          <img class="lawyer-icon" src="../../../assets/usercenter/practice.png">
-          <el-select
-            v-model="lawyerSearch.lawfirmId"
-            size="mini"
-            placeholder="请选择"
-            filterable
-            clearable
-            @clear="lawyerSearch.lawfirmId=null"
-            @change="getUserLawyerList">
-            <el-option v-for="item in lawfirmData" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
+      </el-col>
+      <el-col :span="18">
+        <div class="bgf selectend">
+          <div class="selecttab">
+            <p><img src="../../../assets/usercenter/sort.png" alt="" >排序</p>
+            <el-select v-model="valueselect" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
+            <el-input
+              v-model="lawyerSearch.lawyerName"
+              clearable
+              placeholder="请输入想要查询的律师名称"/>
+          </div>
         </div>
-        <div class="lawyer-item">
-          <p>擅长行业</p>
-          <img class="lawyer-icon" src="../../../assets/usercenter/industry.png">
-          <el-select
-            v-model="lawyerSearch.industryId"
-            size="mini"
-            placeholder="请选择"
-            filterable
-            clearable
-            @clear="lawyerSearch.industryId=null"
-            @change="getUserLawyerList">
-            <el-option v-for="item in industryData" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
-        </div>
-        <div class="lawyer-item">
-          <p>专业领域</p>
-          <img class="lawyer-icon" src="../../../assets/usercenter/practice.png">
-          <a-tree-select
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            :tree-data="lawsuitPracticeTreeData"
-            v-model="lawyerSearch.practiceId"
-            show-search
-            style="width: 100%"
-            tree-node-filter-prop="title"
-            placeholder="请选择"
-          />
-        </div>
-      </div>
-    </el-col>
-    <el-col :span="18">
-      <div class="bgf selectend">
-        <div class="selecttab">
-          <p><img src="../../../assets/usercenter/sort.png" alt="" >排序</p>
-          <el-select v-model="valueselect" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-          </el-select>
-          <el-input
-            v-model="lawyerSearch.lawyerName"
-            clearable
-            placeholder="请输入想要查询的律师名称"/>
-        </div>
-      </div>
-      <ul class="lawyerlist">
-        <li v-for="(items,index) in lawyerData" :key="index">
-          <nuxt-link :to="'/lawyer/'+items.id+'/info'">
-            <div :style="items.isRecommend ? `background:url(${authIcon}) top right no-repeat` : ''" class="lawyer">
-              <div class="avatar">
-                <div>
+        <ul class="lawyerlist">
+          <li v-for="(items,index) in lawyerData" :key="index">
+            <nuxt-link :to="'/lawyer/'+items.id+'/info'">
+              <div :style="items.isRecommend ? `background:url(${authIcon}) top right no-repeat` : ''" class="lawyer">
+                <div class="avatar">
                   <div>
-                    <img :src="items.avatar" alt="" >
-                    <span v-show="items.isDirector">部门主任</span>
+                    <div>
+                      <img :src="items.avatar" alt="" >
+                      <span v-show="items.isDirector">部门主任</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="info">
-                <div class="name">
-                  {{ items.name }}<small>律师</small>
+                <div class="info">
+                  <div class="name">
+                    {{ items.name }}<small>律师</small>
+                  </div>
+                  <el-row>
+                    <el-col :span="8" class="base">
+                      <div><i class="iconfont icontriangle-arrow-r"/>基础信息&nbsp;<i class="iconfont icondian1" />&nbsp;<span>INFORMATION</span></div>
+                      <el-form label-width="80px" label-position="right">
+                        <el-form-item label="执业年限">{{ items.practiceYears }}年</el-form-item>
+                        <el-form-item label="案例总数">{{ items.caseCount }}例</el-form-item>
+                        <el-form-item label="所在律所">{{ items.lawfirmName }}</el-form-item>
+                        <el-form-item label="所在地址">{{ items.regionName }}</el-form-item>
+                      </el-form>
+                    </el-col>
+                    <el-col :span="8" class="practice">
+                      <div><i class="iconfont icontriangle-arrow-r"/>专业领域&nbsp;<i class="iconfont icondian1" />&nbsp;<span>EXPERTISE</span></div>
+                      <el-form>
+                        <el-form-item v-for="item in items.skilfulPracticeAreas" :key="item.id">
+                          {{ item.name }}
+                        </el-form-item>
+                      </el-form>
+                    </el-col>
+                    <el-col :span="8" class="other">
+                      <el-form label-position="top" class="time">
+                        <el-form-item label="更新时间:">{{ items.updateTime }}</el-form-item>
+                      </el-form>
+                      <el-form>
+                        <el-form-item :label="`浏览：${items.clickCount}`"/>
+                        <el-form-item :label="`关注：${items.followerCount}`"/>
+                      </el-form>
+                      <div :style="items.isFollow ? 'background:#f68020;color:#fff;' : ''" @click="collection(items)">
+                        <img v-if="!items.isFollow" :src="collectionIcon" alt="">
+                        {{ !items.isFollow ? '收藏' : '已收藏' }}
+                      </div>
+                      <div @click="share(items.id)">
+                        <img :src="shareIcon" alt=""> 分享
+                      </div>
+                    </el-col>
+                  </el-row>
                 </div>
-                <el-row>
-                  <el-col :span="8" class="base">
-                    <div><i class="iconfont icontriangle-arrow-r"/>基础信息&nbsp;<i class="iconfont icondian1" />&nbsp;<span>INFORMATION</span></div>
-                    <el-form label-width="80px" label-position="right">
-                      <el-form-item label="执业年限">{{ items.practiceYears }}年</el-form-item>
-                      <el-form-item label="案例总数">{{ items.caseCount }}例</el-form-item>
-                      <el-form-item label="所在律所">{{ items.lawfirmName }}</el-form-item>
-                      <el-form-item label="所在地址">{{ items.regionName }}</el-form-item>
-                    </el-form>
-                  </el-col>
-                  <el-col :span="8" class="practice">
-                    <div><i class="iconfont icontriangle-arrow-r"/>专业领域&nbsp;<i class="iconfont icondian1" />&nbsp;<span>EXPERTISE</span></div>
-                    <el-form>
-                      <el-form-item v-for="item in items.skilfulPracticeAreas" :key="item.id">
-                        {{ item.name }}
-                      </el-form-item>
-                    </el-form>
-                  </el-col>
-                  <el-col :span="8" class="other">
-                    <el-form label-position="top" class="time">
-                      <el-form-item label="更新时间:">{{ items.updateTime }}</el-form-item>
-                    </el-form>
-                    <el-form>
-                      <el-form-item :label="`浏览：${items.clickCount}`"/>
-                      <el-form-item :label="`关注：${items.followerCount}`"/>
-                    </el-form>
-                    <div :style="items.isFollow ? 'background:#f68020;color:#fff;' : ''" @click="collection(items)">
-                      <img v-if="!items.isFollow" :src="collectionIcon" alt="">
-                      {{ !items.isFollow ? '收藏' : '已收藏' }}
-                    </div>
-                    <div @click="share(items.id)">
-                      <img :src="shareIcon" alt=""> 分享
-                    </div>
-                  </el-col>
-                </el-row>
               </div>
-            </div>
-          </nuxt-link>
-        </li>
-      </ul>
-      <Pagination
-        v-show="totalCount > 0"
-        :total="totalCount"
-        :page="lawyerSearch.pageIndex"
-        :limit="lawyerSearch.pageCount"
-        @pagination="handlePageChange"
-      />
-    </el-col>
-    <ExtraWrap :plugins="'error,totop'" :share-url="shareUrl" :top="'350px'" :right="'40px'" :share-visible="sharevisible" @share="shareClose" />
-  </el-row>
+            </nuxt-link>
+          </li>
+        </ul>
+        <Pagination
+          v-show="totalCount > 0"
+          :total="totalCount"
+          :page="lawyerSearch.pageIndex"
+          :limit="lawyerSearch.pageCount"
+          @pagination="handlePageChange"
+        />
+      </el-col>
+      <ExtraWrap :plugins="'error,totop'" :share-url="shareUrl" :top="'350px'" :right="'40px'" :share-visible="sharevisible" @share="shareClose" />
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -251,7 +262,7 @@ export default {
     ...mapState({
       lawsuitPracticeTreeData: state => state.practice.PracticeTreeDataForAntd,
       industryData: state => state.industry.industryData,
-      regionData: state => state.region.regionTreeData,
+      regionData: state => state.region.regionTreeDataForAntd,
       lawfirmData: state => state.lawfirm.lawfirmData
     })
   },
@@ -360,16 +371,15 @@ ul {
     }
   }
   .lawyer-item{
-    position: relative;
     p{
       font-size: 12px;
-      margin-bottom: 0px;
+      margin-top: 18px !important;
+      margin-bottom: 12px !important;
     }
     img{
-     position: absolute;
-      top: 32px;
-      left: 5px;
+      position: absolute;
       z-index: 10;
+      margin: 6px;
     }
     .case-icon{
       height: 20px;
@@ -378,15 +388,12 @@ ul {
     }
     .el-select{
       width: 100%;
-      margin: 10px 0px;
       .el-input__inner{
         padding-left: 30px!important;
       }
     }
     .ant-select{
       width: 100%;
-      margin: 10px 0px;
-      position: relative;
     }
   }
 }
