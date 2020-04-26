@@ -28,7 +28,7 @@
             <nuxt-link to="/usercenter">
               <el-dropdown class="user_info" trigger="hover">
                 <span class="el-dropdown-link">
-                  <el-image :src="account.avatar"/><span>{{ account.name }}</span>
+                  <el-image :src="account.avatar"/><span>{{ account.realName }}</span>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="iconfont iconsuerauthen"><nuxt-link to="/userCenter/auth" style="color:#606266;">律师认证</nuxt-link></el-dropdown-item>
