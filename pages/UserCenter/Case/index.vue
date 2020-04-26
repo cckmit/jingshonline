@@ -143,7 +143,7 @@
                 </el-col>
                 <el-col :span="18">
                   <div class="case-article">
-                    <p class="case-article-title">
+                    <p class="case-article-title" @click="toCaseInfo(item.id)">
                       {{ item.title }}
                     </p>
                     <div class="case-article-desc">
@@ -255,6 +255,9 @@ export default {
         this.totalCount = res.totalCount
         this.loading = false
       })
+    },
+    toCaseInfo(caseId) {
+      this.$router.push(`/usercenter/case/${caseId}/info`)
     },
     // 搜索关键字防抖节流
     changeSearch: function(data) {
@@ -375,7 +378,7 @@ export default {
   // 右边右边
   .case-article{padding:0 18px 0 40px;border-left:1px solid rgba(0,0,0,0.05);margin-left: 30px;
   min-height:268px;
-  .case-article-title{font-size:18px;color:rgba(51,51,51,1);line-height:28px;}
+  .case-article-title{font-size:18px;color:rgba(51,51,51,1);line-height:28px;cursor: pointer;}
   .case-article-desc{margin-top: 24px;margin-bottom:57px;
   span{font-size:14px;color:rgba(51,51,51,1);}
   .case-judgment,p{font-size:14px;color:rgba(153,153,153,1);margin-top:13px}}

@@ -6,7 +6,7 @@
       <el-breadcrumb-item >案例详情</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="case-info clear">
-      <case-info :case-info-data="caseInfoData" />
+      <CaseInfoComponents :case-info-data="caseInfoData" />
       <!-- /*右边 -->
       <div class="case-aside">
         <!-- 办理律师 -->
@@ -27,23 +27,23 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 import errorImg from '@/assets/case/case-avatar.png'
-import CaseClaim from './components/CaseClaim'
-import CaseLawyers from './components/CaseLawyers'
-import CaseRelated from './components/CaseRelated'
-import CaseInfo from './components/CaseInfo'
+import CaseClaim from '../../../Case/_id/components/CaseClaim'
+import CaseLawyers from '../../../Case/_id/components/CaseLawyers'
+import CaseRelated from '../../../Case/_id/components/CaseRelated'
+import CaseInfoComponents from '../../../Case/_id/components/CaseInfo'
 export default {
-  layout: 'web',
-  name: 'CaseInfo',
+  layout: 'userCenter',
+  name: 'UserCenterCaseInfo',
   head() {
     return {
-      title: '案例详情',
+      title: '案例详情-我的案例-用户中心-京师在线',
       meta: [
-        { hid: 'description', name: 'description', content: '京师在线案例详情；jingshonline' }
+        { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]
     }
   },
   components: {
-    CaseInfo,
+    CaseInfoComponents,
     ExtraWrap,
     CaseClaim,
     CaseLawyers,
@@ -152,6 +152,5 @@ export default {
     float: right;
   }
 }
-
 </style>
 

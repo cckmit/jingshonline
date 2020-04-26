@@ -46,7 +46,7 @@
 </template>
 <script>
 export default {
-  name: 'CaseLawyers',
+  name: 'CaseLawyersComponents',
   props: {
     sourceData: {
       type: Object,

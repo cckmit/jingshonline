@@ -16,7 +16,7 @@
 </template>
 <script>
 export default {
-  name: 'CaseRelated',
+  name: 'CaseRelatedComponents',
   props: {
     sourceData: {
       type: Object,
