@@ -353,7 +353,7 @@ export default {
   .caseClaim-dialog-p p:nth-child(1)
   {
       font-size: 16px;
-      margin-top: 10px;
+      margin-top: 10px  !important;
   }
 
 }

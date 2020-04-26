@@ -541,7 +541,7 @@ i{
     font-size: 14px;
     span {
       color: #666666;
-      margin-left: 10px;
+      margin-left: 10px !important;
       font-size: 14px;
     }
     .el-tag--plain{
@@ -554,10 +554,10 @@ i{
     font-size: 14px;
     ul li{
         display: inline-block;
-        margin-right: 20px;
+        margin-right: 20px  !important;
     }
     span{
-      padding-right: 20px;
+      padding-right: 20px  !important;
       border-right: 1px solid #ccc;
     }
   }
@@ -572,7 +572,7 @@ i{
       list-style-type: none;
       width: auto;
       margin: 0 auto;
-      margin-top: 16px;
+      margin-top: 16px  !important;
       border-bottom: 4px solid rgba(217, 217, 217, 0.3);
       background-color: #fff;
       .case-content-top{
@@ -583,7 +583,7 @@ i{
       color: #333333;
       font-size: 14px;
       line-height: 28px;
-      margin-bottom: 20px;
+      margin-bottom: 20px !important;
       span{
         display: block
       }
@@ -626,7 +626,7 @@ i{
     color: #666666;
     span{
     float: right;
-      margin-right: 20px;
+      margin-right: 20px  !important;
     }
   }
 }
