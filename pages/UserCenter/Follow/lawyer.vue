@@ -358,6 +358,7 @@ ul {
 }
 .tree_left {
   padding: 30px;
+  margin-bottom: 150px;
   b {
     display: block;
     border-bottom: 1px dotted #ddd;
@@ -394,6 +395,9 @@ ul {
     }
     .ant-select{
       width: 100%;
+      .ant-select-selection-selected-value{
+        padding-left: 20px;
+      }
     }
   }
 }
