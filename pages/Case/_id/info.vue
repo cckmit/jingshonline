@@ -6,15 +6,15 @@
       <el-breadcrumb-item >案例详情</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="case-info clear">
-      <case-info :case-info-data="caseInfoData" />
+      <customer-case-info :case-info-data="caseInfoData" />
       <!-- /*右边 -->
       <div class="case-aside">
         <!-- 办理律师 -->
-        <case-Lawyers :source-data="caseInfoData" />
+        <customer-case-Lawyers :source-data="caseInfoData" />
         <!-- /* 案件认领-->
-        <case-claim :source-data="caseInfoData" />
+        <customer-case-claim :source-data="caseInfoData" />
         <!-- /*相关案例 -->
-        <case-related :source-data="caseInfoData" />
+        <customer-case-related :source-data="caseInfoData" />
       </div>
       <ExtraWrap :share-url="shareUrl" :top="'200px'" :left="'100px'" :catalog-data="activities" :in-colection="isFollow" @download="download" @collection="collectionCase" />
     </div>
@@ -27,10 +27,10 @@ import setting from '@/plugins/setting'
 import axios from 'axios'
 import ExtraWrap from '@/components/ExtraWrap'
 import errorImg from '@/assets/case/case-avatar.png'
-import CaseClaim from './components/CaseClaim'
-import CaseLawyers from './components/CaseLawyers'
-import CaseRelated from './components/CaseRelated'
-import CaseInfo from './components/CaseInfo'
+import CustomerCaseClaim from './components/CaseClaim'
+import CustomerCaseLawyers from './components/CaseLawyers'
+import CustomerCaseRelated from './components/CaseRelated'
+import CustomerCaseInfo from './components/CaseInfo'
 export default {
   layout: 'web',
   name: 'CaseInfo',
@@ -43,11 +43,11 @@ export default {
     }
   },
   components: {
-    CaseInfo,
+    CustomerCaseInfo,
     ExtraWrap,
-    CaseClaim,
-    CaseLawyers,
-    CaseRelated
+    CustomerCaseClaim,
+    CustomerCaseLawyers,
+    CustomerCaseRelated
   },
 
   data() {

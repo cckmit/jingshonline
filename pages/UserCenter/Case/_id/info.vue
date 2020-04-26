@@ -6,7 +6,7 @@
       <el-breadcrumb-item >案例详情</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="case-info clear">
-      <CaseInfoComponents :case-info-data="caseInfoData" />
+      <Case-info :case-info-data="caseInfoData" />
       <!-- /*右边 -->
       <div class="case-aside">
         <!-- 办理律师 -->
@@ -30,7 +30,7 @@ import errorImg from '@/assets/case/case-avatar.png'
 import CaseClaim from '../../../Case/_id/components/CaseClaim'
 import CaseLawyers from '../../../Case/_id/components/CaseLawyers'
 import CaseRelated from '../../../Case/_id/components/CaseRelated'
-import CaseInfoComponents from '../../../Case/_id/components/CaseInfo'
+import CaseInfo from '../../../Case/_id/components/CaseInfo'
 export default {
   layout: 'userCenter',
   name: 'UserCenterCaseInfo',
@@ -43,7 +43,7 @@ export default {
     }
   },
   components: {
-    CaseInfoComponents,
+    CaseInfo,
     ExtraWrap,
     CaseClaim,
     CaseLawyers,
