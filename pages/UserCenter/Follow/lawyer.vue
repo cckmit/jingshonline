@@ -13,16 +13,15 @@
         <div class="lawyer-item">
           <p>所在城市</p>
           <img class="lawyer-icon" src="../../../assets/usercenter/industry.png">
-          <el-select
+          <a-tree-select
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            :tree-data="regionData"
             v-model="lawyerSearch.regionId"
-            size="mini"
+            show-search
+            style="width: 100%"
+            tree-node-filter-prop="title"
             placeholder="请选择"
-            filterable
-            clearable
-            @clear="lawyerSearch.regionId=null"
-            @change="getUserLawyerList">
-            <el-option v-for="item in regionData" :key="item.id" :label="item.name" :value="item.id"/>
-          </el-select>
+          />
         </div>
         <div class="lawyer-item">
           <p>所在律所</p>
@@ -251,7 +250,7 @@ export default {
     ...mapState({
       lawsuitPracticeTreeData: state => state.practice.PracticeTreeDataForAntd,
       industryData: state => state.industry.industryData,
-      regionData: state => state.region.regionTreeData,
+      regionData: state => state.region.regionTreeDataForAntd,
       lawfirmData: state => state.lawfirm.lawfirmData
     })
   },

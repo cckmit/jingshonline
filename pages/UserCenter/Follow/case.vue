@@ -394,33 +394,31 @@ ul {
       background-color: #fff;
       .case-content-top{
         padding: 30px;
+        p{
+          margin-bottom: 20px!important;
+          color: #333333;
+          font-size: 14px;
+          line-height: 28px;
+        }
       }
+        p:nth-child(1) {
+          font-size: 18px;
+        }
 
-    p{
-      color: #333333;
-      font-size: 14px;
-      line-height: 28px;
-      margin-bottom: 20px;
-      span{
-        display: block
-      }
-    }
-
-    p:nth-child(1) {
-      font-size: 18px;
-    }
-
-    .case-content-col {
-      color: #999999;
-      font-size: 14px;
-      height: 40px;
-    }
-    .case-judgment{
-      color: #333333;
-      font-size: 14px;
-      line-height: 28px;
-      margin: 20px 0;
-    }
+        .case-content-col {
+          color: #999999;
+          font-size: 14px;
+          height: 40px;
+          >div{
+            line-height: 22px;
+          }
+        }
+        .case-judgment{
+          color: #333333;
+          font-size: 14px;
+          line-height: 28px;
+          margin: 20px 0;
+        }
       }
     }
   }
