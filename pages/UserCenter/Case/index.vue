@@ -154,7 +154,7 @@
                       <el-col :span="16" class="case-article-time">{{ item.endTime }}</el-col>
                       <el-col :span="8" class="case-article-button">
                         <el-button size="mini" icon="el-icon-delete" @click="deteleCase(item.id)">删除</el-button>
-                        <nuxt-link :to="{path: `usercenter/case/${item.id}/update?caseType=${item.caseType}` }"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
+                        <nuxt-link :to="{path: `/usercenter/case/${item.id}/update` }"> <el-button type="primary" size="mini" icon="el-icon-edit" style="background:rgba(246,128,32,1);border-color:rgba(246,128,32,1);">编辑</el-button></nuxt-link>
                       </el-col>
                     </el-row>
                   </div>
