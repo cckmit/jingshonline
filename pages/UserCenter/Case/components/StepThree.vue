@@ -4,9 +4,7 @@
     <div>
       <el-tabs style="margin-bottom:20px">
         <el-tab-pane :label="type?'裁判文书':'法律意见书'">
-          <keep-alive>
-            <Tinymce ref="editor" v-model="judgmentDocument" :width="'98.5%'" :height="400" :menubar="false" />
-          </keep-alive>
+          <Tinymce v-if="active" ref="editor" v-model="judgmentDocument" :width="'98.5%'" :height="400" :menubar="''" />
         </el-tab-pane>
       </el-tabs>
       <el-tabs style="margin-bottom:20px">
@@ -88,6 +86,7 @@ export default {
   },
   data() {
     return {
+      active: false,
       judgmentDocument: '',
       files: [],
       ossOption: {
@@ -120,6 +119,12 @@ export default {
       deep: true
 
     }
+  },
+  deactivated() {
+    this.active = false
+  },
+  activated() {
+    this.active = true
   },
   mounted() {
   },

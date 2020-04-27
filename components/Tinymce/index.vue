@@ -42,7 +42,7 @@ export default {
       }
     },
     menubar: {
-      type: [String, Boolean],
+      type: String,
       default: 'file edit insert view format table'
     },
     height: {
