@@ -17,23 +17,29 @@
         <StepOne ref="one" @one="one"/>
       </div>
       <div v-if="steps===2" class="two">
-        <StepTwo ref="two" :type="caseType"/>
+        <keep-alive>
+          <StepTwo ref="two" :type="caseType"/>
+        </keep-alive>
         <el-button v-show="false" size="small" @click="changeSteps(1)">上一步</el-button>
         <el-button size="small" @click="nextToThree">下一步</el-button>
       </div>
       <div v-if="steps===3" class="three">
-        <StepThree ref="three" :type="caseType"/>
+        <keep-alive>
+          <StepThree ref="three" :type="caseType"/>
+        </keep-alive>
         <el-button size="small" @click="changeSteps(2)">上一步</el-button>
         <el-button size="small" @click="nextToFour">下一步</el-button>
       </div>
       <div v-if="steps===4" class="four">
-        <StepFour ref="four" :type="caseType"/>
+        <keep-alive>
+          <StepFour ref="four" :type="caseType"/>
+        </keep-alive>
         <el-button size="small" @click="changeSteps(3)">上一步</el-button>
         <el-button size="small" @click="submit">完成</el-button>
       </div>
     </div>
     <div v-if="steps===5" class="five">
-      <StepFive ref="five" @five="five"/>
+      <StepFive ref="five" :type="caseType" @five="five"/>
     </div>
   </div>
 </template>
@@ -108,7 +114,7 @@ export default {
     submit() {
       this.case = { ...this.case, analyses: this.$refs.four.analyses }
       this.userCenterCaseCreate(this.case).then(res => {
-        this.steps = 5
+        this.changeSteps(5)
       })
     }
   }

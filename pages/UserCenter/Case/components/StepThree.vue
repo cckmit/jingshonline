@@ -4,7 +4,7 @@
     <div>
       <el-tabs style="margin-bottom:20px">
         <el-tab-pane :label="type?'裁判文书':'法律意见书'">
-          <Tinymce ref="editor" v-model="judgmentDocument" :width="'98.5%'" :height="400" :menubar="false" />
+          <Tinymce v-if="active" ref="editor" v-model="judgmentDocument" :width="'98.5%'" :height="400" :menubar="''" />
         </el-tab-pane>
       </el-tabs>
       <el-tabs style="margin-bottom:20px">
@@ -58,7 +58,7 @@ export default {
   middleware: 'auth',
   head() {
     return {
-      title: '添加案例-我的案例-用户中心-京师在线',
+      title: `${this.$route.path.indexOf('update') > 1 ? '编辑' : '添加'}案例-我的案例-用户中心-京师在线`,
       meta: [
         { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]
@@ -86,6 +86,7 @@ export default {
   },
   data() {
     return {
+      active: false,
       judgmentDocument: '',
       files: [],
       ossOption: {
@@ -101,15 +102,29 @@ export default {
     }
   },
   watch: {
-    sourceJudgmentDocument(val) {
-      this.judgmentDocument = val
+    sourceJudgmentDocument: {
+      handler: function(val) {
+        this.judgmentDocument = val
+      },
+      deep: true,
+      immediate: true
     },
-    sourceFiles(val) {
-      this.files = val
-      val.forEach(item => {
-        this.ossOption.fileList.push([{ name: item.uploadFileName, url: item.path, fileId: item.uploadFileId, uid: Math.random() * 200, status: 'success' }])
-      })
+    sourceFiles: {
+      handler: function(val) {
+        this.files = val
+        val.forEach(item => {
+          this.ossOption.fileList.push([{ name: item.uploadFileName, url: item.path, fileId: item.uploadFileId, uid: Math.random() * 200, status: 'success' }])
+        })
+      },
+      deep: true
+
     }
+  },
+  deactivated() {
+    this.active = false
+  },
+  activated() {
+    this.active = true
   },
   mounted() {
   },

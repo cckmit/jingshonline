@@ -64,7 +64,7 @@
       <el-input v-model="caseInfo.judgmentNumber" size="small" />
     </el-form-item>
     <el-form-item label="裁判时间" prop="endTime">
-      <el-date-picker v-model="caseInfo.endTime" style="width:100%" size="small" />
+      <el-date-picker v-model="caseInfo.endTime" style="width:100% !important;" size="small" />
     </el-form-item>
     <el-form-item label="经典案例" prop="isClassicCase">
       <el-checkbox v-model="caseInfo.isClassicCase" size="small">经典案例</el-checkbox>

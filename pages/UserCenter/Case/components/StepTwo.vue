@@ -2,8 +2,8 @@
   <div class="two_content">
     <p> <i class="iconfont iconid-card"/> 案件基本信息</p>
     <div>
-      <CaseInfoLawSuit v-if="type===1" ref="caseInfo"/>
-      <CaseInfoLawNotSuit v-if="type===2" ref="caseInfo"/>
+      <CaseInfoLawSuit v-if="type===1" ref="caseInfo" :source-case-info="CaseInfo"/>
+      <CaseInfoLawNotSuit v-else ref="caseInfo" :source-case-info="CaseInfo"/>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   middleware: 'auth',
   head() {
     return {
-      title: '添加案例-我的案例-用户中心-京师在线',
+      title: `${this.$route.path.indexOf('update') > 1 ? '编辑' : '添加'}案例-我的案例-用户中心-京师在线`,
       meta: [
         { hid: 'description', name: 'description', content: '京师在线用户中心；jingshonline-usercenter' }
       ]
@@ -30,10 +30,15 @@ export default {
     type: {
       type: Number,
       default: null
+    },
+    CaseInfo: {
+      type: Object,
+      default: () => { }
     }
   },
   data() {
     return {
+
     }
   },
   watch: {

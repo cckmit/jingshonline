@@ -1,6 +1,6 @@
 <template>
   <div class="five_content">
-    <h2>{{ isUpdate?'您已完成案件的编辑':` 您已完成 ${caseType===1?'诉讼':'非诉'} 案例的添加` }}</h2>
+    <h2>{{ isUpdate?'您已完成案件的编辑':` 您已完成 ${type===1?'诉讼':'非诉'} 案例的添加` }}</h2>
     <p>您所{{ isUpdate?'编辑':'添加' }}的案例正在 <span>审核中...</span> 您可以点击下方按钮按照步骤继续添加案例。</p>
     <router-link v-if="isUpdate" :to="{path:'/userCenter/case/create?type=1'}">添加诉讼案件 ></router-link>
     <span v-else @click="add(1)">添加诉讼案件 ></span>
@@ -26,9 +26,9 @@ export default {
   components: {
   },
   props: {
-    caseType: {
+    type: {
       type: Number,
-      default: () => { return 1 }
+      default: 1
     }
   },
   data() {
