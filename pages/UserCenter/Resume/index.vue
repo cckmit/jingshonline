@@ -36,7 +36,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true,work={},ifCreate=true">
+                  <div class="resume-desc-model" @click="createOrUpdateWorkVisible=true,work={},ifCreate='1'">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加工作经历</h2>
                   </div>
@@ -50,7 +50,7 @@
                         <p>{{ item.startDate }}-{{ item.endDate }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
-                            <el-col :span="11" @click.native="createOrUpdateWorkVisible=true,work=item,ifCreate=false">编辑</el-col>
+                            <el-col :span="11" @click.native="createOrUpdateWorkVisible=true,work=item,ifCreate='2'">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
                             <el-col :span="11" @click.native="resumeDelete(item.id,1)">删除</el-col>
                           </el-row>
@@ -71,7 +71,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateEducationVisible=true,education={}">
+                  <div class="resume-desc-model" @click="createOrUpdateEducationVisible=true,education={},ifCreate='1'">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加教育经历</h2>
                   </div>
@@ -85,7 +85,7 @@
                         <p>{{ item.startDate }}-{{ item.endDate }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
-                            <el-col :span="11" @click.native="createOrUpdateEducationVisible=true,education=item">编辑</el-col>
+                            <el-col :span="11" @click.native="createOrUpdateEducationVisible=true,education=item,ifCreate='2'">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
                             <el-col :span="11" @click.native="resumeDelete(item.id,'2')">删除</el-col>
                           </el-row>
@@ -106,7 +106,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateAcademicVisible=true,academic={}">
+                  <div class="resume-desc-model" @click="createOrUpdateAcademicVisible=true,academic={},ifCreate='1'">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加学术成果</h2>
                   </div>
@@ -119,7 +119,7 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateAcademicVisible=true,academic=item"/>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateAcademicVisible=true,academic=item,ifCreate='2'"/>
                           </el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
                             <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
@@ -142,7 +142,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateIndustryVisible=true,industry={}">
+                  <div class="resume-desc-model" @click="createOrUpdateIndustryVisible=true,industry={},ifCreate='1'">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加行业资质</h2>
                   </div>
@@ -155,7 +155,7 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateIndustryVisible=true,industry=item"/>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateIndustryVisible=true,industry=item,ifCreate='2'"/>
                           </el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
                             <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
@@ -177,7 +177,7 @@
             <div class="resume-desc">
               <el-row>
                 <el-col :span="7">
-                  <div class="resume-desc-model" @click="createOrUpdateSocialVisible=true,social={}">
+                  <div class="resume-desc-model" @click="createOrUpdateSocialVisible=true,social={},ifCreate='1'">
                     <i class="el-icon-circle-plus-outline resume-desc-model-add"/>
                     <h2 class="resume-desc-model-title">添加社会职务</h2>
                   </div>
@@ -190,7 +190,7 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateSocialVisible=true,social=item"/>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateSocialVisible=true,social=item,ifCreate='2'"/>
                           </el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
                             <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
@@ -207,10 +207,10 @@
       </el-col>
     </el-row>
     <WorkCreateOrUpdate :source-visible="createOrUpdateWorkVisible" :source-data="work" :create-data="ifCreate" @operate="createOrUpdateWork"/>
-    <EducationCreateOrUpdate :source-visible="createOrUpdateEducationVisible" :source-data="education" @operate="createOrUpdateEducation"/>
-    <AcademicCreateOrUpdate :source-visible="createOrUpdateAcademicVisible" :source-data="academic" @operate="createOrUpdateAcademic"/>
-    <IndustryCreateOrUpdate :source-visible="createOrUpdateIndustryVisible" :source-data="industry" @operate="createOrUpdateIndustry"/>
-    <SocialCreateOrUpdate :source-visible="createOrUpdateSocialVisible" :source-data="social" @operate="createOrUpdateSocial"/>
+    <EducationCreateOrUpdate :source-visible="createOrUpdateEducationVisible" :create-data="ifCreate" :source-data="education" @operate="createOrUpdateEducation"/>
+    <AcademicCreateOrUpdate :source-visible="createOrUpdateAcademicVisible" :source-data="academic" :create-data="ifCreate" @operate="createOrUpdateAcademic"/>
+    <IndustryCreateOrUpdate :source-visible="createOrUpdateIndustryVisible" :source-data="industry" :create-data="ifCreate" @operate="createOrUpdateIndustry"/>
+    <SocialCreateOrUpdate :source-visible="createOrUpdateSocialVisible" :source-data="social" :create-data="ifCreate" @operate="createOrUpdateSocial"/>
   </div>
 </template>
 <script>
