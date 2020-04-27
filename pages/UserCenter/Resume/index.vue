@@ -101,7 +101,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="studypng" alt="学术成果"></p> </el-col>
               <el-col :span="19"> <span>学术成果</span> </el-col>
-              <el-col :span="4"> <el-button v-show="academicData" class="resume-title-edit" size="mini" type="text" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="academicData.length!==0" class="resume-title-edit" size="mini" @click="academicIsBtn=!academicIsBtn">{{ academicIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -137,7 +137,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="industrypng" alt="行业资质"></p> </el-col>
               <el-col :span="19"> <span>行业资质</span> </el-col>
-              <el-col :span="4"> <el-button v-show="certificateData" class="resume-title-edit" size="mini" type="text" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="certificateData.length!==0" style="color:#999999" class="resume-title-edit" size="mini" @click="industryIsBtn=!industryIsBtn">{{ industryIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -172,7 +172,7 @@
             <el-row class="resume-title">
               <el-col :span="1"> <p class="resume-title-img"><img :src="societypng" alt="社会职务"></p> </el-col>
               <el-col :span="19"> <span>社会职务</span> </el-col>
-              <el-col :span="4"> <el-button v-show="socialData" class="resume-title-edit" type="text" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
+              <el-col :span="4"> <el-button v-show="socialData.length!==0" class="resume-title-edit" size="mini" @click="socialIsBtn=!socialIsBtn">{{ socialIsBtn?'取消编辑':'编辑' }}</el-button></el-col>
             </el-row>
             <div class="resume-desc">
               <el-row>
@@ -296,7 +296,7 @@ export default {
   methods: {
     ...mapActions('workexperience', ['getWorkexperienceList', 'deleteWorkexperience']),
     ...mapActions('education', ['getEducationList', 'deletetEducation']),
-    ...mapActions('academic', ['getAcademicList', 'createtAcademic', 'updatetAcademic', 'deletetAcademic']),
+    ...mapActions('academic', ['getAcademicList', 'deletetAcademic']),
     ...mapActions('certificate', ['getCertificateList', 'createtCertificate', 'updatetCertificate', 'deletetCertificate']),
     ...mapActions('socialposition', ['getSocialpositionList', 'createSocialposition', 'updateSocialposition', 'deleteSocialposition']),
 
