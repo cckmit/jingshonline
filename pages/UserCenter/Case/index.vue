@@ -240,7 +240,7 @@ export default {
       setTimeout(this.request, delayTime)
     },
     request() {
-      this.userCenterCaseQuery({ ...this.userCaseSearch, ...this.searchKey }).then(res => {
+      this.userCenterCaseQuery(this.userCaseSearch).then(res => {
         this.userCaseData = res.items
         this.totalCount = res.totalCount
         this.loading = false
