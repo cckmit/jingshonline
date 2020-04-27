@@ -107,14 +107,12 @@
               :value="item.displayName"/>
           </el-select>
           <el-input
-            v-model="searchKey"
+            v-model="userCaseSearch.title"
             clearable
             class="search-input"
             placeholder="搜索案例"
             size="small"
             prefix-icon="el-icon-search"
-            @clear="searchKey=''"
-            @input="changeSearch"
             @keyup.enter.native="getUserCaseList"/>
           <nuxt-link :to="{name: 'UserCenter-Case-create'}"><el-button type="primary" size="small" icon="el-icon-circle-plus-outline">添加案例</el-button></nuxt-link>
         </div>
@@ -198,6 +196,7 @@ export default {
       searchKey: '', // 搜索关键字
       timer: '',
       userCaseSearch: {
+        title: '',
         industryId: '', // 行业id
         caseReasonId: '', // 案由Id number
         practiceAreaId: '', // 领域Id number 【诉讼领域,非诉讼领域】
@@ -206,6 +205,7 @@ export default {
         courtId: '', // 法院Id number
         checkExamine: '', // 审核
         sortId: '', // 排序
+        sortType: 0,
         pageCount: 5, // 页目条数 number
         pageIndex: 1// 页码 number
       }
@@ -240,7 +240,7 @@ export default {
       setTimeout(this.request, delayTime)
     },
     request() {
-      this.userCenterCaseQuery({ ...this.userCaseSearch, ...this.searchKey }).then(res => {
+      this.userCenterCaseQuery(this.userCaseSearch).then(res => {
         this.userCaseData = res.items
         this.totalCount = res.totalCount
         this.loading = false
