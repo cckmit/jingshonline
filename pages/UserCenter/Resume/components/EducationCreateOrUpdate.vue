@@ -2,12 +2,13 @@
   <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加教育经历':'编辑教育经历'" width="23%" @close="close">
     <EducationForm ref="educationForm" :education-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" size="small" @click="close">保存</el-button>
+      <el-button type="primary" size="small" @click="submit">保存</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import EducationForm from './EducationForm'
 export default {
   name: 'EducationCreatOrUpdate',
@@ -19,6 +20,10 @@ export default {
       type: Boolean,
       default: false
     },
+    createData: {
+      type: String,
+      default: ''
+    },
     sourceData: {
       type: Object,
       default: function() {
@@ -28,19 +33,41 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      ifCreateUpdate: ''
     }
   },
   watch: {
     sourceVisible: function(val) {
       this.visible = val
+    },
+    createData: function(val) {
+      this.ifCreateUpdate = val
     }
   },
   methods: {
+    ...mapActions('education', ['createEducation', 'updateEducation']),
+    submit() {
+      this.$refs.educationForm.$refs.educationForm.validate(valid => {
+        if (valid) {
+          if (this.ifCreateUpdate === '1') {
+            this.createEducation({ ...this.$refs.educationForm.educationForm }).then(res => {
+              this.$message.success(res)
+              this.visible = false
+            })
+          } else if (this.ifCreateUpdate === '2') {
+            this.updateEducation({ ...this.$refs.educationForm.educationForm }).then(res => {
+              this.$message.success(res)
+              this.visible = false
+            })
+          }
+        }
+      })
+    },
     close() {
       this.visible = false
       this.$emit('operate', this.visible)
-      // this.$refs.workForm.$refs.workForm.resetFields()
+      this.$refs.educationForm.$refs.educationForm.resetFields()
     }
   }
 }

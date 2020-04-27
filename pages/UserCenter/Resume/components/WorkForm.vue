@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="workForm" :model="workForm" :rules="rules" label-position="right" label-width="90px">
+  <el-form ref="workForm" :model="workForm" :rules="rules" class="resume-list-class" label-position="right" label-width="90px">
     <el-form-item label="所在单位" prop="organization">
       <el-input v-model="workForm.organization" size="small" clearable placeholder="请输入所在单位" />
     </el-form-item>
@@ -8,7 +8,7 @@
     </el-form-item>
     <el-form-item label="在职时间" prop="endDate">
       <el-date-picker
-        v-model="workTime"
+        v-model="time"
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
@@ -50,7 +50,7 @@ export default {
       disabled: false,
       psdDisabled: false,
       workForm: {},
-      workTime: [],
+      time: [],
       files: [],
       ossOption: {
         fileList: [], // 已上传文件列表  格式 {name:sdf,url:src,fileId:123,uid:1345,status:'success'}
@@ -76,7 +76,7 @@ export default {
         val = JSON.stringify(val)
         val = JSON.parse(val)
         this.workForm = val
-        this.workTime = [val.startDate, val.endDate]
+        this.time = [val.startDate, val.endDate]
         this.ossOption.fileList = val.uploadFileId > 0 ? [{ name: val.uploadFileName, url: val.path, fileId: val.uploadFileId, uid: Math.random() * 200, status: 'success' }] : []
       }
     },
@@ -107,8 +107,9 @@ export default {
 }
 </script>
 <style lang='scss'>
+.resume-list-class{
 .el-date-editor--daterange{
   width:360px !important;
-}
+}}
 </style>
 

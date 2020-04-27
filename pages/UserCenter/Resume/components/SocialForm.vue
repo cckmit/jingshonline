@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="socialForm" :model="socialForm" label-position="right" label-width="80px">
+  <el-form ref="socialForm" :model="socialForm" class="resume-list-class" label-position="right" label-width="80px">
     <el-form-item label="社会职务" prop="name">
       <el-input v-model="socialForm.name" size="small" clearable placeholder="请输入社会职务" />
     </el-form-item>
@@ -56,8 +56,9 @@ export default {
 }
 </script>
 <style lang='scss'>
+.resume-list-class{
 .el-date-editor--daterange{
-  width:364px !important;
-}
+  width:360px !important;
+}}
 </style>
 

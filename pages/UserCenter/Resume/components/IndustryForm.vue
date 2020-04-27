@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="industryForm" :model="industryForm" label-position="right" label-width="80px">
+  <el-form ref="industryForm" :model="industryForm" class="resume-list-class" label-position="right" label-width="80px">
     <el-form-item label="行业资质" prop="name">
       <el-input v-model="industryForm.name" size="small" clearable placeholder="请输入行业资质" />
     </el-form-item>
@@ -78,8 +78,9 @@ export default {
 }
 </script>
 <style lang='scss'>
+.resume-list-class{
 .el-date-editor--daterange{
-  width:364px !important;
-}
+  width:360px !important;
+}}
 </style>
 

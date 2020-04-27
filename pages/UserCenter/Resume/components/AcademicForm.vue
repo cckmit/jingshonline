@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="academicForm" :model="academicForm" label-position="right" label-width="80px">
+  <el-form ref="academicForm" :model="academicForm" class="resume-list-class" label-position="right" label-width="80px">
     <el-form-item label="学术成果" prop="name">
       <el-input v-model="academicForm.name" size="small" clearable placeholder="请输入学术成果" />
     </el-form-item>
@@ -56,8 +56,8 @@ export default {
 }
 </script>
 <style lang='scss'>
-.el-date-editor--daterange{
-  width:364px !important;
+.el-input--small .el-input__inner{
+  width:360px !important;
 }
 </style>
 

@@ -52,7 +52,7 @@
                           <el-row >
                             <el-col :span="11" @click.native="createOrUpdateWorkVisible=true,work=item,ifCreate='2'">编辑</el-col>
                             <el-col :span="2" class="resume-desc-button-line"/>
-                            <el-col :span="11" @click.native="resumeDelete(item.id,1)">删除</el-col>
+                            <el-col :span="11" @click.native="resumeDelete(item.id,'1')">删除</el-col>
                           </el-row>
                         </div>
                       </div>
@@ -81,7 +81,7 @@
                     <el-col v-for="(item, index) in educationData" :span="8" :key="index">
                       <div class="resume-desc-model" @mouseenter="item.isShowBtn=false" @mouseleave="item.isShowBtn=true">
                         <p>{{ item.school }}</p>
-                        <p>{{ item.educationBackground }}</p>
+                        <p v-for="items in educations" v-show="items.id===item.educationBackground" :key="items.id">{{ items.displayName }}</p>
                         <p>{{ item.startDate }}-{{ item.endDate }}</p>
                         <div :class="{ hover:item.isShowBtn}" class="resume-desc-button">
                           <el-row >
@@ -122,7 +122,7 @@
                             <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateAcademicVisible=true,academic=item,ifCreate='2'"/>
                           </el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
+                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'3')"/>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -158,7 +158,7 @@
                             <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateIndustryVisible=true,industry=item,ifCreate='2'"/>
                           </el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
+                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'4')"/>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -193,7 +193,7 @@
                             <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateSocialVisible=true,social=item,ifCreate='2'"/>
                           </el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'1')"/>
+                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'5')"/>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -225,7 +225,7 @@ import industrypng from '../../../assets/lawyerinfo/industry.png'
 import studypng from '../../../assets/lawyerinfo/study.png'
 import learnpng from '../../../assets/lawyerinfo/learning.png'
 import workpng from '../../../assets/lawyerinfo/work.png'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   layout: 'userCenter',
@@ -279,6 +279,11 @@ export default {
       socialData: []// 社会职务
     }
   },
+  computed: {
+    ...mapState({
+      educations: state => state.education.education
+    })
+  },
   watch: {
   },
   mounted() {
@@ -290,10 +295,10 @@ export default {
   },
   methods: {
     ...mapActions('workexperience', ['getWorkexperienceList', 'deleteWorkexperience']),
-    ...mapActions('education', ['getEducationList'], ['createEducation'], ['updateEducation'], ['deletetEducation']),
-    ...mapActions('academic', ['getAcademicList'], ['createtAcademic'], ['updatetAcademic'], ['deletetAcademic']),
-    ...mapActions('certificate', ['getCertificateList'], ['createtCertificate'], ['updatetCertificate'], ['deletetCertificate']),
-    ...mapActions('socialposition', ['getSocialpositionList'], ['createSocialposition'], ['updateSocialposition'], ['deleteSocialposition']),
+    ...mapActions('education', ['getEducationList', 'deletetEducation']),
+    ...mapActions('academic', ['getAcademicList', 'createtAcademic', 'updatetAcademic', 'deletetAcademic']),
+    ...mapActions('certificate', ['getCertificateList', 'createtCertificate', 'updatetCertificate', 'deletetCertificate']),
+    ...mapActions('socialposition', ['getSocialpositionList', 'createSocialposition', 'updateSocialposition', 'deleteSocialposition']),
 
     // 获取工作经历
     getWorkexperienceData(delayTime = 150) {
@@ -367,7 +372,7 @@ export default {
       }
       this.disabledInfo = !this.disabledInfo
     },
-    resumeDelete(workId, resumeId) {
+    resumeDelete(id, resumeId) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -375,13 +380,45 @@ export default {
         center: true
       })
         .then(() => {
-          if (resumeId === 1) {
-            this.deleteWorkexperience(workId).then(res => {
+          if (resumeId === '1') {
+            this.deleteWorkexperience(id).then(res => {
               this.$message({
                 type: 'success',
                 message: '删除成功!'
               })
               this.getWorkexperienceData()
+            })
+          } else if (resumeId === '2') {
+            this.deletetEducation(id).then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.getEducationData()
+            })
+          } else if (resumeId === '3') {
+            this.deletetAcademic(id).then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.getAcademicData()
+            })
+          } else if (resumeId === '4') {
+            this.deletetCertificate(id).then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.getCertificateData()
+            })
+          } else if (resumeId === '5') {
+            this.deleteSocialposition(id).then(res => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+              this.getSocialpositionData()
             })
           }
         }).catch(() => {
@@ -397,15 +434,19 @@ export default {
     },
     createOrUpdateEducation(val) {
       this.createOrUpdateEducationVisible = false
+      this.getEducationData()
     },
     createOrUpdateAcademic(val) {
       this.createOrUpdateAcademicVisible = false
+      this.getAcademicData()
     },
     createOrUpdateIndustry(val) {
       this.createOrUpdateIndustryVisible = false
+      this.getCertificateData()
     },
     createOrUpdateSocial(val) {
       this.createOrUpdateSocialVisible = false
+      this.getSocialpositionData()
     }
   }
 }
