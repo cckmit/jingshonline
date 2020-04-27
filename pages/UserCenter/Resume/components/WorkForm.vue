@@ -9,6 +9,7 @@
     <el-form-item label="在职时间" prop="endDate">
       <el-date-picker
         v-model="time"
+        style="width:100%"
         type="daterange"
         range-separator="至"
         start-placeholder="开始日期"
@@ -107,9 +108,6 @@ export default {
 }
 </script>
 <style lang='scss'>
-.resume-list-class{
-.el-date-editor--daterange{
-  width:360px !important;
-}}
+
 </style>
 

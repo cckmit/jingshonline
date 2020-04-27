@@ -56,9 +56,6 @@ export default {
 }
 </script>
 <style lang='scss'>
-.resume-list-class{
-.el-date-editor--daterange{
-  width:360px !important;
-}}
+
 </style>
 

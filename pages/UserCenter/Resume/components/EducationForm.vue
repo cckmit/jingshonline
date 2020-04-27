@@ -4,12 +4,13 @@
       <el-input v-model="educationForm.school" size="small" clearable placeholder="请输入院校" />
     </el-form-item>
     <el-form-item label="学历" prop="educationBackground">
-      <el-select v-model="educationForm.educationBackground" size="small" clearable placeholder="请选择" class="sort-select">
+      <el-select v-model="educationForm.educationBackground" size="small" clearable placeholder="请选择" style="width:100%" class="sort-select">
         <el-option
           v-for="item in education"
           :key="item.id"
           :label="item.displayName"
-          :value="item.id"/>
+          :value="item.id"
+        />
       </el-select>
     </el-form-item>
     <el-form-item label="学位" prop="degree">
@@ -18,6 +19,7 @@
     <el-form-item label="在校时间" prop="endDate">
       <el-date-picker
         v-model="time"
+        style="width:100%"
         type="daterange"
         range-separator="至"
         start-placeholder="入学时间"
@@ -126,13 +128,6 @@ export default {
 }
 </script>
 <style lang='scss'>
-.resume-list-class{
-  .el-input--small .el-input__inner{
-  width:360px !important;
-}
-.el-date-editor--daterange{
-  width:360px !important;
-}}
 
 </style>
 
