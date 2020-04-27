@@ -297,7 +297,7 @@ export default {
     ...mapActions('workexperience', ['getWorkexperienceList', 'deleteWorkexperience']),
     ...mapActions('education', ['getEducationList', 'deletetEducation']),
     ...mapActions('academic', ['getAcademicList', 'deletetAcademic']),
-    ...mapActions('certificate', ['getCertificateList', 'createtCertificate', 'updatetCertificate', 'deletetCertificate']),
+    ...mapActions('certificate', ['getCertificateList', 'deletetCertificate']),
     ...mapActions('socialposition', ['getSocialpositionList', 'createSocialposition', 'updateSocialposition', 'deleteSocialposition']),
 
     // 获取工作经历

@@ -1,7 +1,10 @@
 <template>
-  <el-form ref="industryForm" :model="industryForm" class="resume-list-class" label-position="right" label-width="80px">
+  <el-form ref="industryForm" :rules="rules" :model="industryForm" class="resume-list-class" label-position="right" label-width="90px">
     <el-form-item label="行业资质" prop="name">
       <el-input v-model="industryForm.name" size="small" clearable placeholder="请输入行业资质" />
+    </el-form-item>
+    <el-form-item label="认证机构" prop="issuingAuthority">
+      <el-input v-model="industryForm.issuingAuthority" size="small" clearable placeholder="请输入认证机构" />
     </el-form-item>
     <el-form-item label="说明" prop="explain">
       <el-input v-model="industryForm.explain" size="small" type="textarea" clearable placeholder="请输入说明" />
@@ -42,6 +45,11 @@ export default {
       ossOption: {
         fileList: [], // 已上传文件列表  格式 {name:sdf,url:src,fileId:123,uid:1345,status:'success'}
         fileCategory: 2 // 文件类型【0 :JudgmentDocument 裁判文书,1：AgentWord 代理词，2：OtherCaseFile 案件其他材料,3：Avatar 头像,4：LawyerLicence 律师执业证,】
+      },
+      rules: {
+        name: [
+          { required: true, trigger: 'blur', message: '行业资质不可为空' }
+        ]
       }
     }
   },
@@ -50,6 +58,7 @@ export default {
       immediate: true,
       handler(val) {
         this.industryForm = val
+        this.ossOption.fileList = val.uploadFileId > 0 ? [{ name: val.uploadFileName, url: val.path, fileId: val.uploadFileId, uid: Math.random() * 200, status: 'success' }] : []
       }
     },
     sourceDisabled: {
@@ -67,12 +76,9 @@ export default {
   },
   methods: {
     ossUploadChange(val) {
-      this.files.push({ name: val[val.length - 1].name, path: val[val.length - 1].url, uploadFileId: val[val.length - 1].fileId, fileCategory: val[val.length - 1].fileCategory, isVisible: val[val.length - 1].isVisible })
-    },
-    removeFile(row) {
-      this.files.forEach((item, index) => {
-        item.uploadFileId === row.uploadFileId ? this.files.splice(index, 1) : ''
-      })
+      this.industryForm.path = val.length >= 1 ? val[0].url : ''
+      this.industryForm.uploadFileId = val.length >= 1 ? val[0].fileId : ''
+      this.industryForm.uploadFileName = val.length >= 1 ? val[0].name : ''
     }
   }
 }
