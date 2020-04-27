@@ -26,9 +26,9 @@ export default {
   components: {
   },
   props: {
-    caseType: {
+    type: {
       type: Number,
-      default: () => { return 1 }
+      default: 1
     }
   },
   data() {

@@ -59,7 +59,7 @@
               width="356"/>
             <el-table-column>
               <template slot-scope="{row}">
-                <el-button type="text" icon="el-icon-edit" style="margin-right:30px" @click="updateCase(row.id)">编辑</el-button>
+                <el-button type="text" icon="el-icon-edit" style="margin-right:30px" @click="updateCase(row)">编辑</el-button>
                 <!-- <el-popconfirm :title="row.isEnable ? '确定冻结该案例?' : '确定激活该案例?'" placement="top" @onConfirm="freezeCase(row)">
                 <el-button slot="reference" type="success" size="mini" :icon="row.isEnable?'el-icon-lock':'el-icon-unlock'" style="margin-bottom:10px;margin-left:0px;">{{ row.isEnable ? '冻结' : '激活' }}</el-button>
               </el-popconfirm> -->
@@ -293,8 +293,8 @@ export default {
       this.$router.push({ path: '/usercenter/case/create' })
     },
     // 编辑案件
-    updateCase(caseId) {
-      this.$router.push({ path: `/usercenter/case/${caseId}/update` })
+    updateCase(row) {
+      this.$router.push({ path: `/usercenter/case/${row.id}/update?caseType=${row.caseType}` })
     },
     // 删除案件
     deletCase(caseId) {

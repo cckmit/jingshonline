@@ -17,17 +17,23 @@
         <StepOne ref="one" @one="one"/>
       </div>
       <div v-if="steps===2" class="two">
-        <StepTwo ref="two" :type="caseType"/>
+        <keep-alive>
+          <StepTwo ref="two" :type="caseType" :case-info="caseInfo" />
+        </keep-alive>
         <el-button v-show="false" size="small" @click="changeSteps(1)">上一步</el-button>
         <el-button size="small" @click="nextToThree">下一步</el-button>
       </div>
       <div v-if="steps===3" class="three">
-        <StepThree ref="three" :type="caseType"/>
+        <keep-alive>
+          <StepThree ref="three" :type="caseType" :source-judgment-document="caseInfo.judgmentDocument" :source-files="caseInfo.files"/>
+        </keep-alive>
         <el-button size="small" @click="changeSteps(2)">上一步</el-button>
         <el-button size="small" @click="nextToFour">下一步</el-button>
       </div>
       <div v-if="steps===4" class="four">
-        <StepFour ref="four" :type="caseType"/>
+        <keep-alive>
+          <StepFour ref="four" :type="caseType" :source-analyses="caseInfo.analyses"/>
+        </keep-alive>
         <el-button size="small" @click="changeSteps(3)">上一步</el-button>
         <el-button size="small" @click="submit">完成</el-button>
       </div>
@@ -66,8 +72,8 @@ export default {
   data() {
     return {
       steps: 2,
-      caseType: null,
-      case: {}
+      caseType: +this.$route.query.caseType,
+      caseInfo: {}
     }
   },
   watch: {
@@ -80,8 +86,7 @@ export default {
     ...mapActions('case', ['userCenterCaseUpdate', 'userCenterCaseInfo']),
     getCaseInfo() {
       this.userCenterCaseInfo(this.$route.params.id).then(res => {
-        this.case = res
-        this.caseType = res.caseType
+        this.caseInfo = res
       })
     },
     one(type) {
@@ -100,18 +105,18 @@ export default {
     nextToThree() {
       this.$refs.two.$refs.caseInfo.$refs.caseInfoForm.validate(valid => {
         if (valid) {
-          this.case = { ...this.$refs.two.$refs.caseInfo.caseInfo }
+          this.caseInfo = { ...this.$refs.two.$refs.caseInfo.caseInfo }
           this.changeSteps(3)
         }
       })
     },
     nextToFour() {
-      this.case = { ...this.case, judgmentDocument: this.$refs.three.judgmentDocument, files: this.$refs.three.files }
+      this.caseInfo = { ...this.caseInfo, judgmentDocument: this.$refs.three.judgmentDocument, files: this.$refs.three.files }
       this.changeSteps(4)
     },
     submit() {
-      this.case = { ...this.case, analyses: this.$refs.four.analyses }
-      this.userCenterCaseUpdate(this.case).then(res => {
+      this.caseInfo = { ...this.caseInfo, analyses: this.$refs.four.analyses }
+      this.userCenterCaseUpdate(this.caseInfo).then(res => {
         this.steps = 5
       })
     }
