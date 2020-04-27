@@ -70,6 +70,9 @@ export default {
         school: [
           { required: true, trigger: 'blur', message: '学校名称不可为空' }
         ],
+        degree: [
+          { required: true, trigger: 'blur', message: '学位不可为空' }
+        ],
         endDate: [
           { required: true, trigger: 'change', message: '时间不可为空' }
         ],

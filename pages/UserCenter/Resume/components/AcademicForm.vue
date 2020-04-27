@@ -56,8 +56,11 @@ export default {
 }
 </script>
 <style lang='scss'>
-.el-input--small .el-input__inner{
+.resume-list-class{
+  .el-input--small .el-input__inner{
   width:360px !important;
 }
+}
+
 </style>
 
