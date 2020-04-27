@@ -47,6 +47,7 @@
             v-loading="loading"
             :data="caseListData"
             stripe
+            height="460"
             style="width: 100%">
             <el-table-column
               prop="title"
@@ -245,7 +246,7 @@ export default {
       totalCount: 0,
       // 案例检索条件
       caseListParam: {
-        pageCount: 15, // 页目条数 number
+        pageCount: 12, // 页目条数 number
         pageIndex: 1// 页码 number
       },
       loading: false,
@@ -518,6 +519,9 @@ export default {
 <style lang="scss">
 .caselist{
   .el-table{
+    &::before{
+      content: none;
+    }
     thead{
       th{
         padding: 0;
@@ -546,6 +550,21 @@ export default {
     .cell{
         height: 34px;
         line-height: 34px;
+    }
+  }
+  .page{
+    margin-top: 24px;
+    .el-pagination{
+      .el-pager{
+        li:not(.disabled){
+          &.active{
+            background-color: #307FFF;
+          }
+          &:hover{
+            color: #307FFF;
+          }
+        }
+      }
     }
   }
 }
@@ -585,22 +604,6 @@ export default {
     }
   }
 
-}
-
-.page{
-  margin-top: 36px;
-  .el-pagination{
-    .el-pager{
-      li:not(.disabled){
-        &.active{
-          background-color: #307FFF;
-        }
-        &:hover{
-          color: #307FFF;
-        }
-      }
-    }
-  }
 }
 
 .el-popconfirm__main{
