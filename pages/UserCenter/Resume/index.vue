@@ -298,7 +298,7 @@ export default {
     ...mapActions('education', ['getEducationList', 'deletetEducation']),
     ...mapActions('academic', ['getAcademicList', 'deletetAcademic']),
     ...mapActions('certificate', ['getCertificateList', 'deletetCertificate']),
-    ...mapActions('socialposition', ['getSocialpositionList', 'createSocialposition', 'updateSocialposition', 'deleteSocialposition']),
+    ...mapActions('socialposition', ['getSocialpositionList', 'deleteSocialposition']),
 
     // 获取工作经历
     getWorkexperienceData(delayTime = 150) {

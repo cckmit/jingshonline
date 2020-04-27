@@ -2,12 +2,13 @@
   <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加社会职务':'编辑社会职务'" width="23%" @close="close">
     <SocialForm ref="socialForm" :social-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" size="small" @click="close">保存</el-button>
+      <el-button type="primary" size="small" @click="submit">保存</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import SocialForm from './SocialForm'
 export default {
   name: 'SocialCreateOrUpdate',
@@ -19,6 +20,10 @@ export default {
       type: Boolean,
       default: false
     },
+    createData: {
+      type: String,
+      default: ''
+    },
     sourceData: {
       type: Object,
       default: function() {
@@ -28,19 +33,41 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      ifCreateUpdate: ''
     }
   },
   watch: {
     sourceVisible: function(val) {
       this.visible = val
+    },
+    createData: function(val) {
+      this.ifCreateUpdate = val
     }
   },
   methods: {
+    ...mapActions('socialposition', ['createSocialposition', 'updateSocialposition']),
+    submit() {
+      this.$refs.socialForm.$refs.socialForm.validate(valid => {
+        if (valid) {
+          if (this.ifCreateUpdate === '1') {
+            this.createSocialposition({ ...this.$refs.socialForm.socialForm }).then(res => {
+              this.$message.success(res)
+              this.visible = false
+            })
+          } else if (this.ifCreateUpdate === '2') {
+            this.updateSocialposition({ ...this.$refs.socialForm.socialForm }).then(res => {
+              this.$message.success(res)
+              this.visible = false
+            })
+          }
+        }
+      })
+    },
     close() {
       this.visible = false
       this.$emit('operate', this.visible)
-      // this.$refs.workForm.$refs.workForm.resetFields()
+      this.$refs.socialForm.$refs.socialForm.resetFields()
     }
   }
 }
