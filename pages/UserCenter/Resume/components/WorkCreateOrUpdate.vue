@@ -21,8 +21,8 @@ export default {
       default: false
     },
     createData: {
-      type: Boolean,
-      default: false
+      type: String,
+      default: ''
     },
     sourceData: {
       type: Object,
@@ -48,16 +48,14 @@ export default {
   methods: {
     ...mapActions('workexperience', ['createWorkexperience', 'updateWorkexperience']),
     submit() {
-      this.$refs.workForm.$refs.workForm.model.startDate = this.$refs.workForm.workTime[0]
-      this.$refs.workForm.$refs.workForm.model.endDate = this.$refs.workForm.workTime[1]
       this.$refs.workForm.$refs.workForm.validate(valid => {
         if (valid) {
-          if (this.ifCreateUpdate) {
+          if (this.ifCreateUpdate === '1') {
             this.createWorkexperience({ ...this.$refs.workForm.workForm }).then(res => {
               this.$message.success(res)
               this.visible = false
             })
-          } else {
+          } else if (this.ifCreateUpdate === '2') {
             this.updateWorkexperience({ ...this.$refs.workForm.workForm }).then(res => {
               this.$message.success(res)
               this.visible = false

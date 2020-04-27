@@ -79,11 +79,6 @@ export default {
   methods: {
     ossUploadChange(val) {
       this.files.push({ name: val[val.length - 1].name, path: val[val.length - 1].url, uploadFileId: val[val.length - 1].fileId, fileCategory: val[val.length - 1].fileCategory, isVisible: val[val.length - 1].isVisible })
-    },
-    removeFile(row) {
-      this.files.forEach((item, index) => {
-        item.uploadFileId === row.uploadFileId ? this.files.splice(index, 1) : ''
-      })
     }
   }
 }
