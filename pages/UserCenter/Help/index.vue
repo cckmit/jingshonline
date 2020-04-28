@@ -16,7 +16,7 @@
     <el-col :span="18">
       <div class="bgf selectend">
         <div class="title">积分、排名说明</div>
-        <div class="selecttab">
+        <div class="tab">
           <p>一、律师个人积分计算方式</p>
           <div>
             <b>1.执业年限</b>（例：执业年限为5*积分系数10=本项得分50）<br>
@@ -107,7 +107,7 @@ export default {
       color:#333;
       display: block;
     }
-  .selecttab{
+  .tab{
     padding: 35px 20px 0px 20px;
     p{
       font-size: 16px;
