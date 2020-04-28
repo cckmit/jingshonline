@@ -132,10 +132,7 @@
                     </div>
                     <div class="case-introduce-button">
                       <el-button v-if="item.isClassicCase" type="primary" size="mini" icon="el-icon-coordinate">经典案例</el-button>
-                      <!-- <el-button size="mini" style="margin-left:18px" type="danger">已驳回</el-button> -->
-                      <!-- <el-button size="mini" style="margin-left:18px" type="info">草稿案件</el-button> -->
-                      <el-button size="mini" style="margin-left:18px" type="warning">审核中</el-button>
-                      <!-- <el-button size="mini" style="margin-left:18px" type="primary">审核通过</el-button> -->
+                      <el-button v-for="items in caseStatus" v-show="items.id===item.caseStatus" :key="items.id" :type="items.type" size="mini" style="margin-left:18px">{{ items.displayName }}</el-button>
                     </div>
                   </div>
                 </el-col>
@@ -218,7 +215,8 @@ export default {
       courtData: state => state.court.courtData,
       industryData: state => state.industry.industryData,
       sortData: state => state.case.sortData,
-      examineStatus: state => state.lawyer.examineStatus
+      examineStatus: state => state.lawyer.examineStatus,
+      caseStatus: state => state.case.caseStatus
     })
   },
   watch: {
