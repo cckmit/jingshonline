@@ -62,6 +62,7 @@ import axios from 'axios'
 import setting from '@/plugins/setting'
 import ExtraWrap from '@/components/ExtraWrap'
 import { mapActions } from 'vuex'
+import utils from '@/utils'
 export default {
   layout: 'web',
   components: {
@@ -150,9 +151,9 @@ export default {
       // 图表数据
       chartData,
       // 行业
-      industryDataList: industryData.data.data,
+      industryDataList: utils.formatTreeDataForAntd(industryData.data.data),
       // 领域
-      practiceareaDataList: practiceareaData.data.data,
+      practiceareaDataList: utils.formatTreeDataForAntd(practiceareaData.data.data),
       // 法院数据
       courtListData: courtListData.data.data
     }

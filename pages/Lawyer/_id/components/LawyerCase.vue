@@ -1,5 +1,15 @@
 <template>
   <div class="lawyer-case">
+    <!-- ↓↓↓↓↓↓↓↓↓↓↓ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+    <a-tree-select
+      :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      show-search
+      allow-clear
+      style="width: 100%;display:none;"
+      tree-node-filter-prop="title"
+      placeholder="请选择"
+    />
+    <!-- ↑↑↑↑↑↑↑↑↑↑↑ 勿删！勿删！勿删！勿删！勿删！  没有任何作用且页面不显示。防止  antdv tree-select option 定位跑偏    勿删！勿删！勿删！勿删！勿删！ ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
     <div class="lawyer-case-select">
       <div class="lawyer-case-item">
         <p>管辖法院 :</p>
@@ -19,25 +29,28 @@
       </div>
       <div class="lawyer-case-item">
         <p>所属行业 :</p>
-        <el-select
+        <a-tree-select
+          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+          :tree-data="industryDataList"
           v-model="caseListParam.industryId"
+          show-search
+          style="width: 280px"
+          allow-clear
+          tree-node-filter-prop="title"
           placeholder="请选择"
-          filterable
-          clearable
-        >
-          <el-option
-            v-for="item in industryDataList"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-          />
-        </el-select>
+        />
       </div>
       <div class="lawyer-case-item">
         <p>所属领域 :</p>
-        <el-tree-select
-          :tree-select-options="TreeselectData"
-          @getValue="getValue($event)"
+        <a-tree-select
+          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+          :tree-data="practiceareaDataList"
+          v-model="caseListParam.practiceAreaId"
+          show-search
+          style="width: 280px"
+          allow-clear
+          tree-node-filter-prop="title"
+          placeholder="请选择"
         />
       </div>
     </div>
@@ -140,24 +153,6 @@ export default {
         sortType: 0, // 排序类型
         pageCount: 5, // 页目条数 number
         pageIndex: 1// 页码 number
-      },
-      // 组件参数
-      TreeselectData: {
-        props: {
-        // 配置项（必选）
-          value: 'id',
-          label: 'name',
-          children: 'children'
-        // disabled:true
-        },
-        // 数据
-        options: this.practiceareaDataList,
-        // 可否清除
-        clearable: true,
-        // 每次加载一项tree
-        accordion: true,
-        // 是否搜索
-        filterable: true
       }
     }
   },
@@ -225,10 +220,6 @@ export default {
           this.lawyerCaseList[index].isFollow = !this.lawyerCaseList[index].isFollow
         })
       }
-    },
-    // 检索条件领域
-    getValue(val) {
-      this.caseListParam.practiceAreaId = val
     }
   }
 }
@@ -265,7 +256,7 @@ export default {
     .lawyer-case-item {
       margin-right: 60px;
       color: #333333;
-      .el-input__inner {
+      .el-input__inner,.ant-select-selection {
         width: 280px;
         height: 30px;
         line-height: 28px;
@@ -293,6 +284,19 @@ export default {
       .el-icon-circle-close{
         font-size: 16px;
         color: #fff;
+      }
+      .ant-select-arrow{
+        width: 30px;
+        height: 30px;
+        top: 6px;
+        right: 0;
+        background: #ccc;
+        .ant-select-arrow-icon{
+          line-height: 30px;
+          color: #fff;
+          font-size: 16px;
+        }
+
       }
     }
   }
