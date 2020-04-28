@@ -461,9 +461,9 @@ export default {
   .resume-title-img{height: 30px;line-height:30px;width: 30px;}
   .resume-title-edit{float:right;height: 26px;line-height:6px;}}}
   .resume-desc{font-size:14px;color:rgba(102,102,102,1);line-height:26px;
-  .resume-desc-model{width:214px;height:110px;background:rgba(255,255,255,1);box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.12);margin:0 auto;text-align: center;padding:20px;margin-bottom:20px; cursor: pointer;position: relative;
+  .resume-desc-model{width:214px;height:110px;background:rgba(255,255,255,1);box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.12);margin:0 auto;text-align: center;padding:20px 27px;margin-bottom:20px; cursor: pointer;position: relative;border-radius: 3px;
   >p{text-align: left}
-  .resume-desc-model-add{height:24px;width:24px;color:rgba(51,51,51,1);font-size:30px;}
+  .resume-desc-model-add{height:24px;width:24px;color:rgba(51,51,51,1);font-size:30px;margin-top:5px;}
   .resume-desc-model-title{font-size:14px;color:rgba(51,51,51,1);}
   .resume-desc-button{position: absolute;bottom:0;left:0;width: 214px;height: 34px;background-color: rgba(0,0,0,.8);line-height: 34px;padding: 10 37px;color: rgba(255,255,255,.8);
   .resume-desc-button-line{margin-top:10px;height:15px;width:10px;border-right:1px solid #ddd;}}
