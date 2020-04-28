@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加工作经历':'编辑工作经历'" width="23%" @close="close">
+  <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加工作经历':'编辑工作经历'" width="23%" class="resume-dialog" @close="close">
     <WorkForm ref="workForm" :work-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" size="small" @click="submit">保存</el-button>
@@ -73,7 +73,7 @@ export default {
 }
 </script>
 <style lang='scss'>
-.el-dialog{
+.resume-dialog{
   .el-dialog__header{
     height: 51px;
     padding-left: 30px !important;
