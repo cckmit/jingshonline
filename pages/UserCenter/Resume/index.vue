@@ -119,10 +119,10 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateAcademicVisible=true,academic=item,ifCreate='2'"/>
+                            <el-button type="text" size="mini" @click.native="createOrUpdateAcademicVisible=true,academic=item,ifCreate='2'">编辑</el-button>
                           </el-col>
                           <el-col v-show="academicIsBtn" :span="2" style="text-align:right">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'3')"/>
+                            <el-button type="text" size="mini" @click="resumeDelete(item.id,'3')">删除</el-button>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -155,10 +155,10 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateIndustryVisible=true,industry=item,ifCreate='2'"/>
+                            <el-button type="text" size="mini" @click.native="createOrUpdateIndustryVisible=true,industry=item,ifCreate='2'">编辑</el-button>
                           </el-col>
                           <el-col v-show="industryIsBtn" :span="2" style="text-align:right">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'4')"/>
+                            <el-button type="text" size="mini" @click="resumeDelete(item.id,'4')">删除</el-button>
                           </el-col>
                         </el-row>
                       </el-col>
@@ -190,10 +190,10 @@
                           <el-col :span="1"> <p class="listSpot"/></el-col>
                           <el-col :span="17"> <p>{{ item.name }}</p></el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
-                            <el-button type="primary" icon="el-icon-edit" size="mini" circle @click.native="createOrUpdateSocialVisible=true,social=item,ifCreate='2'"/>
+                            <el-button type="text" size="mini" @click.native="createOrUpdateSocialVisible=true,social=item,ifCreate='2'">编辑</el-button>
                           </el-col>
                           <el-col v-show="socialIsBtn" :span="2" style="text-align:right">
-                            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="resumeDelete(item.id,'5')"/>
+                            <el-button type="text" size="mini" @click="resumeDelete(item.id,'5')">删除</el-button>
                           </el-col>
                         </el-row>
                       </el-col>
