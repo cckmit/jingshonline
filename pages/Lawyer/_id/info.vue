@@ -63,6 +63,7 @@ import setting from '@/plugins/setting'
 import ExtraWrap from '@/components/ExtraWrap'
 import { mapActions } from 'vuex'
 import utils from '@/utils'
+import moment from 'moment'
 export default {
   layout: 'web',
   components: {
@@ -111,12 +112,20 @@ export default {
     if (LawyerResumeData.data.data) {
       const resumeInfo = LawyerResumeData.data.data
       if (resumeInfo.workExperiences) {
+        resumeInfo.workExperiences.forEach(item => {
+          item.startDate = moment(item.startDate).format('YYYY.MM')
+          item.endDate = moment(item.endDate).format('YYYY.MM')
+        })
         resumeData.workExperiences = resumeInfo.workExperiences
       }
       if (resumeInfo.socialPositions) {
         resumeData.socialPositions = resumeInfo.socialPositions
       }
       if (resumeInfo.educations) {
+        resumeInfo.educations.forEach(item => {
+          item.startDate = moment(item.startDate).format('YYYY.MM')
+          item.endDate = moment(item.endDate).format('YYYY.MM')
+        })
         resumeData.educations = resumeInfo.educations
       }
       if (resumeInfo.certificates) {

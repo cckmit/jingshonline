@@ -18,12 +18,14 @@
           placeholder="请选择"
           filterable
           clearable
+          popper-class="lawyer-court"
         >
           <el-option
             v-for="item in courtListData"
             :key="item.id"
             :label="item.name"
             :value="item.id"
+            :title="item.name"
           />
         </el-select>
       </div>
@@ -86,7 +88,7 @@
           </div>
           <div class="case-item-bottom">
             <span v-if="item.judgmentNumber && item.caseType !== 2" class="judgement-number">{{ item.judgmentNumber	}}</span>
-            <span class="case-time"><i class="el-icon-time"/>{{ item.updateTime | dateFormat("YYYY-mm-dd") }}</span>
+            <span class="case-time"><i class="el-icon-time"/>{{ item.updateTime }}</span>
             <span class="collect no-select" @click.prevent="userCollect(index)"><i :class="item.isFollow ? 'el-icon-star-on' : 'el-icon-star-off'" v-text="item.isFollow? '已收藏' : '收藏'"/></span>
             <!-- <span class="share no-select" @click.prevent="share(item.id)"><i/>分享</span> -->
           </div>
@@ -176,6 +178,9 @@ export default {
       this.getCaseListData(query).then(res => {
         if (res !== null) {
           this.totalCount = res.totalCount
+          res.items.forEach(item => {
+            item.updateTime = this.$moment(item.updateTime).format('YYYY-MM-DD')
+          })
           this.lawyerCaseList = res.items
         }
       })
@@ -482,5 +487,7 @@ export default {
     font-size: 32px;
   }
 }
-
+.lawyer-court{
+  width: 280px;
+}
 </style>

@@ -61,7 +61,6 @@ module.exports = {
     { src: '~/plugins/custom', ssr: true },
     { src: '~/plugins/ant-design', ssr: false },
     { src: '~plugins/echarts', ssr: false },
-    { src: '~plugins/filters', ssr: true },
     { src: '~utils/validate', ssr: false },
     { src: '~utils/index', ssr: false },
     { src: '~/plugins/vue-clipboard2', ssr: false },

@@ -11,7 +11,7 @@
             <li v-for="(item,index) in resumeData.workExperiences" :key="index">
               <p>{{ item.organization }}</p>
               <p>{{ item.position }}</p>
-              <p><span>{{ item.startDate | dateFormat("YYYY.mm") }}</span> - <span>{{ item.endDate | dateFormat("YYYY.mm") }}</span></p>
+              <p><span>{{ item.startDate }}</span> - <span>{{ item.endDate }}</span></p>
             </li>
           </ul>
           <p v-else class="lawyer-info-none">暂无该律师工作经历相关数据...</p>
@@ -24,7 +24,7 @@
             <li v-for="(item,index) in resumeData.educations" :key="index">
               <p>{{ item.school }}</p>
               <p>{{ item.degree }}</p>
-              <p><span>{{ item.startDate | dateFormat("YYYY.mm") }}</span> - <span>{{ item.endDate | dateFormat("YYYY.mm") }}</span></p>
+              <p><span>{{ item.startDate }}</span> - <span>{{ item.endDate }}</span></p>
             </li>
           </ul>
           <p v-else class="lawyer-info-none">暂无该律师教育经历相关数据...</p>
