@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加学术成果':'编辑学术成果'" width="23%" @close="close">
+  <el-dialog :visible.sync="visible" :title="Object.keys(sourceData).length===0?'添加学术成果':'编辑学术成果'" width="23%" class="resume-dialog" @close="close">
     <AcademicForm ref="academicForm" :academic-form-data="sourceData" />
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" size="small" @click="submit">保存</el-button>
@@ -74,7 +74,7 @@ export default {
 }
 </script>
 <style lang='scss'>
-.el-dialog{
+.resume-dialog{
   .el-dialog__header{
     height: 51px;
     padding-left: 30px !important;
