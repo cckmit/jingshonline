@@ -371,6 +371,9 @@ ul {
         height:30px;
         line-height: 30px;
       }
+      .el-input__icon{
+        line-height: 30px;
+      }
     }
     >.el-input{
       float: right;
