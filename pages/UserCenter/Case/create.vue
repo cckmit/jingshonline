@@ -112,7 +112,7 @@ export default {
       this.changeSteps(4)
     },
     submit() {
-      this.case = { ...this.case, analyses: this.$refs.four.analyses }
+      this.case = { ...this.case, analyses: this.$refs.four.analyses, caseStatus: 1 }
       this.userCenterCaseCreate(this.case).then(res => {
         this.changeSteps(5)
       })

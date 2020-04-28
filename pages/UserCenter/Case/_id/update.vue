@@ -115,7 +115,7 @@ export default {
       this.changeSteps(4)
     },
     submit() {
-      this.caseInfo = { ...this.caseInfo, analyses: this.$refs.four.analyses }
+      this.caseInfo = { ...this.caseInfo, analyses: this.$refs.four.analyses, caseStatus: 1 }
       this.userCenterCaseUpdate(this.caseInfo).then(res => {
         this.steps = 5
       })
